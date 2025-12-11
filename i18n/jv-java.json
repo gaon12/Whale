@@ -1,0 +1,43 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bennylin"
+		]
+	},
+	"liberty-dark-default": "ꦲꦗ​ꦢꦶꦭꦶꦂꦮꦏ꧀ꦏꦏꦺ",
+	"liberty-dark-dark": "ꦭꦶꦂꦮꦏ꧀ꦏꦏꦺ​ꦭꦤ꧀ꦔꦁꦒꦺꦴ​ꦩꦺꦴꦢꦼ​ꦥꦼꦛꦼꦁ",
+	"liberty-dark-light": "ꦭꦶꦂꦮꦏ꧀ꦏꦏꦺ​ꦭꦤ꧀ꦔꦁꦒꦺꦴ​ꦩꦺꦴꦢꦼ​ꦥꦝꦁ",
+	"liberty-feed-new": "[ꦲꦚꦂ]",
+	"liberty-font-name-default": "ꦧꦏꦸ",
+	"liberty-forgot-pw": "ꦭꦭꦶꦠꦼꦩ꧀ꦧꦸꦁ​ꦱꦤ꧀ꦢꦶꦩꦸ?",
+	"liberty-layout-select-1200": "1200px (ꦧꦏꦸ)",
+	"liberty-pref-layout-controlbar": "ꦲꦶꦭꦁꦔꦶ​ꦧꦶꦭꦃ​ꦏꦺꦴꦤ꧀ꦠꦿꦺꦴꦭ꧀ꦤꦥ꦳ꦶꦲꦱꦶ",
+	"liberty-pref-layout-morearticle": "ꦲꦶꦭꦁꦔꦶ​ꦲꦶꦏ꧀ꦭꦤ꧀ꦲꦶꦁ​ꦔꦶꦱꦺꦴꦂ​ꦄꦂꦠꦶꦏꦼꦭ꧀",
+	"liberty-login": "ꦩ꧀ꦊꦧꦸ​ꦭꦺꦴꦒ꧀",
+	"liberty-login-alter": "ꦩ꧀ꦊꦧꦸ​ꦭꦺꦴꦒ꧀ꦔꦁꦒꦺꦴ​ꦕꦫꦭꦶꦪ",
+	"liberty-login-btn": "ꦩ꧀ꦊꦧꦸ​ꦭꦺꦴꦒ꧀",
+	"liberty-info": "ꦏꦠꦼꦫꦁꦔꦤ꧀",
+	"liberty-purge": "ꦧꦸꦱꦏ꧀ꦏꦱ꧀",
+	"liberty-recent-discussions": "ꦉꦩ꧀ꦧꦸꦒ꧀ꦒꦤ꧀ꦥꦭꦶꦁ​ꦲꦚꦂ",
+	"liberty-remember": "ꦲꦺꦭꦶꦁꦔꦶ​​ꦩ꧀ꦊꦧꦸ​ꦭꦺꦴꦒ꧀ꦏꦸ",
+	"liberty-share": "ꦧꦒꦺꦏ꧀ꦤ",
+	"liberty-tooltip-info": "ꦢꦼꦊꦁ​ꦏꦠꦼꦫꦁꦔꦤ꧀ꦢꦺꦴꦏꦸꦩꦺꦤ꧀",
+	"liberty-tooltip-purge": "ꦧꦸꦱꦏ꧀ꦏꦱ꧀ꦏꦕ​ꦲꦶꦏꦶ",
+	"liberty-view-more": "ꦢꦼꦊꦁ​ꦭꦸꦮꦶꦃ​ꦲꦏꦺꦃ",
+	"prefs-color": "ꦱꦼꦠꦺꦭ꧀ꦭꦤ꧀ꦮꦼꦂꦤ",
+	"prefs-layout": "ꦱꦼꦠꦺꦭ꧀ꦭꦤ꧀ꦠꦠ​ꦊꦠꦏ꧀",
+	"prefs-ads": "ꦱꦼꦠꦺꦭ꧀ꦭꦤ꧀ꦲꦶꦏ꧀ꦭꦤ꧀",
+	"liberty-pref-layout-sidebar": "ꦲꦶꦭꦁꦔꦶ​ꦧꦶꦭꦃ​ꦱꦶꦱꦶꦃ​ꦠꦼꦔꦼꦤ꧀",
+	"liberty-pref-layout-width": "ꦲꦩ꧀ꦧ​ꦱ꧀ꦠꦠꦶꦱ꧀",
+	"liberty-pref-color-main": "ꦮꦼꦂꦤ​ꦲꦸꦠꦩ",
+	"liberty-pref-color-main-help": "ꦮꦼꦂꦤ​ꦲꦸꦠꦩ​ꦱꦶꦁ​ꦢꦶꦲꦺꦁꦒꦺꦴ​ꦱꦶꦠꦸꦱ꧀ꦲꦶꦏꦶ꧉",
+	"liberty-pref-color-second": "ꦮꦼꦂꦤ​ꦱꦺꦏꦸꦤ꧀ꦢꦺꦂ",
+	"liberty-pref-color-second-help": "ꦮꦼꦂꦤ​ꦱꦺꦏꦸꦤ꧀ꦢꦺꦂ​ꦱꦶꦁ​ꦢꦶꦲꦺꦁꦒꦺꦴ​ꦱꦶꦠꦸꦱ꧀ꦲꦶꦏꦶ꧉",
+	"prefs-font": "ꦥꦶꦭꦭꦤ꧀ꦥ꦳ꦺꦴꦤ꧀ꦠ",
+	"liberty-pref-fonts": "ꦥꦶꦭꦶꦃ​ꦥ꦳ꦺꦴꦤ꧀ꦠ​ꦱꦶꦁ​ꦥꦺꦔꦶꦤ꧀ꦏꦺꦴꦏ꧀ꦲꦺꦁꦒꦺꦴ",
+	"liberty-pref-fonts-helplabel": "ꦥꦶꦠꦸꦭꦸꦁ",
+	"liberty-pref-ads-header": "ꦲꦶꦭꦁꦔꦶ​ꦲꦶꦏ꧀ꦭꦤ꧀ꦱꦼꦱꦶꦫꦃ꧉",
+	"liberty-pref-ads-right": "ꦲꦶꦭꦁꦔꦶ​ꦲꦶꦏ꧀ꦭꦤ꧀ꦱꦶꦱꦶꦃ​ꦠꦼꦔꦼꦤ꧀꧈",
+	"liberty-pref-ads-bottom": "ꦲꦶꦭꦁꦔꦶ​ꦲꦶꦏ꧀ꦭꦤ꧀ꦱꦼꦱꦶꦏꦶꦭ꧀꧈",
+	"liberty-pref-ads-belowarticle": "ꦲꦶꦭꦁꦔꦶ​ꦲꦶꦏ꧀ꦭꦤ꧀ꦲꦶꦁ​ꦔꦶꦱꦺꦴꦂꦫꦺ​ꦄꦂꦠꦶꦏꦼꦭ꧀"
+}
