@@ -1,7 +1,7 @@
 {
-	"name": "librewiki/liberty-mw-skin",
+	"name": "librewiki/freedom-mw-skin",
 	"version": "1.13.8",
-	"description": "Liberty MediaWiki Skin",
+	"description": "Freedom MediaWiki Skin",
 	"license": "GPL-3.0-or-later",
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": ">=0.9.0"

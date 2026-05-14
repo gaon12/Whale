@@ -1,67 +1,56 @@
 {
-	"name": "Liberty",
+	"name": "Freedom",
 	"author": [
 		"Librewiki developers",
 		"..."
 	],
-	"url": "https://github.com/librewiki/liberty-skin",
-	"descriptionmsg": "liberty-desc",
-	"namemsg": "skinname-liberty",
+	"url": "https://github.com/librewiki/freedom-skin",
+	"descriptionmsg": "freedom-desc",
+	"namemsg": "skinname-freedom",
 	"license-name": "GPL-3.0-or-later",
 	"type": "skin",
-	"version": "1.13.9",
+	"version": "2.0.0",
 	"requires": {
 		"MediaWiki": ">= 1.39.0"
 	},
 	"ValidSkinNames": {
-		"liberty": {
-			"displayname": "Liberty",
-			"class": "SkinLiberty",
+		"freedom": {
+			"displayname": "Freedom",
+			"class": "SkinFreedom",
 			"args": [ {
-				"name": "liberty",
-				"bodyClasses": [ "Liberty", "width-size" ],
-				"bodyOnly": true,
+				"name": "freedom",
+				"bodyClasses": [ "Freedom" ],
 				"responsive": true,
-				"template": "LibertyTemplate",
+				"template": "skin",
 				"styles": [
-					"skins.liberty.styles"
+					"skins.freedom.styles"
 				]
 			} ]
 		}
 	},
 	"MessagesDirs": {
-		"Liberty": [
+		"Freedom": [
 			"i18n"
 		]
 	},
 	"config": {
-		"LibertyEnableLiveRC": true,
-		"LibertyUseGravatar": true,
-		"LibertyMainColor": "#4188F1",
-		"LibertySecondColor": null,
-		"LibertyAdSetting": null,
-		"LibertyOgLogo": null,
-		"TwitterAccount": null,
-		"NaverVerification": null,
-		"LibertyMobileReplaceAd": false,
-		"LibertyLiveRCArticleNamespaces": [
-			0,
-			4,
-			10,
-			12,
-			14
-		],
-		"LibertyLiveRCTalkNamespaces": [
-			1,
-			3,
-			5,
-			7,
-			9,
-			11,
-			13,
-			15
-		],
-		"LibertyMaxRecent": 10
+		"FreedomEnableLiveRC": { "value": true },
+		"FreedomUseGravatar": { "value": false },
+		"FreedomMainColor": { "value": "#4188F1" },
+		"FreedomSecondColor": { "value": null },
+		"FreedomAdSetting": { "value": null },
+		"FreedomOgLogo": { "value": null },
+		"TwitterAccount": { "value": null },
+		"NaverVerification": { "value": null },
+		"FreedomMobileReplaceAd": { "value": false },
+		"FreedomLiveRCArticleNamespaces": { "value": [ 0, 4, 10, 12, 14 ] },
+		"FreedomLiveRCTalkNamespaces": { "value": [ 1, 3, 5, 7, 9, 11, 13, 15 ] },
+		"FreedomMaxRecent": { "value": 10 },
+		"FreedomDefaultWidth": { "value": "1200px" },
+		"FreedomShowReadingProgressBar": { "value": true },
+		"FreedomCollapsibleSections": { "value": true },
+		"FreedomStickyTOC": { "value": true },
+		"FreedomShowCopyButtons": { "value": true }
 	},
 	"AvailableRights": [
 		"blockads-header",
@@ -70,101 +59,40 @@
 		"blockads-bottom"
 	],
 	"ResourceModules": {
-		"skins.liberty.styles": {
+		"skins.freedom.styles": {
 			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"features": {
-				"interface": false,
-				"toc": false,
+				"interface": true,
+				"toc": true,
 				"content-media": true,
 				"content-tables": true,
 				"i18n-ordered-lists": true,
 				"i18n-headings": true
 			},
 			"styles": {
-				"bootstrap/css/bootstrap.min.css": {
+				"css/freedom.css": {
 					"media": "all"
-				},
-				"css/default.css": {
-					"media": "all"
-				},
-				"css/default_mobile.css": {
-					"media": "all"
-				},
-				"css/wiki.css": {
-					"media": "all"
-				},
-				"css/only-mw.css": {
-					"media": "all"
-				},
-				"css/webfont.css": {
-					"media": "all"
-				},
-				"css/wiki-table.css": {
-					"media": "all"
-				},
-				"css/wikiedittor-liberty.css": {
-					"media": "all"
-				},
-				"css/extensions/RelatedArticles.css": {
-					"media": "all"
-				},
-				"css/print.css": {
-					"media": "print"
 				}
 			}
 		},
-		"skins.liberty.ads": {
-			"scripts": "js/ads.js"
-		},
-		"skins.liberty.bootstrap": {
+		"skins.freedom.js": {
 			"scripts": [
-				"js/lib/jquery.ba-throttle-debounce.js",
-				"js/lib/bootstrap.min.js"
+				"js/freedom.js"
 			]
-		},
-		"skins.liberty.layoutjs": {
-			"scripts": [
-				"js/delay-scrolling.js",
-				"js/disable-notice.js",
-				"js/share-button.js",
-				"js/layout.js",
-				"js/table.js",
-				"js/scroll-button.js"
-			],
-			"dependencies": "mediawiki.cookie"
-		},
-		"skins.liberty.liverc": {
-			"scripts": "js/live-recent.js",
-			"messages": [
-				"liberty-feed-new"
-			],
-			"dependencies": "mediawiki.util"
-		},
-		"skins.liberty.loginjs": {
-			"scripts": "js/login-request.js",
-			"dependencies": "mediawiki.util"
 		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
-		"remoteSkinPath": "Liberty"
-	},
-	"ResourceModuleSkinStyles": {
-		"liberty": {
-			"+ext.relatedArticles.readMore": "css/extensions/RelatedArticles.css",
-			"+ext.echo.ui": "css/extensions/Echo.css",
-			"+mediawiki.action.view.filepage": "css/skinStyles/mediawiki.action.view.filepage.css",
-			"+mediawiki.special.preferences.styles": "css/skinStyles/mediawiki.special.preferences.styles.css"
-		}
+		"remoteSkinPath": "Freedom"
 	},
 	"AutoloadClasses": {
-		"SkinLiberty": "SkinLiberty.php",
-		"LibertyTemplate": "LibertyTemplate.php",
-		"LibertyHooks": "LibertyHooks.php"
+		"SkinFreedom": "SkinFreedom.php",
+		"FreedomHooks": "FreedomHooks.php",
+		"FreedomMenuParser": "includes/FreedomMenuParser.php"
 	},
 	"Hooks": {
-		"GetPreferences": "LibertyHooks::onGetPreferences",
-		"OutputPageBodyAttributes": "LibertyHooks::onOutputPageBodyAttributes"
+		"GetPreferences": "FreedomHooks::onGetPreferences",
+		"OutputPageBodyAttributes": "FreedomHooks::onOutputPageBodyAttributes"
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }

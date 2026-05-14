@@ -1,0 +1,40 @@
+<div class="freedom-skin">
+	<a class="mw-jump-link" href="#content">Jump to content</a>
+	{{> Header}}
+
+	<div class="freedom-main-container" style="max-width: {{freedom-layout-width}};">
+		<aside class="freedom-sidebar">
+			{{> Sidebar}}
+		</aside>
+
+		<main id="content" class="freedom-content mw-body" role="main">
+			<header class="freedom-content-header">
+				<div class="freedom-indicators">
+					{{{data-indicators}}}
+				</div>
+				<h1 id="firstHeading" class="firstHeading">
+					{{{data-title}}}
+				</h1>
+				<div class="freedom-content-subtitle">
+					{{{data-subtitle}}}
+				</div>
+				{{> ContentActions}}
+			</header>
+
+			<div id="siteNotice">
+				{{{data-sitenotice}}}
+			</div>
+
+			<div class="freedom-body-text mw-body-content">
+				{{{data-bodycontent}}}
+			</div>
+
+			<footer class="freedom-content-footer">
+				{{{data-catlinks}}}
+				{{{data-after-content}}}
+			</footer>
+		</main>
+	</div>
+
+	{{> Footer}}
+</div>

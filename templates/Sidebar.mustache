@@ -1,0 +1,14 @@
+<div class="freedom-sidebar-content">
+	{{#data-sidebar}}
+		<nav class="freedom-sidebar-portal">
+			<h3 class="freedom-sidebar-heading">{{label}}</h3>
+			<ul class="freedom-sidebar-list">
+				{{#content}}
+					<li class="freedom-sidebar-item">
+						{{{ . }}}
+					</li>
+				{{/content}}
+			</ul>
+		</nav>
+	{{/data-sidebar}}
+</div>

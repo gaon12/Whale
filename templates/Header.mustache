@@ -1,0 +1,27 @@
+<header class="freedom-header">
+	<nav class="freedom-navbar">
+		<div class="freedom-navbar-brand">
+			<a href="{{link-mainpage}}">
+				<svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="50" cy="50" r="40" stroke="var(--freedom-main-color)" stroke-width="5" fill="none" />
+					<text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="30" fill="var(--freedom-main-color)" font-family="sans-serif">F</text>
+				</svg>
+				<span>{{sitename}}</span>
+			</a>
+		</div>
+
+		<div class="freedom-navbar-menu">
+			<!-- Navbar links will go here -->
+		</div>
+
+		<div class="freedom-navbar-search">
+			{{{data-search-box}}}
+		</div>
+
+		<div class="freedom-navbar-user">
+			{{#data-personal}}
+				{{{ . }}}
+			{{/data-personal}}
+		</div>
+	</nav>
+</header>

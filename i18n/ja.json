@@ -9,16 +9,16 @@
 			"Yaakiyu.jp"
 		]
 	},
-	"liberty-feed-new": "[新]",
-	"liberty-font-name-default": "既定",
-	"liberty-forgot-pw": "パスワードをお忘れですか?",
-	"liberty-login": "ログイン",
-	"liberty-login-btn": "ログイン",
-	"liberty.css": "/* ここに記述したCSSはLiberty外装の利用者に影響します */",
-	"liberty.js": "/* ここにあるすべてのJavaScriptは、Liberty外装を使用している利用者に対して読み込まれます */",
-	"prefs-liberty": "Liberty 外装",
+	"freedom-feed-new": "[新]",
+	"freedom-font-name-default": "既定",
+	"freedom-forgot-pw": "パスワードをお忘れですか?",
+	"freedom-login": "ログイン",
+	"freedom-login-btn": "ログイン",
+	"freedom.css": "/* ここに記述したCSSはFreedom外装の利用者に影響します */",
+	"freedom.js": "/* ここにあるすべてのJavaScriptは、Freedom外装を使用している利用者に対して読み込まれます */",
+	"prefs-freedom": "Freedom 外装",
 	"prefs-font": "フォントの設定",
-	"liberty-pref-fonts": "使いたいフォントを選択",
-	"liberty-pref-fonts-helplabel": "ヘルプ",
-	"liberty-pref-fonts-help": "フォントは Google サーバから読み込まれますが、Malgun Gothic フォントのみ例外です。"
+	"freedom-pref-fonts": "使いたいフォントを選択",
+	"freedom-pref-fonts-helplabel": "ヘルプ",
+	"freedom-pref-fonts-help": "フォントは Google サーバから読み込まれますが、Malgun Gothic フォントのみ例外です。"
 }
