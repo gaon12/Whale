@@ -18,8 +18,8 @@ class FreedomMenuParser {
 	 * @return array
 	 */
 	public function parseNavbar() {
-		// Logic similar to old LibertyTemplate::parseNavbar
-		// but returning a structured array for Mustache
+		// Logic to parse the navbar configuration
+		// returning a structured array for Mustache
 		return [];
 	}
 }

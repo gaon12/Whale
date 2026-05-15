@@ -21,9 +21,9 @@ Please set these variables in the LocalSettings.php file.
 | ---- | ---- | ---- | ---- |
 | `$wgLibertyMainColor` | `theme-color` configurations, main color of site | `#4188F1` | `#4188F1` |
 | `$wgLibertySecondColor` | Configure of second color of site | `#2774DC` | The value of `$wgLibertyMainColor` subtracted by `1A1415` |
-| `$wgTwitterAccount` | Default Twitter account to set a mention | `librewiki` | (none) |
+| `$wgFreedomTwitterAccount` | Default Twitter account to set a mention | `librewiki` | (none) |
 | `$wgLibertyOgLogo` | OpenGraph Image Logo | `https://librewiki.net/images/6/6a/Libre_favicon.png` | (Value of `$wgLogo`) |
-| `$wgNaverVerification` | Naver Webmater Tool Verification Code | (Value supplied by Naver.com) | (none) |
+| `$wgFreedomNaverVerification` | Naver Webmater Tool Verification Code | (Value supplied by Naver.com) | (none) |
 | `$wgLibertyAdSetting` | Google Adsense Settings | `array( 'client' => '(Value supplied by Google)', 'header' => '1234567890', 'right' => '0987654321', 'belowarticle' => 1313135452 )` | (none) |
 | `$wgLibertyAdGroupwgLibertyAdGroup` | Differentiation of ads by usergroup | `differ` | `null`|
 | `$wgLibertyMobileReplaceAd` | In a mobile environment, move the sidebar ads to the bottom. | `true` | `false` |
