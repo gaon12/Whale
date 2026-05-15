@@ -45,7 +45,7 @@ class SkinFreedom extends SkinMustache {
 	 * @return array
 	 */
 	private function getPersonalToolsData() {
-		$personalTools = $this->getPersonalTools();
+		$personalTools = $this->getOutput()->getAttributes()['personal_tools'] ?? $this->getPersonalTools();
 		$links = [];
 		foreach ( $personalTools as $key => $item ) {
 			$links[] = $this->makeListItem( $key, $item );
