@@ -49,10 +49,6 @@
 	padding-right: 1.5rem;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main table.wikitable {
-	width: auto;
-}
-
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable th {
 	background-color: #f5f8fa;
 	text-align: center;
@@ -61,18 +57,12 @@
 
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable {
 	border-collapse: collapse;
-	border-radius: 0.35rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td {
 	border: 1px solid #e1e8ed;
 	padding: 0.3rem 0.6rem;
-}
-
-.Whale .content-wrapper .whale-content .whale-content-main table.infobox {
-	border-collapse: separate;
-	border-radius: 0.35rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > th,
@@ -130,12 +120,12 @@
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > th:nth-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > td:nth-child( 1 ) {
-	border-radius: 0.35rem 0 0 0.35rem
+	border-radius: 0.35rem 0 0 0.35rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > th:nth-last-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > td:nth-last-child( 1 ) {
-	border-radius: 0 0.35rem 0.35rem 0
+	border-radius: 0 0.35rem 0.35rem 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > th:only-child,

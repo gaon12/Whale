@@ -1,7 +1,6 @@
 /* ToC */
 .Whale .content-wrapper .whale-content .whale-content-main .toc {
-	border-bottom-right-radius: 0.35rem;
-	border-bottom-left-radius: 0.35rem;
+	border-radius: 0 0 0.35rem 0.35rem;
 	display: inline-block;
 	font-size: 0.9rem;
 }
@@ -9,8 +8,7 @@
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle {
 	background-color: #f5f8fa;
 	border: 1px solid #e1e8ed;
-	border-top-right-radius: 0.35rem;
-	border-top-left-radius: 0.35rem;
+	border-radius: 0.35rem 0.35rem 0 0;
 	padding: 0.6rem 1.2rem;
 }
 
@@ -33,8 +31,7 @@
 	padding: 0.6rem 1.2rem;
 	border: 1px solid #e1e8ed;
 	border-top: none;
-	border-bottom-right-radius: 0.35rem;
-	border-bottom-left-radius: 0.35rem;
+	border-radius: 0 0 0.35rem 0.35rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc ul ul {
@@ -121,10 +118,7 @@
 	border-left: 0;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main .catlinks-allhidden {
-	display: none;
-}
-
+.Whale .content-wrapper .whale-content .whale-content-main .catlinks-allhidden,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-hidden-cats-hidden {
 	display: none;
 }
@@ -160,11 +154,10 @@ html .suggestions-results {
 }
 
 html .suggestions-special {
-	border-color: #e1e8ed;
-	padding: 0.5rem;
-	border-bottom-right-radius: 0.35rem;
-	border-bottom-left-radius: 0.35rem;
 	background-color: #f5f8fa;
+	border-color: #e1e8ed;
+	border-radius: 0 0 0.35rem 0.35rem;
+	padding: 0.5rem;
 }
 
 html .suggestions-result-current {
@@ -234,10 +227,7 @@ html .suggestions-result-current {
 	color: #373a3c;
 }
 
-#fixed-toc .toctitle h2 {
-	display: inline-block;
-}
-
+#fixed-toc .toctitle h2,
 #fixed-toc .toctitle .toctoggle {
 	display: inline-block;
 }
