@@ -83,7 +83,7 @@
 				"css/wikiedittor-whale.css": {
 					"media": "all"
 				},
-				"css/extensions/RelatedArticles.css": {
+				"less/extensions/RelatedArticles.less": {
 					"media": "all"
 				},
 				"css/print.css": {
@@ -121,7 +121,7 @@
 	},
 	"ResourceModuleSkinStyles": {
 		"whale": {
-			"+ext.relatedArticles.readMore": "css/extensions/RelatedArticles.css",
+			"+ext.relatedArticles.readMore": "less/extensions/RelatedArticles.less",
 			"+ext.echo.ui": "css/extensions/Echo.css",
 			"+mediawiki.action.view.filepage": "css/skinStyles/mediawiki.action.view.filepage.css",
 			"+mediawiki.special.preferences.styles": "css/skinStyles/mediawiki.special.preferences.styles.css"
