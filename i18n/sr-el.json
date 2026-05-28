@@ -25,10 +25,6 @@
 	"whale-pref-color-main-help": "Glavna boja koja će biti korišćena na ovom sajtu.",
 	"whale-pref-color-second": "Sekundarna boja",
 	"whale-pref-color-second-help": "Sekundarna boja koja će biti korišćena na ovom sajtu.",
-	"prefs-font": "Podešavanja fonta",
-	"whale-pref-fonts": "Odaberite font koji želite da koristite",
-	"whale-pref-fonts-helplabel": "Pomoć",
-	"whale-pref-fonts-help": "Font će se učitavati sa Guglovih servera, osim Malgun Gothic.",
 	"whale-pref-dark": "Zanemariti sistemsko podešavanje tamnog režima?",
 	"whale-pref-dark-help": "Odaberite da li da sledite sistemske postavke prilikom aktiviranja mračnog režima."
 }

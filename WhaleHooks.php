@@ -126,27 +126,6 @@ class WhaleHooks {
 			'help-message' => 'whale-pref-color-second-help'
 		];
 
-		$preferences['whale-font'] = [
-			'type' => 'selectorother',
-			'label-message' => 'whale-pref-fonts',
-			'section' => 'whale/font',
-			'options' => [
-				wfMessage( 'whale-font-name-default' )->text() => null,
-				wfMessage( 'whale-font-name-noto-sans-kr' )->text() => 'Noto Sans KR',
-				wfMessage( 'whale-font-name-noto-serif-kr' )->text() => 'Noto Serif KR',
-				wfMessage( 'whale-font-name-spoqa-han-sans' )->text() => 'Spoqa Han Sans',
-				wfMessage( 'whale-font-name-nanum-gothic' )->text() => 'Nanum Gothic',
-				wfMessage( 'whale-font-name-nanum-myeongjo' )->text() => 'Nanum Myeongjo',
-				wfMessage( 'whale-font-name-dokdo' )->text() => 'Dokdo',
-				wfMessage( 'whale-font-name-gaegu' )->text() => 'Gaegu',
-				wfMessage( 'whale-font-name-hankc' )->text() => 'Hankc',
-				wfMessage( 'whale-font-name-youth' )->text() => 'Youth',
-				wfMessage( 'whale-font-name-malgun-gothic' )->text() => 'Malgun Gothic'
-			],
-			'help-message' => 'whale-pref-fonts-help',
-			'default' => null,
-		];
-
 		$preferences['whale-dark'] = [
 			'type' => 'select',
 			'label-message' => 'whale-pref-dark',

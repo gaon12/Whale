@@ -8,7 +8,6 @@
 	},
 	"whale-dark-default": "No ignorar",
 	"whale-feed-new": "[Nuevo]",
-	"whale-font-name-default": "predeterminado",
 	"whale-login": "Acceder",
 	"whale-login-btn": "Acceder",
 	"whale-info": "Información",
@@ -20,9 +19,5 @@
 	"whale.css": "/* El CSS colocado en esta página afectará a los usuarios que usen la apariencia \"Whale\" */",
 	"whale.js": "/* Cualquier código JavaScript escrito aquí se cargará para todos los usuarios que usen la apariencia Whale */",
 	"whale-pref-color-main": "Color principal",
-	"whale-pref-color-second": "Color secundario",
-	"prefs-font": "Preferencia tipográfica",
-	"whale-pref-fonts": "Selecciona el tipo de letra que quieres utilizar",
-	"whale-pref-fonts-helplabel": "Ayuda",
-	"whale-pref-fonts-help": "El tipo de letra se cargará desde los servidores de Google, con la excepción de Malgun Gothic."
+	"whale-pref-color-second": "Color secundario"
 }

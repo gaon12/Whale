@@ -5,7 +5,6 @@
 		]
 	},
 	"whale-feed-new": "[Nevez]",
-	"whale-font-name-default": "dre ziouer",
 	"whale-forgot-pw": "Ankouaet ho ker-tremen ganeoc'h ?",
 	"whale-layout-select-1000": "1000px",
 	"whale-layout-select-1100": "1100px",
@@ -25,6 +24,5 @@
 	"whale-view-more": "Gwelet muioc'h",
 	"whale.css": "/* Talvezout a raio ar CSS lakaet amañ evit implijerien ar gwiskadur Whale */",
 	"whale.js": "/* Kement JavaScript amañ a vo karget evit an implijerien a ra gant ar gwiskadur Whale */",
-	"prefs-whale": "Gwiskadur Whale",
-	"whale-pref-fonts-helplabel": "Skoazell"
+	"prefs-whale": "Gwiskadur Whale"
 }

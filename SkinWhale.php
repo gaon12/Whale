@@ -201,16 +201,6 @@ class SkinWhale extends SkinTemplate {
 			);
 		}
 
-		// Font settings
-		$WhaleUserFontSettings = $userOptionsLookup->getOption( $user, 'whale-font' );
-		if ( $WhaleUserFontSettings !== null ) {
-			$out->addInlineStyle(
-				"body, h1, h2, h3, h4, h5, h6, b {
-					font-family: $WhaleUserFontSettings;
-				}"
-			);
-		}
-
 		// Ads setting
 		if ( isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'] ) {
 			// change ads option by rights
@@ -297,12 +287,6 @@ class SkinWhale extends SkinTemplate {
 			'font-awesome-shims',
 			// @codingStandardsIgnoreLine
 			'<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.13.1/css/v4-shims.css" />'
-		);
-
-		$out->addHeadItem(
-			'webfonts',
-			// @codingStandardsIgnoreLine
-			'<link href="https://fonts.googleapis.com/css?family=Dokdo|Gaegu|Nanum+Gothic|Nanum+Gothic+Coding|Nanum+Myeongjo|Noto+Serif+KR|Noto+Sans+KR&display=swap&subset=korean" rel="stylesheet">'
 		);
 
 		$out->addHeadItem(

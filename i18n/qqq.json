@@ -12,16 +12,6 @@
 	},
 	"skinname-whale": "{{optional}}",
 	"whale-desc": "Description.",
-	"whale-font-name-noto-sans-kr": "{{optional}}\nFont name",
-	"whale-font-name-noto-serif-kr": "{{optional}}\nFont name",
-	"whale-font-name-spoqa-han-sans": "{{optional}}\nFont name",
-	"whale-font-name-nanum-gothic": "{{optional}}\nFont name",
-	"whale-font-name-nanum-myeongjo": "{{optional}}\nFont name",
-	"whale-font-name-dokdo": "{{optional}}\nFont name",
-	"whale-font-name-gaegu": "{{optional}}\nFont name",
-	"whale-font-name-hankc": "{{optional}}\nFont name",
-	"whale-font-name-youth": "{{optional}}\nFont name",
-	"whale-font-name-malgun-gothic": "{{optional}}\nFont name",
 	"whale-layout-select-1000": "Layout size.",
 	"whale-layout-select-1100": "Layout size.",
 	"whale-layout-select-1200": "Layout size.",
@@ -29,6 +19,5 @@
 	"whale-layout-select-1400": "Layout size.",
 	"whale-layout-select-1500": "Layout size.",
 	"whale-layout-select-1600": "Layout size.",
-	"whale.css": "{{related/css}}",
-	"whale-pref-fonts-helplabel": "{{Identical|Help}}"
+	"whale.css": "{{related/css}}"
 }

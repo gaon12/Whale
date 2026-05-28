@@ -8,7 +8,6 @@
 			"Reza1615"
 		]
 	},
-	"whale-font-name-default": "پیش‌فرض",
 	"whale-forgot-pw": "آیا اسم رمزتان را فراموش کرده‌اید؟",
 	"whale-pref-layout-morearticle": "حذف تبلیغات از زیر مقاله",
 	"whale-login": "ورود به سامانه",
@@ -19,9 +18,6 @@
 	"prefs-color": "تنظیمات رنگ",
 	"whale-pref-color-main": "رنگ اصلی",
 	"whale-pref-color-second": "رنگ فرعی",
-	"prefs-font": "ترجیحات قلم",
-	"whale-pref-fonts": "قلم مورد نظرتان را انتخاب کنید",
-	"whale-pref-fonts-helplabel": "راهنما",
 	"whale-pref-dark": "تنظیمات حالت تاریک سامانه را نادیده می‌گیرید؟",
 	"whale-pref-dark-help": "انتخاب کنید که آیا هنگام فعال کردن حالت تاریک، از تنظیمات سامانه پیروی کنید یا خیر."
 }
