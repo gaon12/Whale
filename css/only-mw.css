@@ -57,13 +57,29 @@
 .Whale .content-wrapper .whale-content .whale-content-main h3,
 .Whale .content-wrapper .whale-content .whale-content-main h4,
 .Whale .content-wrapper .whale-content .whale-content-main h5,
-.Whale .content-wrapper .whale-content .whale-content-main h6 {
+.Whale .content-wrapper .whale-content .whale-content-main h6,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading {
 	margin-top: 1rem;
 	border-bottom: 1px dashed #e1e8ed;
 	margin-bottom: 0.6rem;
 	padding-bottom: 0.6rem;
 	overflow-wrap: break-word;
 	overflow: hidden;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h1,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h2,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h3,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h4,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h5,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h6 {
+	display: inline;
+	margin-top: 0;
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	overflow-wrap: inherit;
+	overflow: inherit;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-headline-number {
