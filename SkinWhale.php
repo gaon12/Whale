@@ -291,23 +291,6 @@ class SkinWhale extends SkinTemplate {
 	 * @param OutputPage $out OutputPage
 	 */
 	public function setupCss( OutputPage $out ) {
-		$out->addHeadItem(
-			'font-awesome',
-			// @codingStandardsIgnoreLine
-			'<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.13.1/css/all.css" />'
-		);
-
-		$out->addHeadItem(
-			'font-awesome-shims',
-			// @codingStandardsIgnoreLine
-			'<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.13.1/css/v4-shims.css" />'
-		);
-
-		$out->addHeadItem(
-			'share-api-polyfill',
-			// @codingStandardsIgnoreLine
-			'<script async src="https://unpkg.com/share-api-polyfill/dist/share-min.js"></script>'
-		);
 		$out->addModuleStyles( [ 'skins.whale.styles' ] );
 	}
 }

@@ -22,16 +22,23 @@
 					title = `${mw.config.get('wgFormattedNamespaces')[namespace]}:${title}`;
 				}
 
-				navigator
-					.share({
-						title,
-						text: `${title} - ${mw.config.get('wgSiteName')}`,
-						url: `${host}${mw.config.get('wgScriptPath')}/index.php?curid=${mw.config.get('wgArticleId')}`,
-						hashtags: [mw.config.get('wgSiteName').replace(/ /g, '_')],
-					})
-					.catch((error) => {
+				const shareData = {
+					title,
+					text: `${title} - ${mw.config.get('wgSiteName')}`,
+					url: `${host}${mw.config.get('wgScriptPath')}/index.php?curid=${mw.config.get('wgArticleId')}`,
+					hashtags: [mw.config.get('wgSiteName').replace(/ /g, '_')],
+				};
+
+				if (navigator.share) {
+					navigator.share(shareData).catch((error) => {
 						console.error('Share API error: ', error);
 					});
+					return;
+				}
+
+				navigator.clipboard?.writeText(shareData.url).catch((error) => {
+					console.error('Clipboard API error: ', error);
+				});
 			});
 		});
 	});
