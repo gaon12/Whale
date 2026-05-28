@@ -4,12 +4,12 @@ body {
 
 header,
 #fixed-toc-button,
-.liberty-sidebar,
+.whale-sidebar,
 .content-tools,
 .social-buttons,
 .footer-places,
 .catlinks,
-.liberty-notice,
+.whale-notice,
 .header-ads {
 	display: none !important;
 }
@@ -18,17 +18,17 @@ header,
 	margin: 0 !important;
 }
 
-.liberty-content {
+.whale-content {
 	margin-right: 0 !important;
 }
 
-.liberty-content-header,
-.liberty-content-main,
-.liberty-footer {
+.whale-content-header,
+.whale-content-main,
+.whale-footer {
 	border: 0 !important;
 }
 
-.liberty-content-main {
+.whale-content-main {
 	padding: 0 !important;
 }
 
