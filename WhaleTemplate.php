@@ -17,6 +17,23 @@ if ( !class_exists( Linker::class ) ) {
 
 class WhaleTemplate extends BaseTemplate {
 	/**
+	 * Get rendered template HTML for SkinMustache migration.
+	 */
+	public function getHTML(): string {
+		ob_start();
+
+		try {
+			$this->execute();
+			$html = ob_get_clean();
+		} catch ( Throwable $exception ) {
+			ob_end_clean();
+			throw $exception;
+		}
+
+		return $html === false ? '' : $html;
+	}
+
+	/**
 	 * execute() Method
 	 */
 	public function execute() {
@@ -1438,4 +1455,3 @@ class WhaleTemplate extends BaseTemplate {
 		}
 	}
 }
-
