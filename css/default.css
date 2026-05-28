@@ -78,10 +78,6 @@ p {
 	padding: 0;
 }
 
-p {
-	margin-bottom: 0.8rem;
-}
-
 ol,
 .mw-content-ltr ol,
 .mw-content-rtl .mw-content-ltr ol {
@@ -107,6 +103,7 @@ a:focus {
 }
 
 p {
+	margin-bottom: 0.8rem;
 	overflow-wrap: break-word;
 }
 
@@ -250,9 +247,7 @@ strike {
 	width: 10.8rem;
 	padding: 0.2rem 0.4rem;
 	border-color: #ccc;
-	border-radius: 0;
-	border-top-left-radius: 0.35rem;
-	border-bottom-left-radius: 0.35rem;
+	border-radius: 0.35rem 0 0 0.35rem;
 }
 
 .Whale .nav-wrapper .navbar .form-inline .btn {
@@ -450,8 +445,7 @@ strike {
 	background-color: #f5f8fa;
 	border: 1px solid #e1e8ed;
 	border-top: 0;
-	border-bottom-left-radius: 0.35rem;
-	border-bottom-right-radius: 0.35rem;
+	border-radius: 0 0 0.35rem 0.35rem;
 	text-align: right;
 	padding: 0.4rem 0.6rem;
 }
@@ -571,9 +565,6 @@ strike {
 .Whale .content-wrapper .whale-footer ul {
 	list-style-type: none;
 	list-style-image: none;
-}
-
-.Whale .content-wrapper .whale-footer ul {
 	margin-bottom: 0.8rem;
 	display: inline-block;
 	width: 100%;

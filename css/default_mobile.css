@@ -6,9 +6,7 @@
 
 	.Whale .nav-wrapper .navbar .form-inline {
 		float: left;
-		padding: 0;
-		padding-top: 0.25rem;
-		padding-bottom: 0.5rem;
+		padding: 0.25rem 0 0.5rem;
 	}
 
 	.Whale .nav-wrapper .navbar .form-inline .input-group {
@@ -80,18 +78,11 @@
 		overflow-x: auto;
 	}
 
-	.Whale .content-wrapper .whale-content .bottom-ads {
-		padding: 0.5rem;
-		background-color: #fff;
-		border-left: 1px solid #e1e8ed;
-		border-right: 1px solid #e1e8ed;
-	}
-
+	.Whale .content-wrapper .whale-content .bottom-ads,
 	.Whale .content-wrapper .whale-content .mobile-ads {
 		padding: 0.5rem;
 		background-color: #fff;
-		border-left: 1px solid #e1e8ed;
-		border-right: 1px solid #e1e8ed;
+		border-inline: 1px solid #e1e8ed;
 	}
 
 	.Whale .content-wrapper .whale-footer {
@@ -115,28 +106,10 @@
 		width: 90%;
 		height: 20rem;
 	}
-		#searchform {
+
+	#searchform {
 		width: 100%;
 	}
-}
-/* Max-width: 798 Menu deadline, convert for tablet mode */
-@media screen and (max-width: 798px) {
-	.Whale .nav-wrapper .navbar .navbar-nav .nav-item .fa,
-	.Whale .nav-wrapper .navbar .navbar-nav .nav-item .fas,
-	.Whale .nav-wrapper .navbar .navbar-nav .nav-item .far {
-		text-align: center;
-		margin: 0 0.25rem;
-	}
-
-	.Whale .nav-wrapper .navbar .navbar-nav .nav-item .nav-link .hide-title {
-		display: none;
-	}
-
-	.Whale .content-wrapper .whale-content .whale-content-main iframe {
-		width: 90%;
-		height: 20rem;
-	}
-
 }
 /* Max-width: 520px Under tablet */
 @media screen and (max-width: 520px) {
