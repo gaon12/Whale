@@ -388,10 +388,12 @@ strike {
 
 .Whale .nav-wrapper .navbar .navbar-nav .nav-item .cdx-icon {
 	margin-right: 0.5rem;
-	font-size: 1rem;
+	font-size: 1.3em;
 }
 
 .Whale .nav-wrapper .navbar .navbar-nav .nav-item .nav-link {
+	display: inline-flex;
+	align-items: center;
 	color: #fff;
 	font-size: 1rem;
 	padding: 0.7rem 0.8rem;
@@ -453,11 +455,17 @@ strike {
 	padding-left: 0.8rem;
 }
 
+.Whale .nav-wrapper .navbar .navbar-login .none-outline,
+.Whale .nav-wrapper .navbar .navbar-login .logout-btn {
+	display: inline-flex;
+	align-items: center;
+	height: 2.8rem;
+}
+
 .Whale .nav-wrapper .navbar .navbar-login .cdx-icon {
 	color: #fff;
-	padding: 0.7rem 0;
 	font-size: 1.5rem;
-	line-height: 1.4rem;
+	line-height: 1;
 }
 
 .Whale .nav-wrapper .navbar .navbar-login .login-menu {
