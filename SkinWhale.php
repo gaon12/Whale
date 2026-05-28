@@ -2,7 +2,14 @@
 
 use MediaWiki\MediaWikiServices;
 
-class SkinWhale extends SkinTemplate {
+if (
+	!class_exists( SkinMustache::class ) &&
+	class_exists( MediaWiki\Skin\SkinMustache::class )
+) {
+	class_alias( MediaWiki\Skin\SkinMustache::class, SkinMustache::class );
+}
+
+class SkinWhale extends SkinMustache {
 	// @codingStandardsIgnoreStart
 	public $skinname = 'whale';
 	public $stylename = 'Whale';
@@ -200,6 +207,17 @@ class SkinWhale extends SkinTemplate {
 
 		// @codingStandardsIgnoreEnd
 		$this->setupCss( $out );
+	}
+
+	/**
+	 * Get template data for Mustache rendering.
+	 */
+	public function getTemplateData() {
+		$data = parent::getTemplateData();
+		$template = $this->prepareQuickTemplate();
+		$data['html-whale-template'] = $template->getHTML();
+
+		return $data;
 	}
 
 	private function normalizeCssColor( ?string $color, string $fallback ): string {
