@@ -1,11 +1,28 @@
-$( function () {
-	$( '#liberty-scrollup' ).click( function () {
-		$( 'html, body' ).animate( { scrollTop: 0 }, 400 );
-		return false;
-	} );
+(() => {
+	const ready = (callback) => {
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', callback, { once: true });
+			return;
+		}
+		callback();
+	};
 
-	$( '#liberty-scrolldown' ).click( function () {
-		$( 'html, body' ).animate( { scrollTop: $( document ).height() }, 400 );
-		return false;
-	} );
-} );
+	ready(() => {
+		document
+			.getElementById('whale-scrollup')
+			?.addEventListener('click', (event) => {
+				event.preventDefault();
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+
+		document
+			.getElementById('whale-scrolldown')
+			?.addEventListener('click', (event) => {
+				event.preventDefault();
+				window.scrollTo({
+					top: document.documentElement.scrollHeight,
+					behavior: 'smooth',
+				});
+			});
+	});
+})();

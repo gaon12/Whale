@@ -1,15 +1,24 @@
-$( function () {
-	'use strict';
-	var width, rightAds;
-	if ( $( '.mobile-ads' ) !== undefined ) {
-		width = $( window ).width();
-		if ( width < 1024 ) {
-			rightAds = $( '.right-ads' ).html();
-			$( '.mobile-ads' ).html( rightAds );
-			$( '.right-ads' ).remove();
+(() => {
+	const ready = (callback) => {
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', callback, { once: true });
+			return;
 		}
-	}
-	$( '.adsbygoogle' ).each( function () {
-		( window.adsbygoogle = window.adsbygoogle || [] ).push( {} );
-	} );
-} );
+		callback();
+	};
+
+	ready(() => {
+		const mobileAds = document.querySelector('.mobile-ads');
+		const rightAds = document.querySelector('.right-ads');
+
+		if (mobileAds && rightAds && window.innerWidth < 1024) {
+			mobileAds.innerHTML = rightAds.innerHTML;
+			rightAds.remove();
+		}
+
+		document.querySelectorAll('.adsbygoogle').forEach(() => {
+			window.adsbygoogle = window.adsbygoogle || [];
+			window.adsbygoogle.push({});
+		});
+	});
+})();

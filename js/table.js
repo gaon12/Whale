@@ -1,24 +1,35 @@
-( function () {
-	function tablewrap() {
-		var z = document.getElementById( 'mw-content-text' ).clientWidth,
-			x = document.querySelectorAll( '#mw-content-text table' ),
-			i, y;
-		for ( i = x.length; i--; ) {
-			y = document.createElement( 'div' );
-			y.className = 'liberty-table-wrapper';
-			if ( x[ i ].clientWidth > z && x[ i ].parentNode.className !== 'liberty-table-wrapper' ) {
-				x[ i ].parentNode.insertBefore( y, x[ i ] );
-				y.appendChild( x[ i ] );
-			} else if ( x[ i ].clientWidth < z && x[ i ].parentNode.className === 'liberty-table-wrapper' ) {
-				x[ i ].parentNode.parentNode.insertBefore( x[ i ], x[ i ].parentNode );
-				x[ i ].nextSibling.remove();
+(() => {
+	const tablewrap = () => {
+		const content = document.getElementById('mw-content-text');
+
+		if (!content) {
+			return;
+		}
+
+		const contentWidth = content.clientWidth;
+		const tables = [...content.querySelectorAll('table')];
+
+		for (const table of tables) {
+			const parent = table.parentElement;
+
+			if (
+				table.clientWidth > contentWidth &&
+				parent?.className !== 'whale-table-wrapper'
+			) {
+				const wrapper = document.createElement('div');
+				wrapper.className = 'whale-table-wrapper';
+				parent?.insertBefore(wrapper, table);
+				wrapper.append(table);
+			} else if (
+				table.clientWidth < contentWidth &&
+				parent?.className === 'whale-table-wrapper'
+			) {
+				parent.parentElement?.insertBefore(table, parent);
+				parent.remove();
 			}
 		}
-	}
-	window.onresize = function () {
-		tablewrap();
 	};
-	window.onload = function () {
-		tablewrap();
-	};
-}() );
+
+	window.addEventListener('resize', tablewrap);
+	window.addEventListener('load', tablewrap);
+})();
