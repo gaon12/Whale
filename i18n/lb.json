@@ -11,7 +11,6 @@
 	"whale-dark-dark": "Ignoréieren an den däischtere Modus aktivéieren",
 	"whale-dark-light": "Ignoréieren an den helle Modus aktivéieren",
 	"whale-feed-new": "[Nei]",
-	"whale-font-name-default": "Standard",
 	"whale-forgot-pw": "Hutt Dir Äert Passwuert vergiess?",
 	"whale-layout-select-1200": "1200px (Standard)",
 	"whale-login": "Aloggen",
@@ -29,6 +28,5 @@
 	"whale-pref-color-main": "Haaptfaarf",
 	"whale-pref-color-main-help": "Haaptfaarf, déi op dëser Säit benotzt gëtt.",
 	"whale-pref-color-second": "Niewefaarf",
-	"whale-pref-color-second-help": "Niewefaarf, déi op dëser Säit benotzt gëtt.",
-	"whale-pref-fonts-helplabel": "Hëllef"
+	"whale-pref-color-second-help": "Niewefaarf, déi op dëser Säit benotzt gëtt."
 }

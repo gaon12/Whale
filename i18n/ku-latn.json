@@ -5,7 +5,6 @@
 		]
 	},
 	"whale-feed-new": "[Nû]",
-	"whale-font-name-default": "standard",
 	"whale-layout-select-1000": "1000px",
 	"whale-layout-select-1100": "1100px",
 	"whale-layout-select-1200": "1200px (Standard)",
@@ -17,6 +16,5 @@
 	"whale-login-alter": "Bi awayê din têkeve",
 	"whale-login-btn": "Têkeve",
 	"whale-info": "Agahî",
-	"whale-share": "Parve bike",
-	"whale-pref-fonts-helplabel": "Alîkarî"
+	"whale-share": "Parve bike"
 }

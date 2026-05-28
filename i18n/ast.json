@@ -10,7 +10,6 @@
 	"whale-dark-dark": "Inorar y activar el mou escuru",
 	"whale-dark-light": "Inorar y activar el mou brillante",
 	"whale-feed-new": "[Nuevu]",
-	"whale-font-name-default": "predetermináu",
 	"whale-forgot-pw": "¿Escaecisti la contraseña?",
 	"whale-login": "Aniciar sesión",
 	"whale-login-alter": "Aniciar sesión con otru métodu",
@@ -30,10 +29,6 @@
 	"whale-pref-color-main-help": "Color principal que s'usará nesti sitiu.",
 	"whale-pref-color-second": "Color secundariu",
 	"whale-pref-color-second-help": "Color secundariu que s'usará nesti sitiu.",
-	"prefs-font": "Preferencies de tipografía",
-	"whale-pref-fonts": "Escueye'l tipu de lletra que quies utilizar",
-	"whale-pref-fonts-helplabel": "Ayuda",
-	"whale-pref-fonts-help": "El tipu de lletra va cargase dende sirvidores de Google, cola esceición de Malgun Gothic.",
 	"whale-pref-dark": "¿Inorar la preferencia del sistema de mou escuru?",
 	"whale-pref-dark-help": "Escoyer si siguir les preferencies del sistema al activar el mou escuru"
 }
