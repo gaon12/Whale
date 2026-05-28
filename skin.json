@@ -20,7 +20,8 @@
 					"bodyClasses": ["Whale", "width-size"],
 					"bodyOnly": true,
 					"responsive": true,
-					"template": "WhaleTemplate",
+					"templateDirectory": "templates",
+					"tempUserBanner": false,
 					"styles": ["skins.whale.styles"]
 				}
 			]
