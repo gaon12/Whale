@@ -7,6 +7,14 @@ use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 
+if ( !class_exists( Html::class ) ) {
+	class_alias( \Html::class, Html::class );
+}
+
+if ( !class_exists( Linker::class ) ) {
+	class_alias( \Linker::class, Linker::class );
+}
+
 class WhaleTemplate extends BaseTemplate {
 	/**
 	 * execute() Method
