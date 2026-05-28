@@ -45,8 +45,31 @@
 	display: inline-block;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main table.jquery-tablesorter th.headerSort {
+.Whale .content-wrapper .whale-content .whale-content-main table.whale-sortable th.whale-sortable-header {
+	cursor: pointer;
 	padding-right: 1.5rem;
+	position: relative;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.whale-sortable th.whale-sortable-header::after {
+	content: "";
+	position: absolute;
+	right: 0.4rem;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border-left: 0.25rem solid transparent;
+	border-right: 0.25rem solid transparent;
+	opacity: 0.45;
+	transform: translateY(-50%);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.whale-sortable th.whale-sortable-header[aria-sort="ascending"]::after {
+	border-bottom: 0.35rem solid currentColor;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.whale-sortable th.whale-sortable-header[aria-sort="descending"]::after {
+	border-top: 0.35rem solid currentColor;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable th {
