@@ -892,17 +892,19 @@ class WhaleTemplate extends BaseTemplate {
 		$headings = [];
 		$currentHeading = null;
 		$skin = $this->getSkin();
-		$userName = $skin->getUser()->getName();
+		$user = $skin->getUser();
 		$userLang = $skin->getLanguage()->mCode;
-		$globalData = $this->getContentText( $this->getContentOfTitle(
+		$globalData = $this->getCachedContentText(
 			Title::newFromText( 'Whale-Navbar', NS_MEDIAWIKI )
-		) );
-		$globalLangData = $this->getContentText( $this->getContentOfTitle(
+		);
+		$globalLangData = $this->getCachedContentText(
 			Title::newFromText( 'Whale-Navbar/' . $userLang, NS_MEDIAWIKI )
-		) );
-		$userData = $this->getContentText( $this->getContentOfTitle(
-			Title::newFromText( $userName . '/Whale-Navbar', NS_USER )
-		) );
+		);
+		$userData = $user->isRegistered()
+			? $this->getCachedContentText(
+				Title::newFromText( $user->getName() . '/Whale-Navbar', NS_USER )
+			)
+			: '';
 		if ( !empty( $userData ) ) {
 			$data = $userData;
 		} elseif ( !empty( $globalLangData ) ) {
@@ -1335,6 +1337,25 @@ class WhaleTemplate extends BaseTemplate {
 		}
 
 		return null;
+	}
+
+	private function getCachedContentText( Title $title ): string {
+		$services = MediaWikiServices::getInstance();
+		$cache = $services->getMainWANObjectCache();
+		$cacheKey = $cache->makeKey(
+			'whale',
+			'navbar-content',
+			$title->getNamespace(),
+			$title->getDBkey()
+		);
+
+		return $cache->getWithSetCallback(
+			$cacheKey,
+			6 * 60 * 60,
+			function () use ( $title ) {
+				return $this->getContentText( $this->getContentOfTitle( $title ) ) ?: '';
+			}
+		);
 	}
 
 	private function getContentOfTitle( Title $title ): ?Content {
