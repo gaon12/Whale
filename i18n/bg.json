@@ -27,9 +27,5 @@
 	"whale-pref-color-main": "Основен цвят",
 	"whale-pref-color-main-help": "Основният цвят, който ще се използва в този сайт.",
 	"whale-pref-color-second": "Вторичен цвят",
-	"whale-pref-color-second-help": "Вторичният цвят, който ще се използва в този сайт.",
-	"prefs-font": "Предпочитан шрифт",
-	"whale-pref-fonts": "Изберете шрифта, който искате да използвате",
-	"whale-pref-fonts-helplabel": "Помощ",
-	"whale-pref-fonts-help": "Шрифтът ще се зареди от сървърите на Google, освен ако шрифтът не е Malgun Gothic."
+	"whale-pref-color-second-help": "Вторичният цвят, който ще се използва в този сайт."
 }

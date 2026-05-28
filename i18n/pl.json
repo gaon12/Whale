@@ -11,7 +11,6 @@
 	"whale-dark-dark": "Zignoruj i aktywuj tryb ciemny",
 	"whale-dark-light": "Zignoruj i aktywuj tryb jasny",
 	"whale-feed-new": "[Nowe]",
-	"whale-font-name-default": "domyślny",
 	"whale-forgot-pw": "Nie pamiętasz hasła?",
 	"whale-pref-layout-controlbar": "Usuń pasek zarządzania nawigacją",
 	"whale-pref-layout-morearticle": "Usuń reklamy poniżej obszaru artykułu",
@@ -38,10 +37,6 @@
 	"whale-pref-color-main-help": "Główny kolor który będzie używany na tej stronie.",
 	"whale-pref-color-second": "Kolor dodatkowy",
 	"whale-pref-color-second-help": "Dodatkowy kolor który będzie używany na tej stronie.",
-	"prefs-font": "Preferencje czcionek",
-	"whale-pref-fonts": "Wybierz czcionkę, której chcesz używać",
-	"whale-pref-fonts-helplabel": "Pomoc",
-	"whale-pref-fonts-help": "Czcionka zostanie załadowana z serwerów Google, wyłączając Malgun Gothic.",
 	"whale-pref-dark": "Zignorować systemowe ustawienia trybu ciemnego?",
 	"whale-pref-dark-help": "Czy korzystać z ustawień systemowych przy aktywacji trybu ciemnego."
 }

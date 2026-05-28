@@ -10,15 +10,10 @@
 		]
 	},
 	"whale-feed-new": "[新]",
-	"whale-font-name-default": "既定",
 	"whale-forgot-pw": "パスワードをお忘れですか?",
 	"whale-login": "ログイン",
 	"whale-login-btn": "ログイン",
 	"whale.css": "/* ここに記述したCSSはWhale外装の利用者に影響します */",
 	"whale.js": "/* ここにあるすべてのJavaScriptは、Whale外装を使用している利用者に対して読み込まれます */",
-	"prefs-whale": "Whale 外装",
-	"prefs-font": "フォントの設定",
-	"whale-pref-fonts": "使いたいフォントを選択",
-	"whale-pref-fonts-helplabel": "ヘルプ",
-	"whale-pref-fonts-help": "フォントは Google サーバから読み込まれますが、Malgun Gothic フォントのみ例外です。"
+	"prefs-whale": "Whale 外装"
 }

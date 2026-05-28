@@ -8,7 +8,6 @@
 	"skinname-whale": "ਆਜ਼ਾਦੀ",
 	"whale-dark-default": "ਨਜ਼ਰਅੰਦਾਜ਼ ਨਾ ਕਰੋ",
 	"whale-feed-new": "[ਨਵਾਂ]",
-	"whale-font-name-default": "ਮੂਲ",
 	"whale-forgot-pw": "ਆਪਣਾ ਲੰਘ-ਸ਼ਬਦ ਭੁੱਲ ਗਏ ਹੋ?",
 	"whale-layout-select-1200": "1200px (ਮੂਲ-ਰੂਪ)",
 	"whale-login": "ਦਾਖ਼ਲ ਹੋਵੋ",
@@ -25,9 +24,6 @@
 	"prefs-layout": "ਖਾਕਾ ਤਰਜੀਹਾਂ",
 	"prefs-ads": "ਮਸ਼ਹੂਰੀ ਤਰਜੀਹਾਂ",
 	"whale-pref-color-main": "ਮੁੱਖ ਰੰਗ",
-	"prefs-font": "ਅੱਖਰ ਤਰਜੀਹਾਂ",
-	"whale-pref-fonts": "ਉਹ ਅੱਖਰ ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਵਰਤਣਾ ਚਾਹੁੰਦੇ ਹੋ",
-	"whale-pref-fonts-helplabel": "ਮਦਦ",
 	"whale-pref-ads-header": "ਸਿਰਲੇਖ ਮਸ਼ਹੂਰੀਆ ਹਟਾਓ।",
 	"whale-pref-ads-bottom": "ਹੇਠਲੇ ਇਸ਼ਤਿਹਾਰਾਂ ਨੂੰ ਹਟਾਓ।"
 }

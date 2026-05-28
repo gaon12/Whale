@@ -6,7 +6,6 @@
 		]
 	},
 	"whale-feed-new": "[တသာ]",
-	"whale-font-name-default": "နုဲင်းမူလအတွိုင်ꩻ",
 	"whale-forgot-pw": "အွောန်ႏဖေင်ꩻထိုꩻ နာꩻငဝ်းဗိဉ်ႏပလို့ꩻနဲ့?",
 	"whale-layout-select-1000": "1000px",
 	"whale-layout-select-1100": "1100px",
@@ -30,7 +29,5 @@
 	"whale-pref-color-main": "အဓိကအရောင်ႏ",
 	"whale-pref-color-main-help": "အဓိကအရောင်ႏနဝ်ꩻ အီႏသုင်ꩻအီ သုဲက်ယိုအကိုသွူ။",
 	"whale-pref-color-second": "ဒုတိယအရောင်ႏ",
-	"whale-pref-color-second-help": "ဒုတိယအရောင်ႏနဝ်ꩻ အီႏသုင်ꩻအီ သုဲက်ယိုအကိုသွူ။",
-	"whale-pref-fonts": "လွိုက်သွော့ နာꩻကမဲဉ်သုင်ꩻဒါႏ လိတ်ဖြုံႏဖောင့်",
-	"whale-pref-fonts-helplabel": "အစွဲးအကမ်း"
+	"whale-pref-color-second-help": "ဒုတိယအရောင်ႏနဝ်ꩻ အီႏသုင်ꩻအီ သုဲက်ယိုအကိုသွူ။"
 }

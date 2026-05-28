@@ -6,7 +6,6 @@
 		]
 	},
 	"whale-dark-default": "Ignorer ikke",
-	"whale-font-name-default": "standard",
 	"whale-forgot-pw": "Glemt din adgangskode?",
 	"whale-layout-select-1000": "1000px",
 	"whale-layout-select-1100": "1100px",
@@ -16,6 +15,5 @@
 	"whale-layout-select-1500": "1500px",
 	"whale-layout-select-1600": "1600px",
 	"whale-share": "Del",
-	"whale-pref-layout-width": "Statisk bredde",
-	"whale-pref-fonts-helplabel": "Hjælp"
+	"whale-pref-layout-width": "Statisk bredde"
 }
