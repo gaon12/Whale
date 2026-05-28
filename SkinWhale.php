@@ -29,10 +29,10 @@ class SkinWhale extends SkinTemplate {
 		$optionMainColor = $userOptionsLookup->getOption( $user, 'whale-color-main' );
 		$optionSecondColor = $userOptionsLookup->getOption( $user, 'whale-color-second' );
 
-		$mainColor = $optionMainColor ? $optionMainColor : $GLOBALS['wgWhaleMainColor'];
+		$mainColor = $this->normalizeCssColor( $optionMainColor ?: $GLOBALS['wgWhaleMainColor'], '#4188F1' );
 		// @codingStandardsIgnoreLine
 		$tempSecondColor = isset( $GLOBALS['wgWhaleSecondColor'] ) ? $GLOBALS['wgWhaleSecondColor'] : '#' . strtoupper( dechex( hexdec( substr( $mainColor, 1, 6 ) ) - hexdec( '1A1415' ) ) );
-		$secondColor = $optionSecondColor ? $optionSecondColor : $tempSecondColor;
+		$secondColor = $this->normalizeCssColor( $optionSecondColor ?: $tempSecondColor, '#2774DC' );
 		$ogLogo = isset( $GLOBALS['wgWhaleOgLogo'] ) ? $GLOBALS['wgWhaleOgLogo'] : $wgLogo;
 		if ( !preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $ogLogo ) ) {
 			$ogLogo = $GLOBALS['wgServer'] . $GLOBALS['wgLogo'];
@@ -105,57 +105,9 @@ class SkinWhale extends SkinTemplate {
 
 		// @codingStandardsIgnoreStart
 		$out->addInlineStyle(
-			".Whale .nav-wrapper,
-		.btn-primary,
-		.Whale .nav-wrapper .navbar .form-inline .btn:hover,
-		.Whale .nav-wrapper .navbar .form-inline .btn:focus,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:hover::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:focus::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:active::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .label,
-		.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
-		.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
-		.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:active {
-			background-color: $mainColor;
-		}
-
-		.btn-primary {
-			border-color: $mainColor;
-		}
-
-		.Whale .nav-wrapper .navbar .form-inline .btn:hover,
-		.Whale .nav-wrapper .navbar .form-inline .btn:focus {
-			border-color: $secondColor;
-		}
-
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:hover::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:focus::before,
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:active::before {
-			border-bottom: 2px solid $mainColor;
-		}
-
-		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .label:hover,
-		.btn-primary:hover,
-		.btn-primary:focus,
-		.btn-primary:active,
-		.Whale .nav-wrapper .navbar .navbar-nav .nav-item .nav-link:hover,
-		.Whale .nav-wrapper .navbar .navbar-nav .nav-item .nav-link:focus,
-		.dropdown-menu .dropdown-item:hover {
-			background-color: $secondColor;
-		}
-
-		.btn-primary:hover,
-		.btn-primary:focus,
-		.btn-primary:active {
-			border-color: $secondColor;
-		}
-
-
-		.Whale .content-wrapper #whale-bottombtn,
-		.Whale .content-wrapper #whale-bottombtn:hover {
-			background-color: $mainColor;
+			".Whale {
+			--whale-main-color: $mainColor;
+			--whale-second-color: $secondColor;
 		}"
 		);
 
@@ -246,43 +198,12 @@ class SkinWhale extends SkinTemplate {
 			}
 		}
 
-		$WhaleDarkCss = "body, .Whale, .dropdown-menu, .dropdown-item, .Whale .nav-wrapper .navbar .form-inline .btn, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active, .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th, .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td, table.mw_metadata th, .Whale .content-wrapper .whale-content .whale-content-main table.infobox th, #preferences fieldset:not(.prefsection), #preferences div.mw-prefs-buttons, .navbox, .navbox-subgroup, .navbox > tbody > tr:nth-child(even) > .navbox-list {
-			background-color: #000;
-			color: #DDD;
-		}
-
-		.whale-content-header, .whale-footer, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item, .Whale .content-wrapper .whale-content .whale-content-header, .Whale .content-wrapper .whale-footer, .editOptions, html .wikiEditor-ui-toolbar, #pagehistory li.selected, .mw-datatable td, .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td, table.mw_metadata td, .Whale .content-wrapper .whale-content .whale-content-main table.wikitable, .Whale .content-wrapper .whale-content .whale-content-main table.infobox, #preferences, .navbox-list, .dropdown-divider {
-			background-color: #1F2023;
-			color: #DDD;
-		}
-
-		.Whale .content-wrapper .whale-content .whale-content-main, .mw-datatable th, .mw-datatable tr:hover td, textarea, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content, div.mw-warning-with-logexcerpt, div.mw-lag-warn-high, div.mw-cascadeprotectedwarning, div#mw-protect-cascadeon {
-			background-color: #000;
-		}
-
-		.Whale .content-wrapper .whale-content .whale-content-header .title>h1, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item, caption { color: #DDD; }
-
-		.btn-secondary { background: transparent; color: #DDD; }
-
-		#pagehistory li { border: 0; }
-
-		.Whale .content-wrapper .whale-footer, .Whale .content-wrapper .whale-content .whale-content-header, .Whale .content-wrapper .whale-content .whale-content-main, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item + .nav-item, .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover, .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus, .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn, .dropdown-menu, .dropdown-divider, .Whale .content-wrapper .whale-content .whale-content-main fieldset, hr, .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list li, .mw-changeslist-legend, .Whale .content-wrapper .whale-content .whale-content-header .content-tools { border-color: #555; }
-
-		.flow-post, .Whale .content-wrapper .whale-content .whale-content-main .toc .toctext { color: #DDD; }
-		.flow-topic-titlebar { color: #000; }
-		.flow-ui-navigationWidget { color: #FFF; }
-		.Whale .content-wrapper .whale-content .whale-content-main .toccolours, .Whale .content-wrapper .whale-content .whale-content-main .toc ul, .Whale .content-wrapper .whale-content .whale-content-main .toc li { background-color: #000; }
-		.Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle { background-color: #1F2023; }";
-
-		$WhaleUserDarkSetting = $userOptionsLookup->getOption( $user, 'whale-dark' );
-		if ( $WhaleUserDarkSetting === 'dark' ) {
-			$out->addInlineStyle( $WhaleDarkCss );
-		} elseif ( $WhaleUserDarkSetting === null ) {
-			$out->addInlineStyle( "@media (prefers-color-scheme: dark) { $WhaleDarkCss }" );
-		}
-
 		// @codingStandardsIgnoreEnd
 		$this->setupCss( $out );
+	}
+
+	private function normalizeCssColor( ?string $color, string $fallback ): string {
+		return $color !== null && preg_match( '/^#[0-9a-f]{6}$/i', $color ) ? $color : $fallback;
 	}
 
 	/**

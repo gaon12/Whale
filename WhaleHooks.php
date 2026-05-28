@@ -11,6 +11,14 @@ class WhaleHooks {
 	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, &$bodyAttrs ) {
 		if ( $sk->getSkinName() === 'whale' ) {
 			$bodyAttrs['class'] .= ' Whale width-size';
+			$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
+			$darkMode = $userOptionsLookup->getOption( $sk->getUser(), 'whale-dark' );
+
+			if ( $darkMode === 'dark' ) {
+				$bodyAttrs['class'] .= ' whale-dark';
+			} elseif ( $darkMode === null ) {
+				$bodyAttrs['class'] .= ' whale-auto-dark';
+			}
 		}
 	}
 
