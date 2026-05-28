@@ -106,6 +106,7 @@ class SkinWhale extends SkinTemplate {
 		// @codingStandardsIgnoreStart
 		$out->addInlineStyle(
 			".Whale .nav-wrapper,
+		.btn-primary,
 		.Whale .nav-wrapper .navbar .form-inline .btn:hover,
 		.Whale .nav-wrapper .navbar .form-inline .btn:focus,
 		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active::before,
@@ -117,6 +118,10 @@ class SkinWhale extends SkinTemplate {
 		.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
 		.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:active {
 			background-color: $mainColor;
+		}
+
+		.btn-primary {
+			border-color: $mainColor;
 		}
 
 		.Whale .nav-wrapper .navbar .form-inline .btn:hover,
@@ -132,10 +137,19 @@ class SkinWhale extends SkinTemplate {
 		}
 
 		.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .label:hover,
+		.btn-primary:hover,
+		.btn-primary:focus,
+		.btn-primary:active,
 		.Whale .nav-wrapper .navbar .navbar-nav .nav-item .nav-link:hover,
 		.Whale .nav-wrapper .navbar .navbar-nav .nav-item .nav-link:focus,
 		.dropdown-menu .dropdown-item:hover {
 			background-color: $secondColor;
+		}
+
+		.btn-primary:hover,
+		.btn-primary:focus,
+		.btn-primary:active {
+			border-color: $secondColor;
 		}
 
 
