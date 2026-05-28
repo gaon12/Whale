@@ -1,0 +1,23 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+	"files": {
+		"includes": [
+			"biome.json",
+			"package.json",
+			"skin.json",
+			"js/**/*.js",
+			"scripts/**/*.mjs",
+			"!js/lib",
+			"!bootstrap"
+		]
+	},
+	"formatter": {
+		"indentStyle": "tab"
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "always"
+		}
+	}
+}

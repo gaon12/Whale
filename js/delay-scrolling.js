@@ -1,97 +1,61 @@
-$( window ).on( 'load', function () {
-	'use strict';
-	var hash, navHeight, id;
-
-	/* Anchor Process */
-	hash = window.location.hash;
-	navHeight = $( '.nav-wrapper' ).height();
-
-	if ( hash.indexOf( '.' ) !== -1 ) {
-		hash = String( hash );
-		hash = document.getElementById( hash.replace( '#', '' ) );
-	}
-
-	if ( hash ) {
-		$( 'html, body' ).animate( { scrollTop: $( hash ).offset().top - navHeight - 10 }, 350 );
-	}
-	/* Anchor Process End */
-
-	/* ToC click process */
-	$( '.toc ul li > a' ).click( function () {
-		if ( $( this ).attr( 'href' )[ 0 ] === '#' ) {
-			id = String( $( this ).attr( 'href' ) );
-			if ( id.indexOf( '.' ) !== -1 ) {
-				id = document.getElementById( id.replace( '#', '' ) );
-			}
-			$( 'html,body' ).animate( {
-				scrollTop: ( $( id ).offset().top - navHeight - 10 )
-			}, 350 );
-			return false;
+(() => {
+	const getAnchorTarget = (href) => {
+		if (!href?.startsWith('#')) {
+			return null;
 		}
-	} );
-	/* ToC click process End */
 
-	/* Title number click process */
-	$( '.mw-headline-number' ).click( function () {
-		$( 'html,body' ).animate( {
-			scrollTop: ( $( '#toctitle' ).offset().top - navHeight - 10 )
-		}, 350 );
-		return false;
-	} );
-	/* Title number click process End */
+		return href.includes('.')
+			? document.getElementById(href.slice(1))
+			: document.querySelector(href);
+	};
 
-	/* ToC Click Process */
-	$( '.mw-cite-backlink > a').click( function () {
-		if ( $( this ).attr( 'href' )[ 0 ] === '#' ) {
-			id = String( $( this ).attr( 'href' ) );
-			if ( id.indexOf( '.' ) !== -1 ) {
-				id = document.getElementById( id.replace( '#', '' ) );
-			}
-			$( 'html,body' ).animate( {
-				scrollTop: ( $( id ).offset().top - navHeight - 10 )
-			}, 400 );
-			return false;
+	const scrollToTarget = (target, navHeight) => {
+		if (!target) {
+			return;
 		}
-	} );
 
-	$( '.mw-cite-backlink > * > a' ).click( function () {
-		if ( $( this ).attr( 'href' )[ 0 ] === '#' ) {
-			id = String( $( this ).attr( 'href' ) );
-			if ( id.indexOf( '.' ) !== -1 ) {
-				id = document.getElementById( id.replace( '#', '' ) );
-			}
-			$( 'html,body' ).animate( {
-				scrollTop: ( $( id ).offset().top - navHeight - 10 )
-			}, 400 );
-			return false;
-		}
-	} );
+		window.scrollTo({
+			top: target.getBoundingClientRect().top + window.scrollY - navHeight - 10,
+			behavior: 'smooth',
+		});
+	};
 
-	$( '.reference > a' ).click( function () {
-		if ( $( this ).attr( 'href' )[ 0 ] === '#' ) {
-			id = String( $( this ).attr( 'href' ) );
-			if ( id.indexOf( '.' ) !== -1 ) {
-				id = document.getElementById( id.replace( '#', '' ) );
-			}
-			$( 'html,body' ).animate( {
-				scrollTop: ( $( id ).offset().top - navHeight - 10 )
-			}, 400 );
-			return false;
-		}
-	} );
-	/* ToC Click Process End */
+	const bindAnchorScroll = (selector, navHeight, callback) => {
+		document.querySelectorAll(selector).forEach((link) => {
+			link.addEventListener('click', (event) => {
+				const target = getAnchorTarget(link.getAttribute('href'));
 
-	/* Preference Tab Click Process */
-	$( '#preftoc li > a' ).click( function () {
-		if ( $( this ).attr( 'href' )[ 0 ] === '#' ) {
-			id = String( $( this ).attr( 'href' ) );
-			if ( id.indexOf( '.' ) !== -1 ) {
-				id = document.getElementById( id.replace( '#', '' ) );
-			}
-			$( 'html,body' ).animate( {
-				scrollTop: ( 0 )
-			}, 350 );
-		}
-	} );
-	/* Preference Tab Click Process End */
-} );
+				if (target) {
+					event.preventDefault();
+					if (callback) {
+						callback(target);
+						return;
+					}
+					scrollToTarget(target, navHeight);
+				}
+			});
+		});
+	};
+
+	window.addEventListener('load', () => {
+		const navHeight = document.querySelector('.nav-wrapper')?.offsetHeight || 0;
+		const hashTarget = getAnchorTarget(window.location.hash);
+
+		scrollToTarget(hashTarget, navHeight);
+
+		bindAnchorScroll('.toc ul li > a', navHeight);
+		bindAnchorScroll('.mw-cite-backlink > a', navHeight);
+		bindAnchorScroll('.mw-cite-backlink > * > a', navHeight);
+		bindAnchorScroll('.reference > a', navHeight);
+		bindAnchorScroll('#preftoc li > a', navHeight, () => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+
+		document.querySelectorAll('.mw-headline-number').forEach((number) => {
+			number.addEventListener('click', (event) => {
+				event.preventDefault();
+				scrollToTarget(document.getElementById('toctitle'), navHeight);
+			});
+		});
+	});
+})();
