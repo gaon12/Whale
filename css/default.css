@@ -349,6 +349,19 @@ strike {
 	--whale-second-color: #2774dc;
 	background-color: #f5f5f5;
 }
+
+.Whale .whale-reading-progress {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1003;
+	height: 3px;
+	pointer-events: none;
+	background-color: var(--whale-main-color);
+	transform: scaleX(0);
+	transform-origin: left center;
+}
 /* Background Color End */
 
 /* Content width, alian center */

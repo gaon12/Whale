@@ -56,6 +56,54 @@
 		return selector?.startsWith('#') ? document.querySelector(selector) : null;
 	};
 
+	const initReadingProgress = () => {
+		const skinRoot = document.querySelector('.Whale');
+
+		if (!skinRoot) {
+			return;
+		}
+
+		const progress = document.createElement('div');
+		progress.className = 'whale-reading-progress';
+		progress.setAttribute('role', 'progressbar');
+		progress.setAttribute('aria-label', 'Reading progress');
+		progress.setAttribute('aria-valuemin', '0');
+		progress.setAttribute('aria-valuemax', '100');
+		progress.setAttribute('aria-valuenow', '0');
+		skinRoot.append(progress);
+
+		let scheduled = false;
+		const update = () => {
+			const scrollTop =
+				window.scrollY || document.documentElement.scrollTop || 0;
+			const scrollableHeight = Math.max(
+				0,
+				document.documentElement.scrollHeight - window.innerHeight,
+			);
+			const ratio =
+				scrollableHeight === 0
+					? 1
+					: Math.min(1, Math.max(0, scrollTop / scrollableHeight));
+			const percent = Math.round(ratio * 100);
+
+			progress.style.transform = `scaleX(${ratio})`;
+			progress.setAttribute('aria-valuenow', String(percent));
+			scheduled = false;
+		};
+		const scheduleUpdate = () => {
+			if (scheduled) {
+				return;
+			}
+
+			scheduled = true;
+			window.requestAnimationFrame(update);
+		};
+
+		update();
+		window.addEventListener('scroll', scheduleUpdate, { passive: true });
+		window.addEventListener('resize', scheduleUpdate);
+	};
+
 	const MODAL_TRANSITION_MS = 300;
 
 	const closeModal = (modal) => {
@@ -123,6 +171,8 @@
 	};
 
 	ready(() => {
+		initReadingProgress();
+
 		document.addEventListener('click', (event) => {
 			const dropdownToggle = event.target.closest('[data-toggle="dropdown"]');
 			if (dropdownToggle) {
