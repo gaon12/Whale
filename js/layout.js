@@ -56,18 +56,32 @@
 		return selector?.startsWith('#') ? document.querySelector(selector) : null;
 	};
 
+	const MODAL_TRANSITION_MS = 300;
+
 	const closeModal = (modal) => {
 		if (!modal) {
 			return;
 		}
 
+		modal.dataset.whaleModalState = 'closing';
 		modal.classList.remove('in', 'show');
-		modal.style.display = 'none';
 		modal.setAttribute('aria-hidden', 'true');
-		document.body.classList.remove('modal-open');
 		document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
-			backdrop.remove();
+			backdrop.classList.remove('in', 'show');
 		});
+
+		window.setTimeout(() => {
+			if (modal.dataset.whaleModalState !== 'closing') {
+				return;
+			}
+
+			modal.style.display = 'none';
+			delete modal.dataset.whaleModalState;
+			document.body.classList.remove('modal-open');
+			document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
+				backdrop.remove();
+			});
+		}, MODAL_TRANSITION_MS);
 	};
 
 	const openModal = (modal) => {
@@ -75,17 +89,37 @@
 			return;
 		}
 
+		if (
+			modal.dataset.whaleModalState === 'opening' ||
+			modal.dataset.whaleModalState === 'open'
+		) {
+			return;
+		}
+
+		document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
+			backdrop.remove();
+		});
+
+		modal.dataset.whaleModalState = 'opening';
 		modal.style.display = 'block';
 		modal.removeAttribute('aria-hidden');
-		modal.classList.add('in', 'show');
 		document.body.classList.add('modal-open');
 
 		const backdrop = document.createElement('div');
-		backdrop.className = 'modal-backdrop fade in show';
+		backdrop.className = 'modal-backdrop fade';
 		backdrop.addEventListener('click', () => closeModal(modal));
 		document.body.append(backdrop);
 
-		document.getElementById('wpName1')?.focus();
+		window.requestAnimationFrame(() => {
+			if (modal.dataset.whaleModalState !== 'opening') {
+				return;
+			}
+
+			modal.classList.add('in', 'show');
+			backdrop.classList.add('in', 'show');
+			modal.dataset.whaleModalState = 'open';
+			document.getElementById('wpName1')?.focus();
+		});
 	};
 
 	ready(() => {
@@ -116,6 +150,12 @@
 			if (modalTrigger) {
 				event.preventDefault();
 				openModal(getModal(modalTrigger));
+				return;
+			}
+
+			if (event.target.classList?.contains('modal')) {
+				event.preventDefault();
+				closeModal(event.target);
 				return;
 			}
 
