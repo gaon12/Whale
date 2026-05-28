@@ -43,7 +43,7 @@
 		indexButton.type = 'button';
 		indexButton.className = 'btn btn-primary';
 		indexButton.innerHTML =
-			'<span class="fa fa-list" aria-hidden="true"></span>';
+			'<span class="cdx-icon cdx-icon-list-bullet" aria-hidden="true"></span>';
 		indexButton.style.position = 'fixed';
 		indexButton.style.top = `${contentHeaderOffset.top + window.scrollY}px`;
 		indexButton.style.left = `${contentHeaderOffset.left + window.scrollX - 62}px`;
