@@ -40,11 +40,22 @@ a.external:focus {
 }
 
 a.external:before {
-	font-family: 'Font Awesome 5 Free';
-	font-weight: 600;
-	text-align: center;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 0.15em;
+	background-color: #33b733;
 	color: #33b733;
-	content: '\f0c1';
+	content: "";
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 3h6v6h-2V6.4l-6.3 6.3-1.4-1.4L13.6 5H11zM4 5h5v2H6v7h7v-3h2v5H4z'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 3h6v6h-2V6.4l-6.3 6.3-1.4-1.4L13.6 5H11zM4 5h5v2H6v7h7v-3h2v5H4z'/%3E%3C/svg%3E");
+	-webkit-mask-position: center;
+	mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	vertical-align: -0.125em;
 }
 
 .plainlinks a.external {

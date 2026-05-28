@@ -104,9 +104,9 @@ class WhaleTemplate extends BaseTemplate {
 							<?php $this->footer(); ?>
 						</div>
 					</footer>
-					<div id="whale-bottombtn">
-						<div class="scroll-button" id="whale-scrollup"><i class="fas fa-angle-up"></i></div>
-						<div class="scroll-button" id="whale-scrolldown"><i class="fas fa-angle-down"></i></div>
+				<div id="whale-bottombtn">
+						<div class="scroll-button" id="whale-scrollup"><?php echo $this->renderIcon( 'angle-up' ); ?></div>
+						<div class="scroll-button" id="whale-scrolldown"><?php echo $this->renderIcon( 'angle-down' ); ?></div>
 					</div>
 				</div>
 			</div>
@@ -139,7 +139,7 @@ class WhaleTemplate extends BaseTemplate {
 					<?php echo $linkRenderer->makeKnownLink(
 						new TitleValue( NS_SPECIAL, 'Recentchanges' ),
 						// @codingStandardsIgnoreStart
-						new HtmlArmor( '<span class="fas fa-sync"></span><span class="hide-title">' . $skin->msg( 'recentchanges' )->escaped() . '</span>' ),
+						new HtmlArmor( $this->renderIcon( 'sync' ) . '<span class="hide-title">' . $skin->msg( 'recentchanges' )->escaped() . '</span>' ),
 						// @codingStandardsIgnoreEnd )
 						[
 							'class' => 'nav-link',
@@ -151,7 +151,7 @@ class WhaleTemplate extends BaseTemplate {
 					<?php echo $linkRenderer->makeKnownLink(
 						new TitleValue( NS_SPECIAL, 'Randompage' ),
 						// @codingStandardsIgnoreStart
-						new HtmlArmor( '<span class="fa fa-random"></span><span class="hide-title">' . $skin->msg( 'randompage' )->escaped() . '</span>' ),
+						new HtmlArmor( $this->renderIcon( 'random' ) . '<span class="hide-title">' . $skin->msg( 'randompage' )->escaped() . '</span>' ),
 						// @codingStandardsIgnoreEnd
 						[
 							'class' => 'nav-link',
@@ -183,9 +183,9 @@ class WhaleTemplate extends BaseTemplate {
 					<?php
 					// @codingStandardsIgnoreStart 
 					?>
-					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>"id="searchGoButton" class="btn btn-secondary" type="button"><span class="fa fa-eye"></span></button>
+					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>"id="searchGoButton" class="btn btn-secondary" type="button"><?php echo $this->renderIcon( 'eye' ); ?></button>
 					<button type="submit" name="fulltext" value="<?php echo $skin->msg( 'searchbutton' )->escaped() ?>"id="mw-searchButton" class="btn btn-secondary" type="button">
-						<span class="fa fa-search"></span></button>
+						<?php echo $this->renderIcon( 'search' ); ?></button>
 					<?php
 					// @codingStandardsIgnoreEnd
 					?>
@@ -332,10 +332,10 @@ class WhaleTemplate extends BaseTemplate {
 					echo htmlspecialchars( Linker::titleAttrib( 'pt-logout', 'withaccess' ), ENT_QUOTES );
 					// @codingStandardsIgnoreEnd
 					?>">
-					<span class="fa fa-sign-out"></span></a>
+					<?php echo $this->renderIcon( 'sign-out' ); ?></a>
 			<?php } else { ?>
 				<a href="#" class="none-outline" data-toggle="modal" data-target="#login-modal">
-					<span class="fa fa-sign-in"></span>
+					<?php echo $this->renderIcon( 'sign-in' ); ?>
 				</a>
 			<?php } ?>
 		</div>
@@ -494,7 +494,7 @@ class WhaleTemplate extends BaseTemplate {
 				<div class="btn-group" role="group" aria-label="content-tools">
 				<?php
 				if ( $action != 'edit' ) {
-					$editIcon = $editable ? '<i class="fa fa-edit"></i> ' : '<i class="fa fa-lock"></i> ';
+					$editIcon = $this->renderIcon( $editable ? 'edit' : 'lock' ) . ' ';
 					echo $linkRenderer->makeKnownLink(
 						$title,
 						new HtmlArmor( $editIcon . $skin->msg( 'edit' )->escaped() ),
@@ -554,7 +554,7 @@ class WhaleTemplate extends BaseTemplate {
 				}
 				if ( $action == 'view' ) { ?>
 						<button type="button" class="btn btn-secondary tools-btn tools-share">
-							<i class="far fa-share-square"></i>
+							<?php echo $this->renderIcon( 'share-square' ); ?>
 							<?php echo $skin->msg( 'whale-share' )->escaped() ?>
 						</button>
 				<?php
@@ -776,9 +776,7 @@ class WhaleTemplate extends BaseTemplate {
 			] );
 
 			if ( isset( $content['icon'] ) ) {
-				echo Html::rawElement( 'span', [
-					'class' => 'fa fa-' . $content['icon']
-				] );
+				echo $this->renderIcon( $content['icon'] );
 			}
 
 			if ( isset( $content['text'] ) && !empty( $content['text'] ) ) {
@@ -816,9 +814,7 @@ class WhaleTemplate extends BaseTemplate {
 					] );
 
 					if ( isset( $child['icon'] ) ) {
-						echo Html::rawElement( 'span', [
-							'class' => 'fa fa-' . $child['icon']
-						] );
+						echo $this->renderIcon( $child['icon'] );
 					}
 
 					if ( isset( $child['text'] ) ) {
@@ -854,9 +850,7 @@ class WhaleTemplate extends BaseTemplate {
 							] );
 
 							if ( isset( $sub['icon'] ) ) {
-								echo Html::rawElement( 'span', [
-									'class' => 'fa fa-' . $sub['icon']
-								] );
+								echo $this->renderIcon( $sub['icon'] );
 							}
 
 							if ( isset( $sub['text'] ) ) {
@@ -1292,6 +1286,63 @@ class WhaleTemplate extends BaseTemplate {
 		}
 
 		return $headings;
+	}
+
+	private function renderIcon( ?string $icon ): string {
+		if ( $icon === null || !preg_match( '/^[a-z0-9-]+$/i', $icon ) ) {
+			return '';
+		}
+
+		$allowedIcons = [
+			'angle-down' => 'down',
+			'angle-up' => 'up',
+			'bell' => 'bell',
+			'book' => 'book',
+			'calendar' => 'calendar',
+			'clock' => 'clock',
+			'cog' => 'settings',
+			'comment' => 'speech-bubble',
+			'comments' => 'speech-bubbles',
+			'edit' => 'edit',
+			'envelope' => 'mail',
+			'external-link' => 'link-external',
+			'eye' => 'eye',
+			'file' => 'article',
+			'folder' => 'folder-placeholder',
+			'globe' => 'globe',
+			'heart' => 'heart',
+			'home' => 'home',
+			'image' => 'image',
+			'info' => 'info',
+			'list' => 'list-bullet',
+			'lock' => 'lock',
+			'minus' => 'subtract',
+			'plus' => 'add',
+			'question' => 'help',
+			'random' => 'die',
+			'search' => 'search',
+			'share-square' => 'share',
+			'sign-in' => 'log-in',
+			'sign-out' => 'log-out',
+			'star' => 'star',
+			'sync' => 'reload',
+			'tag' => 'tag',
+			'tags' => 'tag',
+			'upload' => 'upload',
+			'user' => 'user-avatar',
+			'users' => 'user-group',
+			'wrench' => 'settings'
+		];
+
+		$iconKey = strtolower( $icon );
+		if ( !isset( $allowedIcons[$iconKey] ) ) {
+			return '';
+		}
+
+		return Html::element( 'span', [
+			'aria-hidden' => 'true',
+			'class' => [ 'cdx-icon', 'cdx-icon-' . $allowedIcons[$iconKey] ]
+		] );
 	}
 
 	/**
