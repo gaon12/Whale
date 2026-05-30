@@ -640,6 +640,9 @@ class WhaleRenderer {
 				continue;
 			}
 			$categoryName = preg_replace( '/^data-/', '', $category );
+			if ( $categoryName === 'icons' ) {
+				continue;
+			}
 		?>
 			<ul class="footer-<?php echo htmlspecialchars( $categoryName ); ?>">
 				<?php foreach ( $links as $link ) {
