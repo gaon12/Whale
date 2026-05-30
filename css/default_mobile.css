@@ -37,6 +37,7 @@
 
 	.Whale .content-wrapper .whale-content .whale-content-header .whale-notice {
 		margin: 0.5rem;
+		padding: 0.75rem 2.5rem 0.75rem 0.75rem;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-header .content-tools {
