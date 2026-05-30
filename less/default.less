@@ -625,6 +625,7 @@ strike {
 .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list li {
 	border-bottom: 1px solid #e1e8ed;
 	padding: 0.2rem 0.6rem;
+	min-height: 1.85rem;
 }
 
 .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list li:last-child {
@@ -632,8 +633,24 @@ strike {
 }
 
 .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item {
+	display: block;
 	font-size: 0.8rem;
 	color: #373a3c;
+	line-height: 1.45rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item-placeholder {
+	height: 1.45rem;
+}
+
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item-placeholder.is-loading {
+	border-radius: 0.25rem;
+	background: linear-gradient(90deg, #eef2f5 25%, #f8fafc 37%, #eef2f5 63%);
+	background-size: 400% 100%;
+	animation: whale-live-recent-skeleton 1.2s ease-in-out infinite;
 }
 
 .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item .new {
@@ -660,6 +677,16 @@ strike {
 .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .label:hover {
 	background-color: var(--whale-second-color);
 	transition: 0.3s;
+}
+
+@keyframes whale-live-recent-skeleton {
+	0% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0 50%;
+	}
 }
 
 .Whale .content-wrapper .whale-sidebar .right-ads {
@@ -1163,6 +1190,11 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	color: #ddd;
 }
 
+body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item-placeholder.is-loading {
+	background: linear-gradient(90deg, #25272a 25%, #34373b 37%, #25272a 63%);
+	background-size: 400% 100%;
+}
+
 body.whale-dark .btn-secondary {
 	background: transparent;
 	color: #ddd;
@@ -1267,6 +1299,11 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .flow-post,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
 		color: #ddd;
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item-placeholder.is-loading {
+		background: linear-gradient(90deg, #25272a 25%, #34373b 37%, #25272a 63%);
+		background-size: 400% 100%;
 	}
 
 	body.whale-auto-dark .btn-secondary {

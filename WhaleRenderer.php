@@ -414,9 +414,9 @@ class WhaleRenderer {
 				</ul>
 			</div>
 			<div class="live-recent-content">
-				<ul class="live-recent-list" id="live-recent-list">
+				<ul class="live-recent-list" id="live-recent-list" aria-busy="true">
 					<?php echo str_repeat(
-						'<li><span class="recent-item">&nbsp;</span></li>',
+						'<li class="live-recent-row live-recent-empty"><span class="recent-item recent-item-placeholder is-loading">&nbsp;</span></li>',
 						$wgWhaleMaxRecent
 					); ?>
 				</ul>
