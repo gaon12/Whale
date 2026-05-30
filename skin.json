@@ -33,6 +33,9 @@
 	"config": {
 		"WhaleEnableLiveRC": true,
 		"WhaleUseGravatar": true,
+		"WhaleTheme": null,
+		"WhalePrimaryColor": null,
+		"WhaleSecondaryColor": null,
 		"WhaleMainColor": "#4188F1",
 		"WhaleSecondColor": null,
 		"WhaleAdSetting": null,

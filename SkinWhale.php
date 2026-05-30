@@ -17,6 +17,42 @@ class SkinWhale extends SkinMustache {
 	public $template = 'skin';
 	// @codingStandardsIgnoreEnd
 
+	private const LEGACY_THEME_COLORS = [
+		'light' => [ 'primary' => '#4188F1', 'secondary' => '#2774DC' ],
+		'dark' => [ 'primary' => '#4188F1', 'secondary' => '#2774DC' ],
+	];
+
+	private const THEME_PALETTES = [
+		'han-river-blue' => [
+			'light' => [ 'primary' => '#336699', 'secondary' => '#003366' ],
+			'dark' => [ 'primary' => '#99CCFF', 'secondary' => '#6699FF' ],
+		],
+		'hanbat-forest' => [
+			'light' => [ 'primary' => '#006633', 'secondary' => '#336633' ],
+			'dark' => [ 'primary' => '#99CC99', 'secondary' => '#66CC66' ],
+		],
+		'milk-vetch-purple' => [
+			'light' => [ 'primary' => '#663399', 'secondary' => '#993366' ],
+			'dark' => [ 'primary' => '#CCCCFF', 'secondary' => '#CC99FF' ],
+		],
+		'clay-roof' => [
+			'light' => [ 'primary' => '#993300', 'secondary' => '#666633' ],
+			'dark' => [ 'primary' => '#FFCC99', 'secondary' => '#CCCC99' ],
+		],
+		'jeju-teal' => [
+			'light' => [ 'primary' => '#006666', 'secondary' => '#336666' ],
+			'dark' => [ 'primary' => '#99CCCC', 'secondary' => '#66CCCC' ],
+		],
+		'camellia-red' => [
+			'light' => [ 'primary' => '#993333', 'secondary' => '#663333' ],
+			'dark' => [ 'primary' => '#FF9999', 'secondary' => '#CC9999' ],
+		],
+		'ginkgo-gold' => [
+			'light' => [ 'primary' => '#666600', 'secondary' => '#663300' ],
+			'dark' => [ 'primary' => '#FFCC33', 'secondary' => '#CCCC66' ],
+		],
+	];
+
 	/**
 	 * Page initialize.
 	 *
@@ -37,10 +73,11 @@ class SkinWhale extends SkinMustache {
 		$optionMainColor = $userOptionsLookup->getOption( $user, 'whale-color-main' );
 		$optionSecondColor = $userOptionsLookup->getOption( $user, 'whale-color-second' );
 
-		$mainColor = $this->normalizeCssColor( $optionMainColor ?: $GLOBALS['wgWhaleMainColor'], '#4188F1' );
-		// @codingStandardsIgnoreLine
-		$tempSecondColor = isset( $GLOBALS['wgWhaleSecondColor'] ) ? $GLOBALS['wgWhaleSecondColor'] : '#' . strtoupper( dechex( hexdec( substr( $mainColor, 1, 6 ) ) - hexdec( '1A1415' ) ) );
-		$secondColor = $this->normalizeCssColor( $optionSecondColor ?: $tempSecondColor, '#2774DC' );
+		$themeColors = $this->resolveThemeColors( $optionMainColor, $optionSecondColor );
+		$mainColor = $themeColors['light']['primary'];
+		$secondColor = $themeColors['light']['secondary'];
+		$darkMainColor = $themeColors['dark']['primary'];
+		$darkSecondColor = $themeColors['dark']['secondary'];
 		$ogLogo = isset( $GLOBALS['wgWhaleOgLogo'] ) ? $GLOBALS['wgWhaleOgLogo'] : $wgLogo;
 		if ( !preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $ogLogo ) ) {
 			$ogLogo = $GLOBALS['wgServer'] . $GLOBALS['wgLogo'];
@@ -116,6 +153,18 @@ class SkinWhale extends SkinMustache {
 			".Whale {
 			--whale-main-color: $mainColor;
 			--whale-second-color: $secondColor;
+		}
+
+		body.whale-dark .Whale {
+			--whale-main-color: $darkMainColor;
+			--whale-second-color: $darkSecondColor;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			body.whale-auto-dark .Whale {
+				--whale-main-color: $darkMainColor;
+				--whale-second-color: $darkSecondColor;
+			}
 		}"
 		);
 
@@ -343,8 +392,67 @@ class SkinWhale extends SkinMustache {
 		return $this->makeListItem( $key, $item );
 	}
 
-	private function normalizeCssColor( ?string $color, string $fallback ): string {
-		return $color !== null && preg_match( '/^#[0-9a-f]{6}$/i', $color ) ? $color : $fallback;
+	/**
+	 * @return array{light:array{primary:string,secondary:string},dark:array{primary:string,secondary:string}}
+	 */
+	private function resolveThemeColors( mixed $userPrimary, mixed $userSecondary ): array {
+		$themeSlug = isset( $GLOBALS['wgWhaleTheme'] ) && is_string( $GLOBALS['wgWhaleTheme'] )
+			? strtolower( $GLOBALS['wgWhaleTheme'] )
+			: null;
+		$hasTheme = $themeSlug !== null && isset( self::THEME_PALETTES[$themeSlug] );
+		$colors = $hasTheme ? self::THEME_PALETTES[$themeSlug] : self::LEGACY_THEME_COLORS;
+		$primary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhalePrimaryColor'] ?? null );
+		$secondary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondaryColor'] ?? null );
+		$legacyPrimary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleMainColor'] ?? null );
+		$legacySecondary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondColor'] ?? null );
+
+		if ( $primary === null && ( !$hasTheme || $legacyPrimary !== self::LEGACY_THEME_COLORS['light']['primary'] ) ) {
+			$primary = $legacyPrimary;
+		}
+
+		if ( $secondary === null ) {
+			$secondary = $legacySecondary;
+		}
+
+		$userPrimary = $this->normalizeOptionalCssColor( $userPrimary );
+		$userSecondary = $this->normalizeOptionalCssColor( $userSecondary );
+		$primary = $userPrimary ?? $primary;
+		$secondary = $userSecondary ?? $secondary;
+		$hasPrimaryOverride = $primary !== null;
+		$lightPrimary = $primary ?? $colors['light']['primary'];
+		$darkPrimary = $primary ?? $colors['dark']['primary'];
+
+		return [
+			'light' => [
+				'primary' => $lightPrimary,
+				'secondary' => $secondary ?? ( $hasPrimaryOverride ? $this->deriveSecondaryColor(
+					$lightPrimary,
+					$colors['light']['secondary']
+				) : $colors['light']['secondary'] ),
+			],
+			'dark' => [
+				'primary' => $darkPrimary,
+				'secondary' => $secondary ?? ( $hasPrimaryOverride ? $this->deriveSecondaryColor(
+					$darkPrimary,
+					$colors['dark']['secondary']
+				) : $colors['dark']['secondary'] ),
+			],
+		];
+	}
+
+	private function normalizeOptionalCssColor( mixed $color ): ?string {
+		return is_string( $color ) && preg_match( '/^#[0-9a-f]{6}$/i', $color )
+			? strtoupper( $color )
+			: null;
+	}
+
+	private function deriveSecondaryColor( string $primary, string $fallback ): string {
+		$value = hexdec( substr( $primary, 1 ) ) - hexdec( '1A1415' );
+		if ( !is_int( $value ) || $value < 0 ) {
+			return $fallback;
+		}
+
+		return sprintf( '#%06X', $value );
 	}
 
 	/**

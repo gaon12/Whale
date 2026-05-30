@@ -21,6 +21,9 @@ LocalSettings.php 파일에 아래와 같이 작성해주세요.
 
 | 이름 | 설명 | 예시 값 | 기본 값 |
 | ---- | ---- | ---- | ---- |
+| `$wgWhaleTheme` | 미리 정의된 테마 팔레트 slug. `han-river-blue`, `hanbat-forest`, `milk-vetch-purple`, `clay-roof`, `jeju-teal`, `camellia-red`, `ginkgo-gold` 중 하나를 사용할 수 있습니다. | `han-river-blue` | `null` |
+| `$wgWhalePrimaryColor` | LocalSettings.php에서 지정하는 사이트 주 색상. 지정하면 테마 팔레트보다 우선합니다. | `#336699` | `null` |
+| `$wgWhaleSecondaryColor` | LocalSettings.php에서 지정하는 사이트 보조 색상. 지정하면 테마 팔레트보다 우선합니다. | `#003366` | `null` |
 | `$wgWhaleMainColor` | `theme-color` 메타 설정 및 사이트 주 색상 설정 | `#4188F1` | `#4188F1` |
 | `$wgWhaleSecondColor` | 사이트 보조 색상 설정 | `#2774DC` | `$wgWhaleMainColor`의 값에서 `1A1415`만큼 뺀 값 |
 | `$wgTwitterAccount` | 트위터 카드 계정 설정 | `librewiki` | (없음) |
@@ -34,6 +37,25 @@ LocalSettings.php 파일에 아래와 같이 작성해주세요.
 | `$wgWhaleNavBarLogoImage` | 내비게이션 바에 표시되는 로고 이미지  | `./image.png` | `null` |
 | `$wgWhaleLiveRCArticleNamespaces` | 사이드바 최근 변경 왼쪽 탭에 보여질 네임스페이스 목록 | `[NS_MAIN, NS_PROJECT, NS_TEMPLATE, NS_HELP, NS_CATEGORY]` | `[NS_MAIN, NS_PROJECT, NS_TEMPLATE, NS_HELP, NS_CATEGORY]` |
 | `$wgWhaleLiveRCTalkNamespaces` | 사이드바 최근 변경 오른쪽 탭에 보여질 네임스페이스 목록 | `[NS_TALK, NS_USER_TALK, NS_PROJECT_TALK, NS_FILE_TALK, NS_MEDIAWIKI_TALK, NS_TEMPLATE_TALK, NS_HELP_TALK, NS_CATEGORY_TALK]` | `[NS_TALK, NS_USER_TALK, NS_PROJECT_TALK, NS_FILE_TALK, NS_MEDIAWIKI_TALK, NS_TEMPLATE_TALK, NS_HELP_TALK, NS_CATEGORY_TALK]` |
+
+### 테마 팔레트
+
+| 테마명 | slug | 모드 | Primary | Secondary |
+| ---- | ---- | ---- | ---- | ---- |
+| 한강 물빛 | `han-river-blue` | Light | `#336699` | `#003366` |
+| 한강 물빛 | `han-river-blue` | Dark | `#99CCFF` | `#6699FF` |
+| 한밭 숲빛 | `hanbat-forest` | Light | `#006633` | `#336633` |
+| 한밭 숲빛 | `hanbat-forest` | Dark | `#99CC99` | `#66CC66` |
+| 자운영 보라 | `milk-vetch-purple` | Light | `#663399` | `#993366` |
+| 자운영 보라 | `milk-vetch-purple` | Dark | `#CCCCFF` | `#CC99FF` |
+| 황토 기와 | `clay-roof` | Light | `#993300` | `#666633` |
+| 황토 기와 | `clay-roof` | Dark | `#FFCC99` | `#CCCC99` |
+| 제주 청록 | `jeju-teal` | Light | `#006666` | `#336666` |
+| 제주 청록 | `jeju-teal` | Dark | `#99CCCC` | `#66CCCC` |
+| 동백 붉은빛 | `camellia-red` | Light | `#993333` | `#663333` |
+| 동백 붉은빛 | `camellia-red` | Dark | `#FF9999` | `#CC9999` |
+| 은행 가을빛 | `ginkgo-gold` | Light | `#666600` | `#663300` |
+| 은행 가을빛 | `ginkgo-gold` | Dark | `#FFCC33` | `#CCCC66` |
 
 ## 상단바
 
