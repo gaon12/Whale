@@ -1,1 +1,66 @@
-{{{ html-whale-template }}}
+<header>
+	<div class="nav-wrapper navbar-fixed-top">
+		{{{ html-whale-nav-menu }}}
+	</div>
+</header>
+<section>
+	<div class="content-wrapper">
+		{{#has-whale-sidebar}}
+			<aside>
+				<div class="whale-sidebar">
+					<div class="live-recent-wrapper">
+						{{{ html-whale-live-recent }}}
+					</div>
+					{{{ html-whale-right-ad }}}
+				</div>
+			</aside>
+		{{/has-whale-sidebar}}
+		<div class="container-fluid whale-content">
+			<div class="whale-content-header">
+				{{#html-whale-site-notice}}
+					<div class="alert alert-dismissible fade in alert-info whale-notice" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						{{{ html-whale-site-notice }}}
+					</div>
+				{{/html-whale-site-notice}}
+				{{{ html-whale-header-ad }}}
+				{{{ html-whale-contents-toolbox }}}
+				<div class="title">
+					<h1>{{{ html-title }}}</h1>
+				</div>
+				<div class="contentSub" {{{ html-user-language-attributes }}}>
+					{{{ html-subtitle }}}
+				</div>
+			</div>
+			<div class="whale-content-main" id="content">
+				{{#html-user-message}}
+					<div class="usermessage">{{{ html-user-message }}}</div>
+				{{/html-user-message}}
+				{{{ html-categories }}}
+				<article class="mw-body-content" id="mw-content-text">
+					{{{ html-body-content }}}
+				</article>
+				{{{ html-whale-belowarticle-ad }}}
+			</div>
+			<footer>
+				<div class="whale-footer">
+					{{{ html-after-content }}}
+					{{{ html-whale-bottom-ad }}}
+					{{#has-whale-mobile-ad}}
+						<div class="mobile-ads"></div>
+					{{/has-whale-mobile-ad}}
+					{{{ html-whale-footer }}}
+				</div>
+			</footer>
+			<div id="whale-bottombtn">
+				<div class="scroll-button" id="whale-scrollup">{{{ html-whale-scroll-up-icon }}}</div>
+				<div class="scroll-button" id="whale-scrolldown">{{{ html-whale-scroll-down-icon }}}</div>
+			</div>
+		</div>
+	</div>
+</section>
+{{{ html-whale-adsense-script }}}
+{{{ html-whale-login-modal }}}
+{{{ html-whale-debughtml }}}
