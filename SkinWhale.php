@@ -223,13 +223,14 @@ class SkinWhale extends SkinMustache {
 		$request = $this->getRequest();
 		$hasAds = isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'];
 		$hasSidebar = $this->shouldRenderSidebar();
+		$siteNoticeHtml = $request->getCookie( 'disable-notice' )
+			? ''
+			: $this->getVisibleSiteNoticeHtml( $data['html-site-notice'] ?? '' );
 
 		$data['html-title'] = $this->getOutput()->getPageTitle();
 		$data['html-whale-nav-menu'] = $renderer->getNavMenu();
-		$data['html-whale-site-notice'] =
-			( $data['html-site-notice'] ?? '' ) && !$request->getCookie( 'disable-notice' )
-				? $data['html-site-notice']
-				: '';
+		$data['has-whale-site-notice'] = $siteNoticeHtml !== '';
+		$data['html-whale-site-notice'] = $siteNoticeHtml;
 		$data['html-whale-contents-toolbox'] = $renderer->getContentsToolbox();
 		$data['has-whale-sidebar'] = $hasSidebar;
 		$data['html-whale-live-recent'] = $hasSidebar ? $renderer->getLiveRecent() : '';
@@ -262,6 +263,29 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-debughtml'] = class_exists( MWDebug::class ) ? MWDebug::getHTMLDebugLog() : '';
 
 		return $data;
+	}
+
+	private function getVisibleSiteNoticeHtml( mixed $siteNoticeHtml ): string {
+		if ( !is_string( $siteNoticeHtml ) ) {
+			return '';
+		}
+
+		$siteNoticeHtml = trim( $siteNoticeHtml );
+		if ( $siteNoticeHtml === '' ) {
+			return '';
+		}
+
+		$withoutComments = preg_replace( '/<!--.*?-->/s', '', $siteNoticeHtml ) ?? '';
+		$visibleText = trim(
+			str_replace(
+				"\xc2\xa0",
+				' ',
+				html_entity_decode( strip_tags( $withoutComments ), ENT_QUOTES | ENT_HTML5, 'UTF-8' )
+			)
+		);
+		$hasVisibleMedia = preg_match( '/<(?:img|picture|svg|video|iframe|object|embed)\b/i', $withoutComments ) === 1;
+
+		return $visibleText !== '' || $hasVisibleMedia ? $siteNoticeHtml : '';
 	}
 
 	private function shouldRenderSidebar(): bool {
