@@ -91,7 +91,7 @@
 }
 /* Max-width: 890 convert for tablet mode alt */
 @media screen and (max-width: 890px) {
-	.Whale .nav-wrapper .navbar .navbar-nav .nav-item .cdx-icon {
+	.Whale .nav-wrapper .navbar .navbar-nav .nav-item .whale-icon {
 		text-align: center;
 		margin: 0 0.25rem;
 	}

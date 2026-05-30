@@ -43,7 +43,7 @@
 		indexButton.type = 'button';
 		indexButton.className = 'btn btn-primary';
 		indexButton.innerHTML =
-			'<span class="cdx-icon cdx-icon-list-bullet" aria-hidden="true"></span>';
+			'<svg class="whale-icon whale-icon-list" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>';
 		indexButton.style.position = 'fixed';
 		indexButton.style.top = `${contentHeaderOffset.top + window.scrollY}px`;
 		indexButton.style.left = `${contentHeaderOffset.left + window.scrollX - 62}px`;
