@@ -3,7 +3,8 @@
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\TextContent;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 
@@ -15,15 +16,58 @@ if ( !class_exists( Linker::class ) ) {
 	class_alias( \Linker::class, Linker::class );
 }
 
-class WhaleTemplate extends BaseTemplate {
-	/**
-	 * Get rendered template HTML for SkinMustache migration.
-	 */
-	public function getHTML(): string {
+class WhaleRenderer {
+	private SkinWhale $skin;
+
+	public function __construct( SkinWhale $skin ) {
+		$this->skin = $skin;
+	}
+
+	public function getNavMenu(): string {
+		return $this->capture( function () {
+			$this->navMenu();
+		} );
+	}
+
+	public function getLoginModal(): string {
+		return $this->capture( function () {
+			$this->loginModal();
+		} );
+	}
+
+	public function getLiveRecent(): string {
+		return $this->capture( function () {
+			$this->liveRecent();
+		} );
+	}
+
+	public function getContentsToolbox(): string {
+		return $this->capture( function () {
+			$this->contentsToolbox();
+		} );
+	}
+
+	public function getFooter(): string {
+		return $this->capture( function () {
+			$this->footer();
+		} );
+	}
+
+	public function getAd( string $position ): string {
+		return $this->capture( function () use ( $position ) {
+			$this->buildAd( $position );
+		} );
+	}
+
+	public function getIcon( string $icon ): string {
+		return $this->renderIcon( $icon );
+	}
+
+	private function capture( callable $render ): string {
 		ob_start();
 
 		try {
-			$this->execute();
+			$render();
 			$html = ob_get_clean();
 		} catch ( Throwable $exception ) {
 			ob_end_clean();
@@ -34,128 +78,11 @@ class WhaleTemplate extends BaseTemplate {
 	}
 
 	/**
-	 * execute() Method
-	 */
-	public function execute() {
-		global $wgWhaleAdSetting, $wgWhaleMobileReplaceAd;
-
-		$skin = $this->getSkin();
-		$user = $skin->getUser();
-		$request = $skin->getRequest();
-		$action = $request->getVal( 'action', 'view' );
-		$title = $skin->getTitle();
-		// @codingStandardsIgnoreStart
-		$WhaleUserSidebarSettings = MediaWikiServices::getInstance()->getUserOptionsLookup()->getOption( $user, 'whale-layout-sidebar' );
-		// @codingStandardsIgnoreEnd
-?>
-		<header>
-			<div class="nav-wrapper navbar-fixed-top">
-				<?php $this->navMenu(); ?>
-			</div>
-		</header>
-		<section>
-			<div class="content-wrapper">
-				<?php if ( $WhaleUserSidebarSettings == false ) { ?>
-					<aside>
-						<div class="whale-sidebar">
-							<div class="live-recent-wrapper">
-								<?php $this->liveRecent(); ?>
-							</div>
-							<?php if ( isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'] ) {
-								$this->buildAd( 'right' );
-							} ?>
-						</div>
-					</aside>
-				<?php } ?>
-				<div class="container-fluid whale-content">
-					<div class="whale-content-header">
-						<?php if (
-							$this->data['sitenotice'] &&
-							!$request->getCookie( 'disable-notice' )
-						) { ?>
-							<div class="alert alert-dismissible fade in alert-info whale-notice" role="alert">
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<?php $this->html( 'sitenotice' ); ?>
-							</div>
-						<?php } ?>
-						<?php if ( isset( $wgWhaleAdSetting['header'] ) && $wgWhaleAdSetting['header'] ) {
-							$this->buildAd( 'header' );
-						}
-						$this->contentsToolbox(); ?>
-						<div class="title">
-							<h1>
-								<?php $this->html( 'title' ); ?>
-							</h1>
-						</div>
-						<div class="contentSub" <?php $this->html( 'userlangattributes' ); ?>>
-							<?php $this->html( 'subtitle' ); ?>
-						</div>
-					</div>
-					<div class="whale-content-main" id="content">
-						<?php if ( $this->data['newtalk'] ) { ?>
-							<div class="usermessage"><?php $this->html( 'newtalk' ) ?></div>
-						<?php }
-						if ( $this->data['catlinks'] ) {
-							$this->html( 'catlinks' );
-						}
-						?>
-						<article class="mw-body-content" id="mw-content-text">
-							<?php $this->html( 'bodycontent' ); ?>
-						</article>
-						<?php
-						if ( isset( $wgWhaleAdSetting['belowarticle'] ) && $wgWhaleAdSetting['belowarticle'] ) {
-							$this->buildAd( 'belowarticle' );
-						}
-						?>
-					</div>
-					<footer>
-						<div class="whale-footer">
-							<?php
-							if ( $this->data['dataAfterContent'] ) {
-								$this->html( 'dataAfterContent' );
-							}
-							?>
-						<?php if ( isset( $wgWhaleAdSetting['bottom'] ) && $wgWhaleAdSetting['bottom'] ) {
-							$this->buildAd( 'bottom' );
-						}
-						if (
-							isset( $wgWhaleMobileReplaceAd ) && $wgWhaleMobileReplaceAd &&
-							isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right']
-						) { ?>
-							<div class="mobile-ads"></div>
-						<?php } ?>
-							<?php $this->footer(); ?>
-						</div>
-					</footer>
-				<div id="whale-bottombtn">
-						<div class="scroll-button" id="whale-scrollup"><?php echo $this->renderIcon( 'angle-up' ); ?></div>
-						<div class="scroll-button" id="whale-scrolldown"><?php echo $this->renderIcon( 'angle-down' ); ?></div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<?php
-		// Only load AdSense JS is ads are enabled in site configuration
-		if ( isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'] ) {
-			// @codingStandardsIgnoreLine
-			echo '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
-		}
-
-		$this->loginModal();
-
-		$this->html( 'debughtml' );
-
-		echo "\n";
-	}
-
-	/**
 	 * Nav menu function, build top menu.
 	 */
 	protected function navMenu() {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 	?>
 		<nav class="navbar navbar-dark">
 			<a class="navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>"></a>
@@ -198,18 +125,28 @@ class WhaleTemplate extends BaseTemplate {
 	 * Search box function, build top menu's search box.
 	 */
 	protected function searchBox() {
-		$skin = $this->getSkin();
+		$skin = $this->skin;
+		$request = $skin->getRequest();
 	?>
-		<form action="<?php $this->text( 'wgScript' ); ?>" id="searchform" class="form-inline">
-			<input type="hidden" name="title" value="<?php $this->text( 'searchtitle' ); ?>" />
+		<form action="<?php echo htmlspecialchars( $skin->getConfig()->get( 'Script' ), ENT_QUOTES ); ?>" id="searchform" class="form-inline">
+			<input type="hidden" name="title" value="<?php echo htmlspecialchars( SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey(), ENT_QUOTES ); ?>" />
 			<div class="input-group">
-				<?php echo $this->makeSearchInput( [ 'class' => 'form-control', 'id' => 'searchInput' ] ); ?>
+				<input
+					type="search"
+					name="search"
+					placeholder="<?php echo $skin->msg( 'searchsuggest-search' )->escaped(); ?>"
+					title="<?php echo htmlspecialchars( Linker::titleAttrib( 'search' ), ENT_QUOTES ); ?>"
+					accesskey="<?php echo htmlspecialchars( Linker::accesskey( 'search' ), ENT_QUOTES ); ?>"
+					id="searchInput"
+					class="form-control"
+					value="<?php echo htmlspecialchars( $request->getText( 'search' ), ENT_QUOTES ); ?>"
+					autocomplete="off">
 				<span class="input-group-btn">
 					<?php
 					// @codingStandardsIgnoreStart 
 					?>
-					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>"id="searchGoButton" class="btn btn-secondary" type="button"><?php echo $this->renderIcon( 'eye' ); ?></button>
-					<button type="submit" name="fulltext" value="<?php echo $skin->msg( 'searchbutton' )->escaped() ?>"id="mw-searchButton" class="btn btn-secondary" type="button">
+					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>" id="searchGoButton" class="btn btn-secondary"><?php echo $this->renderIcon( 'eye' ); ?></button>
+					<button type="submit" name="fulltext" value="<?php echo $skin->msg( 'searchbutton' )->escaped() ?>" id="mw-searchButton" class="btn btn-secondary">
 						<?php echo $this->renderIcon( 'search' ); ?></button>
 					<?php
 					// @codingStandardsIgnoreEnd
@@ -226,7 +163,7 @@ class WhaleTemplate extends BaseTemplate {
 	protected function loginBox() {
 		global $wgWhaleUseGravatar;
 
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 		$user = $skin->getUser();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 	?>
@@ -234,7 +171,7 @@ class WhaleTemplate extends BaseTemplate {
 			<?php
 			// If the user is logged in...
 			if ( $user->isRegistered() ) {
-				$personalTools = $this->getPersonalTools();
+				$personalTools = $this->skin->getWhalePersonalTools();
 				// ...and Gravatar is enabled in site config...
 				if ( $wgWhaleUseGravatar ) {
 					// ...and the user has a confirmed email...
@@ -371,7 +308,7 @@ class WhaleTemplate extends BaseTemplate {
 	 * Login model function, build login menu model.
 	 */
 	protected function loginModal() {
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 		$title = $skin->getTitle();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
@@ -455,7 +392,7 @@ class WhaleTemplate extends BaseTemplate {
 			return;
 		}
 
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$articleNS = implode( '|', $wgWhaleLiveRCArticleNamespaces );
 		$talkNS = implode( '|', $wgWhaleLiveRCTalkNamespaces );
@@ -500,16 +437,16 @@ class WhaleTemplate extends BaseTemplate {
 	 * Contents tool box function, build article tool menu that will show at article title right.
 	 */
 	protected function contentsToolbox() {
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 		$user = $skin->getUser();
 		$services = MediaWikiServices::getInstance();
 		$watchlistManager = $services->getWatchlistManager();
 		$title = $skin->getTitle();
 		$revid = $skin->getRequest()->getText( 'oldid' );
-		$watched = $watchlistManager->isWatchedIgnoringRights( $user, $skin->getRelevantTitle() ) ? 'unwatch' : 'watch';
-		$editable = isset( $this->data['content_navigation']['views']['edit'] );
-		$action = $skin->getRequest()->getVal( 'action', 'view' );
 		$permissionManager = $services->getPermissionManager();
+		$watched = $watchlistManager->isWatchedIgnoringRights( $user, $skin->getRelevantTitle() ) ? 'unwatch' : 'watch';
+		$editable = $permissionManager->quickUserCan( 'edit', $user, $title );
+		$action = $skin->getRequest()->getVal( 'action', 'view' );
 		$linkRenderer = $services->getLinkRenderer();
 		// $hasVisualEditor = ExtensionRegistry::getInstance()->isLoaded( 'VisualEditor' );
 		if ( $title->getNamespace() != NS_SPECIAL ) {
@@ -696,17 +633,27 @@ class WhaleTemplate extends BaseTemplate {
 	 * Footer function, build footer.
 	 */
 	protected function footer() {
-		foreach ( $this->getFooterLinks() as $category => $links ) { ?>
-			<ul class="footer-<?php echo $category; ?>">
-				<?php foreach ( $links as $link ) { ?>
-					<li class="footer-<?php echo $category; ?>-<?php echo $link; ?>">
-						<?php $this->html( $link ); ?>
+		$footerData = $this->skin->getWhaleFooterData();
+		foreach ( $footerData as $category => $categoryData ) {
+			$links = $categoryData['array-items'] ?? [];
+			if ( !$links ) {
+				continue;
+			}
+			$categoryName = preg_replace( '/^data-/', '', $category );
+		?>
+			<ul class="footer-<?php echo htmlspecialchars( $categoryName ); ?>">
+				<?php foreach ( $links as $link ) {
+					$name = $link['name'] ?? '';
+					$html = $link['html'] ?? '';
+				?>
+					<li class="footer-<?php echo htmlspecialchars( $categoryName ); ?>-<?php echo htmlspecialchars( $name ); ?>">
+						<?php echo $html; ?>
 					</li>
 				<?php } ?>
 			</ul>
 		<?php
 		}
-		$footericons = $this->get( 'footericons' );
+		$footericons = $this->skin->getWhaleFooterIcons();
 		if ( count( $footericons ) ) {
 		?>
 			<ul class="footer-icons">
@@ -716,7 +663,7 @@ class WhaleTemplate extends BaseTemplate {
 					<li class="footer-<?php echo htmlspecialchars( $blockName ); ?>ico">
 						<?php
 						foreach ( $footerIcons as $icon ) {
-							echo $this->getSkin()->makeFooterIcon( $icon );
+							echo $this->skin->makeWhaleFooterIcon( $icon );
 						}
 						?>
 					</li>
@@ -727,7 +674,7 @@ class WhaleTemplate extends BaseTemplate {
 					<a href="//librewiki.net">
 						<?php // @codingStandardsIgnoreLine 
 						?>
-						<img src="<?php echo $this->getSkin()->getConfig()->get( 'StylePath' ); //phpcs:ignore 
+						<img src="<?php echo $this->skin->getConfig()->get( 'StylePath' ); //phpcs:ignore 
 									?>/Whale/img/designedbylibre.png" style="height:31px" alt="Designed by Librewiki">
 					</a>
 				</li>
@@ -740,18 +687,18 @@ class WhaleTemplate extends BaseTemplate {
 	 * Get Notification function, build notification menu.
 	 */
 	protected function getNotification() {
-		$personalTools = $this->getPersonalTools();
+		$personalTools = $this->skin->getWhalePersonalTools();
 		if (
 			isset( $personalTools['notifications-alert'] ) &&
 			$personalTools['notifications-alert']['links'][0]['data']['counter-num']
 		) {
-			echo $this->makeListItem( 'notifications-alert', $personalTools['notifications-alert'] );
+			echo $this->skin->makeWhaleListItem( 'notifications-alert', $personalTools['notifications-alert'] );
 		}
 		if (
 			isset( $personalTools['notifications-notice'] ) &&
 			$personalTools['notifications-notice']['links'][0]['data']['counter-num']
 		) {
-			echo $this->makeListItem( 'notifications-notice', $personalTools['notifications-notice'] );
+			echo $this->skin->makeWhaleListItem( 'notifications-notice', $personalTools['notifications-notice'] );
 		}
 	}
 
@@ -761,7 +708,7 @@ class WhaleTemplate extends BaseTemplate {
 	 * @param array $contents Menu data that will made by parseNavbar function.
 	 */
 	protected function renderPortal( $contents ) {
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 		$user = $skin->getUser();
 		$services = MediaWikiServices::getInstance();
 		$userGroupManager = $services->getUserGroupManager();
@@ -910,9 +857,9 @@ class WhaleTemplate extends BaseTemplate {
 
 		$headings = [];
 		$currentHeading = null;
-		$skin = $this->getSkin();
+		$skin = $this->skin;
 		$user = $skin->getUser();
-		$userLang = $skin->getLanguage()->mCode;
+		$userLang = $skin->getLanguage()->getCode();
 		$globalData = $this->getCachedContentText(
 			Title::newFromText( 'Whale-Navbar', NS_MEDIAWIKI )
 		);
@@ -944,6 +891,9 @@ class WhaleTemplate extends BaseTemplate {
 
 		foreach ( $lines as $line ) {
 			$line = rtrim( $line, "\r" );
+			if ( $line === '' ) {
+				continue;
+			}
 			if ( $line[0] !== '*' ) {
 				// Line does not start with '*'
 				continue;
@@ -1437,21 +1387,13 @@ class WhaleTemplate extends BaseTemplate {
 	private function getContentOfTitle( Title $title ): ?Content {
 		$page = null;
 
-		if ( method_exists( MediaWikiServices::class, 'getWikiPageFactory' ) ) {
-			$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
-			$page = $wikiPageFactory->newFromTitle( $title );
-		} else {
-			$page = WikiPage::factory( $title );
-		}
+		$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
+		$page = $wikiPageFactory->newFromTitle( $title );
 
 		return $page->getContent( RevisionRecord::RAW );
 	}
 
 	private function isProtectedTitle( Title $title ): bool {
-		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {
-			return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected( $title );
-		} else {
-			return $title->isProtected();
-		}
+		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected( $title );
 	}
 }
