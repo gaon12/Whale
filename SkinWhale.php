@@ -1,6 +1,7 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 
 if (
 	!class_exists( SkinMustache::class ) &&
@@ -13,7 +14,7 @@ class SkinWhale extends SkinMustache {
 	// @codingStandardsIgnoreStart
 	public $skinname = 'whale';
 	public $stylename = 'Whale';
-	public $template = 'WhaleTemplate';
+	public $template = 'skin';
 	// @codingStandardsIgnoreEnd
 
 	/**
@@ -21,7 +22,7 @@ class SkinWhale extends SkinMustache {
 	 *
 	 * @param OutputPage $out OutputPage
 	 */
-	public function initPage( OutputPage $out ) {
+	public function initPage( OutputPage $out ): void {
 		// @codingStandardsIgnoreLine
 		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC, $wgWhaleAdSetting, $wgWhaleAdGroup, $wgWhaleNavBarLogoImage;
 
@@ -97,8 +98,8 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.ads';
 		}
 
-		// Only load LiveRC JS is we have enabled that feature in site config
-		if ( $wgWhaleEnableLiveRC ) {
+		// Only load LiveRC JS when the sidebar can render.
+		if ( $wgWhaleEnableLiveRC && $this->shouldRenderSidebar() ) {
 			$modules[] = 'skins.whale.liverc';
 		}
 
@@ -211,13 +212,111 @@ class SkinWhale extends SkinMustache {
 
 	/**
 	 * Get template data for Mustache rendering.
+	 *
+	 * @return array<string,mixed>
 	 */
-	public function getTemplateData() {
+	public function getTemplateData(): array {
+		global $wgWhaleAdSetting, $wgWhaleMobileReplaceAd;
+
 		$data = parent::getTemplateData();
-		$template = $this->prepareQuickTemplate();
-		$data['html-whale-template'] = $template->getHTML();
+		$renderer = new WhaleRenderer( $this );
+		$request = $this->getRequest();
+		$hasAds = isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'];
+		$hasSidebar = $this->shouldRenderSidebar();
+
+		$data['html-title'] = $this->getOutput()->getPageTitle();
+		$data['html-whale-nav-menu'] = $renderer->getNavMenu();
+		$data['html-whale-site-notice'] =
+			( $data['html-site-notice'] ?? '' ) && !$request->getCookie( 'disable-notice' )
+				? $data['html-site-notice']
+				: '';
+		$data['html-whale-contents-toolbox'] = $renderer->getContentsToolbox();
+		$data['has-whale-sidebar'] = $hasSidebar;
+		$data['html-whale-live-recent'] = $hasSidebar ? $renderer->getLiveRecent() : '';
+		$data['html-whale-right-ad'] =
+			$hasSidebar && isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right']
+				? $renderer->getAd( 'right' )
+				: '';
+		$data['html-whale-header-ad'] =
+			isset( $wgWhaleAdSetting['header'] ) && $wgWhaleAdSetting['header']
+				? $renderer->getAd( 'header' )
+				: '';
+		$data['html-whale-belowarticle-ad'] =
+			isset( $wgWhaleAdSetting['belowarticle'] ) && $wgWhaleAdSetting['belowarticle']
+				? $renderer->getAd( 'belowarticle' )
+				: '';
+		$data['html-whale-bottom-ad'] =
+			isset( $wgWhaleAdSetting['bottom'] ) && $wgWhaleAdSetting['bottom']
+				? $renderer->getAd( 'bottom' )
+				: '';
+		$data['has-whale-mobile-ad'] =
+			isset( $wgWhaleMobileReplaceAd ) && $wgWhaleMobileReplaceAd &&
+			isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'];
+		$data['html-whale-footer'] = $renderer->getFooter();
+		$data['html-whale-scroll-up-icon'] = $renderer->getIcon( 'angle-up' );
+		$data['html-whale-scroll-down-icon'] = $renderer->getIcon( 'angle-down' );
+		$data['html-whale-adsense-script'] = $hasAds
+			? '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'
+			: '';
+		$data['html-whale-login-modal'] = $renderer->getLoginModal();
+		$data['html-whale-debughtml'] = class_exists( MWDebug::class ) ? MWDebug::getHTMLDebugLog() : '';
 
 		return $data;
+	}
+
+	private function shouldRenderSidebar(): bool {
+		$request = $this->getRequest();
+
+		if (
+			$request->getCheck( 'handheld' ) ||
+			$request->getVal( 'useformat' ) === 'mobile' ||
+			$request->getCheck( 'mobileaction' )
+		) {
+			return false;
+		}
+
+		$viewportWidth = $request->getHeader( 'Sec-CH-Viewport-Width' );
+		if ( is_string( $viewportWidth ) && ctype_digit( $viewportWidth ) ) {
+			return (int)$viewportWidth >= 992;
+		}
+
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		return !$userOptionsLookup->getOption( $this->getUser(), 'whale-layout-sidebar' );
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getWhaleFooterData(): array {
+		return $this->getComponent( 'footer' )->getTemplateData();
+	}
+
+	/**
+	 * @return array<string,array<int,array<string,mixed>>>
+	 */
+	public function getWhaleFooterIcons(): array {
+		return $this->getFooterIcons();
+	}
+
+	/**
+	 * @param array<string,mixed> $icon
+	 */
+	public function makeWhaleFooterIcon( array $icon ): string {
+		return $this->makeFooterIcon( $icon );
+	}
+
+	/**
+	 * @return array<string,array<string,mixed>>
+	 */
+	public function getWhalePersonalTools(): array {
+		return $this->getStructuredPersonalTools();
+	}
+
+	/**
+	 * @param array<string,mixed> $item
+	 */
+	public function makeWhaleListItem( string $key, array $item ): string {
+		return $this->makeListItem( $key, $item );
 	}
 
 	private function normalizeCssColor( ?string $color, string $fallback ): string {
