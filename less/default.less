@@ -192,7 +192,11 @@ strike {
 .Whale {
 	--whale-main-color: #4188f1;
 	--whale-second-color: #2774dc;
+	--whale-text-color: #373a3c;
+	--whale-dark-text-color: #f1f3f5;
 	background-color: #f5f5f5;
+	color: var(--whale-text-color);
+	color-scheme: light;
 }
 
 .Whale .whale-reading-progress {
@@ -639,6 +643,7 @@ strike {
 	border-left: 1px solid #e1e8ed;
 	border-right: 1px solid #e1e8ed;
 	background-color: #fff;
+	color: var(--whale-text-color);
 	padding: 1rem;
 	overflow: hidden;
 	line-height: 1.6rem;
@@ -1043,6 +1048,14 @@ body.whale-dark div#mw-protect-cascadeon {
 	background-color: #000;
 }
 
+body.whale-dark .Whale {
+	color-scheme: dark;
+}
+
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main {
+	color: var(--whale-dark-text-color);
+}
+
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .title > h1,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list .recent-item,
 body.whale-dark caption,
@@ -1152,6 +1165,14 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark div.mw-cascadeprotectedwarning,
 	body.whale-auto-dark div#mw-protect-cascadeon {
 		background-color: #000;
+	}
+
+	body.whale-auto-dark .Whale {
+		color-scheme: dark;
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main {
+		color: var(--whale-dark-text-color);
 	}
 
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .title > h1,
