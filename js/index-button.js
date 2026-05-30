@@ -13,27 +13,61 @@
 			return null;
 		}
 
-		return href.includes('.')
-			? document.getElementById(href.slice(1))
-			: document.querySelector(href);
+		const rawId = href.slice(1);
+		let decodedId = rawId;
+
+		try {
+			decodedId = decodeURIComponent(rawId);
+		} catch {
+			decodedId = rawId;
+		}
+
+		return document.getElementById(decodedId) || document.getElementById(rawId);
 	};
 
-	const scrollToTarget = (target, navHeight) => {
+	const getNavHeight = () =>
+		document.querySelector('.nav-wrapper')?.offsetHeight || 0;
+
+	const scrollToTarget = (target) => {
 		if (!target) {
 			return;
 		}
 
 		window.scrollTo({
-			top: target.getBoundingClientRect().top + window.scrollY - navHeight - 10,
+			top:
+				target.getBoundingClientRect().top +
+				window.scrollY -
+				getNavHeight() -
+				10,
 			behavior: 'smooth',
+		});
+	};
+
+	const bindSmoothTocLinks = (tocRoot) => {
+		tocRoot.querySelectorAll('ul li > a[href^="#"]').forEach((link) => {
+			link.addEventListener('click', (event) => {
+				const target = getAnchorTarget(link.getAttribute('href'));
+
+				if (target) {
+					event.preventDefault();
+					scrollToTarget(target);
+				}
+			});
 		});
 	};
 
 	ready(() => {
 		const toc = document.getElementById('toc');
+
+		if (!toc?.innerHTML) {
+			return;
+		}
+
+		bindSmoothTocLinks(toc);
+
 		const contentHeader = document.querySelector('.whale-content-header');
 
-		if (!toc?.innerHTML || !contentHeader || window.innerWidth <= 1649) {
+		if (!contentHeader || window.innerWidth <= 1649) {
 			return;
 		}
 
@@ -84,18 +118,7 @@
 					window.damezuma.doc = null;
 				});
 
-			const navHeight =
-				document.querySelector('.nav-wrapper')?.offsetHeight || 0;
-			fixedToc.querySelectorAll('ul li > a').forEach((link) => {
-				link.addEventListener('click', (event) => {
-					const target = getAnchorTarget(link.getAttribute('href'));
-
-					if (target) {
-						event.preventDefault();
-						scrollToTarget(target, navHeight);
-					}
-				});
-			});
+			bindSmoothTocLinks(fixedToc);
 		});
 
 		document.body.append(indexButton);
