@@ -65,7 +65,7 @@
 				"bootstrap/css/bootstrap.min.css": {
 					"media": "all"
 				},
-				"css/default.css": {
+				"less/default.less": {
 					"media": "all"
 				},
 				"css/default_mobile.css": {
