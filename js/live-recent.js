@@ -35,10 +35,48 @@
 		const limit = list.childElementCount;
 		let isArticleTab = true;
 
+		const createPlaceholderRow = (isLoading) => {
+			const listItem = document.createElement('li');
+			const placeholder = document.createElement('span');
+
+			listItem.className = 'live-recent-row live-recent-empty';
+			placeholder.className = isLoading
+				? 'recent-item recent-item-placeholder is-loading'
+				: 'recent-item recent-item-placeholder';
+			placeholder.innerHTML = '&nbsp;';
+			listItem.append(placeholder);
+
+			return listItem;
+		};
+
+		const showSkeletonRows = () => {
+			const fragment = new DocumentFragment();
+
+			for (let index = 0; index < limit; index++) {
+				fragment.append(createPlaceholderRow(true));
+			}
+
+			list.setAttribute('aria-busy', 'true');
+			list.replaceChildren(fragment);
+		};
+
+		const showEmptyRows = () => {
+			const fragment = new DocumentFragment();
+
+			for (let index = 0; index < limit; index++) {
+				fragment.append(createPlaceholderRow(false));
+			}
+
+			list.setAttribute('aria-busy', 'false');
+			list.replaceChildren(fragment);
+		};
+
 		const refreshLiveRecent = async () => {
 			if (!list || list.offsetParent === null) {
 				return;
 			}
+
+			showSkeletonRows();
 
 			const parameters = {
 				action: 'query',
@@ -57,8 +95,9 @@
 				const api = new mw.Api();
 				const data = await api.get(parameters);
 				const fragment = new DocumentFragment();
+				const changes = data.query?.recentchanges ?? [];
 
-				for (const item of data.query.recentchanges) {
+				for (const item of changes.slice(0, limit)) {
 					const time = new Date(item.timestamp);
 					const listItem = document.createElement('li');
 					const link = document.createElement('a');
@@ -84,9 +123,14 @@
 					fragment.append(listItem);
 				}
 
+				for (let index = changes.length; index < limit; index++) {
+					fragment.append(createPlaceholderRow(false));
+				}
+
+				list.setAttribute('aria-busy', 'false');
 				list.replaceChildren(fragment);
 			} catch {
-				// Keep the current list when refresh fails.
+				showEmptyRows();
 			}
 		};
 
