@@ -75,7 +75,7 @@
 		const indexButton = document.createElement('button');
 		indexButton.id = 'fixed-toc-button';
 		indexButton.type = 'button';
-		indexButton.className = 'btn btn-primary';
+		indexButton.className = 'whale-btn whale-btn-primary';
 		indexButton.innerHTML =
 			'<svg class="whale-icon whale-icon-list" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>';
 		indexButton.style.position = 'fixed';

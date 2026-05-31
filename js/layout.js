@@ -7,7 +7,8 @@
 		callback();
 	};
 
-	const getMenuOwner = (toggle) => toggle.closest('.dropdown, .btn-group');
+	const getMenuOwner = (toggle) =>
+		toggle.closest('.dropdown, .whale-btn-group');
 
 	const closeDropdown = (owner) => {
 		if (!owner) {
@@ -24,7 +25,7 @@
 	const closeAllDropdowns = (except) => {
 		document
 			.querySelectorAll(
-				'.dropdown.open, .dropdown.show, .btn-group.open, .btn-group.show',
+				'.dropdown.open, .dropdown.show, .whale-btn-group.open, .whale-btn-group.show',
 			)
 			.forEach((owner) => {
 				if (owner !== except) {
@@ -52,7 +53,9 @@
 
 	const getModal = (trigger) => {
 		const selector =
-			trigger.getAttribute('data-target') || trigger.getAttribute('href');
+			trigger.getAttribute('data-whale-target') ||
+			trigger.getAttribute('data-target') ||
+			trigger.getAttribute('href');
 		return selector?.startsWith('#') ? document.querySelector(selector) : null;
 	};
 
@@ -112,10 +115,10 @@
 		}
 
 		modal.dataset.whaleModalState = 'closing';
-		modal.classList.remove('in', 'show');
+		modal.classList.remove('is-open');
 		modal.setAttribute('aria-hidden', 'true');
-		document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
-			backdrop.classList.remove('in', 'show');
+		document.querySelectorAll('.whale-modal-backdrop').forEach((backdrop) => {
+			backdrop.classList.remove('is-open');
 		});
 
 		window.setTimeout(() => {
@@ -125,8 +128,8 @@
 
 			modal.style.display = 'none';
 			delete modal.dataset.whaleModalState;
-			document.body.classList.remove('modal-open');
-			document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
+			document.body.classList.remove('whale-modal-open');
+			document.querySelectorAll('.whale-modal-backdrop').forEach((backdrop) => {
 				backdrop.remove();
 			});
 		}, MODAL_TRANSITION_MS);
@@ -144,17 +147,17 @@
 			return;
 		}
 
-		document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
+		document.querySelectorAll('.whale-modal-backdrop').forEach((backdrop) => {
 			backdrop.remove();
 		});
 
 		modal.dataset.whaleModalState = 'opening';
 		modal.style.display = 'block';
 		modal.removeAttribute('aria-hidden');
-		document.body.classList.add('modal-open');
+		document.body.classList.add('whale-modal-open');
 
 		const backdrop = document.createElement('div');
-		backdrop.className = 'modal-backdrop fade';
+		backdrop.className = 'whale-modal-backdrop';
 		backdrop.addEventListener('click', () => closeModal(modal));
 		document.body.append(backdrop);
 
@@ -163,8 +166,8 @@
 				return;
 			}
 
-			modal.classList.add('in', 'show');
-			backdrop.classList.add('in', 'show');
+			modal.classList.add('is-open');
+			backdrop.classList.add('is-open');
 			modal.dataset.whaleModalState = 'open';
 			document.getElementById('wpName1')?.focus();
 		});
@@ -196,23 +199,23 @@
 				return;
 			}
 
-			const modalTrigger = event.target.closest('[data-toggle="modal"]');
+			const modalTrigger = event.target.closest('[data-whale-toggle="modal"]');
 			if (modalTrigger) {
 				event.preventDefault();
 				openModal(getModal(modalTrigger));
 				return;
 			}
 
-			if (event.target.classList?.contains('modal')) {
+			if (event.target.classList?.contains('whale-modal')) {
 				event.preventDefault();
 				closeModal(event.target);
 				return;
 			}
 
-			const dismiss = event.target.closest('[data-dismiss]');
-			if (dismiss?.getAttribute('data-dismiss') === 'modal') {
+			const dismiss = event.target.closest('[data-whale-dismiss]');
+			if (dismiss?.getAttribute('data-whale-dismiss') === 'modal') {
 				event.preventDefault();
-				closeModal(dismiss.closest('.modal'));
+				closeModal(dismiss.closest('.whale-modal'));
 				return;
 			}
 
@@ -227,7 +230,7 @@
 				return;
 			}
 
-			if (!event.target.closest('.dropdown, .btn-group')) {
+			if (!event.target.closest('.dropdown, .whale-btn-group')) {
 				closeAllDropdowns();
 				document
 					.querySelectorAll('.dropdown-submenu.show')
@@ -241,7 +244,7 @@
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') {
 				closeAllDropdowns();
-				closeModal(document.querySelector('.modal.show, .modal.in'));
+				closeModal(document.querySelector('.whale-modal.is-open'));
 			}
 		});
 	});
