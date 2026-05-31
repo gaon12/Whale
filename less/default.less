@@ -206,6 +206,8 @@ strike {
 	--whale-second-color: #2774dc;
 	--whale-text-color: #373a3c;
 	--whale-dark-text-color: #f1f3f5;
+	--whale-radius: 0.35rem;
+	--whale-radius-sm: 0.25rem;
 	background-color: #f5f5f5;
 	color: var(--whale-text-color);
 	color-scheme: light;
@@ -703,7 +705,15 @@ strike {
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle {
-	padding: 0.4rem 0.3rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	padding: 0.4rem 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle::after {
+	margin-left: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
@@ -1062,7 +1072,7 @@ strike {
 	background-color: #fff;
 	background-clip: padding-box;
 	border: 1px solid #e1e8ed;
-	border-radius: 0.25rem;
+	border-radius: var(--whale-radius-sm);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
@@ -1143,7 +1153,7 @@ strike {
 .whale-btn {
 	display: inline-block;
 	box-shadow: none;
-	border-radius: 0.35rem;
+	border-radius: var(--whale-radius);
 	border: 1px solid transparent;
 	cursor: pointer;
 	font-size: 0.95rem;
@@ -1250,14 +1260,18 @@ fieldset:disabled .whale-btn {
 
 .whale-btn-group > .whale-btn:first-child:not(:last-child),
 .whale-btn-group > .whale-btn-group:first-child:not(:last-child) > .whale-btn {
+	border-bottom-left-radius: var(--whale-radius);
 	border-bottom-right-radius: 0;
+	border-top-left-radius: var(--whale-radius);
 	border-top-right-radius: 0;
 }
 
 .whale-btn-group > .whale-btn:last-child:not(:first-child),
 .whale-btn-group > .whale-btn-group:last-child:not(:first-child) > .whale-btn {
 	border-bottom-left-radius: 0;
+	border-bottom-right-radius: var(--whale-radius);
 	border-top-left-radius: 0;
+	border-top-right-radius: var(--whale-radius);
 }
 
 .whale-search-actions:last-child > .whale-btn,
