@@ -8,7 +8,7 @@
 	};
 
 	const getMenuOwner = (toggle) =>
-		toggle.closest('.dropdown, .whale-btn-group');
+		toggle.closest('.whale-dropdown, .whale-btn-group');
 
 	const closeDropdown = (owner) => {
 		if (!owner) {
@@ -17,15 +17,18 @@
 
 		owner.classList.remove('open', 'show');
 		owner
-			.querySelector('[data-toggle="dropdown"]')
+			.querySelector('[data-whale-toggle="dropdown"]')
 			?.setAttribute('aria-expanded', 'false');
-		owner.querySelector('.dropdown-menu')?.classList.remove('show');
+		owner.querySelectorAll('.whale-dropdown-menu.show').forEach((menu) => {
+			menu.classList.remove('show');
+			menu.style.display = '';
+		});
 	};
 
 	const closeAllDropdowns = (except) => {
 		document
 			.querySelectorAll(
-				'.dropdown.open, .dropdown.show, .whale-btn-group.open, .whale-btn-group.show',
+				'.whale-dropdown.open, .whale-dropdown.show, .whale-btn-group.open, .whale-btn-group.show',
 			)
 			.forEach((owner) => {
 				if (owner !== except) {
@@ -36,7 +39,7 @@
 
 	const toggleDropdown = (toggle) => {
 		const owner = getMenuOwner(toggle);
-		const menu = owner?.querySelector('.dropdown-menu');
+		const menu = owner?.querySelector('.whale-dropdown-menu');
 
 		if (!owner || !menu) {
 			return;
@@ -177,7 +180,9 @@
 		initReadingProgress();
 
 		document.addEventListener('click', (event) => {
-			const dropdownToggle = event.target.closest('[data-toggle="dropdown"]');
+			const dropdownToggle = event.target.closest(
+				'[data-whale-toggle="dropdown"]',
+			);
 			if (dropdownToggle) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -185,12 +190,12 @@
 				return;
 			}
 
-			const submenuToggle = event.target.closest('.dropdown-toggle-sub');
+			const submenuToggle = event.target.closest('.whale-dropdown-toggle-sub');
 			if (submenuToggle) {
 				event.preventDefault();
 				event.stopPropagation();
 				const submenu = submenuToggle.nextElementSibling;
-				if (submenu?.classList.contains('dropdown-menu')) {
+				if (submenu?.classList.contains('whale-dropdown-menu')) {
 					submenu.classList.toggle('show');
 					submenu.style.display = submenu.classList.contains('show')
 						? 'block'
@@ -230,10 +235,10 @@
 				return;
 			}
 
-			if (!event.target.closest('.dropdown, .whale-btn-group')) {
+			if (!event.target.closest('.whale-dropdown, .whale-btn-group')) {
 				closeAllDropdowns();
 				document
-					.querySelectorAll('.dropdown-submenu.show')
+					.querySelectorAll('.whale-dropdown-submenu.show')
 					.forEach((submenu) => {
 						submenu.classList.remove('show');
 						submenu.style.display = '';

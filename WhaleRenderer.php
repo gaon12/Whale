@@ -222,24 +222,24 @@ class WhaleRenderer {
 					] );
 				}
 			?>
-				<div class="dropdown login-menu">
-					<a class="dropdown-toggle" type="button" id="login-menu" 
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<div class="whale-dropdown login-menu">
+					<a class="whale-dropdown-toggle" type="button" id="login-menu" 
+						data-whale-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<?php echo $avatar; ?>
 					</a>
-					<div class="dropdown-menu dropdown-menu-right login-dropdown-menu" 
+					<div class="whale-dropdown-menu whale-dropdown-menu-right login-dropdown-menu" 
 						aria-labelledby="login-menu">
 						<?php echo $linkRenderer->makeKnownLink(
 							Title::makeTitle( NS_USER, $user->getName() ),
 							$user->getName(),
 							[
 								'id' => 'pt-userpage',
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 'pt-userpage', 'withaccess' ),
 								'accesskey' => Linker::accesskey( 'pt-userpage' )
 							]
 						); ?>
-						<div class="dropdown-divider"></div>
+						<div class="whale-dropdown-divider"></div>
 						<?php
 						if ( class_exists( 'EchoEvent' ) ) {
 							$notiCount = 0;
@@ -256,7 +256,7 @@ class WhaleRenderer {
 								new TitleValue( NS_SPECIAL, 'Notifications' ),
 								$skin->msg( 'notifications' )->plain() . ( $notiCount ? " ($notiCount)" : '' ),
 								[
-									'class' => 'dropdown-item',
+									'class' => 'whale-dropdown-item',
 									'title' => $skin->msg( 'tooltip-pt-notifications-notice' )->text()
 								]
 							);
@@ -266,7 +266,7 @@ class WhaleRenderer {
 							SpecialPage::getTitleFor( 'Contributions', $user->getName() ),
 							$skin->msg( 'mycontris' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 'pt-mycontris', 'withaccess' ),
 								'accesskey' => Linker::accesskey( 'pt-mycontris' )
 							]
@@ -275,7 +275,7 @@ class WhaleRenderer {
 							Title::makeTitle( NS_USER_TALK, $user->getName() ),
 							$skin->msg( 'mytalk' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 'pt-mytalk', 'withaccess' ),
 								'accesskey' => Linker::accesskey( 'pt-mytalk' )
 							]
@@ -284,24 +284,24 @@ class WhaleRenderer {
 							SpecialPage::getTitleFor( 'Watchlist' ),
 							$skin->msg( 'watchlist' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 'pt-watchlist', 'withaccess' ),
 								'accesskey' => Linker::accesskey( 'pt-watchlist' )
 							]
 						); ?>
-						<div class="dropdown-divider"></div>
+						<div class="whale-dropdown-divider"></div>
 						<?php echo $linkRenderer->makeKnownLink(
 							SpecialPage::getTitleFor( 'Preferences' ),
 							$skin->msg( 'preferences' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 'pt-preferences', 'withaccess' ),
 								'accesskey' => Linker::accesskey( 'pt-preferences' )
 							]
 						); ?>
-						<div class="dropdown-divider view-logout"></div>
+						<div class="whale-dropdown-divider view-logout"></div>
 						<a href="<?php echo $personalTools['logout']['links'][0]['href']; ?>" 
-							class="dropdown-item view-logout" 
+							class="whale-dropdown-item view-logout" 
 							title="<?php
 							// @codingStandardsIgnoreStart
 							echo htmlspecialchars( Linker::titleAttrib( 'pt-logout', 'withaccess' ), ENT_QUOTES )
@@ -546,13 +546,11 @@ class WhaleRenderer {
 				}
 				// @codingStandardsIgnoreStart 
 					?>
-					<button type="button" class="whale-btn whale-btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span class="caret"></span>
-					</button>
+					<button type="button" class="whale-btn whale-btn-secondary tools-btn whale-dropdown-toggle" data-whale-toggle="dropdown" aria-label="<?php echo $skin->msg( 'more' )->escaped() ?>" aria-expanded="false"></button>
 					<?php
 					// @codingStandardsIgnoreEnd
 					?>
-					<div class="dropdown-menu dropdown-menu-right" role="menu">
+					<div class="whale-dropdown-menu whale-dropdown-menu-right" role="menu">
 						<?php
 						if ( $title->inNamespaces( NS_USER, NS_USER_TALK ) ) {
 							// "User contributions" link on user and user talk pages
@@ -560,7 +558,7 @@ class WhaleRenderer {
 								SpecialPage::getTitleFor( 'Contributions', $title->getText() ),
 								$skin->msg( 'contributions' )->escaped(),
 								[
-									'class' => 'dropdown-item',
+									'class' => 'whale-dropdown-item',
 									'title' => Linker::titleAttrib( 't-contributions', 'withaccess' ),
 									'accesskey' => Linker::accesskey( 't-contributions' )
 								]
@@ -570,7 +568,7 @@ class WhaleRenderer {
 							$title,
 							$skin->msg( 'whale-purge' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => $skin->msg( 'whale-tooltip-purge' )->plain() . ' [alt+shift+p]',
 								'accesskey' => 'p'
 							],
@@ -580,7 +578,7 @@ class WhaleRenderer {
 							$title,
 							$skin->msg( $watched )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 'ca-' . $watched, 'withaccess' ),
 								'accesskey' => Linker::accesskey( 'ca-' . $watched )
 							],
@@ -590,7 +588,7 @@ class WhaleRenderer {
 							SpecialPage::getTitleFor( 'Whatlinkshere', $title ),
 							$skin->msg( 'whatlinkshere' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => Linker::titleAttrib( 't-whatlinkshere', 'withaccess' ),
 								'accesskey' => Linker::accesskey( 't-whatlinkshere' )
 							]
@@ -599,7 +597,7 @@ class WhaleRenderer {
 							$title,
 							$skin->msg( 'whale-info' )->plain(),
 							[
-								'class' => 'dropdown-item',
+								'class' => 'whale-dropdown-item',
 								'title' => $skin->msg( 'whale-tooltip-info' )->plain(),
 							],
 							[ 'action' => 'info' ]
@@ -609,14 +607,14 @@ class WhaleRenderer {
 								SpecialPage::getTitleFor( 'Movepage', $title ),
 								$skin->msg( 'move' )->plain(),
 								[
-									'class' => 'dropdown-item',
+									'class' => 'whale-dropdown-item',
 									'title' => Linker::titleAttrib( 'ca-move', 'withaccess' ),
 									'accesskey' => Linker::accesskey( 'ca-move' )
 								]
 							);
 						}
 						if ( $permissionManager->quickUserCan( 'protect', $user, $title ) ) { ?>
-							<div class="dropdown-divider"></div>
+							<div class="whale-dropdown-divider"></div>
 							<?php
 							// different labels depending on whether the page is or isn't protected
 							$protectionMsg = $this->isProtectedTitle( $title ) ? 'unprotect' : 'protect';
@@ -624,7 +622,7 @@ class WhaleRenderer {
 								$title,
 								$skin->msg( $protectionMsg )->plain(),
 								[
-									'class' => 'dropdown-item',
+									'class' => 'whale-dropdown-item',
 									'title' => Linker::titleAttrib( 'ca-' . $protectionMsg, 'withaccess' ),
 									'accesskey' => Linker::accesskey( 'ca-' . $protectionMsg )
 								],
@@ -633,12 +631,12 @@ class WhaleRenderer {
 						<?php } ?>
 						<?php if ( $permissionManager->quickUserCan( 'delete', $user, $title ) && $title->exists() ) {
 						?>
-							<div class="dropdown-divider"></div>
+							<div class="whale-dropdown-divider"></div>
 							<?php echo $linkRenderer->makeKnownLink(
 								$title,
 								$skin->msg( 'delete' )->plain(),
 								[
-									'class' => 'dropdown-item',
+									'class' => 'whale-dropdown-item',
 									'title' => Linker::titleAttrib( 'ca-delete', 'withaccess' ),
 									'accesskey' => Linker::accesskey( 'ca-delete' )
 								],
@@ -753,22 +751,23 @@ class WhaleRenderer {
 			}
 
 			echo Html::openElement( 'li', [
-				'class' => [ 'dropdown', 'nav-item' ]
+				'class' => [ 'whale-dropdown', 'nav-item' ]
 			] );
 
 			array_push( $content['classes'], 'nav-link' );
 
-			if ( is_array( $content['children'] ) && count( $content['children'] ) > 1 ) {
-				array_push( $content['classes'], 'dropdown-toggle', 'dropdown-toggle-fix' );
+			$hasChildren = is_array( $content['children'] ) && count( $content['children'] ) > 0;
+
+			if ( $hasChildren ) {
+				array_push( $content['classes'], 'whale-dropdown-toggle', 'whale-dropdown-toggle-fix' );
 			}
 
 			echo Html::openElement( 'a', [
 				'class' => $content['classes'],
-				'data-toggle' => is_array( $content['children'] ) &&
-					count( $content['children'] ) > 1 ? 'dropdown' : '',
+				'data-whale-toggle' => $hasChildren ? 'dropdown' : '',
 				'role' => 'button',
 				'aria-haspopup' => 'true',
-				'aria-expanded' => 'true',
+				'aria-expanded' => 'false',
 				'title' => $content['title'],
 				'href' => $content['href']
 			] );
@@ -787,7 +786,7 @@ class WhaleRenderer {
 
 			if ( is_array( $content['children'] ) && count( $content['children'] ) ) {
 				echo Html::openElement( 'div', [
-					'class' => 'dropdown-menu',
+					'class' => 'whale-dropdown-menu',
 					'role' => 'menu'
 				] );
 
@@ -798,10 +797,10 @@ class WhaleRenderer {
 					) {
 						continue;
 					}
-					array_push( $child['classes'], 'dropdown-item' );
+					array_push( $child['classes'], 'whale-dropdown-item' );
 
-					if ( is_array( $child['children'] ) ) {
-						array_push( $child['classes'], 'dropdown-toggle', 'dropdown-toggle-sub' );
+					if ( is_array( $child['children'] ) && count( $child['children'] ) > 0 ) {
+						array_push( $child['classes'], 'whale-dropdown-toggle', 'whale-dropdown-toggle-sub' );
 					}
 
 					echo Html::openElement( 'a', [
@@ -822,12 +821,10 @@ class WhaleRenderer {
 					echo Html::closeElement( 'a' );
 
 					if (
-						is_array( $content['children'] ) &&
-						count( $content['children'] ) > 2 &&
 						!empty( $child['children'] )
 					) {
 						echo Html::openElement( 'div', [
-							'class' => 'dropdown-menu dropdown-submenu',
+							'class' => 'whale-dropdown-menu whale-dropdown-submenu',
 							'role' => 'menu'
 						] );
 
@@ -838,7 +835,7 @@ class WhaleRenderer {
 							) {
 								continue;
 							}
-							array_push( $sub['classes'], 'dropdown-item' );
+							array_push( $sub['classes'], 'whale-dropdown-item' );
 
 							echo Html::openElement( 'a', [
 								'accesskey' => $sub['access'],
