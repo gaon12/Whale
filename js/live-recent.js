@@ -30,10 +30,15 @@
 			return;
 		}
 
+		const sidebarMedia = window.matchMedia('(min-width: 1024px)');
 		const articleNamespaces = liveRecent.dataset.articleNs;
 		const talkNamespaces = liveRecent.dataset.talkNs;
 		const limit = list.childElementCount;
 		let isArticleTab = true;
+		let refreshInterval = null;
+
+		const isLiveRecentVisible = () =>
+			sidebarMedia.matches && list.offsetParent !== null;
 
 		const createPlaceholderRow = (isLoading) => {
 			const listItem = document.createElement('li');
@@ -72,7 +77,7 @@
 		};
 
 		const refreshLiveRecent = async () => {
-			if (!list || list.offsetParent === null) {
+			if (!isLiveRecentVisible()) {
 				return;
 			}
 
@@ -148,7 +153,44 @@
 			refreshLiveRecent();
 		});
 
-		setInterval(refreshLiveRecent, 5 * 60 * 1000);
-		refreshLiveRecent();
+		const stopAutoRefresh = () => {
+			if (refreshInterval === null) {
+				return;
+			}
+
+			window.clearInterval(refreshInterval);
+			refreshInterval = null;
+		};
+
+		const startAutoRefresh = () => {
+			if (!isLiveRecentVisible()) {
+				stopAutoRefresh();
+				return;
+			}
+
+			if (refreshInterval !== null) {
+				return;
+			}
+
+			refreshInterval = window.setInterval(refreshLiveRecent, 5 * 60 * 1000);
+			refreshLiveRecent();
+		};
+
+		const syncAutoRefresh = () => {
+			if (isLiveRecentVisible()) {
+				startAutoRefresh();
+				return;
+			}
+
+			stopAutoRefresh();
+		};
+
+		if (typeof sidebarMedia.addEventListener === 'function') {
+			sidebarMedia.addEventListener('change', syncAutoRefresh);
+		} else {
+			sidebarMedia.addListener(syncAutoRefresh);
+		}
+
+		syncAutoRefresh();
 	});
 })();
