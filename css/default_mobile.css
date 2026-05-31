@@ -172,7 +172,7 @@
 
 /* Max-width: 34rem; */
 @media screen and (max-width: 34rem) {
-	.Whale .login-modal .modal-sm {
+	.Whale .login-modal .whale-modal-sm {
 		width: auto;
 	}
 }

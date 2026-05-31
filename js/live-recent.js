@@ -173,7 +173,7 @@
 			}
 
 			refreshInterval = window.setInterval(refreshLiveRecent, 5 * 60 * 1000);
-			refreshLiveRecent();
+			window.setTimeout(refreshLiveRecent, 0);
 		};
 
 		const syncAutoRefresh = () => {
