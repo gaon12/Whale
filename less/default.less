@@ -298,13 +298,13 @@ strike {
 	transition: 0.3s;
 }
 
-.Whale .nav-wrapper .navbar .navbar-nav .nav-item .dropdown-menu {
+.Whale .nav-wrapper .navbar .navbar-nav .nav-item .whale-dropdown-menu {
 	margin-top: 0;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
 
-.Whale .nav-wrapper .navbar .navbar-nav .nav-item .dropdown-toggle::after {
+.Whale .nav-wrapper .navbar .navbar-nav .nav-item .whale-dropdown-toggle::after {
 	margin-right: 0;
 	margin-left: 0.35rem;
 }
@@ -459,7 +459,7 @@ strike {
 	right: 1.15rem;
 }
 
-.dropdown-submenu {
+.whale-dropdown-submenu {
 	position: relative;
 	min-width: 158px;
 }
@@ -702,7 +702,7 @@ strike {
 	padding: 0.4rem 0.8rem;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .dropdown-toggle {
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle {
 	padding: 0.4rem 0.3rem;
 }
 
@@ -716,7 +716,7 @@ strike {
 	border-color: #e1e8ed;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .dropdown-menu {
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-menu {
 	top: 92%;
 }
 
@@ -1040,27 +1040,105 @@ strike {
 }
 /* scroll button end */
 
-/* Bootstrap Custom */
-.dropdown-menu {
+/* Dropdown */
+.whale-dropdown,
+.whale-btn-group {
+	position: relative;
+}
+
+.whale-dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	min-width: 10rem;
+	padding: 0.5rem 0;
+	margin: 0.125rem 0 0;
 	font-size: 0.95rem;
+	color: #373a3c;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #e1e8ed;
+	border-radius: 0.25rem;
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-	border-color: #e1e8ed;
+}
+
+.whale-dropdown-menu.show,
+.whale-dropdown.show > .whale-dropdown-menu,
+.whale-btn-group.show > .whale-dropdown-menu,
+.whale-dropdown.open > .whale-dropdown-menu,
+.whale-btn-group.open > .whale-dropdown-menu {
+	display: block;
+}
+
+.whale-dropdown-menu-right {
+	right: 0;
+	left: auto;
+}
+
+.whale-dropdown-item {
+	display: block;
+	width: 100%;
+	padding: 0.25rem 1.5rem;
+	clear: both;
+	color: #373a3c;
+	font-weight: 400;
+	text-align: inherit;
+	white-space: nowrap;
+	background: transparent;
+	border: 0;
+}
+
+.whale-dropdown-item:hover,
+.whale-dropdown-item:focus {
+	background-color: var(--whale-second-color);
+	color: #fff;
+	text-decoration: none;
+	transition: 0.3s;
+}
+
+.whale-dropdown-divider {
+	height: 0;
+	margin: 0.5rem 0;
+	overflow: hidden;
+	border-top: 1px solid #e1e8ed;
+}
+
+.whale-dropdown-toggle::after {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 0.35rem;
+	vertical-align: 0.15em;
+	content: "";
+	border-top: 0.3em solid;
+	border-right: 0.3em solid transparent;
+	border-left: 0.3em solid transparent;
+}
+
+.whale-dropdown-toggle-sub::after {
+	float: right;
+	margin-top: 0.5em;
+	transform: rotate(-90deg);
+}
+
+.whale-dropdown-submenu {
+	top: 0;
+	left: 100%;
+	margin-top: -0.5rem;
+	margin-left: 0;
 }
 
 #whale-bottombtn .scroll-button .whale-icon {
 	width: 40px;
 	height: 40px;
 }
+/* Dropdown End */
 
-.dropdown-menu .dropdown-item:hover {
-	background-color: var(--whale-second-color);
-	color: #fff;
-	transition: 0.3s;
-}
-
-.dropdown-divider {
-	border-color: #e1e8ed;
-}
+/* Button */
 
 .whale-btn {
 	display: inline-block;
@@ -1191,7 +1269,7 @@ caption {
 	color: #373a3c;
 	caption-side: top;
 }
-/* Bootstrap Custom End */
+/* Button End */
 
 /* AdSense */
 ins.adsbygoogle {
@@ -1212,8 +1290,8 @@ ins.adsbygoogle {
 /* Dark mode */
 body.whale-dark,
 body.whale-dark .Whale,
-body.whale-dark .dropdown-menu,
-body.whale-dark .dropdown-item,
+body.whale-dark .whale-dropdown-menu,
+body.whale-dark .whale-dropdown-item,
 body.whale-dark .Whale .nav-wrapper .navbar .whale-search-form .whale-btn,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
@@ -1243,7 +1321,7 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox,
 body.whale-dark #preferences,
 body.whale-dark .navbox-list,
-body.whale-dark .dropdown-divider {
+body.whale-dark .whale-dropdown-divider {
 	background-color: #1f2023;
 	color: #ddd;
 }
@@ -1300,8 +1378,8 @@ body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .liv
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn,
-body.whale-dark .dropdown-menu,
-body.whale-dark .dropdown-divider,
+body.whale-dark .whale-dropdown-menu,
+body.whale-dark .whale-dropdown-divider,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main fieldset,
 body.whale-dark hr,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list li,
@@ -1331,8 +1409,8 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 @media (prefers-color-scheme: dark) {
 	body.whale-auto-dark,
 	body.whale-auto-dark .Whale,
-	body.whale-auto-dark .dropdown-menu,
-	body.whale-auto-dark .dropdown-item,
+	body.whale-auto-dark .whale-dropdown-menu,
+	body.whale-auto-dark .whale-dropdown-item,
 	body.whale-auto-dark .Whale .nav-wrapper .navbar .whale-search-form .whale-btn,
 	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
@@ -1362,7 +1440,7 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox,
 	body.whale-auto-dark #preferences,
 	body.whale-auto-dark .navbox-list,
-	body.whale-auto-dark .dropdown-divider {
+	body.whale-auto-dark .whale-dropdown-divider {
 		background-color: #1f2023;
 		color: #ddd;
 	}
@@ -1419,8 +1497,8 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn,
-	body.whale-auto-dark .dropdown-menu,
-	body.whale-auto-dark .dropdown-divider,
+	body.whale-auto-dark .whale-dropdown-menu,
+	body.whale-auto-dark .whale-dropdown-divider,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main fieldset,
 	body.whale-auto-dark hr,
 	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content .live-recent-list li,
