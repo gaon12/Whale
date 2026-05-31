@@ -1,78 +1,9 @@
 /* Make button to make fixed toc */
 (() => {
-	const ready = (callback) => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', callback, { once: true });
-			return;
-		}
-		callback();
-	};
-
-	const getAnchorTarget = (href) => {
-		if (!href?.startsWith('#')) {
-			return null;
-		}
-
-		const rawId = href.slice(1);
-		let decodedId = rawId;
-
-		try {
-			decodedId = decodeURIComponent(rawId);
-		} catch {
-			decodedId = rawId;
-		}
-
-		return document.getElementById(decodedId) || document.getElementById(rawId);
-	};
-
-	const getNavHeight = () =>
-		document.querySelector('.whale-nav-wrapper')?.offsetHeight || 0;
-
-	const scrollToTarget = (target) => {
-		if (!target) {
-			return;
-		}
-
-		window.scrollTo({
-			top:
-				target.getBoundingClientRect().top +
-				window.scrollY -
-				getNavHeight() -
-				10,
-			behavior: 'smooth',
-		});
-	};
-
-	const bindSmoothTocLinks = (tocRoot) => {
-		tocRoot.querySelectorAll('ul li > a[href^="#"]').forEach((link) => {
-			link.addEventListener('click', (event) => {
-				const target = getAnchorTarget(link.getAttribute('href'));
-
-				if (target) {
-					event.preventDefault();
-					scrollToTarget(target);
-				}
-			});
-		});
-	};
-
-	ready(() => {
-		const toc = document.getElementById('toc');
-
-		if (!toc?.innerHTML) {
-			return;
-		}
-
-		bindSmoothTocLinks(toc);
-
-		const contentHeader = document.querySelector('.whale-content-header');
-
-		if (!contentHeader || window.innerWidth <= 1649) {
-			return;
-		}
-
+	const createIndexButton = (contentHeader) => {
 		const contentHeaderOffset = contentHeader.getBoundingClientRect();
 		const indexButton = document.createElement('button');
+
 		indexButton.id = 'fixed-toc-button';
 		indexButton.type = 'button';
 		indexButton.className = 'whale-btn whale-btn-primary';
@@ -82,15 +13,28 @@
 		indexButton.style.top = `${contentHeaderOffset.top + window.scrollY}px`;
 		indexButton.style.left = `${contentHeaderOffset.left + window.scrollX - 62}px`;
 
-		window.damezuma = { doc: null };
+		return indexButton;
+	};
+
+	whale.ready(() => {
+		const toc = document.getElementById('toc');
+		const contentHeader = document.querySelector('.whale-content-header');
+
+		if (!toc?.innerHTML || !contentHeader || window.innerWidth <= 1649) {
+			return;
+		}
+
+		let fixedToc = null;
+		const indexButton = createIndexButton(contentHeader);
 
 		indexButton.addEventListener('click', () => {
 			indexButton.style.display = 'none';
-			if (window.damezuma.doc) {
+
+			if (fixedToc) {
 				return;
 			}
 
-			const fixedToc = toc.cloneNode(true);
+			fixedToc = toc.cloneNode(true);
 			fixedToc.id = 'fixed-toc';
 			Object.assign(fixedToc.style, {
 				position: 'fixed',
@@ -106,19 +50,16 @@
 				zIndex: '3000',
 			});
 
-			window.damezuma.doc = fixedToc;
-			document.body.append(fixedToc);
-
 			fixedToc
 				.querySelector(':scope > .togglelink')
 				?.addEventListener('click', (event) => {
 					event.preventDefault();
 					indexButton.style.display = '';
-					fixedToc.remove();
-					window.damezuma.doc = null;
+					fixedToc?.remove();
+					fixedToc = null;
 				});
 
-			bindSmoothTocLinks(fixedToc);
+			document.body.append(fixedToc);
 		});
 
 		document.body.append(indexButton);

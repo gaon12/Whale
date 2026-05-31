@@ -1,12 +1,4 @@
 (() => {
-	const ready = (callback) => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', callback, { once: true });
-			return;
-		}
-		callback();
-	};
-
 	const getMenuOwner = (toggle) =>
 		toggle.closest('.whale-dropdown, .whale-btn-group');
 
@@ -72,7 +64,6 @@
 		progress.setAttribute('aria-valuenow', '0');
 		skinRoot.append(progress);
 
-		let scheduled = false;
 		const update = () => {
 			const scrollTop =
 				window.scrollY || document.documentElement.scrollTop || 0;
@@ -88,16 +79,8 @@
 
 			progress.style.transform = `scaleX(${ratio})`;
 			progress.setAttribute('aria-valuenow', String(percent));
-			scheduled = false;
 		};
-		const scheduleUpdate = () => {
-			if (scheduled) {
-				return;
-			}
-
-			scheduled = true;
-			window.requestAnimationFrame(update);
-		};
+		const scheduleUpdate = whale.rafThrottle(update);
 
 		update();
 		window.addEventListener('scroll', scheduleUpdate, { passive: true });
@@ -105,6 +88,14 @@
 	};
 
 	const MODAL_TRANSITION_MS = 300;
+	let activeModal = null;
+	let activeBackdrop = null;
+	let modalTimer = null;
+
+	const removeBackdrop = () => {
+		activeBackdrop?.remove();
+		activeBackdrop = null;
+	};
 
 	const closeModal = (modal) => {
 		if (!modal) {
@@ -114,11 +105,10 @@
 		modal.dataset.whaleModalState = 'closing';
 		modal.classList.remove('is-open');
 		modal.setAttribute('aria-hidden', 'true');
-		document.querySelectorAll('.whale-modal-backdrop').forEach((backdrop) => {
-			backdrop.classList.remove('is-open');
-		});
+		activeBackdrop?.classList.remove('is-open');
+		window.clearTimeout(modalTimer);
 
-		window.setTimeout(() => {
+		modalTimer = window.setTimeout(() => {
 			if (modal.dataset.whaleModalState !== 'closing') {
 				return;
 			}
@@ -126,9 +116,8 @@
 			modal.style.display = 'none';
 			delete modal.dataset.whaleModalState;
 			document.body.classList.remove('whale-modal-open');
-			document.querySelectorAll('.whale-modal-backdrop').forEach((backdrop) => {
-				backdrop.remove();
-			});
+			removeBackdrop();
+			activeModal = null;
 		}, MODAL_TRANSITION_MS);
 	};
 
@@ -144,19 +133,23 @@
 			return;
 		}
 
-		document.querySelectorAll('.whale-modal-backdrop').forEach((backdrop) => {
-			backdrop.remove();
-		});
+		if (activeModal && activeModal !== modal) {
+			closeModal(activeModal);
+		}
+
+		removeBackdrop();
+		window.clearTimeout(modalTimer);
 
 		modal.dataset.whaleModalState = 'opening';
 		modal.style.display = 'block';
 		modal.removeAttribute('aria-hidden');
 		document.body.classList.add('whale-modal-open');
+		activeModal = modal;
 
-		const backdrop = document.createElement('div');
-		backdrop.className = 'whale-modal-backdrop';
-		backdrop.addEventListener('click', () => closeModal(modal));
-		document.body.append(backdrop);
+		activeBackdrop = document.createElement('div');
+		activeBackdrop.className = 'whale-modal-backdrop';
+		activeBackdrop.addEventListener('click', () => closeModal(modal));
+		document.body.append(activeBackdrop);
 
 		window.requestAnimationFrame(() => {
 			if (modal.dataset.whaleModalState !== 'opening') {
@@ -164,17 +157,35 @@
 			}
 
 			modal.classList.add('is-open');
-			backdrop.classList.add('is-open');
+			activeBackdrop?.classList.add('is-open');
 			modal.dataset.whaleModalState = 'open';
 			document.getElementById('wpName1')?.focus();
 		});
 	};
 
-	ready(() => {
+	whale.ready(() => {
 		initReadingProgress();
 
 		document.addEventListener('click', (event) => {
-			const dropdownToggle = event.target.closest(
+			const scrollUp = whale.closest(event.target, '#whale-scrollup');
+			if (scrollUp) {
+				event.preventDefault();
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				return;
+			}
+
+			const scrollDown = whale.closest(event.target, '#whale-scrolldown');
+			if (scrollDown) {
+				event.preventDefault();
+				window.scrollTo({
+					top: document.documentElement.scrollHeight,
+					behavior: 'smooth',
+				});
+				return;
+			}
+
+			const dropdownToggle = whale.closest(
+				event.target,
 				'[data-whale-toggle="dropdown"]',
 			);
 			if (dropdownToggle) {
@@ -184,7 +195,10 @@
 				return;
 			}
 
-			const submenuToggle = event.target.closest('.whale-dropdown-toggle-sub');
+			const submenuToggle = whale.closest(
+				event.target,
+				'.whale-dropdown-toggle-sub',
+			);
 			if (submenuToggle) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -198,7 +212,10 @@
 				return;
 			}
 
-			const modalTrigger = event.target.closest('[data-whale-toggle="modal"]');
+			const modalTrigger = whale.closest(
+				event.target,
+				'[data-whale-toggle="modal"]',
+			);
 			if (modalTrigger) {
 				event.preventDefault();
 				openModal(getModal(modalTrigger));
@@ -211,25 +228,29 @@
 				return;
 			}
 
-			const dismiss = event.target.closest('[data-whale-dismiss]');
+			const dismiss = whale.closest(event.target, '[data-whale-dismiss]');
 			if (dismiss?.getAttribute('data-whale-dismiss') === 'modal') {
 				event.preventDefault();
 				closeModal(dismiss.closest('.whale-modal'));
 				return;
 			}
 
-			const noticeDismiss = event.target.closest(
+			const noticeDismiss = whale.closest(
+				event.target,
 				'[data-whale-dismiss="notice"]',
 			);
 			if (noticeDismiss) {
 				event.preventDefault();
 				const notice = noticeDismiss.closest('.whale-notice');
-				notice?.dispatchEvent(new Event('whale.notice.closed'));
+				mw.cookie.set('disable-notice', true, {
+					expires: 3600 * 24,
+					secure: false,
+				});
 				notice?.remove();
 				return;
 			}
 
-			if (!event.target.closest('.whale-dropdown, .whale-btn-group')) {
+			if (!whale.closest(event.target, '.whale-dropdown, .whale-btn-group')) {
 				closeAllDropdowns();
 				document
 					.querySelectorAll('.whale-dropdown-submenu.is-open')
@@ -243,7 +264,7 @@
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') {
 				closeAllDropdowns();
-				closeModal(document.querySelector('.whale-modal.is-open'));
+				closeModal(activeModal);
 			}
 		});
 	});
