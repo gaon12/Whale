@@ -84,7 +84,7 @@ class WhaleRenderer {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$skin = $this->skin;
 	?>
-		<nav class="navbar navbar-dark">
+		<nav class="navbar">
 			<a class="navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>"></a>
 			<ul class="nav navbar-nav">
 				<li class="nav-item">
