@@ -88,28 +88,30 @@
 				}
 			}
 		},
+		"skins.whale.common": {
+			"scripts": "js/common.js"
+		},
 		"skins.whale.ads": {
-			"scripts": "js/ads.js"
+			"scripts": "js/ads.js",
+			"dependencies": "skins.whale.common"
 		},
 		"skins.whale.layoutjs": {
 			"scripts": [
 				"js/delay-scrolling.js",
-				"js/disable-notice.js",
 				"js/share-button.js",
 				"js/layout.js",
-				"js/table.js",
-				"js/scroll-button.js"
+				"js/table.js"
 			],
-			"dependencies": "mediawiki.cookie"
+			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
 		},
 		"skins.whale.liverc": {
 			"scripts": "js/live-recent.js",
 			"messages": ["whale-feed-new"],
-			"dependencies": "mediawiki.util"
+			"dependencies": ["mediawiki.util", "skins.whale.common"]
 		},
 		"skins.whale.loginjs": {
 			"scripts": "js/login-request.js",
-			"dependencies": "mediawiki.util"
+			"dependencies": "skins.whale.common"
 		}
 	},
 	"ResourceFileModulePaths": {

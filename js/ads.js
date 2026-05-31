@@ -1,23 +1,19 @@
 (() => {
-	const ready = (callback) => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', callback, { once: true });
-			return;
-		}
-		callback();
-	};
-
-	ready(() => {
+	whale.ready(() => {
 		const mobileAds = document.querySelector('.mobile-ads');
 		const rightAds = document.querySelector('.right-ads');
+		const ads = document.querySelectorAll('.adsbygoogle');
 
 		if (mobileAds && rightAds && window.innerWidth < 1024) {
 			mobileAds.innerHTML = rightAds.innerHTML;
 			rightAds.remove();
 		}
 
-		document.querySelectorAll('.adsbygoogle').forEach(() => {
+		if (ads.length > 0) {
 			window.adsbygoogle = window.adsbygoogle || [];
+		}
+
+		ads.forEach(() => {
 			window.adsbygoogle.push({});
 		});
 	});
