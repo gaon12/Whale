@@ -190,7 +190,7 @@ class SkinWhale extends SkinMustache {
 
 		if ( isset( $WhaleUserNavbarSettings ) && $WhaleUserNavbarSettings ) {
 			$out->addInlineStyle(
-				".navbar-fixed-top {
+				".Whale .nav-wrapper.whale-navbar-fixed {
 					position: absolute;
 				}"
 			);
