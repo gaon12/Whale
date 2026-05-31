@@ -298,41 +298,86 @@ strike {
 	margin-left: 0.35rem;
 }
 
-.Whale .nav-wrapper .navbar .form-inline {
+.Whale .nav-wrapper .navbar .whale-search-form {
 	padding: 0.4rem 0;
 	float: right;
 }
 
-.Whale .nav-wrapper .navbar .form-inline .form-control {
+.Whale .nav-wrapper .navbar .whale-search-group {
+	display: inline-flex;
+	align-items: stretch;
+	height: 2rem;
+	vertical-align: middle;
+}
+
+.Whale .nav-wrapper .navbar .whale-search-input {
+	border: 1px solid #ccc;
+	box-sizing: border-box;
 	font-size: 0.8rem;
 	height: 2rem;
+	line-height: 1.5;
+	min-width: 0;
 	width: 10.8rem;
 	padding: 0.2rem 0.4rem;
 	border-color: #ccc;
+	border-right: 0;
 	border-radius: 0.35rem 0 0 0.35rem;
 }
 
-.Whale .nav-wrapper .navbar .form-inline .whale-btn {
-	height: 2rem;
-	color: #4f5b63;
-	padding: 0.2rem 0.4rem;
-	line-height: 22px;
+.Whale .nav-wrapper .navbar .whale-search-input:focus {
+	border-color: #66afe9;
+	outline: 0;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+		0 0 8px rgba(102, 175, 233, 0.6);
+	transition: 0.3s;
 }
 
-.Whale .nav-wrapper .navbar .form-inline .whale-btn:hover,
-.Whale .nav-wrapper .navbar .form-inline .whale-btn:focus {
+.Whale .nav-wrapper .navbar .whale-search-actions {
+	display: inline-flex;
+	align-items: stretch;
+	height: 2rem;
+}
+
+.Whale .nav-wrapper .navbar .whale-search-form .whale-btn {
+	align-items: center;
+	border-color: #ccc;
+	border-radius: 0;
+	display: inline-flex;
+	justify-content: center;
+	height: 2rem;
+	min-width: 1.9rem;
+	color: #4f5b63;
+	padding: 0;
+	line-height: 1;
+	position: relative;
+}
+
+.Whale .nav-wrapper .navbar .whale-search-form .whale-btn + .whale-btn {
+	border-left: 0;
+}
+
+.Whale .nav-wrapper .navbar .whale-search-form .whale-search-actions .whale-btn:last-child {
+	border-bottom-right-radius: 0.35rem;
+	border-top-right-radius: 0.35rem;
+}
+
+.Whale .nav-wrapper .navbar .whale-search-form .whale-btn:hover,
+.Whale .nav-wrapper .navbar .whale-search-form .whale-btn:focus {
 	background-color: var(--whale-main-color);
 	border-color: var(--whale-second-color);
 	color: #fff;
 	outline: 0;
 }
 
-.Whale .nav-wrapper .navbar .form-inline .whale-btn .whale-icon {
+.Whale .nav-wrapper .navbar .whale-search-form .whale-btn .whale-icon {
 	width: 0.9rem;
 }
 
 .Whale .nav-wrapper .navbar .navbar-login {
+	display: flex;
+	align-items: center;
 	float: right;
+	height: 2.8rem;
 	padding-left: 0.8rem;
 }
 
@@ -350,9 +395,10 @@ strike {
 }
 
 .Whale .nav-wrapper .navbar .navbar-login .login-menu {
-	float: left;
+	display: flex;
+	align-items: center;
 	cursor: pointer;
-	padding: 0.4rem 0;
+	padding: 0;
 }
 
 .Whale .nav-wrapper .navbar .navbar-login .login-menu > a:after {
@@ -369,7 +415,7 @@ strike {
 
 .Whale .nav-wrapper .navbar .navbar-login .logout-btn {
 	margin-left: 0.8rem;
-	display: inline-block;
+	display: inline-flex;
 }
 
 .Whale .nav-wrapper .navbar .navbar-login .login-dropdown-menu {
@@ -1005,18 +1051,6 @@ strike {
 	border-color: #e1e8ed;
 }
 
-.form-control {
-	font-size: 0.9rem;
-}
-
-.form-control:focus {
-	border-color: #66afe9;
-	outline: 0;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-		0 0 8px rgba(102, 175, 233, 0.6);
-	transition: 0.3s;
-}
-
 .whale-btn {
 	display: inline-block;
 	box-shadow: none;
@@ -1137,8 +1171,8 @@ fieldset:disabled .whale-btn {
 	border-top-left-radius: 0;
 }
 
-.input-group-btn:last-child > .whale-btn,
-.input-group-btn:last-child > .whale-btn-group {
+.whale-search-actions:last-child > .whale-btn,
+.whale-search-actions:last-child > .whale-btn-group {
 	z-index: 3; /* Firefox, IE border bug fix */
 }
 
@@ -1169,7 +1203,7 @@ body.whale-dark,
 body.whale-dark .Whale,
 body.whale-dark .dropdown-menu,
 body.whale-dark .dropdown-item,
-body.whale-dark .Whale .nav-wrapper .navbar .form-inline .whale-btn,
+body.whale-dark .Whale .nav-wrapper .navbar .whale-search-form .whale-btn,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
@@ -1288,7 +1322,7 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .Whale,
 	body.whale-auto-dark .dropdown-menu,
 	body.whale-auto-dark .dropdown-item,
-	body.whale-auto-dark .Whale .nav-wrapper .navbar .form-inline .whale-btn,
+	body.whale-auto-dark .Whale .nav-wrapper .navbar .whale-search-form .whale-btn,
 	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
