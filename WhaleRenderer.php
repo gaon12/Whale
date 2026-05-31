@@ -128,9 +128,9 @@ class WhaleRenderer {
 		$skin = $this->skin;
 		$request = $skin->getRequest();
 	?>
-		<form action="<?php echo htmlspecialchars( $skin->getConfig()->get( 'Script' ), ENT_QUOTES ); ?>" id="searchform" class="form-inline">
+		<form action="<?php echo htmlspecialchars( $skin->getConfig()->get( 'Script' ), ENT_QUOTES ); ?>" id="searchform" class="whale-search-form">
 			<input type="hidden" name="title" value="<?php echo htmlspecialchars( SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey(), ENT_QUOTES ); ?>" />
-			<div class="input-group">
+			<div class="whale-search-group">
 				<input
 					type="search"
 					name="search"
@@ -138,10 +138,10 @@ class WhaleRenderer {
 					title="<?php echo htmlspecialchars( Linker::titleAttrib( 'search' ), ENT_QUOTES ); ?>"
 					accesskey="<?php echo htmlspecialchars( Linker::accesskey( 'search' ), ENT_QUOTES ); ?>"
 					id="searchInput"
-					class="form-control"
+					class="whale-search-input"
 					value="<?php echo htmlspecialchars( $request->getText( 'search' ), ENT_QUOTES ); ?>"
 					autocomplete="off">
-				<span class="input-group-btn">
+				<span class="whale-search-actions">
 					<?php
 					// @codingStandardsIgnoreStart 
 					?>
