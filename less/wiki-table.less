@@ -19,7 +19,7 @@
 	width: auto;
 	background: #fff;
 	border: none;
-	border-radius: 0.35rem;
+	border-radius: var(--whale-radius);
 	border-collapse: separate;
 	border-spacing: 0;
 	float: none;
@@ -79,7 +79,7 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable {
-	border-collapse: collapse;
+	border-collapse: separate;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
@@ -113,47 +113,67 @@
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:first-child > th:nth-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:first-child > td:nth-child( 1 ) {
-	border-radius: 0.35rem 0 0 0;
+	border-radius: var(--whale-radius) 0 0 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:first-child > th:nth-last-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:first-child > td:nth-last-child( 1 ) {
-	border-radius: 0 0.35rem 0 0;
+	border-radius: 0 var(--whale-radius) 0 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:first-child > th:only-child,
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:first-child > td:only-child {
-	border-radius: 0.35rem 0.35rem 0 0;
+	border-radius: var(--whale-radius) var(--whale-radius) 0 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:last-child > th:nth-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:last-child > td:nth-child( 1 ) {
-	border-radius: 0 0 0 0.35rem;
+	border-radius: 0 0 0 var(--whale-radius);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:last-child > th:nth-last-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:last-child > td:nth-last-child( 1 ) {
-	border-radius: 0 0 0.35rem 0;
+	border-radius: 0 0 var(--whale-radius) 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:last-child > th:only-child,
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:last-child > td:only-child {
-	border-radius: 0 0 0.35rem 0.35rem;
+	border-radius: 0 0 var(--whale-radius) var(--whale-radius);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > th:nth-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > td:nth-child( 1 ) {
-	border-radius: 0.35rem 0 0 0.35rem;
+	border-radius: var(--whale-radius) 0 0 var(--whale-radius);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > th:nth-last-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > td:nth-last-child( 1 ) {
-	border-radius: 0 0.35rem 0.35rem 0;
+	border-radius: 0 var(--whale-radius) var(--whale-radius) 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > th:only-child,
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr:only-child > td:only-child {
-	border-radius: 0.35rem 0.35rem 0.35rem 0.35rem;
+	border-radius: var(--whale-radius);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:first-child > th:first-child,
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:first-child > td:first-child {
+	border-top-left-radius: var(--whale-radius);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:first-child > th:last-child,
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:first-child > td:last-child {
+	border-top-right-radius: var(--whale-radius);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:last-child > th:first-child,
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:last-child > td:first-child {
+	border-bottom-left-radius: var(--whale-radius);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:last-child > th:last-child,
+.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr:last-child > td:last-child {
+	border-bottom-right-radius: var(--whale-radius);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox th {
