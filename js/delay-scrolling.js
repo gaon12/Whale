@@ -1,62 +1,39 @@
 (() => {
-	const getAnchorTarget = (href) => {
-		if (!href?.startsWith('#')) {
-			return null;
+	const anchorSelector = [
+		'.toc ul li > a[href^="#"]',
+		'#fixed-toc ul li > a[href^="#"]',
+		'.mw-cite-backlink > a[href^="#"]',
+		'.mw-cite-backlink > * > a[href^="#"]',
+		'.reference > a[href^="#"]',
+		'#preftoc li > a[href^="#"]',
+	].join(',');
+
+	window.addEventListener('load', () => {
+		whale.scrollToTarget(whale.getAnchorTarget(window.location.hash));
+	});
+
+	document.addEventListener('click', (event) => {
+		const headlineNumber = whale.closest(event.target, '.mw-headline-number');
+		if (headlineNumber) {
+			event.preventDefault();
+			whale.scrollToTarget(document.getElementById('toctitle'));
+			return;
 		}
 
-		return href.includes('.')
-			? document.getElementById(href.slice(1))
-			: document.querySelector(href);
-	};
+		const link = whale.closest(event.target, anchorSelector);
+		const target = whale.getAnchorTarget(link?.getAttribute('href'));
 
-	const scrollToTarget = (target, navHeight) => {
 		if (!target) {
 			return;
 		}
 
-		window.scrollTo({
-			top: target.getBoundingClientRect().top + window.scrollY - navHeight - 10,
-			behavior: 'smooth',
-		});
-	};
+		event.preventDefault();
 
-	const bindAnchorScroll = (selector, navHeight, callback) => {
-		document.querySelectorAll(selector).forEach((link) => {
-			link.addEventListener('click', (event) => {
-				const target = getAnchorTarget(link.getAttribute('href'));
-
-				if (target) {
-					event.preventDefault();
-					if (callback) {
-						callback(target);
-						return;
-					}
-					scrollToTarget(target, navHeight);
-				}
-			});
-		});
-	};
-
-	window.addEventListener('load', () => {
-		const navHeight =
-			document.querySelector('.whale-nav-wrapper')?.offsetHeight || 0;
-		const hashTarget = getAnchorTarget(window.location.hash);
-
-		scrollToTarget(hashTarget, navHeight);
-
-		bindAnchorScroll('.toc ul li > a', navHeight);
-		bindAnchorScroll('.mw-cite-backlink > a', navHeight);
-		bindAnchorScroll('.mw-cite-backlink > * > a', navHeight);
-		bindAnchorScroll('.reference > a', navHeight);
-		bindAnchorScroll('#preftoc li > a', navHeight, () => {
+		if (link.closest('#preftoc')) {
 			window.scrollTo({ top: 0, behavior: 'smooth' });
-		});
+			return;
+		}
 
-		document.querySelectorAll('.mw-headline-number').forEach((number) => {
-			number.addEventListener('click', (event) => {
-				event.preventDefault();
-				scrollToTarget(document.getElementById('toctitle'), navHeight);
-			});
-		});
+		whale.scrollToTarget(target);
 	});
 })();

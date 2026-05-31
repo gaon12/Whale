@@ -1,44 +1,43 @@
 (() => {
-	const ready = (callback) => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', callback, { once: true });
-			return;
+	const getShareData = () => {
+		let host = mw.config.get('wgServer');
+		const namespace = mw.config.get('wgNamespaceNumber');
+		let title = mw.config.get('wgTitle');
+		const siteName = mw.config.get('wgSiteName');
+
+		if (host.startsWith('//')) {
+			host = location.protocol + host;
 		}
-		callback();
+
+		if (namespace) {
+			title = `${mw.config.get('wgFormattedNamespaces')[namespace]}:${title}`;
+		}
+
+		return {
+			title,
+			text: `${title} - ${siteName}`,
+			url: `${host}${mw.config.get('wgScriptPath')}/index.php?curid=${mw.config.get('wgArticleId')}`,
+			hashtags: [siteName.replace(/ /g, '_')],
+		};
 	};
 
-	ready(() => {
-		document.querySelectorAll('.tools-share').forEach((button) => {
-			button.addEventListener('click', () => {
-				let host = mw.config.get('wgServer');
-				const namespace = mw.config.get('wgNamespaceNumber');
-				let title = mw.config.get('wgTitle');
+	whale.ready(() => {
+		document.addEventListener('click', (event) => {
+			if (!whale.closest(event.target, '.tools-share')) {
+				return;
+			}
 
-				if (host.startsWith('//')) {
-					host = location.protocol + host;
-				}
+			const shareData = getShareData();
 
-				if (namespace) {
-					title = `${mw.config.get('wgFormattedNamespaces')[namespace]}:${title}`;
-				}
-
-				const shareData = {
-					title,
-					text: `${title} - ${mw.config.get('wgSiteName')}`,
-					url: `${host}${mw.config.get('wgScriptPath')}/index.php?curid=${mw.config.get('wgArticleId')}`,
-					hashtags: [mw.config.get('wgSiteName').replace(/ /g, '_')],
-				};
-
-				if (navigator.share) {
-					navigator.share(shareData).catch((error) => {
-						console.error('Share API error: ', error);
-					});
-					return;
-				}
-
-				navigator.clipboard?.writeText(shareData.url).catch((error) => {
-					console.error('Clipboard API error: ', error);
+			if (navigator.share) {
+				navigator.share(shareData).catch((error) => {
+					console.error('Share API error: ', error);
 				});
+				return;
+			}
+
+			navigator.clipboard?.writeText(shareData.url).catch((error) => {
+				console.error('Clipboard API error: ', error);
 			});
 		});
 	});

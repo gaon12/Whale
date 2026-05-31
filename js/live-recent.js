@@ -1,11 +1,5 @@
 (() => {
-	const ready = (callback) => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', callback, { once: true });
-			return;
-		}
-		callback();
-	};
+	const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
 
 	const timeFormat = (time) => {
 		const aDayAgo = new Date();
@@ -20,137 +14,152 @@
 			.join(':');
 	};
 
-	ready(() => {
+	const createPlaceholderRow = (isLoading) => {
+		const listItem = document.createElement('li');
+		const placeholder = document.createElement('span');
+
+		listItem.className = 'live-recent-row live-recent-empty';
+		placeholder.className = isLoading
+			? 'recent-item recent-item-placeholder is-loading'
+			: 'recent-item recent-item-placeholder';
+		placeholder.innerHTML = '&nbsp;';
+		listItem.append(placeholder);
+
+		return listItem;
+	};
+
+	const createChangeRow = (item) => {
+		const time = new Date(item.timestamp);
+		const listItem = document.createElement('li');
+		const link = document.createElement('a');
+		const title =
+			item.title.length > 13 ? `${item.title.slice(0, 13)}...` : item.title;
+
+		link.className = 'recent-item';
+		link.href = mw.util.getUrl(item.title);
+		link.title = item.title;
+		link.append(`[${timeFormat(time)}] `);
+
+		if (item.type === 'new') {
+			const badge = document.createElement('span');
+			badge.className = 'new';
+			badge.textContent = `${mw.message('whale-feed-new').text()} `;
+			link.append(badge);
+		}
+
+		link.append(title);
+		listItem.append(link);
+
+		return listItem;
+	};
+
+	const fillRows = (list, limit, rowFactory) => {
+		const fragment = new DocumentFragment();
+
+		for (let index = 0; index < limit; index++) {
+			fragment.append(rowFactory(index));
+		}
+
+		list.replaceChildren(fragment);
+	};
+
+	whale.ready(() => {
 		const liveRecent = document.querySelector('.live-recent');
 		const list = document.getElementById('live-recent-list');
-		const articleTab = document.getElementById('whale-recent-tab1');
-		const talkTab = document.getElementById('whale-recent-tab2');
+		const tabs = [
+			{
+				element: document.getElementById('whale-recent-tab1'),
+				namespaces: liveRecent?.dataset.articleNs,
+			},
+			{
+				element: document.getElementById('whale-recent-tab2'),
+				namespaces: liveRecent?.dataset.talkNs,
+			},
+		];
 
-		if (!liveRecent || !list || !articleTab || !talkTab) {
+		if (!liveRecent || !list || tabs.some((tab) => !tab.element)) {
 			return;
 		}
 
 		const sidebarMedia = window.matchMedia('(min-width: 1024px)');
-		const articleNamespaces = liveRecent.dataset.articleNs;
-		const talkNamespaces = liveRecent.dataset.talkNs;
 		const limit = list.childElementCount;
-		let isArticleTab = true;
+		let activeTabIndex = 0;
 		let refreshInterval = null;
+		let requestId = 0;
+		let hasLoaded = false;
 
 		const isLiveRecentVisible = () =>
 			sidebarMedia.matches && list.offsetParent !== null;
 
-		const createPlaceholderRow = (isLoading) => {
-			const listItem = document.createElement('li');
-			const placeholder = document.createElement('span');
-
-			listItem.className = 'live-recent-row live-recent-empty';
-			placeholder.className = isLoading
-				? 'recent-item recent-item-placeholder is-loading'
-				: 'recent-item recent-item-placeholder';
-			placeholder.innerHTML = '&nbsp;';
-			listItem.append(placeholder);
-
-			return listItem;
-		};
-
 		const showSkeletonRows = () => {
-			const fragment = new DocumentFragment();
-
-			for (let index = 0; index < limit; index++) {
-				fragment.append(createPlaceholderRow(true));
-			}
-
 			list.setAttribute('aria-busy', 'true');
-			list.replaceChildren(fragment);
+			fillRows(list, limit, () => createPlaceholderRow(true));
 		};
 
 		const showEmptyRows = () => {
-			const fragment = new DocumentFragment();
-
-			for (let index = 0; index < limit; index++) {
-				fragment.append(createPlaceholderRow(false));
-			}
-
 			list.setAttribute('aria-busy', 'false');
-			list.replaceChildren(fragment);
+			fillRows(list, limit, () => createPlaceholderRow(false));
 		};
 
-		const refreshLiveRecent = async () => {
+		const refreshLiveRecent = async ({ showLoading = !hasLoaded } = {}) => {
 			if (!isLiveRecentVisible()) {
 				return;
 			}
 
-			showSkeletonRows();
+			const currentRequestId = ++requestId;
 
-			const parameters = {
-				action: 'query',
-				list: 'recentchanges',
-				rcprop: 'title|timestamp',
-				rcshow: '!bot|!redirect',
-				rctype: 'edit|new',
-				rclimit: limit,
-				format: 'json',
-				rcnamespace: isArticleTab ? articleNamespaces : talkNamespaces,
-				rctoponly: true,
-			};
+			if (showLoading) {
+				showSkeletonRows();
+			}
 
 			try {
-				await mw.loader.using('mediawiki.api');
-				const api = new mw.Api();
-				const data = await api.get(parameters);
-				const fragment = new DocumentFragment();
-				const changes = data.query?.recentchanges ?? [];
+				const api = await whale.getApi();
+				const data = await api.get({
+					action: 'query',
+					list: 'recentchanges',
+					rcprop: 'title|timestamp',
+					rcshow: '!bot|!redirect',
+					rctype: 'edit|new',
+					rclimit: limit,
+					format: 'json',
+					rcnamespace: tabs[activeTabIndex].namespaces,
+					rctoponly: true,
+				});
 
-				for (const item of changes.slice(0, limit)) {
-					const time = new Date(item.timestamp);
-					const listItem = document.createElement('li');
-					const link = document.createElement('a');
-					const title =
-						item.title.length > 13
-							? `${item.title.slice(0, 13)}...`
-							: item.title;
-
-					link.className = 'recent-item';
-					link.href = mw.util.getUrl(item.title);
-					link.title = item.title;
-					link.append(`[${timeFormat(time)}] `);
-
-					if (item.type === 'new') {
-						const badge = document.createElement('span');
-						badge.className = 'new';
-						badge.textContent = `${mw.message('whale-feed-new').text()} `;
-						link.append(badge);
-					}
-
-					link.append(title);
-					listItem.append(link);
-					fragment.append(listItem);
+				if (currentRequestId !== requestId) {
+					return;
 				}
 
-				for (let index = changes.length; index < limit; index++) {
-					fragment.append(createPlaceholderRow(false));
-				}
+				const changes = (data.query?.recentchanges ?? []).slice(0, limit);
 
+				fillRows(list, limit, (index) =>
+					changes[index]
+						? createChangeRow(changes[index])
+						: createPlaceholderRow(false),
+				);
 				list.setAttribute('aria-busy', 'false');
-				list.replaceChildren(fragment);
+				hasLoaded = true;
 			} catch {
-				showEmptyRows();
+				if (currentRequestId === requestId) {
+					showEmptyRows();
+				}
 			}
 		};
 
-		articleTab.addEventListener('click', () => {
-			articleTab.classList.add('is-active');
-			talkTab.classList.remove('is-active');
-			isArticleTab = true;
-			refreshLiveRecent();
-		});
+		const setActiveTab = (nextIndex) => {
+			if (activeTabIndex === nextIndex) {
+				return;
+			}
 
-		talkTab.addEventListener('click', () => {
-			talkTab.classList.add('is-active');
-			articleTab.classList.remove('is-active');
-			isArticleTab = false;
+			tabs[activeTabIndex].element.classList.remove('is-active');
+			tabs[nextIndex].element.classList.add('is-active');
+			activeTabIndex = nextIndex;
+			hasLoaded = false;
 			refreshLiveRecent();
+		};
+
+		tabs.forEach((tab, index) => {
+			tab.element.addEventListener('click', () => setActiveTab(index));
 		});
 
 		const stopAutoRefresh = () => {
@@ -168,12 +177,14 @@
 				return;
 			}
 
-			if (refreshInterval !== null) {
-				return;
+			if (refreshInterval === null) {
+				refreshInterval = window.setInterval(
+					() => refreshLiveRecent({ showLoading: false }),
+					AUTO_REFRESH_INTERVAL,
+				);
 			}
 
-			refreshInterval = window.setInterval(refreshLiveRecent, 5 * 60 * 1000);
-			window.setTimeout(refreshLiveRecent, 0);
+			refreshLiveRecent();
 		};
 
 		const syncAutoRefresh = () => {
@@ -185,12 +196,7 @@
 			stopAutoRefresh();
 		};
 
-		if (typeof sidebarMedia.addEventListener === 'function') {
-			sidebarMedia.addEventListener('change', syncAutoRefresh);
-		} else {
-			sidebarMedia.addListener(syncAutoRefresh);
-		}
-
+		whale.onMediaChange(sidebarMedia, syncAutoRefresh);
 		syncAutoRefresh();
 	});
 })();

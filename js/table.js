@@ -33,9 +33,8 @@
 				? 'descending'
 				: 'ascending';
 		const headerRow = header.closest('tr');
-		const rows = [...tbody.rows].filter((row) => row !== headerRow);
-
-		rows
+		const sortedRows = [...tbody.rows]
+			.filter((row) => row !== headerRow)
 			.map((row, position) => ({
 				position,
 				row,
@@ -46,29 +45,30 @@
 				const sorted = result || first.position - second.position;
 
 				return direction === 'ascending' ? sorted : -sorted;
-			})
-			.forEach(({ row }) => {
-				tbody.append(row);
 			});
+		const fragment = new DocumentFragment();
 
+		for (const { row } of sortedRows) {
+			fragment.append(row);
+		}
+
+		tbody.append(fragment);
 		table.querySelectorAll('th[aria-sort]').forEach((item) => {
 			item.removeAttribute('aria-sort');
 		});
 		header.setAttribute('aria-sort', direction);
 	};
 
-	const tableSort = () => {
-		const content = document.getElementById('mw-content-text');
+	const initSortableTables = (content) => {
+		const tables = new Set(content.querySelectorAll('table.sortable'));
 
-		if (!content) {
-			return;
-		}
+		content.querySelectorAll('th.headerSort').forEach((header) => {
+			const table = header.closest('table');
 
-		const tables = [...content.querySelectorAll('table')].filter(
-			(table) =>
-				table.classList.contains('sortable') ||
-				table.querySelector('th.headerSort'),
-		);
+			if (table) {
+				tables.add(table);
+			}
+		});
 
 		for (const table of tables) {
 			if (table.dataset.whaleSortable === 'ready') {
@@ -79,8 +79,8 @@
 			table.classList.add('whale-sortable');
 
 			const headers = table.tHead
-				? [...table.tHead.querySelectorAll('th')]
-				: [...table.querySelectorAll('tr:first-child > th')];
+				? table.tHead.querySelectorAll('th')
+				: table.querySelectorAll('tr:first-child > th');
 
 			headers.forEach((header, index) => {
 				if (header.classList.contains('unsortable')) {
@@ -100,40 +100,39 @@
 		}
 	};
 
-	const tablewrap = () => {
-		const content = document.getElementById('mw-content-text');
-
-		if (!content) {
-			return;
-		}
-
+	const syncTableWrappers = (content) => {
 		const contentWidth = content.clientWidth;
-		const tables = [...content.querySelectorAll('table')];
 
-		for (const table of tables) {
+		for (const table of content.querySelectorAll('table')) {
 			const parent = table.parentElement;
+			const isWrapped = parent?.classList.contains('whale-table-wrapper');
 
-			if (
-				table.clientWidth > contentWidth &&
-				parent?.className !== 'whale-table-wrapper'
-			) {
+			if (table.clientWidth > contentWidth && !isWrapped) {
 				const wrapper = document.createElement('div');
 				wrapper.className = 'whale-table-wrapper';
 				parent?.insertBefore(wrapper, table);
 				wrapper.append(table);
-			} else if (
-				table.clientWidth < contentWidth &&
-				parent?.className === 'whale-table-wrapper'
-			) {
+				continue;
+			}
+
+			if (table.clientWidth < contentWidth && isWrapped) {
 				parent.parentElement?.insertBefore(table, parent);
 				parent.remove();
 			}
 		}
 	};
 
-	window.addEventListener('resize', tablewrap);
 	window.addEventListener('load', () => {
-		tableSort();
-		tablewrap();
+		const content = document.getElementById('mw-content-text');
+
+		if (!content) {
+			return;
+		}
+
+		const syncWrappers = whale.rafThrottle(() => syncTableWrappers(content));
+
+		initSortableTables(content);
+		syncWrappers();
+		window.addEventListener('resize', syncWrappers);
 	});
 })();
