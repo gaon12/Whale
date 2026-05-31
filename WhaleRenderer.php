@@ -406,6 +406,8 @@ class WhaleRenderer {
 	protected function liveRecent( string $mode = 'desktop' ) {
 		global $wgWhaleEnableLiveRC,
 			$wgWhaleMaxRecent,
+			$wgWhaleLiveRecentFixedHeight,
+			$wgWhaleLiveRCRefreshInterval,
 			$wgWhaleLiveRCArticleNamespaces,
 			$wgWhaleLiveRCTalkNamespaces;
 
@@ -419,8 +421,17 @@ class WhaleRenderer {
 		$articleNS = implode( '|', $wgWhaleLiveRCArticleNamespaces );
 		$talkNS = implode( '|', $wgWhaleLiveRCTalkNamespaces );
 		$isMobile = $mode === 'mobile';
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$fixedHeight = ( $wgWhaleLiveRecentFixedHeight ?? true ) !== false &&
+			$userOptionsLookup->getOption( $skin->getUser(), 'whale-live-recent-fixed-height' ) !== false;
+		$refreshInterval = max( 10, (int)( $wgWhaleLiveRCRefreshInterval ?? 60 ) );
+		$classes = 'live-recent' . ( $fixedHeight ? ' live-recent-fixed-height' : '' );
 	?>
-		<div class="live-recent" data-live-recent-mode="<?php echo htmlspecialchars( $mode, ENT_QUOTES ); ?>" data-limit="<?php echo (int)$wgWhaleMaxRecent ?>">
+		<div class="<?php echo htmlspecialchars( $classes, ENT_QUOTES ); ?>"
+			data-live-recent-mode="<?php echo htmlspecialchars( $mode, ENT_QUOTES ); ?>"
+			data-limit="<?php echo (int)$wgWhaleMaxRecent ?>"
+			data-refresh-interval="<?php echo $refreshInterval * 1000; ?>"
+			style="--whale-live-recent-limit: <?php echo (int)$wgWhaleMaxRecent ?>; --whale-live-recent-refresh: <?php echo $refreshInterval; ?>s;">
 			<?php
 				$this->liveRecentFeed(
 					$mode . '-live-recent-article-list',

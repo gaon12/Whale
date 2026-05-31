@@ -87,6 +87,11 @@
 		window.addEventListener('resize', scheduleUpdate);
 	};
 
+	const getTocTarget = () =>
+		document.getElementById('toc') ||
+		document.querySelector('.toc, #toctitle') ||
+		document.getElementById('mw-content-text');
+
 	const setToggleState = (toggle, expanded) => {
 		const targetId = toggle.getAttribute('aria-controls');
 		const target = targetId ? document.getElementById(targetId) : null;
@@ -210,6 +215,13 @@
 					top: document.documentElement.scrollHeight,
 					behavior: 'smooth',
 				});
+				return;
+			}
+
+			const scrollToc = whale.closest(event.target, '#whale-scrolltoc');
+			if (scrollToc) {
+				event.preventDefault();
+				whale.scrollToTarget(getTocTarget());
 				return;
 			}
 

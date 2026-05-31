@@ -8,6 +8,8 @@ class WhaleHooks {
 	private const FOLDING_MODE_DEFAULT = 'default';
 	private const FOLDING_MODE_OPEN = 'open';
 	private const FOLDING_MODE_OFF = 'off';
+	private const SCROLL_BUTTONS_VERTICAL = 'vertical';
+	private const SCROLL_BUTTONS_HORIZONTAL = 'horizontal';
 
 	/**
 	 * @since 1.17.0
@@ -16,6 +18,8 @@ class WhaleHooks {
 	 * @param array &$bodyAttrs
 	 */
 	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, &$bodyAttrs ) {
+		global $wgWhaleEnableFloatingToc;
+
 		if ( $sk->getSkinName() === 'whale' ) {
 			$bodyAttrs['class'] .= ' Whale width-size';
 			$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
@@ -29,6 +33,20 @@ class WhaleHooks {
 
 			if ( $userOptionsLookup->getOption( $sk->getUser(), 'whale-content-reduce-motion' ) ) {
 				$bodyAttrs['class'] .= ' whale-reduce-motion';
+			}
+
+			$scrollButtons = $userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-scroll-buttons' );
+			if ( $scrollButtons === self::SCROLL_BUTTONS_HORIZONTAL ) {
+				$bodyAttrs['class'] .= ' whale-scroll-buttons-horizontal';
+			} else {
+				$bodyAttrs['class'] .= ' whale-scroll-buttons-vertical';
+			}
+
+			if (
+				( $wgWhaleEnableFloatingToc ?? true ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-floating-toc' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-floating-toc-enabled';
 			}
 		}
 	}
@@ -54,9 +72,9 @@ class WhaleHooks {
 			'options' => [
 				wfMessage( 'whale-layout-select-1000' )->text() => '1000px',
 				wfMessage( 'whale-layout-select-1100' )->text() => '1100px',
-				wfMessage( 'whale-layout-select-1200' )->text() => null,
+				wfMessage( 'whale-layout-select-1200' )->text() => '1200px',
 				wfMessage( 'whale-layout-select-1300' )->text() => '1300px',
-				wfMessage( 'whale-layout-select-1400' )->text() => '1400px',
+				wfMessage( 'whale-layout-select-1400' )->text() => null,
 				wfMessage( 'whale-layout-select-1500' )->text() => '1500px',
 				wfMessage( 'whale-layout-select-1600' )->text() => '1600px',
 			],
@@ -80,6 +98,33 @@ class WhaleHooks {
 			'type' => 'toggle',
 			'label-message' => 'whale-pref-layout-controlbar',
 			'section' => 'whale/layout',
+		];
+
+		$preferences['whale-layout-scroll-buttons'] = [
+			'type' => 'select',
+			'label-message' => 'whale-pref-layout-scroll-buttons',
+			'section' => 'whale/layout',
+			'options' => [
+				wfMessage( 'whale-scroll-buttons-vertical' )->text() => self::SCROLL_BUTTONS_VERTICAL,
+				wfMessage( 'whale-scroll-buttons-horizontal' )->text() => self::SCROLL_BUTTONS_HORIZONTAL,
+			],
+			'help-message' => 'whale-pref-layout-scroll-buttons-help',
+			'default' => self::SCROLL_BUTTONS_VERTICAL
+		];
+
+		$preferences['whale-layout-floating-toc'] = [
+			'type' => 'toggle',
+			'label-message' => 'whale-pref-layout-floating-toc',
+			'section' => 'whale/layout',
+			'default' => true
+		];
+
+		$preferences['whale-live-recent-fixed-height'] = [
+			'type' => 'toggle',
+			'label-message' => 'whale-pref-live-recent-fixed-height',
+			'section' => 'whale/layout',
+			'help-message' => 'whale-pref-live-recent-fixed-height-help',
+			'default' => true
 		];
 
 		$preferences['whale-content-section-collapse'] = [

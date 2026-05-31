@@ -1,67 +1,106 @@
-/* Make button to make fixed toc */
 (() => {
-	const createIndexButton = (contentHeader) => {
-		const contentHeaderOffset = contentHeader.getBoundingClientRect();
-		const indexButton = document.createElement('button');
+	const DESKTOP_QUERY = '(min-width: 1280px)';
+	const MAX_ITEMS = 18;
+	let activeScrollUpdate = null;
 
-		indexButton.id = 'fixed-toc-button';
-		indexButton.type = 'button';
-		indexButton.className = 'whale-btn whale-btn-primary';
-		indexButton.innerHTML =
-			'<svg class="whale-icon whale-icon-list" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>';
-		indexButton.style.position = 'fixed';
-		indexButton.style.top = `${contentHeaderOffset.top + window.scrollY}px`;
-		indexButton.style.left = `${contentHeaderOffset.left + window.scrollX - 62}px`;
+	const getTocLinks = () => [
+		...document.querySelectorAll(
+			'#toc li > a[href^="#"], .toc li > a[href^="#"]',
+		),
+	];
 
-		return indexButton;
+	const getLinkText = (link) => {
+		const number = link.querySelector('.tocnumber')?.textContent?.trim() || '';
+		const text = link.querySelector('.toctext')?.textContent?.trim() || '';
+		return [number, text || link.textContent?.trim()]
+			.filter(Boolean)
+			.join('. ')
+			.replace(/^\s*([0-9.]+)\.\s*\1\s*/, '$1. ');
 	};
 
-	whale.ready(() => {
-		const toc = document.getElementById('toc');
-		const contentHeader = document.querySelector('.whale-content-header');
+	const getTarget = (link) => whale.getAnchorTarget(link.getAttribute('href'));
 
-		if (!toc?.innerHTML || !contentHeader || window.innerWidth <= 1649) {
+	const removeFloatingToc = () => {
+		document.querySelector('.whale-floating-toc')?.remove();
+		if (activeScrollUpdate) {
+			window.removeEventListener('scroll', activeScrollUpdate);
+			activeScrollUpdate = null;
+		}
+	};
+
+	const buildFloatingToc = () => {
+		if (
+			!document.body.classList.contains('whale-floating-toc-enabled') ||
+			!window.matchMedia(DESKTOP_QUERY).matches
+		) {
+			removeFloatingToc();
 			return;
 		}
 
-		let fixedToc = null;
-		const indexButton = createIndexButton(contentHeader);
+		const links = getTocLinks()
+			.map((link) => ({
+				link,
+				target: getTarget(link),
+				text: getLinkText(link),
+			}))
+			.filter((item) => item.target && item.text)
+			.slice(0, MAX_ITEMS);
 
-		indexButton.addEventListener('click', () => {
-			indexButton.style.display = 'none';
+		if (links.length < 2) {
+			removeFloatingToc();
+			return;
+		}
 
-			if (fixedToc) {
-				return;
-			}
+		removeFloatingToc();
 
-			fixedToc = toc.cloneNode(true);
-			fixedToc.id = 'fixed-toc';
-			Object.assign(fixedToc.style, {
-				position: 'fixed',
-				top: '44px',
-				left: '0',
-				backgroundColor: '#f5f8fa',
-				borderRight: '1px solid #e1e8ed',
-				color: '#373a3c',
-				padding: '16px',
-				bottom: '0',
-				overflowY: 'auto',
-				maxWidth: '200px',
-				zIndex: '3000',
+		const toc = document.createElement('nav');
+		const list = document.createElement('ol');
+		toc.className = 'whale-floating-toc';
+		toc.setAttribute('aria-label', '문단 목차');
+
+		links.forEach(({ link, target, text }) => {
+			const item = document.createElement('li');
+			const anchor = document.createElement('a');
+			anchor.href = link.getAttribute('href');
+			anchor.textContent = text;
+			anchor.addEventListener('click', (event) => {
+				event.preventDefault();
+				whale.scrollToTarget(target);
 			});
-
-			fixedToc
-				.querySelector(':scope > .togglelink')
-				?.addEventListener('click', (event) => {
-					event.preventDefault();
-					indexButton.style.display = '';
-					fixedToc?.remove();
-					fixedToc = null;
-				});
-
-			document.body.append(fixedToc);
+			item.append(anchor);
+			list.append(item);
 		});
 
-		document.body.append(indexButton);
+		toc.append(list);
+		document.body.append(toc);
+
+		const anchors = [...toc.querySelectorAll('a')];
+		const updateActive = whale.rafThrottle(() => {
+			const scrollY = window.scrollY + 96;
+			let activeIndex = 0;
+
+			links.forEach(({ target }, index) => {
+				if (target.getBoundingClientRect().top + window.scrollY <= scrollY) {
+					activeIndex = index;
+				}
+			});
+
+			anchors.forEach((anchor, index) => {
+				anchor.classList.toggle('is-active', index === activeIndex);
+			});
+		});
+
+		updateActive();
+		activeScrollUpdate = updateActive;
+		window.addEventListener('scroll', activeScrollUpdate, { passive: true });
+	};
+
+	whale.ready(() => {
+		window.requestAnimationFrame(buildFloatingToc);
+		window.addEventListener('load', buildFloatingToc, { once: true });
+		mw.hook('wikipage.content').add(() => {
+			window.requestAnimationFrame(buildFloatingToc);
+		});
+		window.addEventListener('resize', whale.rafThrottle(buildFloatingToc));
 	});
 })();

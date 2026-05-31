@@ -35,6 +35,7 @@
 		"WhaleEnableSectionCollapse": true,
 		"WhaleEnableFoldingBlocks": true,
 		"WhaleEnableBlurredCategories": true,
+		"WhaleEnableFloatingToc": true,
 		"WhaleUseGravatar": true,
 		"WhaleTheme": null,
 		"WhalePrimaryColor": null,
@@ -48,6 +49,8 @@
 		"WhaleMobileReplaceAd": false,
 		"WhaleLiveRCArticleNamespaces": [0, 4, 10, 12, 14],
 		"WhaleLiveRCTalkNamespaces": [1, 3, 5, 7, 9, 11, 13, 15],
+		"WhaleLiveRCRefreshInterval": 60,
+		"WhaleLiveRecentFixedHeight": true,
 		"WhaleMaxRecent": 10
 	},
 	"AvailableRights": [
@@ -101,6 +104,7 @@
 		"skins.whale.layoutjs": {
 			"scripts": [
 				"js/delay-scrolling.js",
+				"js/index-button.js",
 				"js/share-button.js",
 				"js/layout.js",
 				"js/table.js"
