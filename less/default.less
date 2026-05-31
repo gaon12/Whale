@@ -423,28 +423,33 @@ strike {
 	width: 15rem;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs {
 	border: 0;
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item {
 	width: 7.5rem;
 	border: 1px solid #e1e8ed;
 	border-top-left-radius: 0.35rem;
 	background-color: #f5f8fa;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item + .nav-item {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item + .live-recent-tab-item {
 	margin-left: 0;
 	border-left: 0;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0.35rem;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link {
 	border: 0;
 	border-radius: 0;
 	border-top-left-radius: 0.35rem;
+	display: block;
 	text-align: center;
 	padding-top: 0.6rem;
 	padding-bottom: 0.6rem;
@@ -452,23 +457,23 @@ strike {
 	position: relative;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item + .nav-item .nav-link {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item + .live-recent-tab-item .live-recent-tab-link {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0.35rem;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active,
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:hover,
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:focus,
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:active {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link:hover,
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link:focus,
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link:active {
 	color: #373a3c;
 	background-color: #fff;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active::before,
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:hover::before,
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:focus::before,
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link:active::before {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active::before,
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link:hover::before,
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link:focus::before,
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link:active::before {
 	background-color: var(--whale-main-color);
 	border-bottom: 2px solid var(--whale-main-color);
 	position: absolute;
@@ -535,14 +540,17 @@ strike {
 	padding: 0.4rem 0.6rem;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .label {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .live-recent-more {
 	background-color: var(--whale-main-color);
+	border-radius: 0.25rem;
+	color: #fff;
+	display: inline-block;
 	padding: 0.4rem;
 	font-size: 0.8rem;
 	font-weight: 400;
 }
 
-.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .label:hover {
+.Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer .live-recent-more:hover {
 	background-color: var(--whale-second-color);
 	transition: 0.3s;
 }
@@ -732,12 +740,26 @@ strike {
 	padding-left: 1.5rem;
 }
 
-.Whale .login-modal .alert {
+.Whale .login-modal .whale-alert {
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
 	padding: 0.8rem;
 	margin-bottom: 0.8rem;
 }
 
-.Whale .login-modal .alert-hidden {
+.Whale .login-modal .whale-alert-danger {
+	background-color: #f2dede;
+	border-color: #ebcccc;
+	color: #a94442;
+}
+
+.Whale .login-modal .whale-alert-warning {
+	background-color: #fcf8e3;
+	border-color: #faf2cc;
+	color: #8a6d3b;
+}
+
+.Whale .login-modal .whale-alert-hidden {
 	display: none;
 }
 
@@ -1039,7 +1061,7 @@ body.whale-dark .Whale,
 body.whale-dark .dropdown-menu,
 body.whale-dark .dropdown-item,
 body.whale-dark .Whale .nav-wrapper .navbar .form-inline .btn,
-body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active,
+body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
 body.whale-dark table.mw_metadata th,
@@ -1056,7 +1078,7 @@ body.whale-dark .navbox > tbody > tr:nth-child(even) > .navbox-list {
 body.whale-dark .whale-content-header,
 body.whale-dark .whale-footer,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer,
-body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item,
+body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header,
 body.whale-dark .Whale .content-wrapper .whale-footer,
 body.whale-dark .editOptions,
@@ -1119,8 +1141,8 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer,
 body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content,
-body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item,
-body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item + .nav-item,
+body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item,
+body.whale-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item + .live-recent-tab-item,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn,
@@ -1158,7 +1180,7 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .dropdown-menu,
 	body.whale-auto-dark .dropdown-item,
 	body.whale-auto-dark .Whale .nav-wrapper .navbar .form-inline .btn,
-	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item .nav-link.active,
+	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item .live-recent-tab-link.is-active,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
 	body.whale-auto-dark table.mw_metadata th,
@@ -1175,7 +1197,7 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .whale-content-header,
 	body.whale-auto-dark .whale-footer,
 	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer,
-	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item,
+	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header,
 	body.whale-auto-dark .Whale .content-wrapper .whale-footer,
 	body.whale-auto-dark .editOptions,
@@ -1238,8 +1260,8 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main,
 	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-footer,
 	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-content,
-	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item,
-	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .nav .nav-item + .nav-item,
+	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item,
+	body.whale-auto-dark .Whale .content-wrapper .whale-sidebar .live-recent-wrapper .live-recent .live-recent-header .live-recent-tabs .live-recent-tab-item + .live-recent-tab-item,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn,

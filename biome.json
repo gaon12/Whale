@@ -7,8 +7,7 @@
 			"skin.json",
 			"js/**/*.js",
 			"scripts/**/*.mjs",
-			"!js/lib",
-			"!bootstrap"
+			"!js/lib"
 		]
 	},
 	"formatter": {
