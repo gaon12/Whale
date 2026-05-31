@@ -71,25 +71,22 @@
 				"less/default.less": {
 					"media": "all"
 				},
-				"css/default_mobile.css": {
+				"less/wiki.less": {
 					"media": "all"
 				},
-				"css/wiki.css": {
+				"less/only-mw.less": {
 					"media": "all"
 				},
-				"css/only-mw.css": {
+				"less/wiki-table.less": {
 					"media": "all"
 				},
-				"css/wiki-table.css": {
-					"media": "all"
-				},
-				"css/wikiedittor-whale.css": {
+				"less/wikiedittor-whale.less": {
 					"media": "all"
 				},
 				"less/extensions/RelatedArticles.less": {
 					"media": "all"
 				},
-				"css/print.css": {
+				"less/print.less": {
 					"media": "print"
 				}
 			}
@@ -125,9 +122,9 @@
 	"ResourceModuleSkinStyles": {
 		"whale": {
 			"+ext.relatedArticles.readMore": "less/extensions/RelatedArticles.less",
-			"+ext.echo.ui": "css/extensions/Echo.css",
-			"+mediawiki.action.view.filepage": "css/skinStyles/mediawiki.action.view.filepage.css",
-			"+mediawiki.special.preferences.styles": "css/skinStyles/mediawiki.special.preferences.styles.css"
+			"+ext.echo.ui": "less/extensions/Echo.less",
+			"+mediawiki.action.view.filepage": "less/skinStyles/mediawiki.action.view.filepage.less",
+			"+mediawiki.special.preferences.styles": "less/skinStyles/mediawiki.special.preferences.styles.less"
 		}
 	},
 	"AutoloadClasses": {
