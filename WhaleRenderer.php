@@ -145,8 +145,8 @@ class WhaleRenderer {
 					<?php
 					// @codingStandardsIgnoreStart 
 					?>
-					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>" id="searchGoButton" class="btn btn-secondary"><?php echo $this->renderIcon( 'eye' ); ?></button>
-					<button type="submit" name="fulltext" value="<?php echo $skin->msg( 'searchbutton' )->escaped() ?>" id="mw-searchButton" class="btn btn-secondary">
+					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>" id="searchGoButton" class="whale-btn whale-btn-secondary"><?php echo $this->renderIcon( 'eye' ); ?></button>
+					<button type="submit" name="fulltext" value="<?php echo $skin->msg( 'searchbutton' )->escaped() ?>" id="mw-searchButton" class="whale-btn whale-btn-secondary">
 						<?php echo $this->renderIcon( 'search' ); ?></button>
 					<?php
 					// @codingStandardsIgnoreEnd
@@ -296,7 +296,7 @@ class WhaleRenderer {
 					?>">
 					<?php echo $this->renderIcon( 'sign-out' ); ?></a>
 			<?php } else { ?>
-				<a href="#" class="none-outline" data-toggle="modal" data-target="#login-modal">
+				<a href="#" class="none-outline" data-whale-toggle="modal" data-whale-target="#login-modal">
 					<?php echo $this->renderIcon( 'sign-in' ); ?>
 				</a>
 			<?php } ?>
@@ -322,32 +322,32 @@ class WhaleRenderer {
 		// perfectly acceptable in this particular context
 		// @codingStandardsIgnoreStart
 	?>
-		<div class="modal fade login-modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<div class="whale-modal whale-modal-fade login-modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modalLabel" aria-hidden="true">
+			<div class="whale-modal-dialog whale-modal-sm" role="document">
+				<div class="whale-modal-content">
+					<div class="whale-modal-header">
+						<button type="button" class="whale-modal-close" data-whale-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title"><?php echo $skin->msg( 'whale-login' )->escaped() ?></h4>
+						<h4 class="whale-modal-title"><?php echo $skin->msg( 'whale-login' )->escaped() ?></h4>
 					</div>
-					<div class="modal-body">
+					<div class="whale-modal-body">
 						<div id="modal-login-alert" class="whale-alert whale-alert-hidden whale-alert-danger" role="alert">
 						</div>
 						<form id="modal-loginform" name="userlogin" class="modal-loginform" method="post">
-							<input class="loginText form-control" id="wpName1" tabindex="1" placeholder="<?php echo $skin->msg( 'userlogin-yourname-ph' )->escaped() ?>" value="" name="lgname">
+							<input class="loginText whale-form-control" id="wpName1" tabindex="1" placeholder="<?php echo $skin->msg( 'userlogin-yourname-ph' )->escaped() ?>" value="" name="lgname">
 							<label for="inputPassword" class="whale-sr-only"><?php echo $skin->msg( 'userlogin-yourpassword' )->escaped() ?></label>
-							<input class="loginPassword form-control" id="wpPassword1" tabindex="2" placeholder="<?php echo $skin->msg( 'userlogin-yourpassword-ph' )->escaped() ?>" type="password" name="lgpassword">
+							<input class="loginPassword whale-form-control" id="wpPassword1" tabindex="2" placeholder="<?php echo $skin->msg( 'userlogin-yourpassword-ph' )->escaped() ?>" type="password" name="lgpassword">
 							<div class="modal-checkbox">
 								<input name="lgremember" type="checkbox" value="1" id="lgremember" tabindex="3">
 								<label for="lgremember"><?php echo $skin->msg( 'whale-remember' )->escaped() ?></label>
 							</div>
-							<input class="btn btn-success btn-block" type="submit" value="<?php echo $skin->msg( 'whale-login-btn' )->escaped() ?>" tabindex="4">
+							<input class="whale-btn whale-btn-success whale-btn-block" type="submit" value="<?php echo $skin->msg( 'whale-login-btn' )->escaped() ?>" tabindex="4">
 							<?php echo $linkRenderer->makeKnownLink(
 								SpecialPage::getTitleFor( 'Userlogin' ),
 								$skin->msg( 'userlogin-joinproject' ),
 								[
-									'class' => 'btn btn-primary btn-block',
+									'class' => 'whale-btn whale-btn-primary whale-btn-block',
 									'tabindex' => 5,
 									'type' => 'submit'
 								],
@@ -453,7 +453,7 @@ class WhaleRenderer {
 			$companionTitle = $title->isTalkPage() ? $title->getSubjectPage() : $title->getTalkPage();
 		?>
 			<div class="content-tools">
-				<div class="btn-group" role="group" aria-label="content-tools">
+				<div class="whale-btn-group" role="group" aria-label="content-tools">
 				<?php
 				if ( $action != 'edit' ) {
 					$editIcon = $this->renderIcon( $editable ? 'edit' : 'lock' ) . ' ';
@@ -461,7 +461,7 @@ class WhaleRenderer {
 						$title,
 						new HtmlArmor( $editIcon . $skin->msg( 'edit' )->escaped() ),
 						[
-							'class' => 'btn btn-secondary tools-btn',
+							'class' => 'whale-btn whale-btn-secondary tools-btn',
 							'id' => 'ca-edit',
 							'title' => Linker::titleAttrib( 'ca-edit', 'withaccess' ),
 							'accesskey' => Linker::accesskey( 'ca-edit' )
@@ -474,7 +474,7 @@ class WhaleRenderer {
 						$title,
 						$titlename = $skin->msg( 'article' )->plain(),
 						[
-							'class' => 'btn btn-secondary tools-btn',
+							'class' => 'whale-btn whale-btn-secondary tools-btn',
 							'title' => Linker::titleAttrib( 'ca-nstab-main', 'withaccess' ),
 							'accesskey' => Linker::accesskey( 'ca-nstab-main' )
 						]
@@ -498,7 +498,7 @@ class WhaleRenderer {
 						$companionTitle,
 						$titlename,
 						[
-							'class' => 'btn btn-secondary tools-btn',
+							'class' => 'whale-btn whale-btn-secondary tools-btn',
 						] + $additionalArrayStuff
 					);
 				}
@@ -507,7 +507,7 @@ class WhaleRenderer {
 						$title,
 						$skin->msg( 'history' )->plain(),
 						[
-							'class' => 'btn btn-secondary tools-btn',
+							'class' => 'whale-btn whale-btn-secondary tools-btn',
 							'title' => Linker::titleAttrib( 'ca-history', 'withaccess' ),
 							'accesskey' => Linker::accesskey( 'ca-history' )
 						],
@@ -515,7 +515,7 @@ class WhaleRenderer {
 					);
 				}
 				if ( $action == 'view' ) { ?>
-						<button type="button" class="btn btn-secondary tools-btn tools-share">
+						<button type="button" class="whale-btn whale-btn-secondary tools-btn tools-share">
 							<?php echo $this->renderIcon( 'share-square' ); ?>
 							<?php echo $skin->msg( 'whale-share' )->escaped() ?>
 						</button>
@@ -523,7 +523,7 @@ class WhaleRenderer {
 				}
 				// @codingStandardsIgnoreStart 
 					?>
-					<button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					<button type="button" class="whale-btn whale-btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<span class="caret"></span>
 					</button>
 					<?php
