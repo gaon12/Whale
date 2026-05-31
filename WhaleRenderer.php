@@ -100,36 +100,36 @@ class WhaleRenderer {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$skin = $this->skin;
 	?>
-		<nav class="navbar">
-			<a class="navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>">
+		<nav class="whale-navbar">
+			<a class="whale-navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>">
 				<?php echo Html::element( 'img', [
-					'class' => 'navbar-brand-logo',
+					'class' => 'whale-navbar-brand-logo',
 					'src' => $this->getNavBarLogoUrl(),
 					'alt' => is_string( $wgSitename ?? null ) ? $wgSitename : 'Whale',
 					'decoding' => 'async'
 				] ); ?>
 			</a>
-			<ul class="nav navbar-nav">
-				<li class="nav-item">
+			<ul class="whale-navbar-menu">
+				<li class="whale-navbar-item">
 					<?php echo $linkRenderer->makeKnownLink(
 						new TitleValue( NS_SPECIAL, 'Recentchanges' ),
 						// @codingStandardsIgnoreStart
 						new HtmlArmor( $this->renderIcon( 'sync' ) . '<span class="hide-title">' . $skin->msg( 'recentchanges' )->escaped() . '</span>' ),
 						// @codingStandardsIgnoreEnd )
 						[
-							'class' => 'nav-link',
+							'class' => 'whale-navbar-link',
 							'title' => Linker::titleAttrib( 'n-recentchanges', 'withaccess' ),
 							'accesskey' => Linker::accesskey( 'n-recentchanges' )
 						] );?>
 				</li>
-				<li class="nav-item">
+				<li class="whale-navbar-item">
 					<?php echo $linkRenderer->makeKnownLink(
 						new TitleValue( NS_SPECIAL, 'Randompage' ),
 						// @codingStandardsIgnoreStart
 						new HtmlArmor( $this->renderIcon( 'random' ) . '<span class="hide-title">' . $skin->msg( 'randompage' )->escaped() . '</span>' ),
 						// @codingStandardsIgnoreEnd
 						[
-							'class' => 'nav-link',
+							'class' => 'whale-navbar-link',
 							'title' => Linker::titleAttrib( 'n-randompage', 'withaccess' ),
 							'accesskey' => Linker::accesskey( 'n-randompage' )
 						]
@@ -190,7 +190,7 @@ class WhaleRenderer {
 		$user = $skin->getUser();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 	?>
-		<div class="navbar-login">
+		<div class="whale-navbar-login">
 			<?php
 			// If the user is logged in...
 			if ( $user->isRegistered() ) {
@@ -319,7 +319,7 @@ class WhaleRenderer {
 					?>">
 					<?php echo $this->renderIcon( 'sign-out' ); ?></a>
 			<?php } else { ?>
-				<a href="#" class="none-outline" data-whale-toggle="modal" data-whale-target="#login-modal">
+				<a href="#" class="none-outline" data-whale-toggle="modal" data-whale-target="#whale-login-modal">
 					<?php echo $this->renderIcon( 'sign-in' ); ?>
 				</a>
 			<?php } ?>
@@ -345,23 +345,23 @@ class WhaleRenderer {
 		// perfectly acceptable in this particular context
 		// @codingStandardsIgnoreStart
 	?>
-		<div class="whale-modal whale-modal-fade login-modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modalLabel" aria-hidden="true">
+		<div class="whale-modal whale-modal-fade whale-login-modal" id="whale-login-modal" tabindex="-1" role="dialog" aria-labelledby="whale-login-modal-label" aria-hidden="true">
 			<div class="whale-modal-dialog whale-modal-sm" role="document">
 				<div class="whale-modal-content">
 					<div class="whale-modal-header">
 						<button type="button" class="whale-modal-close" data-whale-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="whale-modal-title"><?php echo $skin->msg( 'whale-login' )->escaped() ?></h4>
+						<h4 class="whale-modal-title" id="whale-login-modal-label"><?php echo $skin->msg( 'whale-login' )->escaped() ?></h4>
 					</div>
 					<div class="whale-modal-body">
-						<div id="modal-login-alert" class="whale-alert whale-alert-hidden whale-alert-danger" role="alert">
+						<div id="whale-login-alert" class="whale-alert whale-alert-hidden whale-alert-danger" role="alert">
 						</div>
-						<form id="modal-loginform" name="userlogin" class="modal-loginform" method="post">
+						<form id="whale-login-form" name="userlogin" class="whale-login-form" method="post">
 							<input class="loginText whale-form-control" id="wpName1" tabindex="1" placeholder="<?php echo $skin->msg( 'userlogin-yourname-ph' )->escaped() ?>" value="" name="lgname">
 							<label for="inputPassword" class="whale-sr-only"><?php echo $skin->msg( 'userlogin-yourpassword' )->escaped() ?></label>
 							<input class="loginPassword whale-form-control" id="wpPassword1" tabindex="2" placeholder="<?php echo $skin->msg( 'userlogin-yourpassword-ph' )->escaped() ?>" type="password" name="lgpassword">
-							<div class="modal-checkbox">
+							<div class="whale-login-checkbox">
 								<input name="lgremember" type="checkbox" value="1" id="lgremember" tabindex="3">
 								<label for="lgremember"><?php echo $skin->msg( 'whale-remember' )->escaped() ?></label>
 							</div>
@@ -751,10 +751,10 @@ class WhaleRenderer {
 			}
 
 			echo Html::openElement( 'li', [
-				'class' => [ 'whale-dropdown', 'nav-item' ]
+				'class' => [ 'whale-dropdown', 'whale-navbar-item' ]
 			] );
 
-			array_push( $content['classes'], 'nav-link' );
+			array_push( $content['classes'], 'whale-navbar-link' );
 
 			$hasChildren = is_array( $content['children'] ) && count( $content['children'] ) > 0;
 
@@ -1396,7 +1396,7 @@ class WhaleRenderer {
 		$cache = $services->getMainWANObjectCache();
 		$cacheKey = $cache->makeKey(
 			'whale',
-			'navbar-content',
+			'whale-nav-content',
 			$title->getNamespace(),
 			$title->getDBkey()
 		);

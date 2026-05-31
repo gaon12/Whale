@@ -26,7 +26,7 @@
 	};
 
 	const getNavHeight = () =>
-		document.querySelector('.nav-wrapper')?.offsetHeight || 0;
+		document.querySelector('.whale-nav-wrapper')?.offsetHeight || 0;
 
 	const scrollToTarget = (target) => {
 		if (!target) {
