@@ -332,7 +332,7 @@ class WhaleRenderer {
 						<h4 class="modal-title"><?php echo $skin->msg( 'whale-login' )->escaped() ?></h4>
 					</div>
 					<div class="modal-body">
-						<div id="modal-login-alert" class="alert alert-hidden alert-danger" role="alert">
+						<div id="modal-login-alert" class="whale-alert whale-alert-hidden whale-alert-danger" role="alert">
 						</div>
 						<form id="modal-loginform" name="userlogin" class="modal-loginform" method="post">
 							<input class="loginText form-control" id="wpName1" tabindex="1" placeholder="<?php echo $skin->msg( 'userlogin-yourname-ph' )->escaped() ?>" value="" name="lgname">
@@ -400,14 +400,14 @@ class WhaleRenderer {
 		<div class="live-recent" data-article-ns="<?php echo $articleNS ?>" 
 			data-talk-ns="<?php echo $talkNS ?>">
 			<div class="live-recent-header">
-				<ul class="nav nav-tabs">
-					<li class="nav-item">
-						<a href="javascript:" class="nav-link active" id="whale-recent-tab1">
+				<ul class="live-recent-tabs">
+					<li class="live-recent-tab-item">
+						<a href="javascript:" class="live-recent-tab-link is-active" id="whale-recent-tab1">
 							<?php echo $skin->msg( 'recentchanges' )->escaped() ?>
 						</a>
 					</li>
-					<li class="nav-item">
-						<a href="javascript:" class="nav-link" id="whale-recent-tab2">
+					<li class="live-recent-tab-item">
+						<a href="javascript:" class="live-recent-tab-link" id="whale-recent-tab2">
 							<?php echo $skin->msg( 'whale-recent-discussions' )->escaped() ?>
 						</a>
 					</li>
@@ -424,7 +424,7 @@ class WhaleRenderer {
 			<div class="live-recent-footer">
 				<?php echo $linkRenderer->makeKnownLink(
 					SpecialPage::getTitleFor( 'Recentchanges' ),
-					new HtmlArmor( '<span class="label label-info">' .
+					new HtmlArmor( '<span class="live-recent-more">' .
 						$skin->msg( 'whale-view-more' )->escaped() .
 						'</span>' )
 				); ?>

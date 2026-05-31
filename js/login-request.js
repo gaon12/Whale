@@ -25,8 +25,8 @@ function LoginManage() {
 
 					if (result.clientlogin.status !== 'PASS') {
 						if (result.clientlogin.status === 'FAIL' && alert) {
-							alert.classList.add('alert-warning');
-							alert.classList.remove('alert-hidden');
+							alert.classList.add('whale-alert-warning');
+							alert.classList.remove('whale-alert-hidden');
 							alert.style.display = 'block';
 							alert.textContent = result.clientlogin.message;
 						}

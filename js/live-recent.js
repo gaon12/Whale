@@ -140,15 +140,15 @@
 		};
 
 		articleTab.addEventListener('click', () => {
-			articleTab.classList.add('active');
-			talkTab.classList.remove('active');
+			articleTab.classList.add('is-active');
+			talkTab.classList.remove('is-active');
 			isArticleTab = true;
 			refreshLiveRecent();
 		});
 
 		talkTab.addEventListener('click', () => {
-			talkTab.classList.add('active');
-			articleTab.classList.remove('active');
+			talkTab.classList.add('is-active');
+			articleTab.classList.remove('is-active');
 			isArticleTab = false;
 			refreshLiveRecent();
 		});
