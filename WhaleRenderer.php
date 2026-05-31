@@ -336,7 +336,7 @@ class WhaleRenderer {
 						</div>
 						<form id="modal-loginform" name="userlogin" class="modal-loginform" method="post">
 							<input class="loginText form-control" id="wpName1" tabindex="1" placeholder="<?php echo $skin->msg( 'userlogin-yourname-ph' )->escaped() ?>" value="" name="lgname">
-							<label for="inputPassword" class="sr-only"><?php echo $skin->msg( 'userlogin-yourpassword' )->escaped() ?></label>
+							<label for="inputPassword" class="whale-sr-only"><?php echo $skin->msg( 'userlogin-yourpassword' )->escaped() ?></label>
 							<input class="loginPassword form-control" id="wpPassword1" tabindex="2" placeholder="<?php echo $skin->msg( 'userlogin-yourpassword-ph' )->escaped() ?>" type="password" name="lgpassword">
 							<div class="modal-checkbox">
 								<input name="lgremember" type="checkbox" value="1" id="lgremember" tabindex="3">
