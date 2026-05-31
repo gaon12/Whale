@@ -416,44 +416,60 @@ class WhaleRenderer {
 		}
 
 		$skin = $this->skin;
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$articleNS = implode( '|', $wgWhaleLiveRCArticleNamespaces );
 		$talkNS = implode( '|', $wgWhaleLiveRCTalkNamespaces );
 	?>
-		<div class="live-recent" data-article-ns="<?php echo $articleNS ?>" 
-			data-talk-ns="<?php echo $talkNS ?>">
-			<div class="live-recent-header">
-				<ul class="live-recent-tabs">
-					<li class="live-recent-tab-item">
-						<a href="javascript:" class="live-recent-tab-link is-active" id="whale-recent-tab1">
-							<?php echo $skin->msg( 'recentchanges' )->escaped() ?>
-						</a>
-					</li>
-					<li class="live-recent-tab-item">
-						<a href="javascript:" class="live-recent-tab-link" id="whale-recent-tab2">
-							<?php echo $skin->msg( 'whale-recent-discussions' )->escaped() ?>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div class="live-recent-content">
-				<ul class="live-recent-list" id="live-recent-list" aria-busy="true">
-					<?php echo str_repeat(
-						'<li class="live-recent-row live-recent-empty"><span class="recent-item recent-item-placeholder is-loading">&nbsp;</span></li>',
-						$wgWhaleMaxRecent
-					); ?>
-				</ul>
-			</div>
-			<div class="live-recent-footer">
-				<?php echo $linkRenderer->makeKnownLink(
-					SpecialPage::getTitleFor( 'Recentchanges' ),
-					new HtmlArmor( '<span class="live-recent-more">' .
-						$skin->msg( 'whale-view-more' )->escaped() .
-						'</span>' )
-				); ?>
-			</div>
+		<div class="live-recent" data-limit="<?php echo (int)$wgWhaleMaxRecent ?>">
+			<?php
+				$this->liveRecentFeed(
+					'live-recent-article-list',
+					$skin->msg( 'recentchanges' )->escaped(),
+					'sync',
+					$articleNS,
+					$wgWhaleMaxRecent
+				);
+				$this->liveRecentFeed(
+					'live-recent-talk-list',
+					$skin->msg( 'whale-recent-discussions' )->escaped(),
+					'comments',
+					$talkNS,
+					$wgWhaleMaxRecent
+				);
+			?>
 		</div>
 		<?php
+	}
+
+	private function liveRecentFeed(
+		string $listId,
+		string $heading,
+		string $icon,
+		string $namespaces,
+		int $limit
+	): void {
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$placeholderRows = str_repeat(
+			'<li class="live-recent-row live-recent-empty"><span class="recent-item recent-item-placeholder is-loading">&nbsp;</span></li>',
+			$limit
+		);
+	?>
+		<section class="live-recent-feed" data-namespaces="<?php echo htmlspecialchars( $namespaces, ENT_QUOTES ); ?>">
+			<header class="live-recent-header">
+				<?php echo $this->renderIcon( $icon ); ?>
+				<h2 class="live-recent-title"><?php echo $heading; ?></h2>
+				<?php echo $linkRenderer->makeKnownLink(
+					SpecialPage::getTitleFor( 'Recentchanges' ),
+					new HtmlArmor( '<span class="whale-sr-only">' .
+						$this->skin->msg( 'whale-view-more' )->escaped() .
+						'</span>' . $this->renderIcon( 'angle-right' ) ),
+					[ 'class' => 'live-recent-more' ]
+				); ?>
+			</header>
+			<ul class="live-recent-list" id="<?php echo htmlspecialchars( $listId, ENT_QUOTES ); ?>" aria-busy="true">
+				<?php echo $placeholderRows; ?>
+			</ul>
+		</section>
+	<?php
 	}
 
 	/**
@@ -1293,6 +1309,7 @@ class WhaleRenderer {
 
 		$iconPaths = [
 			'angle-down' => '<path d="m6 9 6 6 6-6"/>',
+			'angle-right' => '<path d="m9 18 6-6-6-6"/>',
 			'angle-up' => '<path d="m18 15-6-6-6 6"/>',
 			'bell' => '<path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
 			'book' => '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/>',

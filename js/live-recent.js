@@ -1,17 +1,36 @@
 (() => {
 	const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
+	const RELATIVE_TIME_INTERVAL = 30 * 1000;
+	const feedCache = new Map();
+	const relativeTimeFormatter = new Intl.RelativeTimeFormat(
+		mw.config.get('wgUserLanguage') || document.documentElement.lang || 'ko',
+		{ numeric: 'always' },
+	);
 
-	const timeFormat = (time) => {
-		const aDayAgo = new Date();
-		aDayAgo.setDate(aDayAgo.getDate() - 1);
+	const formatRelativeTime = (timestamp) => {
+		const seconds = Math.max(0, Math.round((Date.now() - timestamp) / 1000));
 
-		if (time < aDayAgo) {
-			return `${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`;
+		if (seconds < 60) {
+			return relativeTimeFormatter.format(-seconds, 'second');
 		}
 
-		return [time.getHours(), time.getMinutes(), time.getSeconds()]
-			.map((value) => String(value).padStart(2, '0'))
-			.join(':');
+		const minutes = Math.round(seconds / 60);
+		if (minutes < 60) {
+			return relativeTimeFormatter.format(-minutes, 'minute');
+		}
+
+		const hours = Math.round(minutes / 60);
+		if (hours < 24) {
+			return relativeTimeFormatter.format(-hours, 'hour');
+		}
+
+		const days = Math.round(hours / 24);
+		if (days < 7) {
+			return relativeTimeFormatter.format(-days, 'day');
+		}
+
+		const date = new Date(timestamp);
+		return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 	};
 
 	const createPlaceholderRow = (isLoading) => {
@@ -29,25 +48,31 @@
 	};
 
 	const createChangeRow = (item) => {
-		const time = new Date(item.timestamp);
+		const timestamp = new Date(item.timestamp).getTime();
 		const listItem = document.createElement('li');
 		const link = document.createElement('a');
-		const title =
-			item.title.length > 13 ? `${item.title.slice(0, 13)}...` : item.title;
+		const title = document.createElement('span');
+		const time = document.createElement('time');
 
+		listItem.className = 'live-recent-row';
 		link.className = 'recent-item';
 		link.href = mw.util.getUrl(item.title);
 		link.title = item.title;
-		link.append(`[${timeFormat(time)}] `);
+		title.className = 'recent-item-title';
+		time.className = 'recent-item-time';
+		time.dateTime = item.timestamp;
+		time.dataset.timestamp = String(timestamp);
+		time.textContent = formatRelativeTime(timestamp);
 
 		if (item.type === 'new') {
 			const badge = document.createElement('span');
 			badge.className = 'new';
 			badge.textContent = `${mw.message('whale-feed-new').text()} `;
-			link.append(badge);
+			title.append(badge);
 		}
 
-		link.append(title);
+		title.append(item.title);
+		link.append(title, time);
 		listItem.append(link);
 
 		return listItem;
@@ -63,140 +88,149 @@
 		list.replaceChildren(fragment);
 	};
 
+	const renderFeed = (feed, changes) => {
+		fillRows(feed.list, feed.limit, (index) =>
+			changes[index]
+				? createChangeRow(changes[index])
+				: createPlaceholderRow(false),
+		);
+		feed.list.setAttribute('aria-busy', 'false');
+		feed.loaded = true;
+	};
+
+	const showSkeletonRows = (feed) => {
+		feed.list.setAttribute('aria-busy', 'true');
+		fillRows(feed.list, feed.limit, () => createPlaceholderRow(true));
+	};
+
+	const showEmptyRows = (feed) => {
+		feed.list.setAttribute('aria-busy', 'false');
+		fillRows(feed.list, feed.limit, () => createPlaceholderRow(false));
+	};
+
+	const refreshFeed = async (
+		feed,
+		{ force = false, showLoading = false } = {},
+	) => {
+		const cached = feedCache.get(feed.namespaces);
+
+		if (
+			cached &&
+			!force &&
+			Date.now() - cached.fetchedAt < AUTO_REFRESH_INTERVAL
+		) {
+			renderFeed(feed, cached.changes);
+			return;
+		}
+
+		const currentRequestId = ++feed.requestId;
+
+		if (showLoading && !feed.loaded) {
+			showSkeletonRows(feed);
+		}
+
+		try {
+			const api = await whale.getApi();
+			const data = await api.get({
+				action: 'query',
+				list: 'recentchanges',
+				rcprop: 'title|timestamp',
+				rcshow: '!bot|!redirect',
+				rctype: 'edit|new',
+				rclimit: feed.limit,
+				format: 'json',
+				rcnamespace: feed.namespaces,
+				rctoponly: true,
+			});
+
+			if (currentRequestId !== feed.requestId) {
+				return;
+			}
+
+			const changes = (data.query?.recentchanges ?? []).slice(0, feed.limit);
+			feedCache.set(feed.namespaces, {
+				changes,
+				fetchedAt: Date.now(),
+			});
+			renderFeed(feed, changes);
+		} catch {
+			if (currentRequestId === feed.requestId) {
+				showEmptyRows(feed);
+			}
+		}
+	};
+
+	const updateRelativeTimes = (root) => {
+		root
+			.querySelectorAll('.recent-item-time[data-timestamp]')
+			.forEach((time) => {
+				time.textContent = formatRelativeTime(Number(time.dataset.timestamp));
+			});
+	};
+
 	whale.ready(() => {
 		const liveRecent = document.querySelector('.live-recent');
-		const list = document.getElementById('live-recent-list');
-		const tabs = [
-			{
-				element: document.getElementById('whale-recent-tab1'),
-				namespaces: liveRecent?.dataset.articleNs,
-			},
-			{
-				element: document.getElementById('whale-recent-tab2'),
-				namespaces: liveRecent?.dataset.talkNs,
-			},
-		];
 
-		if (!liveRecent || !list || tabs.some((tab) => !tab.element)) {
+		if (!liveRecent) {
+			return;
+		}
+
+		const feeds = [...liveRecent.querySelectorAll('.live-recent-feed')]
+			.map((element) => ({
+				element,
+				list: element.querySelector('.live-recent-list'),
+				limit: Number(liveRecent.dataset.limit) || 10,
+				namespaces: element.dataset.namespaces,
+				loaded: false,
+				requestId: 0,
+			}))
+			.filter((feed) => feed.list && feed.namespaces);
+
+		if (feeds.length === 0) {
 			return;
 		}
 
 		const sidebarMedia = window.matchMedia('(min-width: 1024px)');
-		const limit = list.childElementCount;
-		let activeTabIndex = 0;
 		let refreshInterval = null;
-		let requestId = 0;
-		let hasLoaded = false;
+		let relativeTimeInterval = null;
 
 		const isLiveRecentVisible = () =>
-			sidebarMedia.matches && list.offsetParent !== null;
+			sidebarMedia.matches && liveRecent.offsetParent !== null;
 
-		const showSkeletonRows = () => {
-			list.setAttribute('aria-busy', 'true');
-			fillRows(list, limit, () => createPlaceholderRow(true));
-		};
-
-		const showEmptyRows = () => {
-			list.setAttribute('aria-busy', 'false');
-			fillRows(list, limit, () => createPlaceholderRow(false));
-		};
-
-		const refreshLiveRecent = async ({ showLoading = !hasLoaded } = {}) => {
+		const refreshFeeds = (options) => {
 			if (!isLiveRecentVisible()) {
 				return;
 			}
 
-			const currentRequestId = ++requestId;
-
-			if (showLoading) {
-				showSkeletonRows();
-			}
-
-			try {
-				const api = await whale.getApi();
-				const data = await api.get({
-					action: 'query',
-					list: 'recentchanges',
-					rcprop: 'title|timestamp',
-					rcshow: '!bot|!redirect',
-					rctype: 'edit|new',
-					rclimit: limit,
-					format: 'json',
-					rcnamespace: tabs[activeTabIndex].namespaces,
-					rctoponly: true,
-				});
-
-				if (currentRequestId !== requestId) {
-					return;
-				}
-
-				const changes = (data.query?.recentchanges ?? []).slice(0, limit);
-
-				fillRows(list, limit, (index) =>
-					changes[index]
-						? createChangeRow(changes[index])
-						: createPlaceholderRow(false),
-				);
-				list.setAttribute('aria-busy', 'false');
-				hasLoaded = true;
-			} catch {
-				if (currentRequestId === requestId) {
-					showEmptyRows();
-				}
-			}
+			feeds.forEach((feed) => {
+				refreshFeed(feed, options);
+			});
 		};
 
-		const setActiveTab = (nextIndex) => {
-			if (activeTabIndex === nextIndex) {
-				return;
-			}
-
-			tabs[activeTabIndex].element.classList.remove('is-active');
-			tabs[nextIndex].element.classList.add('is-active');
-			activeTabIndex = nextIndex;
-			hasLoaded = false;
-			refreshLiveRecent();
-		};
-
-		tabs.forEach((tab, index) => {
-			tab.element.addEventListener('click', () => setActiveTab(index));
-		});
-
-		const stopAutoRefresh = () => {
-			if (refreshInterval === null) {
-				return;
-			}
-
+		const stopTimers = () => {
 			window.clearInterval(refreshInterval);
+			window.clearInterval(relativeTimeInterval);
 			refreshInterval = null;
+			relativeTimeInterval = null;
 		};
 
-		const startAutoRefresh = () => {
+		const startTimers = () => {
 			if (!isLiveRecentVisible()) {
-				stopAutoRefresh();
+				stopTimers();
 				return;
 			}
 
-			if (refreshInterval === null) {
-				refreshInterval = window.setInterval(
-					() => refreshLiveRecent({ showLoading: false }),
-					AUTO_REFRESH_INTERVAL,
-				);
-			}
+			refreshFeeds({ showLoading: true });
 
-			refreshLiveRecent();
+			refreshInterval ??= window.setInterval(() => {
+				refreshFeeds({ force: true });
+			}, AUTO_REFRESH_INTERVAL);
+			relativeTimeInterval ??= window.setInterval(() => {
+				updateRelativeTimes(liveRecent);
+			}, RELATIVE_TIME_INTERVAL);
 		};
 
-		const syncAutoRefresh = () => {
-			if (isLiveRecentVisible()) {
-				startAutoRefresh();
-				return;
-			}
-
-			stopAutoRefresh();
-		};
-
-		whale.onMediaChange(sidebarMedia, syncAutoRefresh);
-		syncAutoRefresh();
+		whale.onMediaChange(sidebarMedia, startTimers);
+		startTimers();
 	});
 })();
