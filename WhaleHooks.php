@@ -120,18 +120,22 @@ class WhaleHooks {
 			}
 		}
 
-		$preferences['whale-color-main'] = [
-			'type' => 'text',
-			'label-message' => 'whale-pref-color-main',
+		$preferences['whale-theme'] = [
+			'type' => 'select',
+			'label-message' => 'whale-pref-theme',
 			'section' => 'whale/color',
-			'help-message' => 'whale-pref-color-main-help'
-		];
-
-		$preferences['whale-color-second'] = [
-			'type' => 'text',
-			'label-message' => 'whale-pref-color-second',
-			'section' => 'whale/color',
-			'help-message' => 'whale-pref-color-second-help'
+			'options' => [
+				wfMessage( 'whale-theme-default' )->text() => null,
+				wfMessage( 'whale-theme-han-river-blue' )->text() => 'han-river-blue',
+				wfMessage( 'whale-theme-hanbat-forest' )->text() => 'hanbat-forest',
+				wfMessage( 'whale-theme-milk-vetch-purple' )->text() => 'milk-vetch-purple',
+				wfMessage( 'whale-theme-clay-roof' )->text() => 'clay-roof',
+				wfMessage( 'whale-theme-jeju-teal' )->text() => 'jeju-teal',
+				wfMessage( 'whale-theme-camellia-red' )->text() => 'camellia-red',
+				wfMessage( 'whale-theme-ginkgo-gold' )->text() => 'ginkgo-gold',
+			],
+			'help-message' => 'whale-pref-theme-help',
+			'default' => null
 		];
 
 		$preferences['whale-dark'] = [

@@ -70,10 +70,9 @@ class SkinWhale extends SkinMustache {
 		$userGroups = $userGroupManager->getUserGroups( $user );
 		*/
 
-		$optionMainColor = $userOptionsLookup->getOption( $user, 'whale-color-main' );
-		$optionSecondColor = $userOptionsLookup->getOption( $user, 'whale-color-second' );
+		$optionTheme = $userOptionsLookup->getOption( $user, 'whale-theme' );
 
-		$themeColors = $this->resolveThemeColors( $optionMainColor, $optionSecondColor );
+		$themeColors = $this->resolveThemeColors( $optionTheme );
 		$mainColor = $themeColors['light']['primary'];
 		$secondColor = $themeColors['light']['secondary'];
 		$darkMainColor = $themeColors['dark']['primary'];
@@ -395,16 +394,28 @@ class SkinWhale extends SkinMustache {
 	/**
 	 * @return array{light:array{primary:string,secondary:string},dark:array{primary:string,secondary:string}}
 	 */
-	private function resolveThemeColors( mixed $userPrimary, mixed $userSecondary ): array {
-		$themeSlug = isset( $GLOBALS['wgWhaleTheme'] ) && is_string( $GLOBALS['wgWhaleTheme'] )
+	private function resolveThemeColors( mixed $userTheme ): array {
+		$userThemeSlug = is_string( $userTheme ) && isset( self::THEME_PALETTES[$userTheme] )
+			? $userTheme
+			: null;
+		$siteThemeSlug = isset( $GLOBALS['wgWhaleTheme'] ) && is_string( $GLOBALS['wgWhaleTheme'] )
 			? strtolower( $GLOBALS['wgWhaleTheme'] )
 			: null;
+		$themeSlug = $userThemeSlug ?? $siteThemeSlug;
 		$hasTheme = $themeSlug !== null && isset( self::THEME_PALETTES[$themeSlug] );
 		$colors = $hasTheme ? self::THEME_PALETTES[$themeSlug] : self::LEGACY_THEME_COLORS;
-		$primary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhalePrimaryColor'] ?? null );
-		$secondary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondaryColor'] ?? null );
-		$legacyPrimary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleMainColor'] ?? null );
-		$legacySecondary = $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondColor'] ?? null );
+		$primary = $userThemeSlug === null
+			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhalePrimaryColor'] ?? null )
+			: null;
+		$secondary = $userThemeSlug === null
+			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondaryColor'] ?? null )
+			: null;
+		$legacyPrimary = $userThemeSlug === null
+			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleMainColor'] ?? null )
+			: null;
+		$legacySecondary = $userThemeSlug === null
+			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondColor'] ?? null )
+			: null;
 
 		if ( $primary === null && ( !$hasTheme || $legacyPrimary !== self::LEGACY_THEME_COLORS['light']['primary'] ) ) {
 			$primary = $legacyPrimary;
@@ -414,10 +425,6 @@ class SkinWhale extends SkinMustache {
 			$secondary = $legacySecondary;
 		}
 
-		$userPrimary = $this->normalizeOptionalCssColor( $userPrimary );
-		$userSecondary = $this->normalizeOptionalCssColor( $userSecondary );
-		$primary = $userPrimary ?? $primary;
-		$secondary = $userSecondary ?? $secondary;
 		$hasPrimaryOverride = $primary !== null;
 		$lightPrimary = $primary ?? $colors['light']['primary'];
 		$darkPrimary = $primary ?? $colors['dark']['primary'];
