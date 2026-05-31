@@ -255,14 +255,21 @@ class SkinWhale extends SkinMustache {
 		$data = parent::getTemplateData();
 		$renderer = new WhaleRenderer( $this );
 		$request = $this->getRequest();
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$hasAds = isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'];
 		$hasSidebar = $this->shouldRenderSidebar();
 		$hasLiveRecent = $wgWhaleEnableLiveRC && $this->shouldRenderLiveRecent();
 		$siteNoticeHtml = $request->getCookie( 'disable-notice' )
 			? ''
 			: $this->getVisibleSiteNoticeHtml( $data['html-site-notice'] ?? '' );
+		$categoryBlur = $userOptionsLookup->getOption( $this->getUser(), 'whale-content-category-blur' );
 
+		$categoriesHtml = $data['html-categories'] ?? '';
 		$data['html-title'] = $this->getOutput()->getPageTitle();
+		$data['html-categories'] = is_string( $categoriesHtml ) ? WhaleHooks::decorateCategoryHtml(
+			$categoriesHtml,
+			$categoryBlur !== false
+		) : $categoriesHtml;
 		$data['html-whale-nav-menu'] = $renderer->getNavMenu();
 		$data['has-whale-site-notice'] = $siteNoticeHtml !== '';
 		$data['html-whale-site-notice'] = $siteNoticeHtml;

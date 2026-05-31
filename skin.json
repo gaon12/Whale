@@ -1,7 +1,7 @@
 {
 	"name": "Whale",
 	"author": ["Librewiki developers", "..."],
-	"url": "https://github.com/librewiki/whale-skin",
+	"url": "https://github.com/gaon12/Whale",
 	"descriptionmsg": "whale-desc",
 	"namemsg": "skinname-whale",
 	"license-name": "GPL-3.0-or-later",
@@ -32,6 +32,9 @@
 	},
 	"config": {
 		"WhaleEnableLiveRC": true,
+		"WhaleEnableSectionCollapse": true,
+		"WhaleEnableFoldingBlocks": true,
+		"WhaleEnableBlurredCategories": true,
 		"WhaleUseGravatar": true,
 		"WhaleTheme": null,
 		"WhalePrimaryColor": null,
@@ -133,7 +136,9 @@
 	},
 	"Hooks": {
 		"GetPreferences": "WhaleHooks::onGetPreferences",
-		"OutputPageBodyAttributes": "WhaleHooks::onOutputPageBodyAttributes"
+		"OutputPageBodyAttributes": "WhaleHooks::onOutputPageBodyAttributes",
+		"OutputPageBeforeHTML": "WhaleHooks::onOutputPageBeforeHTML",
+		"ParserBeforePreprocess": "WhaleHooks::onParserBeforePreprocess"
 	},
 	"manifest_version": 1
 }

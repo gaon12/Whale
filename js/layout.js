@@ -87,6 +87,35 @@
 		window.addEventListener('resize', scheduleUpdate);
 	};
 
+	const setToggleState = (toggle, expanded) => {
+		const targetId = toggle.getAttribute('aria-controls');
+		const target = targetId ? document.getElementById(targetId) : null;
+		const root = toggle.closest(
+			'.whale-section-container, .whale-section-heading, .whale-folding',
+		);
+		const heading = toggle.closest('.whale-section-heading');
+		const collapseLabel = toggle.getAttribute('data-collapse-label') || '';
+		const expandLabel = toggle.getAttribute('data-expand-label') || '';
+
+		if (!target) {
+			return;
+		}
+
+		target.hidden = !expanded;
+		toggle.setAttribute('aria-expanded', String(expanded));
+		toggle.setAttribute('aria-label', expanded ? collapseLabel : expandLabel);
+		root?.classList.toggle('is-collapsed', !expanded);
+		heading?.classList.toggle('is-collapsed', !expanded);
+	};
+
+	const toggleCollapsibleContent = (toggle) => {
+		if (toggle.hasAttribute('disabled')) {
+			return;
+		}
+
+		setToggleState(toggle, toggle.getAttribute('aria-expanded') !== 'true');
+	};
+
 	const MODAL_TRANSITION_MS = 300;
 	let activeModal = null;
 	let activeBackdrop = null;
@@ -250,6 +279,16 @@
 				return;
 			}
 
+			const contentToggle = whale.closest(
+				event.target,
+				'.whale-section-toggle, .whale-folding-toggle',
+			);
+			if (contentToggle) {
+				event.preventDefault();
+				toggleCollapsibleContent(contentToggle);
+				return;
+			}
+
 			if (!whale.closest(event.target, '.whale-dropdown, .whale-btn-group')) {
 				closeAllDropdowns();
 				document
@@ -265,6 +304,14 @@
 			if (event.key === 'Escape') {
 				closeAllDropdowns();
 				closeModal(activeModal);
+			}
+
+			if (
+				(event.key === 'Enter' || event.key === ' ') &&
+				event.target?.classList?.contains('whale-folding-toggle')
+			) {
+				event.preventDefault();
+				toggleCollapsibleContent(event.target);
 			}
 		});
 	});

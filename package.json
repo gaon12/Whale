@@ -9,14 +9,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@github.com/librewiki/whale-skin.git"
+		"url": "git+https://github.com/gaon12/Whale.git"
 	},
 	"author": "SEE AUTHOR IN <AUTHORS.txt>",
 	"license": "GPL-3.0-or-later",
 	"bugs": {
-		"url": "https://github.com/librewiki/whale-skin/issues"
+		"url": "https://github.com/gaon12/Whale/issues"
 	},
-	"homepage": "https://github.com/librewiki/whale-skin#README",
+	"homepage": "https://github.com/gaon12/Whale#README",
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.16"
 	}

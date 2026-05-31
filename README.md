@@ -30,7 +30,7 @@ Git을 쓴다면 예시는 다음과 같습니다.
 
 ```bash
 cd /path/to/mediawiki/skins
-git clone https://github.com/librewiki/whale-skin.git Whale
+git clone https://github.com/gaon12/Whale.git Whale
 ```
 
 압축 파일을 받아서 넣어도 됩니다. 중요한 것은 최종 경로가 이렇게 되는 것입니다.
@@ -117,6 +117,9 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | 로그인 모달 | 비로그인 사용자에게 로그인 창을 보여줍니다. |
 | 오른쪽 사이드바 | 최근 변경과 최근 토론을 보여줍니다. |
 | 읽기 진행 표시줄 | 문서를 얼마나 읽었는지 상단에 표시합니다. |
+| 문단 접기 | `=# 문단 #=`처럼 제목에 `#`를 붙인 문단을 접은 상태로 표시합니다. |
+| 접기 블록 | `{{{#!folding 제목 ... }}}` 형식의 접기/펼치기 블록을 제공합니다. |
+| 흐림 분류 | `[[분류:이름#blur]]`에서 표시 이름의 `#blur`를 제거하고 흐림 처리합니다. |
 | 다크 모드 | 시스템 설정을 따르거나 사용자가 직접 밝은/어두운 모드를 고를 수 있습니다. |
 | 광고 슬롯 | 헤더, 오른쪽, 문서 아래, 하단 광고 위치를 설정할 수 있습니다. |
 | 다국어 메시지 | 한국어, 영어, 일본어, 중국어 간체, 중국어 번체 메시지를 관리합니다. |
@@ -252,6 +255,9 @@ $wgWhaleAdGroup = 'differ';
 | `$wgNaverVerification` | 네이버 사이트 인증 코드 | `'abcdef...'` | 설정 안 함 |
 | `$wgWhaleUseGravatar` | 로그인 메뉴에서 Gravatar 사용 | `true` | `true` |
 | `$wgWhaleEnableLiveRC` | 오른쪽 최근 변경 위젯 사용 | `true` | `true` |
+| `$wgWhaleEnableSectionCollapse` | 문단 접기/펼치기 사용 | `true` | `true` |
+| `$wgWhaleEnableFoldingBlocks` | `{{{#!folding ... }}}` 접기 블록 사용 | `true` | `true` |
+| `$wgWhaleEnableBlurredCategories` | `#blur` 분류 흐림 표시 사용 | `true` | `true` |
 | `$wgWhaleMaxRecent` | 최근 변경 표시 개수 | `10` | `10` |
 | `$wgWhaleNavBarLogoImage` | 상단 내비게이션 로고 이미지 | `'/images/logo.svg'` | `null` |
 | `$wgWhaleLiveRCArticleNamespaces` | 최근 변경 탭의 이름공간 | `[ NS_MAIN, NS_PROJECT ]` | 문서, 프로젝트, 틀, 도움말, 분류 |
@@ -296,7 +302,7 @@ Put this repository inside MediaWiki's `skins` directory.
 
 ```bash
 cd /path/to/mediawiki/skins
-git clone https://github.com/librewiki/whale-skin.git Whale
+git clone https://github.com/gaon12/Whale.git Whale
 ```
 
 The final layout should look like this.
@@ -370,6 +376,9 @@ Advanced site-wide color override variables still exist for compatibility: `$wgW
 | Login modal | Shows a login dialog for anonymous users. |
 | Right sidebar | Shows live recent changes and recent discussions. |
 | Reading progress | Displays article reading progress at the top. |
+| Section folding | Shows headings like `=# Section #=` collapsed by default. |
+| Folding blocks | Supports `{{{#!folding title ... }}}` folding blocks. |
+| Blurred categories | Removes `#blur` from `[[Category:Name#blur]]` labels and blurs the category. |
 | Dark mode | Follows the system setting or a user-selected mode. |
 | Ad slots | Supports header, right, below-article, and bottom slots. |
 | Localization | Maintains Korean, English, Japanese, Simplified Chinese, and Traditional Chinese messages. |
@@ -499,6 +508,9 @@ Available rights:
 | `$wgNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
 | `$wgWhaleUseGravatar` | Use Gravatar in login menu | `true` | `true` |
 | `$wgWhaleEnableLiveRC` | Enable right-sidebar recent changes | `true` | `true` |
+| `$wgWhaleEnableSectionCollapse` | Enable section folding | `true` | `true` |
+| `$wgWhaleEnableFoldingBlocks` | Enable `{{{#!folding ... }}}` blocks | `true` | `true` |
+| `$wgWhaleEnableBlurredCategories` | Enable blurred `#blur` categories | `true` | `true` |
 | `$wgWhaleMaxRecent` | Number of recent rows | `10` | `10` |
 | `$wgWhaleNavBarLogoImage` | Top navigation logo image | `'/images/logo.svg'` | `null` |
 | `$wgWhaleLiveRCArticleNamespaces` | Namespaces for recent changes | `[ NS_MAIN, NS_PROJECT ]` | Main, project, template, help, category |
