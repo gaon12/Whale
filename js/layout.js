@@ -15,21 +15,19 @@
 			return;
 		}
 
-		owner.classList.remove('open', 'show');
+		owner.classList.remove('is-open');
 		owner
 			.querySelector('[data-whale-toggle="dropdown"]')
 			?.setAttribute('aria-expanded', 'false');
-		owner.querySelectorAll('.whale-dropdown-menu.show').forEach((menu) => {
-			menu.classList.remove('show');
+		owner.querySelectorAll('.whale-dropdown-menu.is-open').forEach((menu) => {
+			menu.classList.remove('is-open');
 			menu.style.display = '';
 		});
 	};
 
 	const closeAllDropdowns = (except) => {
 		document
-			.querySelectorAll(
-				'.whale-dropdown.open, .whale-dropdown.show, .whale-btn-group.open, .whale-btn-group.show',
-			)
+			.querySelectorAll('.whale-dropdown.is-open, .whale-btn-group.is-open')
 			.forEach((owner) => {
 				if (owner !== except) {
 					closeDropdown(owner);
@@ -45,20 +43,16 @@
 			return;
 		}
 
-		const shouldOpen =
-			!owner.classList.contains('open') && !owner.classList.contains('show');
+		const shouldOpen = !owner.classList.contains('is-open');
 		closeAllDropdowns(owner);
-		owner.classList.toggle('open', shouldOpen);
-		owner.classList.toggle('show', shouldOpen);
-		menu.classList.toggle('show', shouldOpen);
+		owner.classList.toggle('is-open', shouldOpen);
+		menu.classList.toggle('is-open', shouldOpen);
 		toggle.setAttribute('aria-expanded', String(shouldOpen));
 	};
 
 	const getModal = (trigger) => {
 		const selector =
-			trigger.getAttribute('data-whale-target') ||
-			trigger.getAttribute('data-target') ||
-			trigger.getAttribute('href');
+			trigger.getAttribute('data-whale-target') || trigger.getAttribute('href');
 		return selector?.startsWith('#') ? document.querySelector(selector) : null;
 	};
 
@@ -196,8 +190,8 @@
 				event.stopPropagation();
 				const submenu = submenuToggle.nextElementSibling;
 				if (submenu?.classList.contains('whale-dropdown-menu')) {
-					submenu.classList.toggle('show');
-					submenu.style.display = submenu.classList.contains('show')
+					submenu.classList.toggle('is-open');
+					submenu.style.display = submenu.classList.contains('is-open')
 						? 'block'
 						: '';
 				}
@@ -238,9 +232,9 @@
 			if (!event.target.closest('.whale-dropdown, .whale-btn-group')) {
 				closeAllDropdowns();
 				document
-					.querySelectorAll('.whale-dropdown-submenu.show')
+					.querySelectorAll('.whale-dropdown-submenu.is-open')
 					.forEach((submenu) => {
-						submenu.classList.remove('show');
+						submenu.classList.remove('is-open');
 						submenu.style.display = '';
 					});
 			}

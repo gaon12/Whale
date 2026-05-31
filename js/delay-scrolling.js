@@ -38,7 +38,8 @@
 	};
 
 	window.addEventListener('load', () => {
-		const navHeight = document.querySelector('.nav-wrapper')?.offsetHeight || 0;
+		const navHeight =
+			document.querySelector('.whale-nav-wrapper')?.offsetHeight || 0;
 		const hashTarget = getAnchorTarget(window.location.hash);
 
 		scrollToTarget(hashTarget, navHeight);

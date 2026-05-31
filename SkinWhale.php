@@ -175,7 +175,7 @@ class SkinWhale extends SkinMustache {
 
 		if ( isset( $WhaleUserNavbarSettings ) && $WhaleUserNavbarSettings ) {
 			$out->addInlineStyle(
-				".Whale .nav-wrapper.whale-navbar-fixed {
+				".Whale .whale-nav-wrapper.whale-navbar-fixed {
 					position: absolute;
 				}"
 			);
@@ -195,7 +195,7 @@ class SkinWhale extends SkinMustache {
 					max-width: $WhaleUserWidthSettings;
 				}
 
-				.Whale .nav-wrapper .navbar {
+				.Whale .whale-nav-wrapper .whale-navbar {
 					max-width: $WhaleUserWidthSettings;
 				}"
 			);
