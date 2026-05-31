@@ -21,7 +21,7 @@ function LoginManage() {
 					}),
 				)
 				.then((result) => {
-					const alert = document.getElementById('modal-login-alert');
+					const alert = document.getElementById('whale-login-alert');
 
 					if (result.clientlogin.status !== 'PASS') {
 						if (result.clientlogin.status === 'FAIL' && alert) {
@@ -56,7 +56,7 @@ function LoginManage() {
 	};
 
 	ready(() => {
-		const form = document.getElementById('modal-loginform');
+		const form = document.getElementById('whale-login-form');
 
 		form?.addEventListener('keypress', (event) => {
 			if (event.key === 'Enter') {
