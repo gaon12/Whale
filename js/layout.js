@@ -216,11 +216,14 @@
 				return;
 			}
 
-			if (dismiss?.getAttribute('data-dismiss') === 'alert') {
+			const noticeDismiss = event.target.closest(
+				'[data-whale-dismiss="notice"]',
+			);
+			if (noticeDismiss) {
 				event.preventDefault();
-				const alert = dismiss.closest('.alert');
-				alert?.dispatchEvent(new Event('closed.bs.alert'));
-				alert?.remove();
+				const notice = noticeDismiss.closest('.whale-notice');
+				notice?.dispatchEvent(new Event('whale.notice.closed'));
+				notice?.remove();
 				return;
 			}
 
