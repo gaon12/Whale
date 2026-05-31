@@ -134,8 +134,8 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.ads';
 		}
 
-		// Only load LiveRC JS when the sidebar can render.
-		if ( $wgWhaleEnableLiveRC && $this->shouldRenderSidebar() ) {
+		// Only load LiveRC JS when a desktop or mobile recent feed can render.
+		if ( $wgWhaleEnableLiveRC && $this->shouldRenderLiveRecent() ) {
 			$modules[] = 'skins.whale.liverc';
 		}
 
@@ -250,13 +250,14 @@ class SkinWhale extends SkinMustache {
 	 * @return array<string,mixed>
 	 */
 	public function getTemplateData(): array {
-		global $wgWhaleAdSetting, $wgWhaleMobileReplaceAd;
+		global $wgWhaleAdSetting, $wgWhaleEnableLiveRC, $wgWhaleMobileReplaceAd;
 
 		$data = parent::getTemplateData();
 		$renderer = new WhaleRenderer( $this );
 		$request = $this->getRequest();
 		$hasAds = isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'];
 		$hasSidebar = $this->shouldRenderSidebar();
+		$hasLiveRecent = $wgWhaleEnableLiveRC && $this->shouldRenderLiveRecent();
 		$siteNoticeHtml = $request->getCookie( 'disable-notice' )
 			? ''
 			: $this->getVisibleSiteNoticeHtml( $data['html-site-notice'] ?? '' );
@@ -267,7 +268,9 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-site-notice'] = $siteNoticeHtml;
 		$data['html-whale-contents-toolbox'] = $renderer->getContentsToolbox();
 		$data['has-whale-sidebar'] = $hasSidebar;
-		$data['html-whale-live-recent'] = $hasSidebar ? $renderer->getLiveRecent() : '';
+		$data['has-whale-live-recent'] = $hasLiveRecent;
+		$data['html-whale-live-recent'] = $hasLiveRecent && $hasSidebar ? $renderer->getLiveRecent() : '';
+		$data['html-whale-mobile-live-recent'] = $hasLiveRecent ? $renderer->getLiveRecent( 'mobile' ) : '';
 		$data['html-whale-right-ad'] =
 			$hasSidebar && isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right']
 				? $renderer->getAd( 'right' )
@@ -338,6 +341,11 @@ class SkinWhale extends SkinMustache {
 			return (int)$viewportWidth >= 992;
 		}
 
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		return !$userOptionsLookup->getOption( $this->getUser(), 'whale-layout-sidebar' );
+	}
+
+	private function shouldRenderLiveRecent(): bool {
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		return !$userOptionsLookup->getOption( $this->getUser(), 'whale-layout-sidebar' );
 	}

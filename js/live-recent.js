@@ -1,6 +1,7 @@
 (() => {
-	const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
+	const CACHE_TTL = 5 * 60 * 1000;
 	const RELATIVE_TIME_INTERVAL = 30 * 1000;
+	const NO_DATA_TEXT = 'No data';
 	const feedCache = new Map();
 	const relativeTimeFormatter = new Intl.RelativeTimeFormat(
 		mw.config.get('wgUserLanguage') || document.documentElement.lang || 'ko',
@@ -33,16 +34,39 @@
 		return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 	};
 
-	const createPlaceholderRow = (isLoading) => {
+	const createPlaceholderRow = () => {
 		const listItem = document.createElement('li');
 		const placeholder = document.createElement('span');
 
 		listItem.className = 'live-recent-row live-recent-empty';
-		placeholder.className = isLoading
-			? 'recent-item recent-item-placeholder is-loading'
-			: 'recent-item recent-item-placeholder';
+		placeholder.className = 'recent-item recent-item-placeholder is-loading';
 		placeholder.innerHTML = '&nbsp;';
 		listItem.append(placeholder);
+
+		return listItem;
+	};
+
+	const createNoDataRow = () => {
+		const listItem = document.createElement('li');
+		const visual = document.createElement('span');
+		const tray = document.createElement('span');
+		const paper = document.createElement('span');
+		const bubble = document.createElement('span');
+		const dots = document.createElement('span');
+		const text = document.createElement('span');
+
+		listItem.className = 'live-recent-no-data';
+		visual.className = 'live-recent-no-data-visual';
+		tray.className = 'live-recent-no-data-tray';
+		paper.className = 'live-recent-no-data-paper';
+		bubble.className = 'live-recent-no-data-bubble';
+		dots.className = 'live-recent-no-data-dots';
+		text.className = 'live-recent-no-data-text';
+		text.textContent = NO_DATA_TEXT;
+
+		bubble.append(dots);
+		visual.append(tray, paper, bubble);
+		listItem.append(visual, text);
 
 		return listItem;
 	};
@@ -78,34 +102,58 @@
 		return listItem;
 	};
 
-	const fillRows = (list, limit, rowFactory) => {
+	const fillRows = (list, count, rowFactory) => {
 		const fragment = new DocumentFragment();
 
-		for (let index = 0; index < limit; index++) {
+		for (let index = 0; index < count; index++) {
 			fragment.append(rowFactory(index));
 		}
 
 		list.replaceChildren(fragment);
 	};
 
+	const stopProgress = (feed) => {
+		feed.progressBar?.classList.remove('is-running');
+	};
+
+	const restartProgress = (feed) => {
+		if (!feed.progressBar) {
+			return;
+		}
+
+		stopProgress(feed);
+		feed.progressBar.style.animation = 'none';
+		void feed.progressBar.offsetHeight;
+		feed.progressBar.style.animation = '';
+		feed.progressBar.classList.add('is-running');
+	};
+
 	const renderFeed = (feed, changes) => {
-		fillRows(feed.list, feed.limit, (index) =>
-			changes[index]
-				? createChangeRow(changes[index])
-				: createPlaceholderRow(false),
-		);
+		const visibleChanges = changes.slice(0, feed.limit);
+
+		if (visibleChanges.length === 0) {
+			feed.list.replaceChildren(createNoDataRow());
+		} else {
+			fillRows(feed.list, visibleChanges.length, (index) =>
+				createChangeRow(visibleChanges[index]),
+			);
+		}
+
 		feed.list.setAttribute('aria-busy', 'false');
 		feed.loaded = true;
+		restartProgress(feed);
 	};
 
 	const showSkeletonRows = (feed) => {
 		feed.list.setAttribute('aria-busy', 'true');
-		fillRows(feed.list, feed.limit, () => createPlaceholderRow(true));
+		fillRows(feed.list, feed.limit, createPlaceholderRow);
 	};
 
-	const showEmptyRows = (feed) => {
+	const showNoDataRows = (feed) => {
 		feed.list.setAttribute('aria-busy', 'false');
-		fillRows(feed.list, feed.limit, () => createPlaceholderRow(false));
+		feed.list.replaceChildren(createNoDataRow());
+		feed.loaded = true;
+		restartProgress(feed);
 	};
 
 	const refreshFeed = async (
@@ -114,11 +162,7 @@
 	) => {
 		const cached = feedCache.get(feed.namespaces);
 
-		if (
-			cached &&
-			!force &&
-			Date.now() - cached.fetchedAt < AUTO_REFRESH_INTERVAL
-		) {
+		if (cached && !force && Date.now() - cached.fetchedAt < CACHE_TTL) {
 			renderFeed(feed, cached.changes);
 			return;
 		}
@@ -147,7 +191,7 @@
 				return;
 			}
 
-			const changes = (data.query?.recentchanges ?? []).slice(0, feed.limit);
+			const changes = data.query?.recentchanges ?? [];
 			feedCache.set(feed.namespaces, {
 				changes,
 				fetchedAt: Date.now(),
@@ -155,7 +199,7 @@
 			renderFeed(feed, changes);
 		} catch {
 			if (currentRequestId === feed.requestId) {
-				showEmptyRows(feed);
+				showNoDataRows(feed);
 			}
 		}
 	};
@@ -168,69 +212,95 @@
 			});
 	};
 
-	whale.ready(() => {
-		const liveRecent = document.querySelector('.live-recent');
+	const isRootVisible = (root) => root.offsetParent !== null;
 
-		if (!liveRecent) {
-			return;
-		}
+	const createFeed = (root, element) => {
+		const feed = {
+			element,
+			list: element.querySelector('.live-recent-list'),
+			limit: Number(root.dataset.limit) || 10,
+			namespaces: element.dataset.namespaces,
+			progressBar: element.querySelector('.live-recent-progress-bar'),
+			loaded: false,
+			requestId: 0,
+		};
 
-		const feeds = [...liveRecent.querySelectorAll('.live-recent-feed')]
-			.map((element) => ({
-				element,
-				list: element.querySelector('.live-recent-list'),
-				limit: Number(liveRecent.dataset.limit) || 10,
-				namespaces: element.dataset.namespaces,
-				loaded: false,
-				requestId: 0,
-			}))
+		feed.progressBar?.addEventListener('animationend', () => {
+			if (isRootVisible(root)) {
+				refreshFeed(feed, { force: true });
+			}
+		});
+
+		return feed;
+	};
+
+	const createRootController = (root) => {
+		const feeds = [...root.querySelectorAll('.live-recent-feed')]
+			.map((element) => createFeed(root, element))
 			.filter((feed) => feed.list && feed.namespaces);
 
 		if (feeds.length === 0) {
-			return;
+			return null;
 		}
 
-		const sidebarMedia = window.matchMedia('(min-width: 1024px)');
-		let refreshInterval = null;
 		let relativeTimeInterval = null;
+		let running = false;
 
-		const isLiveRecentVisible = () =>
-			sidebarMedia.matches && liveRecent.offsetParent !== null;
-
-		const refreshFeeds = (options) => {
-			if (!isLiveRecentVisible()) {
+		const stop = () => {
+			if (!running) {
 				return;
 			}
 
+			running = false;
+			window.clearInterval(relativeTimeInterval);
+			relativeTimeInterval = null;
 			feeds.forEach((feed) => {
-				refreshFeed(feed, options);
+				stopProgress(feed);
+				feed.list.replaceChildren();
+				feed.list.setAttribute('aria-busy', 'true');
+				feed.loaded = false;
 			});
 		};
 
-		const stopTimers = () => {
-			window.clearInterval(refreshInterval);
-			window.clearInterval(relativeTimeInterval);
-			refreshInterval = null;
-			relativeTimeInterval = null;
-		};
-
-		const startTimers = () => {
-			if (!isLiveRecentVisible()) {
-				stopTimers();
+		const start = () => {
+			if (!isRootVisible(root)) {
+				stop();
 				return;
 			}
 
-			refreshFeeds({ showLoading: true });
+			if (running) {
+				return;
+			}
 
-			refreshInterval ??= window.setInterval(() => {
-				refreshFeeds({ force: true });
-			}, AUTO_REFRESH_INTERVAL);
-			relativeTimeInterval ??= window.setInterval(() => {
-				updateRelativeTimes(liveRecent);
+			running = true;
+			relativeTimeInterval = window.setInterval(() => {
+				updateRelativeTimes(root);
 			}, RELATIVE_TIME_INTERVAL);
+
+			feeds.forEach((feed) => {
+				refreshFeed(feed, { showLoading: true });
+			});
 		};
 
-		whale.onMediaChange(sidebarMedia, startTimers);
-		startTimers();
+		return { start, stop };
+	};
+
+	whale.ready(() => {
+		const controllers = [...document.querySelectorAll('.live-recent')]
+			.map(createRootController)
+			.filter(Boolean);
+
+		if (controllers.length === 0) {
+			return;
+		}
+
+		const syncControllers = whale.rafThrottle(() => {
+			controllers.forEach((controller) => {
+				controller.start();
+			});
+		});
+
+		syncControllers();
+		window.addEventListener('resize', syncControllers);
 	});
 })();
