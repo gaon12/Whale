@@ -135,7 +135,14 @@ class SkinWhale extends SkinMustache {
 		}
 
 		// Only load LiveRC JS when a desktop or mobile recent feed can render.
-		if ( $wgWhaleEnableLiveRC && $this->shouldRenderLiveRecent() ) {
+		$hasSidebar = $this->shouldRenderSidebar();
+		if (
+			$wgWhaleEnableLiveRC &&
+			(
+				( $hasSidebar && $this->shouldRenderLiveRecent() ) ||
+				$this->shouldRenderMobileLiveRecent( $hasSidebar )
+			)
+		) {
 			$modules[] = 'skins.whale.liverc';
 		}
 
@@ -259,6 +266,8 @@ class SkinWhale extends SkinMustache {
 		$hasAds = isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'];
 		$hasSidebar = $this->shouldRenderSidebar();
 		$hasLiveRecent = $wgWhaleEnableLiveRC && $this->shouldRenderLiveRecent();
+		$hasDesktopLiveRecent = $hasLiveRecent && $hasSidebar;
+		$hasMobileLiveRecent = $wgWhaleEnableLiveRC && $this->shouldRenderMobileLiveRecent( $hasSidebar );
 		$siteNoticeHtml = $request->getCookie( 'disable-notice' )
 			? ''
 			: $this->getVisibleSiteNoticeHtml( $data['html-site-notice'] ?? '' );
@@ -275,9 +284,10 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-site-notice'] = $siteNoticeHtml;
 		$data['html-whale-contents-toolbox'] = $renderer->getContentsToolbox();
 		$data['has-whale-sidebar'] = $hasSidebar;
-		$data['has-whale-live-recent'] = $hasLiveRecent;
-		$data['html-whale-live-recent'] = $hasLiveRecent && $hasSidebar ? $renderer->getLiveRecent() : '';
-		$data['html-whale-mobile-live-recent'] = $hasLiveRecent ? $renderer->getLiveRecent( 'mobile' ) : '';
+		$data['has-whale-live-recent'] = $hasDesktopLiveRecent;
+		$data['has-whale-mobile-live-recent'] = $hasMobileLiveRecent;
+		$data['html-whale-live-recent'] = $hasDesktopLiveRecent ? $renderer->getLiveRecent() : '';
+		$data['html-whale-mobile-live-recent'] = $hasMobileLiveRecent ? $renderer->getLiveRecent( 'mobile' ) : '';
 		$data['html-whale-right-ad'] =
 			$hasSidebar && isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right']
 				? $renderer->getAd( 'right' )
@@ -300,6 +310,7 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-footer'] = $renderer->getFooter();
 		$data['html-whale-scroll-up-icon'] = $renderer->getIcon( 'angle-up' );
 		$data['html-whale-scroll-down-icon'] = $renderer->getIcon( 'angle-down' );
+		$data['html-whale-scroll-toc-icon'] = $renderer->getIcon( 'list' );
 		$data['html-whale-adsense-script'] = $hasAds
 			? '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'
 			: '';
@@ -355,6 +366,19 @@ class SkinWhale extends SkinMustache {
 	private function shouldRenderLiveRecent(): bool {
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		return !$userOptionsLookup->getOption( $this->getUser(), 'whale-layout-sidebar' );
+	}
+
+	private function shouldRenderMobileLiveRecent( bool $hasSidebar ): bool {
+		if ( !$this->shouldRenderLiveRecent() ) {
+			return false;
+		}
+
+		$title = $this->getTitle();
+		if ( !$hasSidebar && $title && $title->getNamespace() === NS_SPECIAL ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

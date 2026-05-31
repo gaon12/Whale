@@ -271,7 +271,7 @@ strike {
 /* Content width, alian center */
 .Whale .whale-nav-wrapper .whale-navbar,
 .Whale .content-wrapper {
-	max-width: 1200px;
+	max-width: 1400px;
 	margin: 0 auto;
 }
 /* Content width, alian center End */
@@ -285,7 +285,7 @@ strike {
 }
 
 .Whale .whale-nav-wrapper {
-	min-height: 2.8rem;
+	min-height: 3.5rem;
 	z-index: 1001;
 	background-color: var(--whale-main-color);
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -295,7 +295,7 @@ strike {
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	min-height: 2.8rem;
+	min-height: 3.5rem;
 	padding: 0 1rem;
 	border: 0;
 	border-radius: 0;
@@ -305,7 +305,7 @@ strike {
 	display: inline-flex;
 	align-items: center;
 	flex: 0 1 auto;
-	height: 2.8rem;
+	height: 3.5rem;
 	width: auto;
 	max-width: 14rem;
 	padding: 0;
@@ -318,7 +318,7 @@ strike {
 	width: auto;
 	height: auto;
 	max-width: 100%;
-	max-height: 1.9rem;
+	max-height: 2.15rem;
 	object-fit: contain;
 }
 
@@ -345,13 +345,15 @@ strike {
 	align-items: center;
 	color: #fff;
 	font-size: 1rem;
-	padding: 0.7rem 0.8rem;
+	padding: 1.05rem 0.8rem;
 	line-height: 1.4rem;
+	text-decoration: none;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus {
 	background-color: var(--whale-second-color);
+	text-decoration: none;
 	transition: 0.3s;
 }
 
@@ -370,13 +372,15 @@ strike {
 	order: 10;
 	flex: 0 0 auto;
 	margin-left: auto;
-	padding: 0.4rem 0;
+	padding: 0.55rem 0;
+	min-width: 0;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group {
 	display: inline-flex;
 	align-items: stretch;
-	height: 2rem;
+	height: 2.4rem;
+	min-width: 0;
 	vertical-align: middle;
 }
 
@@ -384,7 +388,7 @@ strike {
 	border: 1px solid #ccc;
 	box-sizing: border-box;
 	font-size: 0.8rem;
-	height: 2rem;
+	height: 2.4rem;
 	line-height: 1.5;
 	min-width: 0;
 	width: 10.8rem;
@@ -405,7 +409,8 @@ strike {
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-actions {
 	display: inline-flex;
 	align-items: stretch;
-	height: 2rem;
+	flex: 0 0 auto;
+	height: 2.4rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
@@ -414,7 +419,7 @@ strike {
 	border-radius: 0;
 	display: inline-flex;
 	justify-content: center;
-	height: 2rem;
+	height: 2.4rem;
 	min-width: 1.9rem;
 	color: #4f5b63;
 	padding: 0;
@@ -448,7 +453,7 @@ strike {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
-	height: 2.8rem;
+	height: 3.5rem;
 	padding-left: 0.8rem;
 }
 
@@ -456,7 +461,7 @@ strike {
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 	display: inline-flex;
 	align-items: center;
-	height: 2.8rem;
+	height: 3.5rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon {
@@ -617,13 +622,17 @@ strike {
 }
 
 .Whale .content-wrapper .live-recent .live-recent-progress-bar.is-running {
-	animation: whale-live-recent-progress 300s linear forwards;
+	animation: whale-live-recent-progress var(--whale-live-recent-refresh, 60s) linear forwards;
 }
 
 .Whale .content-wrapper .live-recent .live-recent-list {
 	list-style: none;
 	margin: 0;
 	padding: 0.2rem 0.75rem 0.75rem;
+}
+
+.Whale .content-wrapper .live-recent.live-recent-fixed-height .live-recent-list {
+	min-height: calc(var(--whale-live-recent-limit, 10) * 1.47rem + 0.95rem);
 }
 
 .Whale .content-wrapper .live-recent .live-recent-list li {
@@ -802,7 +811,7 @@ strike {
 
 /* Content */
 .Whale .content-wrapper {
-	margin-top: 3.33rem;
+	margin-top: 4.25rem;
 	z-index: -1;
 }
 
@@ -866,6 +875,15 @@ strike {
 	float: right;
 	padding-right: 1rem;
 	padding-top: 1rem;
+	max-width: 100%;
+	text-align: right;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group {
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	max-width: 100%;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
@@ -925,7 +943,8 @@ strike {
 	background-color: #fff;
 	color: var(--whale-text-color);
 	padding: 1rem;
-	overflow: hidden;
+	overflow: visible;
+	overflow-wrap: anywhere;
 	line-height: 1.6rem;
 }
 
@@ -1318,36 +1337,134 @@ strike {
 }
 /* Login modal End */
 
+/* Floating ToC */
+.whale-floating-toc {
+	position: fixed;
+	top: 4.7rem;
+	right: 0.9rem;
+	z-index: 999;
+	max-width: 9rem;
+	max-height: calc(100vh - 9rem);
+	overflow: hidden auto;
+	pointer-events: none;
+}
+
+.whale-floating-toc ol {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 0.45rem;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.whale-floating-toc li {
+	position: relative;
+	padding-right: 1rem;
+}
+
+.whale-floating-toc li::after {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	width: 0.25rem;
+	height: 0.25rem;
+	margin-top: -0.125rem;
+	background-color: #5f666d;
+	border-radius: 50%;
+	content: "";
+}
+
+.whale-floating-toc a {
+	display: block;
+	max-width: 8rem;
+	padding: 0.25rem 0.45rem;
+	overflow: hidden;
+	background-color: #fff;
+	border: 1px solid #d7dee5;
+	border-radius: 0.35rem;
+	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.14);
+	color: #202326;
+	font-size: 0.85rem;
+	line-height: 1.25;
+	text-align: right;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: auto;
+}
+
+.whale-floating-toc a:hover,
+.whale-floating-toc a:focus,
+.whale-floating-toc a.is-active {
+	background-color: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
+	text-decoration: none;
+}
+/* Floating ToC End */
+
 /* scroll button */
 #whale-bottombtn {
 	position: fixed;
-	width: 80px;
-	right: 0px;
-	bottom: 0px;
-	background: var(--whale-main-color);
-	height: 40px;
-	overflow: hidden;
+	right: 0.9rem;
+	bottom: 4rem;
+	background: transparent;
 	padding: 0;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	display: flex;
+	gap: 0.45rem;
+	z-index: 1000;
+}
+
+body.whale-scroll-buttons-vertical #whale-bottombtn {
+	flex-direction: column;
+}
+
+body.whale-scroll-buttons-horizontal #whale-bottombtn {
+	right: 0;
+	bottom: 0;
+	flex-direction: row;
+	gap: 0;
+	background: var(--whale-main-color);
 	border-radius: 5px 5px 0 0;
-	z-index: 2;
+	overflow: hidden;
 }
 
 #whale-bottombtn .scroll-button {
-	line-height: 40px;
-	color: white;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	background-color: #fff;
+	border: 1px solid #d7dee5;
+	border-radius: 0.45rem;
+	color: #4f5b63;
 	text-align: center;
 	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
 }
 
 #whale-bottombtn .scroll-button:hover {
 	background-color: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
 	transition: 500ms;
 }
 
-#whale-bottombtn #whale-scrollup {
-	border-right: 1px solid white;
+body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
+	width: 40px;
+	height: 40px;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	color: #fff;
+}
+
+body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-button {
+	border-left: 1px solid rgba(255, 255, 255, 0.75);
 }
 /* scroll button end */
 
@@ -1442,8 +1559,8 @@ strike {
 }
 
 #whale-bottombtn .scroll-button .whale-icon {
-	width: 40px;
-	height: 40px;
+	width: 1.35rem;
+	height: 1.35rem;
 }
 /* Dropdown End */
 
@@ -1757,6 +1874,22 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 	background-color: #1f2023;
 }
 
+body.whale-dark .whale-floating-toc a,
+body.whale-dark #whale-bottombtn .scroll-button {
+	background-color: #1f2023;
+	border-color: #555;
+	color: #ddd;
+}
+
+body.whale-dark .whale-floating-toc a:hover,
+body.whale-dark .whale-floating-toc a:focus,
+body.whale-dark .whale-floating-toc a.is-active,
+body.whale-dark #whale-bottombtn .scroll-button:hover {
+	background-color: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
+}
+
 @media (prefers-color-scheme: dark) {
 	body.whale-auto-dark,
 	body.whale-auto-dark .Whale,
@@ -1910,8 +2043,24 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 		background-color: #000;
 	}
 
-body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle {
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle {
 		background-color: #1f2023;
+	}
+
+	body.whale-auto-dark .whale-floating-toc a,
+	body.whale-auto-dark #whale-bottombtn .scroll-button {
+		background-color: #1f2023;
+		border-color: #555;
+		color: #ddd;
+	}
+
+	body.whale-auto-dark .whale-floating-toc a:hover,
+	body.whale-auto-dark .whale-floating-toc a:focus,
+	body.whale-auto-dark .whale-floating-toc a.is-active,
+	body.whale-auto-dark #whale-bottombtn .scroll-button:hover {
+		background-color: var(--whale-main-color);
+		border-color: var(--whale-main-color);
+		color: #fff;
 	}
 }
 /* Dark mode End */
@@ -1965,16 +2114,18 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-search-group .whale-search-input {
-		width: 100%;
+		flex: 1 1 auto;
+		width: auto;
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-search-group .whale-search-actions {
 		display: inline-flex;
-		width: 1%;
+		flex: 0 0 auto;
+		width: auto;
 	}
 
 	.Whale .content-wrapper {
-		margin-top: 5.89rem;
+		margin-top: 6.55rem;
 	}
 
 	.Whale .content-wrapper .whale-sidebar {
@@ -1984,6 +2135,10 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 	.Whale .content-wrapper .mobile-live-recent-wrapper {
 		display: block;
 		padding: 0 0.5rem 0.5rem;
+	}
+
+	body.ns-special.Whale .content-wrapper .mobile-live-recent-wrapper {
+		display: none;
 	}
 
 	.Whale .content-wrapper .mobile-live-recent-wrapper .live-recent {
@@ -2005,6 +2160,10 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 		text-align: right;
 		border-bottom: 1px solid #e1e8ed;
 		padding: 0.5rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
+		margin-bottom: 0.25rem;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-header .title {
@@ -2050,6 +2209,10 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 
 	#searchform {
 		width: 100%;
+	}
+
+	.whale-floating-toc {
+		display: none;
 	}
 }
 
