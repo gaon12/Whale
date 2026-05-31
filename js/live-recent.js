@@ -1,5 +1,5 @@
 (() => {
-	const CACHE_TTL = 5 * 60 * 1000;
+	const DEFAULT_REFRESH_INTERVAL = 60 * 1000;
 	const RELATIVE_TIME_INTERVAL = 30 * 1000;
 	const NO_DATA_TEXT = 'No data';
 	const feedCache = new Map();
@@ -162,7 +162,11 @@
 	) => {
 		const cached = feedCache.get(feed.namespaces);
 
-		if (cached && !force && Date.now() - cached.fetchedAt < CACHE_TTL) {
+		if (
+			cached &&
+			!force &&
+			Date.now() - cached.fetchedAt < feed.refreshInterval
+		) {
 			renderFeed(feed, cached.changes);
 			return;
 		}
@@ -221,6 +225,8 @@
 			limit: Number(root.dataset.limit) || 10,
 			namespaces: element.dataset.namespaces,
 			progressBar: element.querySelector('.live-recent-progress-bar'),
+			refreshInterval:
+				Number(root.dataset.refreshInterval) || DEFAULT_REFRESH_INTERVAL,
 			loaded: false,
 			requestId: 0,
 		};
