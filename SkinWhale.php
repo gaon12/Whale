@@ -60,7 +60,7 @@ class SkinWhale extends SkinMustache {
 	 */
 	public function initPage( OutputPage $out ): void {
 		// @codingStandardsIgnoreLine
-		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC, $wgWhaleAdSetting, $wgWhaleAdGroup, $wgWhaleNavBarLogoImage;
+		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC, $wgWhaleAdSetting, $wgWhaleAdGroup;
 
 		$user = $this->getUser();
 		$services = MediaWikiServices::getInstance();
@@ -166,20 +166,6 @@ class SkinWhale extends SkinMustache {
 			}
 		}"
 		);
-
-		// navbar image settings
-		if ( isset( $wgWhaleNavBarLogoImage ) ) {
-			$out->addInlineStyle(
-				".Whale .nav-wrapper .navbar .navbar-brand {
-					background: transparent url($wgWhaleNavBarLogoImage) no-repeat scroll left center/auto 1.9rem;
-				}
-				@media screen and (max-width: 397px){
-					.Whale .nav-wrapper .navbar .navbar-brand {
-						background: transparent url($wgWhaleNavBarLogoImage) no-repeat scroll left center/auto 1.5rem;
-					}
-				}"
-			);
-		}
 
 		// layout settings
 		$WhaleUserWidthSettings = $userOptionsLookup->getOption( $user, 'whale-layout-width' );

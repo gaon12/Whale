@@ -63,6 +63,20 @@ class WhaleRenderer {
 		return $this->renderIcon( $icon );
 	}
 
+	private function getNavBarLogoUrl(): string {
+		global $wgResourceBasePath, $wgWhaleNavBarLogoImage;
+
+		if ( is_string( $wgWhaleNavBarLogoImage ?? null ) && trim( $wgWhaleNavBarLogoImage ) !== '' ) {
+			return $wgWhaleNavBarLogoImage;
+		}
+
+		$resourceBasePath = is_string( $wgResourceBasePath ?? null )
+			? rtrim( $wgResourceBasePath, '/' )
+			: '';
+
+		return $resourceBasePath . '/skins/Whale/img/logo.png';
+	}
+
 	private function capture( callable $render ): string {
 		ob_start();
 
@@ -81,11 +95,20 @@ class WhaleRenderer {
 	 * Nav menu function, build top menu.
 	 */
 	protected function navMenu() {
+		global $wgSitename;
+
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$skin = $this->skin;
 	?>
 		<nav class="navbar">
-			<a class="navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>"></a>
+			<a class="navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>">
+				<?php echo Html::element( 'img', [
+					'class' => 'navbar-brand-logo',
+					'src' => $this->getNavBarLogoUrl(),
+					'alt' => is_string( $wgSitename ?? null ) ? $wgSitename : 'Whale',
+					'decoding' => 'async'
+				] ); ?>
+			</a>
 			<ul class="nav navbar-nav">
 				<li class="nav-item">
 					<?php echo $linkRenderer->makeKnownLink(
