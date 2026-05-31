@@ -35,9 +35,9 @@ class WhaleRenderer {
 		} );
 	}
 
-	public function getLiveRecent(): string {
-		return $this->capture( function () {
-			$this->liveRecent();
+	public function getLiveRecent( string $mode = 'desktop' ): string {
+		return $this->capture( function () use ( $mode ) {
+			$this->liveRecent( $mode );
 		} );
 	}
 
@@ -403,7 +403,7 @@ class WhaleRenderer {
 	/**
 	 * Live recent function, build right side's Recent menus.
 	 */
-	protected function liveRecent() {
+	protected function liveRecent( string $mode = 'desktop' ) {
 		global $wgWhaleEnableLiveRC,
 			$wgWhaleMaxRecent,
 			$wgWhaleLiveRCArticleNamespaces,
@@ -418,23 +418,24 @@ class WhaleRenderer {
 		$skin = $this->skin;
 		$articleNS = implode( '|', $wgWhaleLiveRCArticleNamespaces );
 		$talkNS = implode( '|', $wgWhaleLiveRCTalkNamespaces );
+		$isMobile = $mode === 'mobile';
 	?>
-		<div class="live-recent" data-limit="<?php echo (int)$wgWhaleMaxRecent ?>">
+		<div class="live-recent" data-live-recent-mode="<?php echo htmlspecialchars( $mode, ENT_QUOTES ); ?>" data-limit="<?php echo (int)$wgWhaleMaxRecent ?>">
 			<?php
 				$this->liveRecentFeed(
-					'live-recent-article-list',
+					$mode . '-live-recent-article-list',
 					$skin->msg( 'recentchanges' )->escaped(),
 					'sync',
-					$articleNS,
-					$wgWhaleMaxRecent
+					$articleNS
 				);
-				$this->liveRecentFeed(
-					'live-recent-talk-list',
-					$skin->msg( 'whale-recent-discussions' )->escaped(),
-					'comments',
-					$talkNS,
-					$wgWhaleMaxRecent
-				);
+				if ( !$isMobile ) {
+					$this->liveRecentFeed(
+						$mode . '-live-recent-talk-list',
+						$skin->msg( 'whale-recent-discussions' )->escaped(),
+						'comments',
+						$talkNS
+					);
+				}
 			?>
 		</div>
 		<?php
@@ -444,14 +445,9 @@ class WhaleRenderer {
 		string $listId,
 		string $heading,
 		string $icon,
-		string $namespaces,
-		int $limit
+		string $namespaces
 	): void {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		$placeholderRows = str_repeat(
-			'<li class="live-recent-row live-recent-empty"><span class="recent-item recent-item-placeholder is-loading">&nbsp;</span></li>',
-			$limit
-		);
 	?>
 		<section class="live-recent-feed" data-namespaces="<?php echo htmlspecialchars( $namespaces, ENT_QUOTES ); ?>">
 			<header class="live-recent-header">
@@ -465,8 +461,10 @@ class WhaleRenderer {
 					[ 'class' => 'live-recent-more' ]
 				); ?>
 			</header>
+			<div class="live-recent-progress" aria-hidden="true">
+				<span class="live-recent-progress-bar"></span>
+			</div>
 			<ul class="live-recent-list" id="<?php echo htmlspecialchars( $listId, ENT_QUOTES ); ?>" aria-busy="true">
-				<?php echo $placeholderRows; ?>
 			</ul>
 		</section>
 	<?php
