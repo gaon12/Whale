@@ -124,7 +124,33 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | 광고 슬롯 | 헤더, 오른쪽, 문서 아래, 하단 광고 위치를 설정할 수 있습니다. |
 | 다국어 메시지 | 한국어, 영어, 일본어, 중국어 간체, 중국어 번체 메시지를 관리합니다. |
 
-### 7. 내비게이션 메뉴 만들기
+### 7. 단축 URL 서버 설정
+
+단축 URL 기능은 `/s/{code}` 요청을 `Special:WhaleShortUrl/{code}`로 넘기는 웹 서버 rewrite가 필요합니다. 스킨에는 바로 복사해서 쓸 수 있는 예시 파일이 들어 있습니다.
+
+| 서버 | 예시 파일 |
+| --- | --- |
+| Apache | `docs/rewrite/apache-whale-short-url.htaccess` |
+| Nginx | `docs/rewrite/nginx-whale-short-url.conf` |
+
+Apache `.htaccess` 예시는 다음과 같습니다.
+
+```apache
+RewriteEngine On
+RewriteRule ^s/([A-Za-z0-9]+)$ /index.php?title=Special:WhaleShortUrl/$1 [L,QSA]
+```
+
+Nginx 예시는 다음과 같습니다.
+
+```nginx
+location ~ ^/s/([A-Za-z0-9]+)$ {
+	rewrite ^/s/([A-Za-z0-9]+)$ /index.php?title=Special:WhaleShortUrl/$1 last;
+}
+```
+
+경로 접두어를 바꾸고 싶다면 `LocalSettings.php`에서 `$wgWhaleShortUrlPathPrefix`도 같은 값으로 맞춰 주세요.
+
+### 8. 내비게이션 메뉴 만들기
 
 Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다. 이 문서는 위키 안에서 직접 만들거나 수정합니다.
 
@@ -159,7 +185,7 @@ Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다.
 
 `icon`과 `display` 중 하나는 반드시 있어야 합니다. 둘 다 없으면 사용자가 무엇을 눌러야 하는지 알 수 없습니다.
 
-### 8. 최근 변경 사이드바 설정
+### 9. 최근 변경 사이드바 설정
 
 오른쪽 사이드바의 최근 변경 기능은 기본적으로 켜져 있습니다.
 
@@ -196,7 +222,7 @@ $wgWhaleLiveRCTalkNamespaces = [
 ];
 ```
 
-### 9. 광고 설정
+### 10. 광고 설정
 
 Google AdSense 광고를 쓰려면 `$wgWhaleAdSetting`을 설정합니다.
 
@@ -241,7 +267,7 @@ $wgWhaleAdGroup = 'differ';
 | `blockads-belowarticle` | 문서 아래 광고를 숨길 수 있음 |
 | `blockads-bottom` | 하단 광고를 숨길 수 있음 |
 
-### 10. 설정 전체 표
+### 11. 설정 전체 표
 
 | 설정 | 설명 | 예시 | 기본값 |
 | --- | --- | --- | --- |
@@ -266,7 +292,7 @@ $wgWhaleAdGroup = 'differ';
 | `$wgWhaleAdGroup` | 권한별 광고 숨김 설정 사용 | `'differ'` | `null` |
 | `$wgWhaleMobileReplaceAd` | 모바일에서 오른쪽 광고를 하단으로 이동 | `true` | `false` |
 
-### 11. 관리하는 언어
+### 12. 관리하는 언어
 
 현재 이 저장소에서 직접 관리하는 다국어 파일은 아래 다섯 개입니다.
 
@@ -387,7 +413,33 @@ Advanced site-wide color override variables still exist for compatibility: `$wgW
 
 Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. See `docs/rewrite/apache-whale-short-url.htaccess` and `docs/rewrite/nginx-whale-short-url.conf`.
 
-### 7. Navigation Menu
+### 7. Short URL Server Rewrite
+
+Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. Ready-to-copy examples are included in the repository.
+
+| Server | Example file |
+| --- | --- |
+| Apache | `docs/rewrite/apache-whale-short-url.htaccess` |
+| Nginx | `docs/rewrite/nginx-whale-short-url.conf` |
+
+Apache `.htaccess` example:
+
+```apache
+RewriteEngine On
+RewriteRule ^s/([A-Za-z0-9]+)$ /index.php?title=Special:WhaleShortUrl/$1 [L,QSA]
+```
+
+Nginx example:
+
+```nginx
+location ~ ^/s/([A-Za-z0-9]+)$ {
+	rewrite ^/s/([A-Za-z0-9]+)$ /index.php?title=Special:WhaleShortUrl/$1 last;
+}
+```
+
+If you change the path prefix, set `$wgWhaleShortUrlPathPrefix` in `LocalSettings.php` to the same value.
+
+### 8. Navigation Menu
 
 Create or edit `MediaWiki:Whale-Navbar` on your wiki.
 
@@ -420,7 +472,7 @@ Supported fields:
 
 At least one of `icon` or `display` must be present.
 
-### 8. Live Recent Sidebar
+### 9. Live Recent Sidebar
 
 Live recent changes are enabled by default. To disable them:
 
@@ -455,7 +507,7 @@ $wgWhaleLiveRCTalkNamespaces = [
 ];
 ```
 
-### 9. Ads
+### 10. Ads
 
 Example Google AdSense configuration:
 
@@ -498,7 +550,7 @@ Available rights:
 | `blockads-belowarticle` | Can hide below-article ads |
 | `blockads-bottom` | Can hide bottom ads |
 
-### 10. Configuration Reference
+### 11. Configuration Reference
 
 | Setting | Description | Example | Default |
 | --- | --- | --- | --- |
@@ -539,7 +591,7 @@ Available rights:
 | `$wgWhaleEnableImageLazyLoad` | Enable lazy loading and skeleton placeholders for article images | `true` | `true` |
 | `$wgWhaleMobileUserToolsPosition` | Mobile login/profile position | `'right'` | `'right'` |
 
-### 11. Maintained Languages
+### 12. Maintained Languages
 
 This repository intentionally maintains these message files:
 
