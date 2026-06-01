@@ -20,6 +20,29 @@
 
 	const getTarget = (link) => whale.getAnchorTarget(link.getAttribute('href'));
 
+	const getMaxScrollY = () =>
+		Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+	const getTargetScrollY = (target) => {
+		const rawScrollY =
+			target.getBoundingClientRect().top +
+			window.scrollY -
+			whale.getNavHeight() -
+			10;
+
+		return Math.min(getMaxScrollY(), Math.max(0, rawScrollY));
+	};
+
+	const getTargetPositionRatio = (target) => {
+		const targetTop = target.getBoundingClientRect().top + window.scrollY;
+		const documentHeight = Math.max(
+			1,
+			document.documentElement.scrollHeight - whale.getNavHeight(),
+		);
+
+		return Math.min(1, Math.max(0, targetTop / documentHeight));
+	};
+
 	const removeFloatingToc = () => {
 		document.querySelector('.whale-floating-toc')?.remove();
 		if (activeScrollUpdate) {
@@ -75,12 +98,31 @@
 		document.body.append(toc);
 
 		const anchors = [...toc.querySelectorAll('a')];
+		const items = [...toc.querySelectorAll('li')];
+
+		const updatePositions = () => {
+			const maxScrollY = getMaxScrollY();
+
+			links.forEach((item, index) => {
+				item.scrollY = getTargetScrollY(item.target);
+
+				const ratio =
+					maxScrollY === 0 || links.length === 1
+						? index / Math.max(1, links.length - 1)
+						: getTargetPositionRatio(item.target);
+
+				items[index].style.top = `${Math.min(1, Math.max(0, ratio)) * 100}%`;
+			});
+		};
+
 		const updateActive = whale.rafThrottle(() => {
-			const scrollY = window.scrollY + 96;
+			updatePositions();
+
+			const scrollY = Math.min(getMaxScrollY(), window.scrollY);
 			let activeIndex = 0;
 
-			links.forEach(({ target }, index) => {
-				if (target.getBoundingClientRect().top + window.scrollY <= scrollY) {
+			links.forEach(({ scrollY: targetScrollY }, index) => {
+				if (targetScrollY <= scrollY + 1) {
 					activeIndex = index;
 				}
 			});

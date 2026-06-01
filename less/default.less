@@ -1541,26 +1541,28 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	position: fixed;
 	top: 4.7rem;
 	right: 0.9rem;
+	bottom: 4rem;
 	z-index: 999;
+	width: 9rem;
 	max-width: 9rem;
-	max-height: calc(100vh - 9rem);
-	overflow: hidden auto;
+	overflow: visible;
 	pointer-events: none;
 }
 
 .whale-floating-toc ol {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	gap: 0.45rem;
+	position: relative;
+	width: 100%;
+	height: 100%;
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
 
 .whale-floating-toc li {
-	position: relative;
+	position: absolute;
+	right: 0;
 	padding-right: 1rem;
+	transform: translateY(-50%);
 }
 
 .whale-floating-toc li::after {
