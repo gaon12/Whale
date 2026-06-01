@@ -380,8 +380,12 @@ Advanced site-wide color override variables still exist for compatibility: `$wgW
 | Folding blocks | Supports `{{{#!folding title ... }}}` folding blocks. |
 | Blurred categories | Removes `#blur` from `[[Category:Name#blur]]` labels and blurs the category. |
 | Dark mode | Follows the system setting or a user-selected mode. |
+| User contribution graph | Shows a GitHub-style contribution grid on root user pages such as `User:Example`. |
+| Short URLs | Adds a footer tool that creates `/s/{base62}` URLs from the page's latest revision id. |
 | Ad slots | Supports header, right, below-article, and bottom slots. |
 | Localization | Maintains Korean, English, Japanese, Simplified Chinese, and Traditional Chinese messages. |
+
+Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. See `docs/rewrite/apache-whale-short-url.htaccess` and `docs/rewrite/nginx-whale-short-url.conf`.
 
 ### 7. Navigation Menu
 
@@ -518,6 +522,20 @@ Available rights:
 | `$wgWhaleAdSetting` | Ad client and slot settings | See above | `null` |
 | `$wgWhaleAdGroup` | Enable per-right ad hiding | `'differ'` | `null` |
 | `$wgWhaleMobileReplaceAd` | Move right ad to bottom on mobile | `true` | `false` |
+| `$wgWhaleEnableUserContributionGraph` | Enable user-page contribution graphs | `true` | `true` |
+| `$wgWhaleContributionGraphDays` | Contribution graph range | `365` | `365` |
+| `$wgWhaleContributionGraphNamespaces` | Restrict contribution graph namespaces | `[ NS_MAIN ]` | `null` |
+| `$wgWhaleContributionGraphCacheTTL` | Contribution graph cache TTL | `3600` | `3600` |
+| `$wgWhaleContributionGraphLevels` | Contribution graph color thresholds | `[1, 3, 6, 10]` | `[1, 3, 6, 10]` |
+| `$wgWhaleEnableShortUrls` | Enable footer short URLs and SpecialPage redirect | `true` | `true` |
+| `$wgWhaleShortUrlPathPrefix` | Short URL path prefix | `'/s'` | `'/s'` |
+| `$wgWhaleShortUrlRedirectStatus` | Short URL redirect status | `302` | `302` |
+| `$wgWhaleEnableHeadingAnchors` | Enable heading copy-link buttons | `true` | `true` |
+| `$wgWhaleEnableReadingProgress` | Enable reading progress bar | `true` | `true` |
+| `$wgWhaleEnableResponsiveTables` | Enable responsive wide tables | `true` | `true` |
+| `$wgWhaleEnableSortableTables` | Enable client-side table sorting | `true` | `true` |
+| `$wgWhaleEnableContentFontScale` | Enable per-user article font size | `true` | `true` |
+| `$wgWhaleMobileUserToolsPosition` | Mobile login/profile position | `'right'` | `'right'` |
 
 ### 11. Maintained Languages
 

@@ -1,0 +1,6 @@
+# Whale short URL rewrite example.
+# Place this in your MediaWiki document root or merge it into your existing
+# Apache vhost rewrite rules.
+
+RewriteEngine On
+RewriteRule ^s/([0-9A-Za-z]+)$ %{DOCUMENT_ROOT}/index.php?title=Special:WhaleShortUrl/$1 [L,QSA]
