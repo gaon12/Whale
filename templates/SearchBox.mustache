@@ -1,0 +1,21 @@
+{{#data-search}}
+<form action="{{action}}" id="searchform" class="whale-search-form">
+	<input type="hidden" name="title" value="{{title-value}}">
+	<div class="whale-search-group">
+		<input
+			type="search"
+			name="search"
+			placeholder="{{placeholder}}"
+			title="{{input-title}}"
+			accesskey="{{accesskey}}"
+			id="searchInput"
+			class="whale-search-input"
+			value="{{value}}"
+			autocomplete="off">
+		<span class="whale-search-actions">
+			<button type="submit" name="go" value="{{go-label}}" id="searchGoButton" class="whale-btn whale-btn-secondary">{{{ html-eye-icon }}}</button>
+			<button type="submit" name="fulltext" value="{{search-label}}" id="mw-searchButton" class="whale-btn whale-btn-secondary">{{{ html-search-icon }}}</button>
+		</span>
+	</div>
+</form>
+{{/data-search}}

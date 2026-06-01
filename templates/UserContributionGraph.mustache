@@ -1,0 +1,27 @@
+{{#data-whale-user-contribution-graph}}
+<section class="whale-contrib-graph" aria-labelledby="whale-contrib-graph-title">
+	<div class="whale-contrib-graph-header">
+		<h2 id="whale-contrib-graph-title">{{title}}</h2>
+		<p>{{summary}}</p>
+	</div>
+	<div class="whale-contrib-grid" role="img" aria-label="{{summary}}">
+		{{#weeks}}
+			<div class="whale-contrib-week">
+				{{#days}}
+					{{#is-empty}}
+						<span class="whale-contrib-day whale-contrib-empty" aria-hidden="true"></span>
+					{{/is-empty}}
+					{{^is-empty}}
+						<span class="whale-contrib-day {{level}}" title="{{label}}" aria-label="{{label}}"></span>
+					{{/is-empty}}
+				{{/days}}
+			</div>
+		{{/weeks}}
+	</div>
+	<div class="whale-contrib-legend" aria-hidden="true">
+		<span>Less</span>
+		{{#legend}}<span class="whale-contrib-day {{level}}"></span>{{/legend}}
+		<span>More</span>
+	</div>
+</section>
+{{/data-whale-user-contribution-graph}}

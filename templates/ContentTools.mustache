@@ -1,0 +1,24 @@
+{{#data-whale-content-tools}}
+{{#has-content-tools}}
+<div class="content-tools">
+	<div class="whale-btn-group" role="group" aria-label="content-tools">
+		{{#buttons}}
+			{{{ html }}}
+		{{/buttons}}
+		{{#show-share}}
+			<button type="button" class="whale-btn whale-btn-secondary tools-btn tools-share">
+				{{{ html-share-icon }}}
+				{{share-label}}
+			</button>
+		{{/show-share}}
+		<button type="button" class="whale-btn whale-btn-secondary tools-btn whale-dropdown-toggle" data-whale-toggle="dropdown" aria-label="{{more-label}}" aria-expanded="false"></button>
+		<div class="whale-dropdown-menu whale-dropdown-menu-right" role="menu">
+			{{#dropdown-items}}
+				{{#is-divider}}<div class="whale-dropdown-divider"></div>{{/is-divider}}
+				{{{ html }}}
+			{{/dropdown-items}}
+		</div>
+	</div>
+</div>
+{{/has-content-tools}}
+{{/data-whale-content-tools}}

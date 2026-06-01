@@ -1,0 +1,25 @@
+{{#data-login}}
+<div class="whale-navbar-login">
+	{{#is-registered}}
+		<div class="whale-dropdown login-menu">
+			<a class="whale-dropdown-toggle" type="button" id="login-menu" data-whale-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{user-name}}">
+				{{{ html-avatar }}}
+			</a>
+			<div class="whale-dropdown-menu whale-dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
+				{{#links}}
+					{{#is-divider}}<div class="whale-dropdown-divider"></div>{{/is-divider}}
+					{{{ html }}}
+				{{/links}}
+				<div class="whale-dropdown-divider view-logout"></div>
+				<a href="{{logout-href}}" class="whale-dropdown-item view-logout" title="{{logout-title}}">{{logout-label}}</a>
+			</div>
+		</div>
+		<a href="{{logout-href}}" class="hide-logout logout-btn" title="{{logout-title}}">{{{ html-sign-out-icon }}}</a>
+	{{/is-registered}}
+	{{^is-registered}}
+		<a href="#" class="none-outline" data-whale-toggle="modal" data-whale-target="#whale-login-modal" title="{{login-title}}">
+			{{{ html-sign-in-icon }}}
+		</a>
+	{{/is-registered}}
+</div>
+{{/data-login}}

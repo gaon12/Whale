@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 
@@ -60,7 +61,7 @@ class SkinWhale extends SkinMustache {
 	 */
 	public function initPage( OutputPage $out ): void {
 		// @codingStandardsIgnoreLine
-		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC, $wgWhaleAdSetting, $wgWhaleAdGroup;
+		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC, $wgWhaleAdSetting;
 
 		$user = $this->getUser();
 		$services = MediaWikiServices::getInstance();
@@ -152,6 +153,21 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.loginjs';
 		}
 
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableHeadingAnchors', 'whale-heading-anchors' ) ) {
+			$modules[] = 'skins.whale.headingAnchors';
+		}
+
+		if (
+			$this->isWhaleFeatureEnabled( 'WhaleEnableResponsiveTables', 'whale-responsive-tables' ) ||
+			$this->isWhaleFeatureEnabled( 'WhaleEnableSortableTables', 'whale-sortable-tables' )
+		) {
+			$modules[] = 'skins.whale.tables';
+		}
+
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableShortUrls', 'whale-short-url' ) ) {
+			$modules[] = 'skins.whale.shortUrl';
+		}
+
 		$out->addModules( $modules );
 
 		// @codingStandardsIgnoreStart
@@ -216,37 +232,6 @@ class SkinWhale extends SkinMustache {
 			);
 		}
 
-		// Ads setting
-		if ( isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'] ) {
-			// change ads option by rights
-			if ( isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup == 'differ' ) {
-				if (
-					isset( $wgWhaleAdSetting['header'] ) && $wgWhaleAdSetting['header'] &&
-					$userOptionsLookup->getOption( $user, 'whale-ads-header' )
-				) {
-					$wgWhaleAdSetting['header'] = null;
-				}
-				if (
-					isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'] &&
-					$userOptionsLookup->getOption( $user, 'whale-ads-right' )
-				) {
-					$wgWhaleAdSetting['right'] = null;
-				}
-				if (
-					isset( $wgWhaleAdSetting['bottom'] ) && $wgWhaleAdSetting['bottom'] &&
-					$userOptionsLookup->getOption( $user, 'whale-ads-bottom' )
-				) {
-					$wgWhaleAdSetting['bottom'] = null;
-				}
-				if (
-					isset( $wgWhaleAdSetting['belowarticle'] ) && $wgWhaleAdSetting['belowarticle'] &&
-					$userOptionsLookup->getOption( $user, 'whale-ads-belowarticle' )
-				) {
-					$wgWhaleAdSetting['belowarticle'] = null;
-				}
-			}
-		}
-
 		// @codingStandardsIgnoreEnd
 		$this->setupCss( $out );
 	}
@@ -279,42 +264,49 @@ class SkinWhale extends SkinMustache {
 			$categoriesHtml,
 			$categoryBlur !== false
 		) : $categoriesHtml;
-		$data['html-whale-nav-menu'] = $renderer->getNavMenu();
+		$data['data-whale-nav'] = $renderer->getNavData();
 		$data['has-whale-site-notice'] = $siteNoticeHtml !== '';
 		$data['html-whale-site-notice'] = $siteNoticeHtml;
-		$data['html-whale-contents-toolbox'] = $renderer->getContentsToolbox();
+		$data['data-whale-content-tools'] = $renderer->getContentToolsData();
 		$data['has-whale-sidebar'] = $hasSidebar;
 		$data['has-whale-live-recent'] = $hasDesktopLiveRecent;
 		$data['has-whale-mobile-live-recent'] = $hasMobileLiveRecent;
-		$data['html-whale-live-recent'] = $hasDesktopLiveRecent ? $renderer->getLiveRecent() : '';
-		$data['html-whale-mobile-live-recent'] = $hasMobileLiveRecent ? $renderer->getLiveRecent( 'mobile' ) : '';
+		$data['data-whale-live-recent'] = $hasDesktopLiveRecent ? $renderer->getLiveRecentData() : [];
+		$data['data-whale-mobile-live-recent'] = $hasMobileLiveRecent ? $renderer->getLiveRecentData( 'mobile' ) : [];
 		$data['html-whale-right-ad'] =
-			$hasSidebar && isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right']
-				? $renderer->getAd( 'right' )
+			$hasSidebar && $this->shouldRenderAd( 'right', 'whale-ads-right' )
+				? $this->renderAdHtml( $renderer->getAdData( 'right' ) )
 				: '';
 		$data['html-whale-header-ad'] =
-			isset( $wgWhaleAdSetting['header'] ) && $wgWhaleAdSetting['header']
-				? $renderer->getAd( 'header' )
+			$this->shouldRenderAd( 'header', 'whale-ads-header' )
+				? $this->renderAdHtml( $renderer->getAdData( 'header' ) )
 				: '';
 		$data['html-whale-belowarticle-ad'] =
-			isset( $wgWhaleAdSetting['belowarticle'] ) && $wgWhaleAdSetting['belowarticle']
-				? $renderer->getAd( 'belowarticle' )
+			$this->shouldRenderAd( 'belowarticle', 'whale-ads-belowarticle' )
+				? $this->renderAdHtml( $renderer->getAdData( 'belowarticle' ) )
 				: '';
 		$data['html-whale-bottom-ad'] =
-			isset( $wgWhaleAdSetting['bottom'] ) && $wgWhaleAdSetting['bottom']
-				? $renderer->getAd( 'bottom' )
+			$this->shouldRenderAd( 'bottom', 'whale-ads-bottom' )
+				? $this->renderAdHtml( $renderer->getAdData( 'bottom' ) )
 				: '';
 		$data['has-whale-mobile-ad'] =
 			isset( $wgWhaleMobileReplaceAd ) && $wgWhaleMobileReplaceAd &&
 			isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'];
-		$data['html-whale-footer'] = $renderer->getFooter();
+		$shortUrlData = $renderer->getShortUrlData();
+		$footerData = $renderer->getFooterData();
+		$footerData['short-url'] = $shortUrlData;
+		$data['data-whale-footer'] = $footerData;
+		$data['data-whale-short-url'] = $shortUrlData;
+		$data['data-whale-login-modal'] = $renderer->getLoginModalData();
+		$data['data-whale-user-contribution-graph'] = $renderer->getUserContributionGraphData();
+		$data['has-whale-user-contribution-graph'] =
+			!empty( $data['data-whale-user-contribution-graph']['has-user-contribution-graph'] );
 		$data['html-whale-scroll-up-icon'] = $renderer->getIcon( 'angle-up' );
 		$data['html-whale-scroll-down-icon'] = $renderer->getIcon( 'angle-down' );
 		$data['html-whale-scroll-toc-icon'] = $renderer->getIcon( 'list' );
 		$data['html-whale-adsense-script'] = $hasAds
 			? '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'
 			: '';
-		$data['html-whale-login-modal'] = $renderer->getLoginModal();
 		$data['html-whale-debughtml'] = class_exists( MWDebug::class ) ? MWDebug::getHTMLDebugLog() : '';
 
 		return $data;
@@ -379,6 +371,54 @@ class SkinWhale extends SkinMustache {
 		}
 
 		return true;
+	}
+
+	private function isWhaleFeatureEnabled( string $configKey, string $optionKey ): bool {
+		$configValue = $GLOBALS['wg' . $configKey] ?? true;
+		if ( $configValue === false ) {
+			return false;
+		}
+
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		return $userOptionsLookup->getOption( $this->getUser(), $optionKey ) !== false;
+	}
+
+	private function shouldRenderAd( string $position, string $optionKey ): bool {
+		global $wgWhaleAdSetting, $wgWhaleAdGroup;
+
+		if (
+			!isset( $wgWhaleAdSetting['client'], $wgWhaleAdSetting[$position] ) ||
+			!$wgWhaleAdSetting['client'] ||
+			!$wgWhaleAdSetting[$position]
+		) {
+			return false;
+		}
+
+		if ( isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup === 'differ' ) {
+			$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+			if ( $userOptionsLookup->getOption( $this->getUser(), $optionKey ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param array<string,mixed> $adData
+	 */
+	private function renderAdHtml( array $adData ): string {
+		return Html::rawElement(
+			'div',
+			[ 'class' => $adData['class'] ?? '' ],
+			Html::rawElement( 'ins', [
+				'class' => 'adsbygoogle',
+				'data-full-width-responsive' => $adData['full-width-responsive'] ?? 'true',
+				'data-ad-client' => $adData['client'] ?? '',
+				'data-ad-slot' => $adData['slot'] ?? '',
+				'data-ad-format' => $adData['format'] ?? 'auto',
+			], '' )
+		);
 	}
 
 	/**
