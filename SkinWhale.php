@@ -164,7 +164,7 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.tables';
 		}
 
-		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableShortUrls', 'whale-short-url' ) ) {
+		if ( ( $GLOBALS['wgWhaleEnableShortUrls'] ?? true ) !== false ) {
 			$modules[] = 'skins.whale.shortUrl';
 		}
 
@@ -295,6 +295,8 @@ class SkinWhale extends SkinMustache {
 		$shortUrlData = $renderer->getShortUrlData();
 		$footerData = $renderer->getFooterData();
 		$footerData['short-url'] = $shortUrlData;
+		$footerData['has-short-url'] = !empty( $shortUrlData['has-short-url'] );
+		$footerData['short-url-button-label'] = $shortUrlData['button-label'] ?? '';
 		$data['data-whale-footer'] = $footerData;
 		$data['data-whale-short-url'] = $shortUrlData;
 		$data['data-whale-login-modal'] = $renderer->getLoginModalData();

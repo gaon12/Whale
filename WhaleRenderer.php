@@ -547,12 +547,10 @@ class WhaleRenderer {
 		global $wgWhaleEnableShortUrls;
 
 		$skin = $this->skin;
-		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$title = $skin->getTitle();
-		$enabled = ( $wgWhaleEnableShortUrls ?? true ) !== false &&
-			$userOptionsLookup->getOption( $skin->getUser(), 'whale-short-url' ) !== false;
+		$enabled = ( $wgWhaleEnableShortUrls ?? true ) !== false;
 
-		if ( !$enabled || !$title || $title->getNamespace() === NS_SPECIAL || !$title->exists() ) {
+		if ( !$enabled || !$title || $title->getNamespace() === NS_SPECIAL ) {
 			return [ 'has-short-url' => false ];
 		}
 
@@ -641,10 +639,8 @@ class WhaleRenderer {
 			$wgWhaleContributionGraphLevels;
 
 		$skin = $this->skin;
-		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$title = $skin->getTitle();
-		$enabled = ( $wgWhaleEnableUserContributionGraph ?? true ) !== false &&
-			$userOptionsLookup->getOption( $skin->getUser(), 'whale-user-contribution-graph' ) !== false;
+		$enabled = ( $wgWhaleEnableUserContributionGraph ?? true ) !== false;
 
 		if (
 			!$enabled ||
@@ -1084,52 +1080,70 @@ class WhaleRenderer {
 			$namespaces === null ? 'all' : implode( ',', $namespaces )
 		);
 
-		return $cache->getWithSetCallback(
-			$cacheKey,
-			$ttl,
-			function () use ( $userName, $days, $namespaces ) {
-				$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
-				$db = $lb->getConnection( DB_REPLICA );
-				$start = gmdate( 'Ymd000000', time() - ( $days - 1 ) * 86400 );
-				$tables = [ 'revision', 'actor' ];
-				$joins = [ 'actor' => [ 'JOIN', 'rev_actor = actor_id' ] ];
-				$conds = [
-					'actor_name' => $userName,
-					'rev_deleted' => 0,
-					'rev_timestamp >= ' . $db->addQuotes( $start ),
-				];
+		try {
+			return $cache->getWithSetCallback(
+				$cacheKey,
+				$ttl,
+				function () use ( $userName, $days, $namespaces ) {
+					$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+					$db = $lb->getConnection( DB_REPLICA );
+					$start = gmdate( 'Ymd000000', time() - ( $days - 1 ) * 86400 );
+					$tables = [ 'revision', 'actor' ];
+					$joins = [ 'actor' => [ 'JOIN', 'rev_actor = actor_id' ] ];
+					$conds = [
+						'actor_name' => $userName,
+						'rev_deleted' => 0,
+						'rev_timestamp >= ' . $db->addQuotes( $start ),
+					];
 
-				if ( $namespaces !== null ) {
-					$tables[] = 'page';
-					$joins['page'] = [ 'JOIN', 'rev_page = page_id' ];
-					$conds['page_namespace'] = $namespaces;
+					if ( $namespaces !== null ) {
+						$tables[] = 'page';
+						$joins['page'] = [ 'JOIN', 'rev_page = page_id' ];
+						$conds['page_namespace'] = $namespaces;
+					}
+
+					$rows = $db->select(
+						$tables,
+						[
+							'day' => 'SUBSTR(rev_timestamp,1,8)',
+							'edits' => 'COUNT(*)',
+						],
+						$conds,
+						__METHOD__,
+						[
+							'GROUP BY' => 'SUBSTR(rev_timestamp,1,8)',
+							'ORDER BY' => 'day ASC',
+						],
+						$joins
+					);
+					$counts = [];
+					foreach ( $rows as $row ) {
+						$counts[$row->day] = (int)$row->edits;
+					}
+
+					return $counts;
 				}
-
-				$rows = $db->select(
-					$tables,
-					[
-						'day' => 'SUBSTR(rev_timestamp,1,8)',
-						'edits' => 'COUNT(*)',
-					],
-					$conds,
-					__METHOD__,
-					[
-						'GROUP BY' => 'SUBSTR(rev_timestamp,1,8)',
-						'ORDER BY' => 'day ASC',
-					],
-					$joins
-				);
-				$counts = [];
-				foreach ( $rows as $row ) {
-					$counts[$row->day] = (int)$row->edits;
-				}
-
-				return $counts;
-			}
-		);
+			);
+		} catch ( Throwable $exception ) {
+			return [];
+		}
 	}
 
 	private function getLatestRevisionId( Title $title ): int {
+		$db = MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		$row = $db->selectRow(
+			'page',
+			[ 'page_latest' ],
+			[
+				'page_namespace' => $title->getNamespace(),
+				'page_title' => $title->getDBkey(),
+			],
+			__METHOD__
+		);
+		if ( $row && (int)$row->page_latest > 0 ) {
+			return (int)$row->page_latest;
+		}
+
 		$wikiPage = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
 		if ( method_exists( $wikiPage, 'getLatest' ) ) {
 			return (int)$wikiPage->getLatest();

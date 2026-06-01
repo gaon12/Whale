@@ -6,13 +6,11 @@
 		{{/items}}
 	</ul>
 {{/categories}}
-{{#short-url}}
 {{#has-short-url}}
 	<div class="whale-footer-short-url">
-		<button type="button" class="whale-btn whale-btn-secondary whale-short-url-open" data-whale-toggle="modal" data-whale-target="#whale-short-url-modal">{{button-label}}</button>
+		<button type="button" class="whale-btn whale-btn-secondary whale-short-url-open" data-whale-toggle="modal" data-whale-target="#whale-short-url-modal">{{short-url-button-label}}</button>
 	</div>
 {{/has-short-url}}
-{{/short-url}}
 	<ul class="footer-icons">
 		{{#icon-blocks}}
 			<li class="{{class}}">{{{ html }}}</li>
