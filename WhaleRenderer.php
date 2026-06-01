@@ -34,6 +34,7 @@ class WhaleRenderer {
 			'brand-logo' => $this->getNavBarLogoUrl(),
 			'brand-alt' => is_string( $wgSitename ?? null ) ? $wgSitename : 'Whale',
 			'items' => array_merge( $this->getDefaultNavItems(), $this->getPortalItems( $this->parseNavbar() ) ),
+			'theme-toggle' => $this->getThemeToggleData(),
 			'data-login' => $this->getLoginData(),
 			'notifications' => $this->getNotificationItems(),
 			'data-search' => $this->getSearchData(),
@@ -198,6 +199,25 @@ class WhaleRenderer {
 		];
 
 		return $data;
+	}
+
+	/**
+	 * @return array<string,mixed>|false
+	 */
+	public function getThemeToggleData() {
+		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) === false || !$this->skin->getUser()->isAnon() ) {
+			return false;
+		}
+
+		$mode = $this->skin->getRequest()->getCookie( 'whale-dark-mode' );
+		$isDark = $mode === 'dark';
+
+		return [
+			'label' => $this->skin->msg( $isDark ? 'whale-theme-toggle-light' : 'whale-theme-toggle-dark' )->text(),
+			'aria-pressed' => $isDark ? 'true' : 'false',
+			'html-moon-icon' => $this->renderIcon( 'moon' ),
+			'html-sun-icon' => $this->renderIcon( 'sun' ),
+		];
 	}
 
 	/**
@@ -1186,6 +1206,7 @@ class WhaleRenderer {
 			'list' => '<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',
 			'lock' => '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
 			'minus' => '<path d="M5 12h14"/>',
+			'moon' => '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
 			'plus' => '<path d="M12 5v14"/><path d="M5 12h14"/>',
 			'question' => '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 1 1 5.3 2c-.8.7-1.4 1.2-1.4 2.5"/><path d="M12 17h.01"/>',
 			'link' => '<path d="M7.05025 1.53553C8.03344 0.552348 9.36692 0 10.7574 0C13.6528 0 16 2.34721 16 5.24264C16 6.63308 15.4477 7.96656 14.4645 8.94975L12.4142 11L11 9.58579L13.0503 7.53553C13.6584 6.92742 14 6.10264 14 5.24264C14 3.45178 12.5482 2 10.7574 2C9.89736 2 9.07258 2.34163 8.46447 2.94975L6.41421 5L5 3.58579L7.05025 1.53553Z"/><path d="M7.53553 13.0503L9.58579 11L11 12.4142L8.94975 14.4645C7.96656 15.4477 6.63308 16 5.24264 16C2.34721 16 0 13.6528 0 10.7574C0 9.36693 0.552347 8.03344 1.53553 7.05025L3.58579 5L5 6.41421L2.94975 8.46447C2.34163 9.07258 2 9.89736 2 10.7574C2 12.5482 3.45178 14 5.24264 14C6.10264 14 6.92742 13.6584 7.53553 13.0503Z"/><path d="M5.70711 11.7071L11.7071 5.70711L10.2929 4.29289L4.29289 10.2929L5.70711 11.7071Z"/>',
@@ -1195,6 +1216,7 @@ class WhaleRenderer {
 			'sign-in' => '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/>',
 			'sign-out' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
 			'star' => '<path d="m12 2 3 6 6.5.9-4.7 4.6 1.1 6.5L12 17l-5.9 3 1.1-6.5-4.7-4.6L9 8z"/>',
+			'sun' => '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="m19.1 4.9-1.4 1.4"/>',
 			'sync' => '<path d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"/><path d="M12 8V12L15 15"/>',
 			'tag' => '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/>',
 			'tags' => '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/><path d="M17 7 21 11"/>',
