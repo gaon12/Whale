@@ -236,10 +236,16 @@ html .suggestions-result-current {
 	position: relative;
 	display: inline-block;
 	max-width: 100%;
+	min-width: 2rem;
+	min-height: 2rem;
 	overflow: hidden;
 	vertical-align: middle;
 	background: linear-gradient(90deg, #eef2f5 25%, #f8fafc 37%, #eef2f5 63%);
 	background-size: 400% 100%;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell-fluid {
+	width: min(100%, 18rem);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell.is-loading {
@@ -264,8 +270,18 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .whal
 	background-size: 400% 100%;
 }
 
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
+	background: linear-gradient(90deg, #2c3136 25%, #353b41 37%, #2c3136 63%);
+	background-size: 400% 100%;
+}
+
 @media (prefers-color-scheme: dark) {
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
+		background: linear-gradient(90deg, #2c3136 25%, #353b41 37%, #2c3136 63%);
+		background-size: 400% 100%;
+	}
+
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
 		background: linear-gradient(90deg, #2c3136 25%, #353b41 37%, #2c3136 63%);
 		background-size: 400% 100%;
 	}

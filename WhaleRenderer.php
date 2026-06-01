@@ -205,7 +205,7 @@ class WhaleRenderer {
 	 * @return array<string,mixed>|false
 	 */
 	public function getThemeToggleData() {
-		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) === false || !$this->skin->getUser()->isAnon() ) {
+		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) === false ) {
 			return false;
 		}
 

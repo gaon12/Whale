@@ -168,7 +168,7 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.shortUrl';
 		}
 
-		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) !== false && $skin->getUser()->isAnon() ) {
+		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) !== false ) {
 			$modules[] = 'skins.whale.themeToggle';
 		}
 
@@ -326,6 +326,8 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-scroll-up-icon'] = $renderer->getIcon( 'angle-up' );
 		$data['html-whale-scroll-down-icon'] = $renderer->getIcon( 'angle-down' );
 		$data['html-whale-scroll-toc-icon'] = $renderer->getIcon( 'list' );
+		$data['html-whale-tools-icon'] = $renderer->getIcon( 'wrench' );
+		$data['whale-tools-label'] = $this->msg( 'whale-tools' )->text();
 		$data['html-whale-adsense-script'] = $hasAds
 			? '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'
 			: '';

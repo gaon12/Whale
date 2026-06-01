@@ -266,6 +266,7 @@
 			);
 			if (modalTrigger) {
 				event.preventDefault();
+				closeAllDropdowns();
 				openModal(getModal(modalTrigger));
 				return;
 			}
