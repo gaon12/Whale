@@ -1,0 +1,19 @@
+{{#data-whale-live-recent}}
+{{#has-live-recent}}
+<div class="{{classes}}" data-live-recent-mode="{{mode}}" data-limit="{{limit}}" data-refresh-interval="{{refresh-ms}}" style="{{style}}">
+	{{#feeds}}
+		<section class="live-recent-feed" data-namespaces="{{namespaces}}">
+			<header class="live-recent-header">
+				{{{ html-icon }}}
+				<h2 class="live-recent-title">{{heading}}</h2>
+				{{{ html-more-link }}}
+			</header>
+			<div class="live-recent-progress" aria-hidden="true">
+				<span class="live-recent-progress-bar"></span>
+			</div>
+			<ul class="live-recent-list" id="{{list-id}}" aria-busy="true"></ul>
+		</section>
+	{{/feeds}}
+</div>
+{{/has-live-recent}}
+{{/data-whale-live-recent}}

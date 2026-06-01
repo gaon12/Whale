@@ -1,0 +1,33 @@
+{{#data-whale-nav}}
+<nav class="whale-navbar">
+	<a class="whale-navbar-brand" href="{{brand-href}}">
+		<img class="whale-navbar-brand-logo" src="{{brand-logo}}" alt="{{brand-alt}}" decoding="async">
+	</a>
+	<ul class="whale-navbar-menu">
+		{{#items}}
+			<li class="{{classes}}">
+				{{{ html-link }}}
+				{{#has-children}}
+					<div class="whale-dropdown-menu" role="menu">
+						{{#children}}
+							{{{ html-link }}}
+							{{#has-children}}
+								<div class="whale-dropdown-menu whale-dropdown-submenu" role="menu">
+									{{#children}}
+										{{{ html-link }}}
+									{{/children}}
+								</div>
+							{{/has-children}}
+						{{/children}}
+					</div>
+				{{/has-children}}
+			</li>
+		{{/items}}
+	</ul>
+	{{>LoginMenu}}
+	{{#notifications}}
+		{{{ html }}}
+	{{/notifications}}
+	{{>SearchBox}}
+</nav>
+{{/data-whale-nav}}

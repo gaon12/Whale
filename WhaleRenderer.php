@@ -23,44 +23,665 @@ class WhaleRenderer {
 		$this->skin = $skin;
 	}
 
-	public function getNavMenu(): string {
-		return $this->capture( function () {
-			$this->navMenu();
-		} );
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getNavData(): array {
+		global $wgSitename;
+
+		return [
+			'brand-href' => Title::newMainPage()->getLocalURL(),
+			'brand-logo' => $this->getNavBarLogoUrl(),
+			'brand-alt' => is_string( $wgSitename ?? null ) ? $wgSitename : 'Whale',
+			'items' => array_merge( $this->getDefaultNavItems(), $this->getPortalItems( $this->parseNavbar() ) ),
+			'data-login' => $this->getLoginData(),
+			'notifications' => $this->getNotificationItems(),
+			'data-search' => $this->getSearchData(),
+		];
 	}
 
-	public function getLoginModal(): string {
-		return $this->capture( function () {
-			$this->loginModal();
-		} );
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getSearchData(): array {
+		$skin = $this->skin;
+		$request = $skin->getRequest();
+
+		return [
+			'action' => $skin->getConfig()->get( 'Script' ),
+			'title-value' => SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey(),
+			'placeholder' => $skin->msg( 'searchsuggest-search' )->text(),
+			'input-title' => Linker::titleAttrib( 'search' ),
+			'accesskey' => Linker::accesskey( 'search' ),
+			'value' => $request->getText( 'search' ),
+			'go-label' => $skin->msg( 'go' )->text(),
+			'search-label' => $skin->msg( 'searchbutton' )->text(),
+			'html-eye-icon' => $this->renderIcon( 'eye' ),
+			'html-search-icon' => $this->renderIcon( 'search' ),
+		];
 	}
 
-	public function getLiveRecent( string $mode = 'desktop' ): string {
-		return $this->capture( function () use ( $mode ) {
-			$this->liveRecent( $mode );
-		} );
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getLoginData(): array {
+		global $wgWhaleUseGravatar;
+
+		$skin = $this->skin;
+		$user = $skin->getUser();
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		$isRegistered = $user->isRegistered();
+		$data = [
+			'is-registered' => $isRegistered,
+			'html-sign-in-icon' => $this->renderIcon( 'sign-in' ),
+			'html-sign-out-icon' => $this->renderIcon( 'sign-out' ),
+			'login-title' => $skin->msg( 'whale-login' )->text(),
+		];
+
+		if ( !$isRegistered ) {
+			return $data;
+		}
+
+		$personalTools = $skin->getWhalePersonalTools();
+		$avatar = '';
+		if ( $wgWhaleUseGravatar ) {
+			$email = '00000000000000000000000000000000?d=identicon&f=y';
+			if ( $user->getEmailAuthenticationTimestamp() ) {
+				$email = md5( strtolower( trim( $user->getEmail() ) ) ) . '?d=identicon';
+			}
+			$avatar = Html::element( 'img', [
+				'class' => 'profile-img',
+				'src' => '//secure.gravatar.com/avatar/' . $email,
+				'alt' => '',
+				'decoding' => 'async',
+			] );
+		}
+
+		if ( class_exists( 'wAvatar' ) ) {
+			$avatarObject = new wAvatar( $user->getId(), 'm' );
+			$avatar = $avatarObject->getAvatarURL( [ 'class' => 'profile-img' ] );
+		}
+
+		$links = [
+			[
+				'html' => $linkRenderer->makeKnownLink(
+					Title::makeTitle( NS_USER, $user->getName() ),
+					$user->getName(),
+					[
+						'id' => 'pt-userpage',
+						'class' => 'whale-dropdown-item',
+						'title' => Linker::titleAttrib( 'pt-userpage', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'pt-userpage' ),
+					]
+				),
+			],
+			[ 'is-divider' => true ],
+		];
+
+		if ( class_exists( 'EchoEvent' ) ) {
+			$notiCount = 0;
+			if (
+				isset( $personalTools['notifications-alert'], $personalTools['notifications-notice'] )
+			) {
+				$notiCount =
+					( $personalTools['notifications-alert']['links'][0]['data']['counter-num'] ?? 0 ) +
+					( $personalTools['notifications-notice']['links'][0]['data']['counter-num'] ?? 0 );
+			}
+			$links[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					new TitleValue( NS_SPECIAL, 'Notifications' ),
+					$skin->msg( 'notifications' )->plain() . ( $notiCount ? " ($notiCount)" : '' ),
+					[
+						'class' => 'whale-dropdown-item',
+						'title' => $skin->msg( 'tooltip-pt-notifications-notice' )->text(),
+					]
+				),
+			];
+		}
+
+		$links[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				SpecialPage::getTitleFor( 'Contributions', $user->getName() ),
+				$skin->msg( 'mycontris' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => Linker::titleAttrib( 'pt-mycontris', 'withaccess' ),
+					'accesskey' => Linker::accesskey( 'pt-mycontris' ),
+				]
+			),
+		];
+		$links[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				Title::makeTitle( NS_USER_TALK, $user->getName() ),
+				$skin->msg( 'mytalk' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => Linker::titleAttrib( 'pt-mytalk', 'withaccess' ),
+					'accesskey' => Linker::accesskey( 'pt-mytalk' ),
+				]
+			),
+		];
+		$links[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				SpecialPage::getTitleFor( 'Watchlist' ),
+				$skin->msg( 'watchlist' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => Linker::titleAttrib( 'pt-watchlist', 'withaccess' ),
+					'accesskey' => Linker::accesskey( 'pt-watchlist' ),
+				]
+			),
+		];
+		$links[] = [ 'is-divider' => true ];
+		$links[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				SpecialPage::getTitleFor( 'Preferences' ),
+				$skin->msg( 'preferences' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => Linker::titleAttrib( 'pt-preferences', 'withaccess' ),
+					'accesskey' => Linker::accesskey( 'pt-preferences' ),
+				]
+			),
+		];
+
+		$logoutHref = $personalTools['logout']['links'][0]['href'] ?? '';
+		$logoutTitle = Linker::titleAttrib( 'pt-logout', 'withaccess' );
+
+		$data += [
+			'html-avatar' => $avatar,
+			'user-name' => $user->getName(),
+			'links' => $links,
+			'logout-href' => $logoutHref,
+			'logout-title' => $logoutTitle,
+			'logout-label' => $skin->msg( 'logout' )->text(),
+		];
+
+		return $data;
 	}
 
-	public function getContentsToolbox(): string {
-		return $this->capture( function () {
-			$this->contentsToolbox();
-		} );
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getContentToolsData(): array {
+		$skin = $this->skin;
+		$user = $skin->getUser();
+		$services = MediaWikiServices::getInstance();
+		$title = $skin->getTitle();
+		$action = $skin->getRequest()->getVal( 'action', 'view' );
+
+		if ( !$title || $title->getNamespace() === NS_SPECIAL ) {
+			return [ 'has-content-tools' => false ];
+		}
+
+		$linkRenderer = $services->getLinkRenderer();
+		$permissionManager = $services->getPermissionManager();
+		$watchlistManager = $services->getWatchlistManager();
+		$revid = $skin->getRequest()->getText( 'oldid' );
+		$editable = $permissionManager->quickUserCan( 'edit', $user, $title );
+		$watched = $watchlistManager->isWatchedIgnoringRights( $user, $skin->getRelevantTitle() ) ? 'unwatch' : 'watch';
+		$companionTitle = $title->isTalkPage() ? $title->getSubjectPage() : $title->getTalkPage();
+		$buttons = [];
+
+		if ( $action !== 'edit' ) {
+			$buttons[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$title,
+					new HtmlArmor( $this->renderIcon( $editable ? 'edit' : 'lock' ) . ' ' . $skin->msg( 'edit' )->escaped() ),
+					[
+						'class' => 'whale-btn whale-btn-secondary tools-btn',
+						'id' => 'ca-edit',
+						'title' => Linker::titleAttrib( 'ca-edit', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-edit' ),
+					],
+					$revid ? [ 'action' => 'edit', 'oldid' => $revid ] : [ 'action' => 'edit' ]
+				),
+			];
+		}
+
+		if ( $action === 'edit' || $action === 'history' ) {
+			$buttons[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$title,
+					$skin->msg( 'article' )->plain(),
+					[
+						'class' => 'whale-btn whale-btn-secondary tools-btn',
+						'title' => Linker::titleAttrib( 'ca-nstab-main', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-nstab-main' ),
+					]
+				),
+			];
+		}
+
+		if ( $companionTitle && $action !== 'edit' ) {
+			$isTalk = $title->isTalkPage() && $action !== 'history';
+			$buttons[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$companionTitle,
+					$skin->msg( $isTalk ? 'nstab-main' : 'talk' )->plain(),
+					[
+						'class' => 'whale-btn whale-btn-secondary tools-btn',
+						'title' => Linker::titleAttrib( $isTalk ? 'ca-nstab-main' : 'ca-talk', 'withaccess' ),
+						'accesskey' => Linker::accesskey( $isTalk ? 'ca-nstab-main' : 'ca-talk' ),
+					]
+				),
+			];
+		}
+
+		if ( $action !== 'history' ) {
+			$buttons[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$title,
+					$skin->msg( 'history' )->plain(),
+					[
+						'class' => 'whale-btn whale-btn-secondary tools-btn',
+						'title' => Linker::titleAttrib( 'ca-history', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-history' ),
+					],
+					[ 'action' => 'history' ]
+				),
+			];
+		}
+
+		$dropdownItems = [];
+		if ( $title->inNamespaces( NS_USER, NS_USER_TALK ) ) {
+			$dropdownItems[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					SpecialPage::getTitleFor( 'Contributions', $title->getText() ),
+					$skin->msg( 'contributions' )->escaped(),
+					[
+						'class' => 'whale-dropdown-item',
+						'title' => Linker::titleAttrib( 't-contributions', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 't-contributions' ),
+					]
+				),
+			];
+		}
+
+		$dropdownItems[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				$title,
+				$skin->msg( 'whale-purge' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => $skin->msg( 'whale-tooltip-purge' )->plain() . ' [alt+shift+p]',
+					'accesskey' => 'p',
+				],
+				[ 'action' => 'purge' ]
+			),
+		];
+		$dropdownItems[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				$title,
+				$skin->msg( $watched )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => Linker::titleAttrib( 'ca-' . $watched, 'withaccess' ),
+					'accesskey' => Linker::accesskey( 'ca-' . $watched ),
+				],
+				[ 'action' => $watched ]
+			),
+		];
+		$dropdownItems[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				SpecialPage::getTitleFor( 'Whatlinkshere', $title ),
+				$skin->msg( 'whatlinkshere' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => Linker::titleAttrib( 't-whatlinkshere', 'withaccess' ),
+					'accesskey' => Linker::accesskey( 't-whatlinkshere' ),
+				]
+			),
+		];
+		$dropdownItems[] = [
+			'html' => $linkRenderer->makeKnownLink(
+				$title,
+				$skin->msg( 'whale-info' )->plain(),
+				[
+					'class' => 'whale-dropdown-item',
+					'title' => $skin->msg( 'whale-tooltip-info' )->plain(),
+				],
+				[ 'action' => 'info' ]
+			),
+		];
+
+		if ( $permissionManager->quickUserCan( 'move', $user, $title ) && $title->exists() ) {
+			$dropdownItems[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					SpecialPage::getTitleFor( 'Movepage', $title ),
+					$skin->msg( 'move' )->plain(),
+					[
+						'class' => 'whale-dropdown-item',
+						'title' => Linker::titleAttrib( 'ca-move', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-move' ),
+					]
+				),
+			];
+		}
+
+		if ( $permissionManager->quickUserCan( 'protect', $user, $title ) ) {
+			$protectionMsg = $this->isProtectedTitle( $title ) ? 'unprotect' : 'protect';
+			$dropdownItems[] = [ 'is-divider' => true ];
+			$dropdownItems[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$title,
+					$skin->msg( $protectionMsg )->plain(),
+					[
+						'class' => 'whale-dropdown-item',
+						'title' => Linker::titleAttrib( 'ca-' . $protectionMsg, 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-' . $protectionMsg ),
+					],
+					[ 'action' => 'protect' ]
+				),
+			];
+		}
+
+		if ( $permissionManager->quickUserCan( 'delete', $user, $title ) && $title->exists() ) {
+			$dropdownItems[] = [ 'is-divider' => true ];
+			$dropdownItems[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$title,
+					$skin->msg( 'delete' )->plain(),
+					[
+						'class' => 'whale-dropdown-item',
+						'title' => Linker::titleAttrib( 'ca-delete', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-delete' ),
+					],
+					[ 'action' => 'delete' ]
+				),
+			];
+		}
+
+		return [
+			'has-content-tools' => true,
+			'buttons' => $buttons,
+			'show-share' => $action === 'view',
+			'share-label' => $skin->msg( 'whale-share' )->text(),
+			'html-share-icon' => $this->renderIcon( 'share-square' ),
+			'more-label' => $skin->msg( 'more' )->text(),
+			'dropdown-items' => $dropdownItems,
+		];
 	}
 
-	public function getFooter(): string {
-		return $this->capture( function () {
-			$this->footer();
-		} );
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getLiveRecentData( string $mode = 'desktop' ): array {
+		global $wgWhaleEnableLiveRC,
+			$wgWhaleMaxRecent,
+			$wgWhaleLiveRecentFixedHeight,
+			$wgWhaleLiveRCRefreshInterval,
+			$wgWhaleLiveRCArticleNamespaces,
+			$wgWhaleLiveRCTalkNamespaces;
+
+		if ( !$wgWhaleEnableLiveRC ) {
+			return [ 'has-live-recent' => false ];
+		}
+
+		$skin = $this->skin;
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$fixedHeight = ( $wgWhaleLiveRecentFixedHeight ?? true ) !== false &&
+			$userOptionsLookup->getOption( $skin->getUser(), 'whale-live-recent-fixed-height' ) !== false;
+		$refreshInterval = max( 10, (int)( $wgWhaleLiveRCRefreshInterval ?? 60 ) );
+		$isMobile = $mode === 'mobile';
+		$feeds = [
+			$this->getLiveRecentFeedData(
+				$mode . '-live-recent-article-list',
+				$skin->msg( 'recentchanges' )->text(),
+				'sync',
+				implode( '|', $wgWhaleLiveRCArticleNamespaces )
+			),
+		];
+
+		if ( !$isMobile ) {
+			$feeds[] = $this->getLiveRecentFeedData(
+				$mode . '-live-recent-talk-list',
+				$skin->msg( 'whale-recent-discussions' )->text(),
+				'comments',
+				implode( '|', $wgWhaleLiveRCTalkNamespaces )
+			);
+		}
+
+		return [
+			'has-live-recent' => true,
+			'classes' => 'live-recent' . ( $fixedHeight ? ' live-recent-fixed-height' : '' ),
+			'mode' => $mode,
+			'limit' => (int)$wgWhaleMaxRecent,
+			'refresh-ms' => $refreshInterval * 1000,
+			'style' => '--whale-live-recent-limit: ' . (int)$wgWhaleMaxRecent .
+				'; --whale-live-recent-refresh: ' . $refreshInterval . 's;',
+			'feeds' => $feeds,
+		];
 	}
 
-	public function getAd( string $position ): string {
-		return $this->capture( function () use ( $position ) {
-			$this->buildAd( $position );
-		} );
+	/**
+	 * @return array<string,string>
+	 */
+	private function getLiveRecentFeedData(
+		string $listId,
+		string $heading,
+		string $icon,
+		string $namespaces
+	): array {
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+
+		return [
+			'list-id' => $listId,
+			'heading' => $heading,
+			'namespaces' => $namespaces,
+			'html-icon' => $this->renderIcon( $icon ),
+			'html-more-link' => $linkRenderer->makeKnownLink(
+				SpecialPage::getTitleFor( 'Recentchanges' ),
+				new HtmlArmor( '<span class="whale-sr-only">' .
+					$this->skin->msg( 'whale-view-more' )->escaped() .
+					'</span>' . $this->renderIcon( 'angle-right' ) ),
+				[ 'class' => 'live-recent-more' ]
+			),
+		];
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getFooterData(): array {
+		$footerData = $this->skin->getWhaleFooterData();
+		$categories = [];
+
+		foreach ( $footerData as $category => $categoryData ) {
+			$links = $categoryData['array-items'] ?? [];
+			if ( !$links ) {
+				continue;
+			}
+			$categoryName = preg_replace( '/^data-/', '', $category );
+			if ( $categoryName === 'icons' ) {
+				continue;
+			}
+
+			$items = [];
+			foreach ( $links as $link ) {
+				$name = $link['name'] ?? '';
+				$items[] = [
+					'class' => 'footer-' . $categoryName . '-' . Sanitizer::escapeClass( $name ),
+					'html' => $link['html'] ?? '',
+				];
+			}
+
+			$categories[] = [
+				'class' => 'footer-' . Sanitizer::escapeClass( $categoryName ),
+				'items' => $items,
+			];
+		}
+
+		$iconBlocks = [];
+		foreach ( $this->skin->getWhaleFooterIcons() as $blockName => $footerIcons ) {
+			$html = '';
+			foreach ( $footerIcons as $icon ) {
+				$html .= $this->skin->makeWhaleFooterIcon( $icon );
+			}
+			$iconBlocks[] = [
+				'class' => 'footer-' . Sanitizer::escapeClass( $blockName ) . 'ico',
+				'html' => $html,
+			];
+		}
+
+		$iconBlocks[] = [
+			'class' => 'designedbylibre',
+			'html' => Html::rawElement( 'a', [ 'href' => '//librewiki.net' ], Html::element( 'img', [
+				'src' => $this->skin->getConfig()->get( 'StylePath' ) . '/Whale/img/designedbylibre.png',
+				'class' => 'designedbylibre-img',
+				'alt' => 'Designed by Librewiki',
+				'decoding' => 'async',
+			] ) ),
+		];
+
+		return [
+			'categories' => $categories,
+			'icon-blocks' => $iconBlocks,
+		];
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getShortUrlData(): array {
+		global $wgWhaleEnableShortUrls;
+
+		$skin = $this->skin;
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$title = $skin->getTitle();
+		$enabled = ( $wgWhaleEnableShortUrls ?? true ) !== false &&
+			$userOptionsLookup->getOption( $skin->getUser(), 'whale-short-url' ) !== false;
+
+		if ( !$enabled || !$title || $title->getNamespace() === NS_SPECIAL || !$title->exists() ) {
+			return [ 'has-short-url' => false ];
+		}
+
+		$revisionId = $this->getLatestRevisionId( $title );
+		if ( $revisionId <= 0 ) {
+			return [ 'has-short-url' => false ];
+		}
+
+		$code = WhaleShortUrl::encode( $revisionId );
+		$url = WhaleShortUrl::buildUrl( $code );
+
+		return [
+			'has-short-url' => true,
+			'url' => $url,
+			'code' => $code,
+			'button-label' => $skin->msg( 'whale-short-url-button' )->text(),
+			'modal-title' => $skin->msg( 'whale-short-url-title' )->text(),
+			'description' => $skin->msg( 'whale-short-url-description' )->text(),
+			'copy-label' => $skin->msg( 'whale-short-url-copy' )->text(),
+			'close-label' => $skin->msg( 'close' )->text(),
+		];
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getLoginModalData(): array {
+		$skin = $this->skin;
+		return [
+			'show-login-modal' => $skin->getUser()->isAnon(),
+			'title' => $skin->msg( 'whale-login' )->text(),
+			'alert-label' => $skin->msg( 'error' )->text(),
+			'name-placeholder' => $skin->msg( 'userlogin-yourname-ph' )->text(),
+			'password-label' => $skin->msg( 'userlogin-yourpassword' )->text(),
+			'password-placeholder' => $skin->msg( 'userlogin-yourpassword-ph' )->text(),
+			'remember-label' => $skin->msg( 'whale-remember' )->text(),
+			'login-label' => $skin->msg( 'whale-login-btn' )->text(),
+			'join-html' => MediaWikiServices::getInstance()->getLinkRenderer()->makeKnownLink(
+				SpecialPage::getTitleFor( 'Userlogin' ),
+				$skin->msg( 'userlogin-joinproject' ),
+				[ 'class' => 'whale-login-join' ],
+				[ 'type' => 'signup' ]
+			),
+			'forgot-html' => MediaWikiServices::getInstance()->getLinkRenderer()->makeKnownLink(
+				SpecialPage::getTitleFor( 'PasswordReset' ),
+				$skin->msg( 'whale-forgot-pw' )->plain(),
+				[ 'class' => 'whale-login-help' ]
+			),
+			'alternate-html' => MediaWikiServices::getInstance()->getLinkRenderer()->makeKnownLink(
+				SpecialPage::getTitleFor( 'Userlogin' ),
+				$skin->msg( 'whale-login-alter' )->plain(),
+				[ 'class' => 'whale-login-help' ]
+			),
+			'close-label' => $skin->msg( 'close' )->text(),
+		];
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getAdData( string $position ): array {
+		global $wgWhaleAdSetting;
+
+		$adFormat = $position === 'header' ? 'horizontal' : 'auto';
+		return [
+			'class' => $position . '-ads',
+			'client' => $wgWhaleAdSetting['client'] ?? '',
+			'slot' => $wgWhaleAdSetting[$position] ?? '',
+			'format' => $adFormat,
+			'full-width-responsive' => $position === 'header' ? 'false' : 'true',
+		];
 	}
 
 	public function getIcon( string $icon ): string {
 		return $this->renderIcon( $icon );
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function getUserContributionGraphData(): array {
+		global $wgWhaleEnableUserContributionGraph,
+			$wgWhaleContributionGraphDays,
+			$wgWhaleContributionGraphNamespaces,
+			$wgWhaleContributionGraphCacheTTL,
+			$wgWhaleContributionGraphLevels;
+
+		$skin = $this->skin;
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$title = $skin->getTitle();
+		$enabled = ( $wgWhaleEnableUserContributionGraph ?? true ) !== false &&
+			$userOptionsLookup->getOption( $skin->getUser(), 'whale-user-contribution-graph' ) !== false;
+
+		if (
+			!$enabled ||
+			!$title ||
+			$title->getNamespace() !== NS_USER ||
+			strpos( $title->getDBkey(), '/' ) !== false
+		) {
+			return [ 'has-user-contribution-graph' => false ];
+		}
+
+		$days = max( 7, min( 730, (int)( $wgWhaleContributionGraphDays ?? 365 ) ) );
+		$levels = is_array( $wgWhaleContributionGraphLevels ?? null )
+			? array_values( array_filter( array_map( 'intval', $wgWhaleContributionGraphLevels ), static function ( int $level ) {
+				return $level > 0;
+			} ) )
+			: [ 1, 3, 6, 10 ];
+		sort( $levels );
+		if ( count( $levels ) === 0 ) {
+			$levels = [ 1, 3, 6, 10 ];
+		}
+
+		$namespaces = is_array( $wgWhaleContributionGraphNamespaces ?? null )
+			? array_values( array_unique( array_map( 'intval', $wgWhaleContributionGraphNamespaces ) ) )
+			: null;
+		$ttl = max( 60, (int)( $wgWhaleContributionGraphCacheTTL ?? 3600 ) );
+		$userName = $title->getText();
+		$counts = $this->getContributionCounts( $userName, $days, $namespaces, $ttl );
+		$graph = $this->buildContributionGraph( $counts, $days, $levels );
+		$total = array_sum( $counts );
+
+		return [
+			'has-user-contribution-graph' => true,
+			'title' => $skin->msg( 'whale-contrib-graph-title', $userName )->text(),
+			'summary' => $skin->msg( 'whale-contrib-graph-summary', $skin->getLanguage()->formatNum( $total ), $skin->getLanguage()->formatNum( $days ) )->text(),
+			'weeks' => $graph['weeks'],
+			'legend' => $graph['legend'],
+		];
 	}
 
 	private function getNavBarLogoUrl(): string {
@@ -77,1238 +698,444 @@ class WhaleRenderer {
 		return $resourceBasePath . '/skins/Whale/img/logo.png';
 	}
 
-	private function capture( callable $render ): string {
-		ob_start();
-
-		try {
-			$render();
-			$html = ob_get_clean();
-		} catch ( Throwable $exception ) {
-			ob_end_clean();
-			throw $exception;
-		}
-
-		return $html === false ? '' : $html;
-	}
-
 	/**
-	 * Nav menu function, build top menu.
+	 * @return array<int,array<string,mixed>>
 	 */
-	protected function navMenu() {
-		global $wgSitename;
-
+	private function getDefaultNavItems(): array {
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$skin = $this->skin;
-	?>
-		<nav class="whale-navbar">
-			<a class="whale-navbar-brand" href="<?php echo Title::newMainPage()->getLocalURL(); ?>">
-				<?php echo Html::element( 'img', [
-					'class' => 'whale-navbar-brand-logo',
-					'src' => $this->getNavBarLogoUrl(),
-					'alt' => is_string( $wgSitename ?? null ) ? $wgSitename : 'Whale',
-					'decoding' => 'async'
-				] ); ?>
-			</a>
-			<ul class="whale-navbar-menu">
-				<li class="whale-navbar-item">
-					<?php echo $linkRenderer->makeKnownLink(
-						new TitleValue( NS_SPECIAL, 'Recentchanges' ),
-						// @codingStandardsIgnoreStart
-						new HtmlArmor( $this->renderIcon( 'sync' ) . '<span class="hide-title">' . $skin->msg( 'recentchanges' )->escaped() . '</span>' ),
-						// @codingStandardsIgnoreEnd )
-						[
-							'class' => 'whale-navbar-link',
-							'title' => Linker::titleAttrib( 'n-recentchanges', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'n-recentchanges' )
-						] );?>
-				</li>
-				<li class="whale-navbar-item">
-					<?php echo $linkRenderer->makeKnownLink(
-						new TitleValue( NS_SPECIAL, 'Randompage' ),
-						// @codingStandardsIgnoreStart
-						new HtmlArmor( $this->renderIcon( 'random' ) . '<span class="hide-title">' . $skin->msg( 'randompage' )->escaped() . '</span>' ),
-						// @codingStandardsIgnoreEnd
-						[
-							'class' => 'whale-navbar-link',
-							'title' => Linker::titleAttrib( 'n-randompage', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'n-randompage' )
-						]
-					); ?>
-				</li>
-				<?php echo $this->renderPortal( $this->parseNavbar() ); ?>
-			</ul>
-			<?php $this->loginBox(); ?>
-			<?php $this->getNotification(); ?>
-			<?php $this->searchBox(); ?>
-		</nav>
-	<?php
+
+		return [
+			[
+				'classes' => 'whale-navbar-item',
+				'html-link' => $linkRenderer->makeKnownLink(
+					new TitleValue( NS_SPECIAL, 'Recentchanges' ),
+					new HtmlArmor( $this->renderIcon( 'sync' ) . '<span class="hide-title">' . $skin->msg( 'recentchanges' )->escaped() . '</span>' ),
+					[
+						'class' => 'whale-navbar-link',
+						'title' => Linker::titleAttrib( 'n-recentchanges', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'n-recentchanges' ),
+					]
+				),
+			],
+			[
+				'classes' => 'whale-navbar-item',
+				'html-link' => $linkRenderer->makeKnownLink(
+					new TitleValue( NS_SPECIAL, 'Randompage' ),
+					new HtmlArmor( $this->renderIcon( 'random' ) . '<span class="hide-title">' . $skin->msg( 'randompage' )->escaped() . '</span>' ),
+					[
+						'class' => 'whale-navbar-link',
+						'title' => Linker::titleAttrib( 'n-randompage', 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'n-randompage' ),
+					]
+				),
+			],
+		];
 	}
 
 	/**
-	 * Search box function, build top menu's search box.
+	 * @param array<int,array<string,mixed>> $contents
+	 * @return array<int,array<string,mixed>>
 	 */
-	protected function searchBox() {
-		$skin = $this->skin;
-		$request = $skin->getRequest();
-	?>
-		<form action="<?php echo htmlspecialchars( $skin->getConfig()->get( 'Script' ), ENT_QUOTES ); ?>" id="searchform" class="whale-search-form">
-			<input type="hidden" name="title" value="<?php echo htmlspecialchars( SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey(), ENT_QUOTES ); ?>" />
-			<div class="whale-search-group">
-				<input
-					type="search"
-					name="search"
-					placeholder="<?php echo $skin->msg( 'searchsuggest-search' )->escaped(); ?>"
-					title="<?php echo htmlspecialchars( Linker::titleAttrib( 'search' ), ENT_QUOTES ); ?>"
-					accesskey="<?php echo htmlspecialchars( Linker::accesskey( 'search' ), ENT_QUOTES ); ?>"
-					id="searchInput"
-					class="whale-search-input"
-					value="<?php echo htmlspecialchars( $request->getText( 'search' ), ENT_QUOTES ); ?>"
-					autocomplete="off">
-				<span class="whale-search-actions">
-					<?php
-					// @codingStandardsIgnoreStart 
-					?>
-					<button type="submit" name="go" value="<?php echo $skin->msg( 'go' )->escaped() ?>" id="searchGoButton" class="whale-btn whale-btn-secondary"><?php echo $this->renderIcon( 'eye' ); ?></button>
-					<button type="submit" name="fulltext" value="<?php echo $skin->msg( 'searchbutton' )->escaped() ?>" id="mw-searchButton" class="whale-btn whale-btn-secondary">
-						<?php echo $this->renderIcon( 'search' ); ?></button>
-					<?php
-					// @codingStandardsIgnoreEnd
-					?>
-				</span>
-			</div>
-		</form>
-	<?php
-	}
-
-	/**
-	 * Login box function, build top menu's login button.
-	 */
-	protected function loginBox() {
-		global $wgWhaleUseGravatar;
-
-		$skin = $this->skin;
-		$user = $skin->getUser();
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-	?>
-		<div class="whale-navbar-login">
-			<?php
-			// If the user is logged in...
-			if ( $user->isRegistered() ) {
-				$personalTools = $this->skin->getWhalePersonalTools();
-				// ...and Gravatar is enabled in site config...
-				if ( $wgWhaleUseGravatar ) {
-					// ...and the user has a confirmed email...
-					if ( $user->getEmailAuthenticationTimestamp() ) {
-						// ...then, and only then, build the correct Gravatar URL
-						$email = trim( $user->getEmail() );
-						$email = strtolower( $email );
-						$email = md5( $email ) . '?d=identicon';
-					} else {
-						$email = '00000000000000000000000000000000?d=identicon&f=y';
-					}
-					$avatar = Html::element( 'img', [
-						'class' => 'profile-img',
-						'src' => '//secure.gravatar.com/avatar/' . $email
-					] );
-				} else {
-					$avatar = '';
-				}
-
-				// SocialProfile support
-				if ( class_exists( 'wAvatar' ) ) {
-					$avatar = new wAvatar( $user->getId(), 'm' );
-					$avatar = $avatar->getAvatarURL( [
-						'class' => 'profile-img'
-					] );
-				}
-			?>
-				<div class="whale-dropdown login-menu">
-					<a class="whale-dropdown-toggle" type="button" id="login-menu" 
-						data-whale-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<?php echo $avatar; ?>
-					</a>
-					<div class="whale-dropdown-menu whale-dropdown-menu-right login-dropdown-menu" 
-						aria-labelledby="login-menu">
-						<?php echo $linkRenderer->makeKnownLink(
-							Title::makeTitle( NS_USER, $user->getName() ),
-							$user->getName(),
-							[
-								'id' => 'pt-userpage',
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 'pt-userpage', 'withaccess' ),
-								'accesskey' => Linker::accesskey( 'pt-userpage' )
-							]
-						); ?>
-						<div class="whale-dropdown-divider"></div>
-						<?php
-						if ( class_exists( 'EchoEvent' ) ) {
-							$notiCount = 0;
-							if (
-								isset( $personalTools['notifications-alert'] ) &&
-								$personalTools['notifications-alert'] &&
-								isset( $personalTools['notifications-notice'] ) &&
-								$personalTools['notifications-notice']
-							) {
-								$notiCount = $personalTools['notifications-alert']['links'][0]['data']['counter-num'] +
-									$personalTools['notifications-notice']['links'][0]['data']['counter-num'];
-							}
-							echo $linkRenderer->makeKnownLink(
-								new TitleValue( NS_SPECIAL, 'Notifications' ),
-								$skin->msg( 'notifications' )->plain() . ( $notiCount ? " ($notiCount)" : '' ),
-								[
-									'class' => 'whale-dropdown-item',
-									'title' => $skin->msg( 'tooltip-pt-notifications-notice' )->text()
-								]
-							);
-						}
-						?>
-						<?php echo $linkRenderer->makeKnownLink(
-							SpecialPage::getTitleFor( 'Contributions', $user->getName() ),
-							$skin->msg( 'mycontris' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 'pt-mycontris', 'withaccess' ),
-								'accesskey' => Linker::accesskey( 'pt-mycontris' )
-							]
-						); ?>
-						<?php echo $linkRenderer->makeKnownLink(
-							Title::makeTitle( NS_USER_TALK, $user->getName() ),
-							$skin->msg( 'mytalk' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 'pt-mytalk', 'withaccess' ),
-								'accesskey' => Linker::accesskey( 'pt-mytalk' )
-							]
-						); ?>
-						<?php echo $linkRenderer->makeKnownLink(
-							SpecialPage::getTitleFor( 'Watchlist' ),
-							$skin->msg( 'watchlist' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 'pt-watchlist', 'withaccess' ),
-								'accesskey' => Linker::accesskey( 'pt-watchlist' )
-							]
-						); ?>
-						<div class="whale-dropdown-divider"></div>
-						<?php echo $linkRenderer->makeKnownLink(
-							SpecialPage::getTitleFor( 'Preferences' ),
-							$skin->msg( 'preferences' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 'pt-preferences', 'withaccess' ),
-								'accesskey' => Linker::accesskey( 'pt-preferences' )
-							]
-						); ?>
-						<div class="whale-dropdown-divider view-logout"></div>
-						<a href="<?php echo $personalTools['logout']['links'][0]['href']; ?>" 
-							class="whale-dropdown-item view-logout" 
-							title="<?php
-							// @codingStandardsIgnoreStart
-							echo htmlspecialchars( Linker::titleAttrib( 'pt-logout', 'withaccess' ), ENT_QUOTES )
-							// @codingStandardsIgnoreEnd
-							?>">
-							<?php echo $skin->msg( 'logout' )->escaped(); ?></a>
-					</div>
-				</div>
-				<a href="<?php echo $personalTools['logout']['links'][0]['href']; ?>"
-					class="hide-logout logout-btn" 
-					title="<?php
-					// @codingStandardsIgnoreStart
-					echo htmlspecialchars( Linker::titleAttrib( 'pt-logout', 'withaccess' ), ENT_QUOTES );
-					// @codingStandardsIgnoreEnd
-					?>">
-					<?php echo $this->renderIcon( 'sign-out' ); ?></a>
-			<?php } else { ?>
-				<a href="#" class="none-outline" data-whale-toggle="modal" data-whale-target="#whale-login-modal">
-					<?php echo $this->renderIcon( 'sign-in' ); ?>
-				</a>
-			<?php } ?>
-		</div>
-	<?php
-	}
-
-	/**
-	 * Login model function, build login menu model.
-	 */
-	protected function loginModal() {
-		$skin = $this->skin;
-		$title = $skin->getTitle();
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-
-		// Probably no point in rendering a login window for the users who are
-		// already logged in?
-		if ( $skin->getUser()->isRegistered() ) {
-			return;
-		}
-
-		// Turn off Continuous Integration warnings about "too long" lines which are
-		// perfectly acceptable in this particular context
-		// @codingStandardsIgnoreStart
-	?>
-		<div class="whale-modal whale-modal-fade whale-login-modal" id="whale-login-modal" tabindex="-1" role="dialog" aria-labelledby="whale-login-modal-label" aria-hidden="true">
-			<div class="whale-modal-dialog whale-modal-sm" role="document">
-				<div class="whale-modal-content">
-					<div class="whale-modal-header">
-						<button type="button" class="whale-modal-close" data-whale-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="whale-modal-title" id="whale-login-modal-label"><?php echo $skin->msg( 'whale-login' )->escaped() ?></h4>
-					</div>
-					<div class="whale-modal-body">
-						<div id="whale-login-alert" class="whale-alert whale-alert-hidden whale-alert-danger" role="alert">
-						</div>
-						<form id="whale-login-form" name="userlogin" class="whale-login-form" method="post">
-							<input class="loginText whale-form-control" id="wpName1" tabindex="1" placeholder="<?php echo $skin->msg( 'userlogin-yourname-ph' )->escaped() ?>" value="" name="lgname">
-							<label for="inputPassword" class="whale-sr-only"><?php echo $skin->msg( 'userlogin-yourpassword' )->escaped() ?></label>
-							<input class="loginPassword whale-form-control" id="wpPassword1" tabindex="2" placeholder="<?php echo $skin->msg( 'userlogin-yourpassword-ph' )->escaped() ?>" type="password" name="lgpassword">
-							<div class="whale-login-checkbox">
-								<input name="lgremember" type="checkbox" value="1" id="lgremember" tabindex="3">
-								<label for="lgremember"><?php echo $skin->msg( 'whale-remember' )->escaped() ?></label>
-							</div>
-							<input class="whale-btn whale-btn-success whale-btn-block" type="submit" value="<?php echo $skin->msg( 'whale-login-btn' )->escaped() ?>" tabindex="4">
-							<?php echo $linkRenderer->makeKnownLink(
-								SpecialPage::getTitleFor( 'Userlogin' ),
-								$skin->msg( 'userlogin-joinproject' ),
-								[
-									'class' => 'whale-btn whale-btn-primary whale-btn-block',
-									'tabindex' => 5,
-									'type' => 'submit'
-								],
-								[
-									'type' => 'signup',
-									'returnto' => $title
-								]
-							); ?>
-							<?php echo $linkRenderer->makeKnownLink(
-								SpecialPage::getTitleFor( 'PasswordReset' ),
-								$skin->msg( 'whale-forgot-pw' )->plain()
-							); ?>
-							<br>
-							<?php echo $linkRenderer->makeKnownLink(
-								SpecialPage::getTitleFor( 'Userlogin' ),
-								$skin->msg( 'whale-login-alter' )->plain()
-							); ?>
-							<input type="hidden" name="action" value="login" />
-							<input type="hidden" name="format" value="json" />
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	<?php
-		// Turn Continuous Integration stuff back on
-		// @codingStandardsIgnoreEnd
-	}
-
-	/**
-	 * Live recent function, build right side's Recent menus.
-	 */
-	protected function liveRecent( string $mode = 'desktop' ) {
-		global $wgWhaleEnableLiveRC,
-			$wgWhaleMaxRecent,
-			$wgWhaleLiveRecentFixedHeight,
-			$wgWhaleLiveRCRefreshInterval,
-			$wgWhaleLiveRCArticleNamespaces,
-			$wgWhaleLiveRCTalkNamespaces;
-
-		// Don't bother outputting this if the live RC feature is disabled in
-		// site configuration
-		if ( !$wgWhaleEnableLiveRC ) {
-			return;
-		}
-
-		$skin = $this->skin;
-		$articleNS = implode( '|', $wgWhaleLiveRCArticleNamespaces );
-		$talkNS = implode( '|', $wgWhaleLiveRCTalkNamespaces );
-		$isMobile = $mode === 'mobile';
-		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-		$fixedHeight = ( $wgWhaleLiveRecentFixedHeight ?? true ) !== false &&
-			$userOptionsLookup->getOption( $skin->getUser(), 'whale-live-recent-fixed-height' ) !== false;
-		$refreshInterval = max( 10, (int)( $wgWhaleLiveRCRefreshInterval ?? 60 ) );
-		$classes = 'live-recent' . ( $fixedHeight ? ' live-recent-fixed-height' : '' );
-	?>
-		<div class="<?php echo htmlspecialchars( $classes, ENT_QUOTES ); ?>"
-			data-live-recent-mode="<?php echo htmlspecialchars( $mode, ENT_QUOTES ); ?>"
-			data-limit="<?php echo (int)$wgWhaleMaxRecent ?>"
-			data-refresh-interval="<?php echo $refreshInterval * 1000; ?>"
-			style="--whale-live-recent-limit: <?php echo (int)$wgWhaleMaxRecent ?>; --whale-live-recent-refresh: <?php echo $refreshInterval; ?>s;">
-			<?php
-				$this->liveRecentFeed(
-					$mode . '-live-recent-article-list',
-					$skin->msg( 'recentchanges' )->escaped(),
-					'sync',
-					$articleNS
-				);
-				if ( !$isMobile ) {
-					$this->liveRecentFeed(
-						$mode . '-live-recent-talk-list',
-						$skin->msg( 'whale-recent-discussions' )->escaped(),
-						'comments',
-						$talkNS
-					);
-				}
-			?>
-		</div>
-		<?php
-	}
-
-	private function liveRecentFeed(
-		string $listId,
-		string $heading,
-		string $icon,
-		string $namespaces
-	): void {
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-	?>
-		<section class="live-recent-feed" data-namespaces="<?php echo htmlspecialchars( $namespaces, ENT_QUOTES ); ?>">
-			<header class="live-recent-header">
-				<?php echo $this->renderIcon( $icon ); ?>
-				<h2 class="live-recent-title"><?php echo $heading; ?></h2>
-				<?php echo $linkRenderer->makeKnownLink(
-					SpecialPage::getTitleFor( 'Recentchanges' ),
-					new HtmlArmor( '<span class="whale-sr-only">' .
-						$this->skin->msg( 'whale-view-more' )->escaped() .
-						'</span>' . $this->renderIcon( 'angle-right' ) ),
-					[ 'class' => 'live-recent-more' ]
-				); ?>
-			</header>
-			<div class="live-recent-progress" aria-hidden="true">
-				<span class="live-recent-progress-bar"></span>
-			</div>
-			<ul class="live-recent-list" id="<?php echo htmlspecialchars( $listId, ENT_QUOTES ); ?>" aria-busy="true">
-			</ul>
-		</section>
-	<?php
-	}
-
-	/**
-	 * Contents tool box function, build article tool menu that will show at article title right.
-	 */
-	protected function contentsToolbox() {
+	private function getPortalItems( array $contents ): array {
 		$skin = $this->skin;
 		$user = $skin->getUser();
 		$services = MediaWikiServices::getInstance();
-		$watchlistManager = $services->getWatchlistManager();
-		$title = $skin->getTitle();
-		$revid = $skin->getRequest()->getText( 'oldid' );
-		$permissionManager = $services->getPermissionManager();
-		$watched = $watchlistManager->isWatchedIgnoringRights( $user, $skin->getRelevantTitle() ) ? 'unwatch' : 'watch';
-		$editable = $permissionManager->quickUserCan( 'edit', $user, $title );
-		$action = $skin->getRequest()->getVal( 'action', 'view' );
-		$linkRenderer = $services->getLinkRenderer();
-		// $hasVisualEditor = ExtensionRegistry::getInstance()->isLoaded( 'VisualEditor' );
-		if ( $title->getNamespace() != NS_SPECIAL ) {
-			$companionTitle = $title->isTalkPage() ? $title->getSubjectPage() : $title->getTalkPage();
-		?>
-			<div class="content-tools">
-				<div class="whale-btn-group" role="group" aria-label="content-tools">
-				<?php
-				if ( $action != 'edit' ) {
-					$editIcon = $this->renderIcon( $editable ? 'edit' : 'lock' ) . ' ';
-					echo $linkRenderer->makeKnownLink(
-						$title,
-						new HtmlArmor( $editIcon . $skin->msg( 'edit' )->escaped() ),
-						[
-							'class' => 'whale-btn whale-btn-secondary tools-btn',
-							'id' => 'ca-edit',
-							'title' => Linker::titleAttrib( 'ca-edit', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'ca-edit' )
-						],
-						$revid ? [ 'action' => 'edit', 'oldid' => $revid ] : [ 'action' => 'edit' ]
-					);
-				}
-				if ( $action == 'edit' || $action == 'history' ) {
-					echo $linkRenderer->makeKnownLink(
-						$title,
-						$titlename = $skin->msg( 'article' )->plain(),
-						[
-							'class' => 'whale-btn whale-btn-secondary tools-btn',
-							'title' => Linker::titleAttrib( 'ca-nstab-main', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'ca-nstab-main' )
-						]
-					);
-				}
-				if ( $companionTitle && $action != 'edit' ) {
-					if ( $title->isTalkPage() && $action != 'history' ) {
-						$titlename = $skin->msg( 'nstab-main' )->plain();
-						$additionalArrayStuff = [
-							'title' => Linker::titleAttrib( 'ca-nstab-main', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'ca-nstab-main' )
-						];
-					} else {
-						$titlename = $skin->msg( 'talk' )->plain();
-						$additionalArrayStuff = [
-							'title' => Linker::titleAttrib( 'ca-talk', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'ca-talk' )
-						];
-					}
-					echo $linkRenderer->makeKnownLink(
-						$companionTitle,
-						$titlename,
-						[
-							'class' => 'whale-btn whale-btn-secondary tools-btn',
-						] + $additionalArrayStuff
-					);
-				}
-				if ( $action != 'history' ) {
-					echo $linkRenderer->makeKnownLink(
-						$title,
-						$skin->msg( 'history' )->plain(),
-						[
-							'class' => 'whale-btn whale-btn-secondary tools-btn',
-							'title' => Linker::titleAttrib( 'ca-history', 'withaccess' ),
-							'accesskey' => Linker::accesskey( 'ca-history' )
-						],
-						[ 'action' => 'history' ]
-					);
-				}
-				if ( $action == 'view' ) { ?>
-						<button type="button" class="whale-btn whale-btn-secondary tools-btn tools-share">
-							<?php echo $this->renderIcon( 'share-square' ); ?>
-							<?php echo $skin->msg( 'whale-share' )->escaped() ?>
-						</button>
-				<?php
-				}
-				// @codingStandardsIgnoreStart 
-					?>
-					<button type="button" class="whale-btn whale-btn-secondary tools-btn whale-dropdown-toggle" data-whale-toggle="dropdown" aria-label="<?php echo $skin->msg( 'more' )->escaped() ?>" aria-expanded="false"></button>
-					<?php
-					// @codingStandardsIgnoreEnd
-					?>
-					<div class="whale-dropdown-menu whale-dropdown-menu-right" role="menu">
-						<?php
-						if ( $title->inNamespaces( NS_USER, NS_USER_TALK ) ) {
-							// "User contributions" link on user and user talk pages
-							echo $linkRenderer->makeKnownLink(
-								SpecialPage::getTitleFor( 'Contributions', $title->getText() ),
-								$skin->msg( 'contributions' )->escaped(),
-								[
-									'class' => 'whale-dropdown-item',
-									'title' => Linker::titleAttrib( 't-contributions', 'withaccess' ),
-									'accesskey' => Linker::accesskey( 't-contributions' )
-								]
-							);
-						}
-						echo $linkRenderer->makeKnownLink(
-							$title,
-							$skin->msg( 'whale-purge' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => $skin->msg( 'whale-tooltip-purge' )->plain() . ' [alt+shift+p]',
-								'accesskey' => 'p'
-							],
-							[ 'action' => 'purge' ]
-						);
-						echo $linkRenderer->makeKnownLink(
-							$title,
-							$skin->msg( $watched )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 'ca-' . $watched, 'withaccess' ),
-								'accesskey' => Linker::accesskey( 'ca-' . $watched )
-							],
-							[ 'action' => $watched ]
-						);
-						echo $linkRenderer->makeKnownLink(
-							SpecialPage::getTitleFor( 'Whatlinkshere', $title ),
-							$skin->msg( 'whatlinkshere' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => Linker::titleAttrib( 't-whatlinkshere', 'withaccess' ),
-								'accesskey' => Linker::accesskey( 't-whatlinkshere' )
-							]
-						);
-						echo $linkRenderer->makeKnownLink(
-							$title,
-							$skin->msg( 'whale-info' )->plain(),
-							[
-								'class' => 'whale-dropdown-item',
-								'title' => $skin->msg( 'whale-tooltip-info' )->plain(),
-							],
-							[ 'action' => 'info' ]
-						);
-						if ( $permissionManager->quickUserCan( 'move', $user, $title ) && $title->exists() ) {
-							echo $linkRenderer->makeKnownLink(
-								SpecialPage::getTitleFor( 'Movepage', $title ),
-								$skin->msg( 'move' )->plain(),
-								[
-									'class' => 'whale-dropdown-item',
-									'title' => Linker::titleAttrib( 'ca-move', 'withaccess' ),
-									'accesskey' => Linker::accesskey( 'ca-move' )
-								]
-							);
-						}
-						if ( $permissionManager->quickUserCan( 'protect', $user, $title ) ) { ?>
-							<div class="whale-dropdown-divider"></div>
-							<?php
-							// different labels depending on whether the page is or isn't protected
-							$protectionMsg = $this->isProtectedTitle( $title ) ? 'unprotect' : 'protect';
-							echo $linkRenderer->makeKnownLink(
-								$title,
-								$skin->msg( $protectionMsg )->plain(),
-								[
-									'class' => 'whale-dropdown-item',
-									'title' => Linker::titleAttrib( 'ca-' . $protectionMsg, 'withaccess' ),
-									'accesskey' => Linker::accesskey( 'ca-' . $protectionMsg )
-								],
-								[ 'action' => 'protect' ]
-							); ?>
-						<?php } ?>
-						<?php if ( $permissionManager->quickUserCan( 'delete', $user, $title ) && $title->exists() ) {
-						?>
-							<div class="whale-dropdown-divider"></div>
-							<?php echo $linkRenderer->makeKnownLink(
-								$title,
-								$skin->msg( 'delete' )->plain(),
-								[
-									'class' => 'whale-dropdown-item',
-									'title' => Linker::titleAttrib( 'ca-delete', 'withaccess' ),
-									'accesskey' => Linker::accesskey( 'ca-delete' )
-								],
-								[ 'action' => 'delete' ]
-							); ?>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-		<?php
-		}
-	}
-
-	/**
-	 * Footer function, build footer.
-	 */
-	protected function footer() {
-		$footerData = $this->skin->getWhaleFooterData();
-		foreach ( $footerData as $category => $categoryData ) {
-			$links = $categoryData['array-items'] ?? [];
-			if ( !$links ) {
-				continue;
-			}
-			$categoryName = preg_replace( '/^data-/', '', $category );
-			if ( $categoryName === 'icons' ) {
-				continue;
-			}
-		?>
-			<ul class="footer-<?php echo htmlspecialchars( $categoryName ); ?>">
-				<?php foreach ( $links as $link ) {
-					$name = $link['name'] ?? '';
-					$html = $link['html'] ?? '';
-				?>
-					<li class="footer-<?php echo htmlspecialchars( $categoryName ); ?>-<?php echo htmlspecialchars( $name ); ?>">
-						<?php echo $html; ?>
-					</li>
-				<?php } ?>
-			</ul>
-		<?php
-		}
-		$footericons = $this->skin->getWhaleFooterIcons();
-		if ( count( $footericons ) ) {
-		?>
-			<ul class="footer-icons">
-				<?php
-				foreach ( $footericons as $blockName => $footerIcons ) {
-				?>
-					<li class="footer-<?php echo htmlspecialchars( $blockName ); ?>ico">
-						<?php
-						foreach ( $footerIcons as $icon ) {
-							echo $this->skin->makeWhaleFooterIcon( $icon );
-						}
-						?>
-					</li>
-				<?php
-				}
-				?>
-				<li class="designedbylibre">
-					<a href="//librewiki.net">
-						<?php // @codingStandardsIgnoreLine 
-						?>
-						<img src="<?php echo $this->skin->getConfig()->get( 'StylePath' ); //phpcs:ignore 
-									?>/Whale/img/designedbylibre.png" style="height:31px" alt="Designed by Librewiki">
-					</a>
-				</li>
-			</ul>
-		<?php
-		}
-	}
-
-	/**
-	 * Get Notification function, build notification menu.
-	 */
-	protected function getNotification() {
-		$personalTools = $this->skin->getWhalePersonalTools();
-		if (
-			isset( $personalTools['notifications-alert'] ) &&
-			$personalTools['notifications-alert']['links'][0]['data']['counter-num']
-		) {
-			echo $this->skin->makeWhaleListItem( 'notifications-alert', $personalTools['notifications-alert'] );
-		}
-		if (
-			isset( $personalTools['notifications-notice'] ) &&
-			$personalTools['notifications-notice']['links'][0]['data']['counter-num']
-		) {
-			echo $this->skin->makeWhaleListItem( 'notifications-notice', $personalTools['notifications-notice'] );
-		}
-	}
-
-	/**
-	 * Render Portal function, build top menu contents.
-	 *
-	 * @param array $contents Menu data that will made by parseNavbar function.
-	 */
-	protected function renderPortal( $contents ) {
-		$skin = $this->skin;
-		$user = $skin->getUser();
-		$services = MediaWikiServices::getInstance();
-		$userGroupManager = $services->getUserGroupManager();
-		$userGroup = $userGroupManager->getUserGroups( $user );
+		$userGroups = $services->getUserGroupManager()->getUserGroups( $user );
 		$userRights = $services->getPermissionManager()->getUserPermissions( $user );
+		$items = [];
 
 		foreach ( $contents as $content ) {
-			if ( !$content ) {
-				break;
-			}
-			if (
-				( $content['right'] && !in_array( $content['right'], $userRights ) ) ||
-				( $content['group'] && !in_array( $content['group'], $userGroup ) )
-			) {
+			if ( !$this->canShowPortalItem( $content, $userGroups, $userRights ) ) {
 				continue;
 			}
 
-			echo Html::openElement( 'li', [
-				'class' => [ 'whale-dropdown', 'whale-navbar-item' ]
-			] );
+			$children = [];
+			foreach ( $content['children'] ?? [] as $child ) {
+				if ( !$this->canShowPortalItem( $child, $userGroups, $userRights ) ) {
+					continue;
+				}
 
-			array_push( $content['classes'], 'whale-navbar-link' );
-
-			$hasChildren = is_array( $content['children'] ) && count( $content['children'] ) > 0;
-
-			if ( $hasChildren ) {
-				array_push( $content['classes'], 'whale-dropdown-toggle', 'whale-dropdown-toggle-fix' );
-			}
-
-			echo Html::openElement( 'a', [
-				'class' => $content['classes'],
-				'data-whale-toggle' => $hasChildren ? 'dropdown' : '',
-				'role' => 'button',
-				'aria-haspopup' => 'true',
-				'aria-expanded' => 'false',
-				'title' => $content['title'],
-				'href' => $content['href']
-			] );
-
-			if ( isset( $content['icon'] ) ) {
-				echo $this->renderIcon( $content['icon'] );
-			}
-
-			if ( isset( $content['text'] ) && !empty( $content['text'] ) ) {
-				echo Html::rawElement( 'span', [
-					'class' => 'hide-title'
-				], $content['text'] );
-			}
-
-			echo Html::closeElement( 'a' );
-
-			if ( is_array( $content['children'] ) && count( $content['children'] ) ) {
-				echo Html::openElement( 'div', [
-					'class' => 'whale-dropdown-menu',
-					'role' => 'menu'
-				] );
-
-				foreach ( $content['children'] as $child ) {
-					if (
-						( $child['right'] && !in_array( $child['right'], $userRights ) ) ||
-						( $child['group'] && !in_array( $child['group'], $userGroup ) )
-					) {
-						continue;
-					}
-					array_push( $child['classes'], 'whale-dropdown-item' );
-
-					if ( is_array( $child['children'] ) && count( $child['children'] ) > 0 ) {
-						array_push( $child['classes'], 'whale-dropdown-toggle', 'whale-dropdown-toggle-sub' );
-					}
-
-					echo Html::openElement( 'a', [
-						'accesskey' => $child['access'],
-						'class' => $child['classes'],
-						'href' => $child['href'],
-						'title' => $child['title']
-					] );
-
-					if ( isset( $child['icon'] ) ) {
-						echo $this->renderIcon( $child['icon'] );
-					}
-
-					if ( isset( $child['text'] ) ) {
-						echo $child['text'];
-					}
-
-					echo Html::closeElement( 'a' );
-
-					if (
-						!empty( $child['children'] )
-					) {
-						echo Html::openElement( 'div', [
-							'class' => 'whale-dropdown-menu whale-dropdown-submenu',
-							'role' => 'menu'
-						] );
-
-						foreach ( $child['children'] as $sub ) {
-							if (
-								( $sub['right'] && !in_array( $sub['right'], $userRights ) ) ||
-								( $sub['group'] && !in_array( $sub['group'], $userGroup ) )
-							) {
-								continue;
-							}
-							array_push( $sub['classes'], 'whale-dropdown-item' );
-
-							echo Html::openElement( 'a', [
-								'accesskey' => $sub['access'],
-								'class' => $sub['classes'],
-								'href' => $sub['href'],
-								'title' => $sub['title']
-							] );
-
-							if ( isset( $sub['icon'] ) ) {
-								echo $this->renderIcon( $sub['icon'] );
-							}
-
-							if ( isset( $sub['text'] ) ) {
-								echo $sub['text'];
-							}
-
-							echo Html::closeElement( 'a' );
-						}
-
-						echo Html::closeElement( 'div' );
+				$subItems = [];
+				foreach ( $child['children'] ?? [] as $sub ) {
+					if ( $this->canShowPortalItem( $sub, $userGroups, $userRights ) ) {
+						$subItems[] = $this->buildPortalChildItem( $sub );
 					}
 				}
 
-				echo Html::closeElement( 'div' );
+				$children[] = $this->buildPortalChildItem( $child, $subItems );
 			}
 
-			echo Html::closeElement( 'li' );
+			$classes = array_merge( [ 'whale-dropdown', 'whale-navbar-item' ], $content['wrapperClasses'] ?? [] );
+			$linkClasses = array_merge( $content['classes'] ?? [], [ 'whale-navbar-link' ] );
+			$hasChildren = count( $children ) > 0;
+			if ( $hasChildren ) {
+				$linkClasses[] = 'whale-dropdown-toggle';
+				$linkClasses[] = 'whale-dropdown-toggle-fix';
+			}
+
+			$items[] = [
+				'classes' => implode( ' ', array_map( [ Sanitizer::class, 'escapeClass' ], $classes ) ),
+				'html-link' => $this->buildPortalLink( $content, $linkClasses, $hasChildren ),
+				'has-children' => $hasChildren,
+				'children' => $children,
+			];
 		}
+
+		return $items;
+	}
+
+	/**
+	 * @param array<string,mixed> $item
+	 * @param array<int,string> $userGroups
+	 * @param array<int,string> $userRights
+	 */
+	private function canShowPortalItem( array $item, array $userGroups, array $userRights ): bool {
+		return !(
+			( !empty( $item['right'] ) && !in_array( $item['right'], $userRights ) ) ||
+			( !empty( $item['group'] ) && !in_array( $item['group'], $userGroups ) )
+		);
+	}
+
+	/**
+	 * @param array<string,mixed> $item
+	 * @param array<int,array<string,mixed>> $children
+	 * @return array<string,mixed>
+	 */
+	private function buildPortalChildItem( array $item, array $children = [] ): array {
+		$classes = array_merge( $item['classes'] ?? [], [ 'whale-dropdown-item' ] );
+		$hasChildren = count( $children ) > 0;
+		if ( $hasChildren ) {
+			$classes[] = 'whale-dropdown-toggle';
+			$classes[] = 'whale-dropdown-toggle-sub';
+		}
+
+		return [
+			'html-link' => $this->buildPortalLink( $item, $classes, $hasChildren, true ),
+			'has-children' => $hasChildren,
+			'children' => $children,
+		];
+	}
+
+	/**
+	 * @param array<string,mixed> $item
+	 * @param array<int,string> $classes
+	 */
+	private function buildPortalLink( array $item, array $classes, bool $hasChildren, bool $isChild = false ): string {
+		$attrs = [
+			'class' => implode( ' ', array_map( [ Sanitizer::class, 'escapeClass' ], $classes ) ),
+			'href' => $item['href'] ?? '#',
+			'title' => $item['title'] ?? '',
+		];
+		if ( !empty( $item['access'] ) ) {
+			$attrs['accesskey'] = $item['access'];
+		}
+		if ( $hasChildren ) {
+			$attrs['data-whale-toggle'] = $isChild ? '' : 'dropdown';
+			$attrs['role'] = 'button';
+			$attrs['aria-haspopup'] = 'true';
+			$attrs['aria-expanded'] = 'false';
+		}
+
+		$html = '';
+		if ( isset( $item['icon'] ) ) {
+			$html .= $this->renderIcon( $item['icon'] );
+		}
+		if ( isset( $item['text'] ) && $item['text'] !== '' ) {
+			$html .= Html::element( 'span', [ 'class' => $isChild ? '' : 'hide-title' ], $item['text'] );
+		}
+
+		return Html::rawElement( 'a', $attrs, $html );
+	}
+
+	/**
+	 * @return array<int,array<string,string>>
+	 */
+	private function getNotificationItems(): array {
+		$personalTools = $this->skin->getWhalePersonalTools();
+		$items = [];
+		foreach ( [ 'notifications-alert', 'notifications-notice' ] as $key ) {
+			if (
+				isset( $personalTools[$key] ) &&
+				( $personalTools[$key]['links'][0]['data']['counter-num'] ?? 0 )
+			) {
+				$items[] = [ 'html' => $this->skin->makeWhaleListItem( $key, $personalTools[$key] ) ];
+			}
+		}
+
+		return $items;
 	}
 
 	/**
 	 * Parse [[MediaWiki:Whale-Navbar]].
 	 *
-	 * Its format is:
-	 * * <icon name>|Name of the menu displayed to the user
-	 * ** link target|Link title (can be the name of an interface message)
-	 *
-	 * @return array Menu data
+	 * @return array<int,array<string,mixed>>
 	 */
-	protected function parseNavbar() {
-		global $wgArticlePath;
-
-		$headings = [];
-		$currentHeading = null;
+	protected function parseNavbar(): array {
 		$skin = $this->skin;
 		$user = $skin->getUser();
 		$userLang = $skin->getLanguage()->getCode();
-		$globalData = $this->getCachedContentText(
-			Title::newFromText( 'Whale-Navbar', NS_MEDIAWIKI )
-		);
-		$globalLangData = $this->getCachedContentText(
-			Title::newFromText( 'Whale-Navbar/' . $userLang, NS_MEDIAWIKI )
-		);
+		$globalData = $this->getCachedContentText( Title::newFromText( 'Whale-Navbar', NS_MEDIAWIKI ) );
+		$globalLangData = $this->getCachedContentText( Title::newFromText( 'Whale-Navbar/' . $userLang, NS_MEDIAWIKI ) );
 		$userData = $user->isRegistered()
-			? $this->getCachedContentText(
-				Title::newFromText( $user->getName() . '/Whale-Navbar', NS_USER )
-			)
+			? $this->getCachedContentText( Title::newFromText( $user->getName() . '/Whale-Navbar', NS_USER ) )
 			: '';
-		if ( !empty( $userData ) ) {
-			$data = $userData;
-		} elseif ( !empty( $globalLangData ) ) {
-			$data = $globalLangData;
-		} else {
-			$data = $globalData;
-		}
-		// Well, [[MediaWiki:Whale-Navbar]] *should* have some content, but
-		// if it doesn't, bail out here so that we don't trigger E_NOTICEs
-		// about undefined indexes later on
-		if ( empty( $data ) ) {
-			return $headings;
+		$data = $userData !== '' ? $userData : ( $globalLangData !== '' ? $globalLangData : $globalData );
+		if ( trim( $data ) === '' ) {
+			return [];
 		}
 
-		$lines = explode( "\n", $data );
-
-		$types = [ 'icon', 'display', 'title', 'link', 'access', 'class' ];
-
-		foreach ( $lines as $line ) {
+		$headings = [];
+		$level2Index = null;
+		$level3Index = null;
+		foreach ( explode( "\n", $data ) as $line ) {
 			$line = rtrim( $line, "\r" );
-			if ( $line === '' ) {
+			if ( $line === '' || $line[0] !== '*' ) {
 				continue;
 			}
-			if ( $line[0] !== '*' ) {
-				// Line does not start with '*'
+
+			$level = strspn( $line, '*' );
+			if ( $level < 1 || $level > 3 ) {
 				continue;
 			}
-			if ( $line[1] !== '*' ) {
-				// First level menu
-				$data = [];
-				$split = explode( '|', $line );
-				$split[0] = substr( $split[0], 1 );
-				foreach ( $split as $key => $value ) {
-					$valueArr = explode( '=', trim( $value ) );
-					if ( isset( $valueArr[1] ) ) {
-						$newValue = implode( '=', array_slice( $valueArr, 1 ) );
-						$data[$valueArr[0]] = $newValue;
-					} else {
-						$data[$types[$key]] = trim( $value );
-					}
-				}
 
-				// Initialize item
-				$icon = isset( $data['icon'] ) ? htmlentities( $data['icon'], ENT_QUOTES, 'UTF-8' ) : null;
-				$group = isset( $data['group'] ) ? htmlentities( $data['group'], ENT_QUOTES, 'UTF-8' ) : null;
-				$right = isset( $data['right'] ) ? htmlentities( $data['right'], ENT_QUOTES, 'UTF-8' ) : null;
+			$item = $this->parseNavbarLine( substr( $line, $level ) );
+			if ( $item === null ) {
+				continue;
+			}
 
-				// Parse display
-				$text = '';
-				if ( isset( $data['display'] ) ) {
-					$textObj = $skin->msg( $data['display'] );
-					if ( $textObj->isDisabled() ) {
-						$text = htmlentities( $data['display'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$text = $textObj->text();
-					}
-				}
-
-				// Parse iitle
-				$title = '';
-				if ( isset( $data['title'] ) ) {
-					$titleObj = $skin->msg( $data['title'] );
-					if ( $titleObj->isDisabled() ) {
-						$title = htmlentities( $data['title'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$title = $titleObj->text();
-					}
-				} else {
-					$title = $text;
-				}
-				$split[0] = substr( $split[0], 1 );
-				foreach ( $split as $key => $value ) {
-					$valueArr = explode( '=', trim( $value ) );
-					if ( isset( $valueArr[1] ) ) {
-						$newValue = implode( '=', array_slice( $valueArr, 1 ) );
-						$data[$valueArr[0]] = $newValue;
-					} else {
-						$data[$types[$key]] = trim( $value );
-					}
-				}
-
-				// Parse Icon
-				$icon = isset( $data['icon'] ) ? htmlentities( $data['icon'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// Parse Group
-				$group = isset( $data['group'] ) ? htmlentities( $data['group'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// Parse Right
-				$right = isset( $data['right'] ) ? htmlentities( $data['right'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// support the usual [[MediaWiki:Sidebar]] syntax of
-				// ** link target|<some MW: message name> and if the
-				// thing on the right side of the pipe isn't the name of a MW:
-				// message, then and _only_ then render it as-is
-				if ( isset( $data['display'] ) ) {
-					$textObj = $skin->msg( $data['display'] );
-					if ( $textObj->isDisabled() ) {
-						$text = htmlentities( $data['display'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$text = $textObj->text();
-					}
-				} else {
-					$text = '';
-				}
-
-				// If icon and text both empty
-				if ( ( !isset( $icon ) && !isset( $text ) ) || ( empty( $icon ) && empty( $text ) ) ) {
-					continue;
-				}
-
-				// Title
-				if ( isset( $data['title'] ) ) {
-					$titleObj = $skin->msg( $data['title'] );
-					if ( $titleObj->isDisabled() ) {
-						$title = htmlentities( $data['title'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$title = $titleObj->text();
-					}
-				} else {
-					if ( isset( $text ) ) {
-						$title = $text;
-					}
-				}
-
-				// Link href
-				if ( isset( $data['link'] ) ) {
-					// @todo CHECKME: Should this use wfUrlProtocols() or somesuch instead?
-					if ( preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $data['link'] ) ) {
-						$href = htmlentities( $data['link'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$href = str_replace( '%3A', ':', urlencode( $data['link'] ) );
-						$href = str_replace( '$1', $href, $wgArticlePath );
-					}
-				} else {
-					$href = null;
-				}
-
-				if ( isset( $data['access'] ) ) {
-					// Access
-					$access = preg_match( '/^([0-9a-z]{1})$/i', $data['access'] ) ? $data['access'] : '';
-				} else {
-					$access = null;
-				}
-
-				if ( isset( $data['class'] ) ) {
-					// Classes
-					$classes = explode( ',', htmlentities( $data['class'], ENT_QUOTES, 'UTF-8' ) );
-					foreach ( $classes as $key => $value ) {
-						$classes[$key] = trim( $value );
-					}
-				} else {
-					$classes = [];
-				}
-				// @codingStandardsIgnoreStart
-				$item = [
-					'access' => $access,
-					'classes' => $classes,
-					'href' => $href,
-					'icon' => @$icon,
-					'text' => @$text,
-					'title' => $title,
-					'group' => $group,
-					'right' => $right
-				];
-				// @codingStandardsIgnoreEnd
-				$level2Children = &$item['children'];
+			if ( $level === 1 ) {
+				$item['children'] = [];
 				$headings[] = $item;
+				$level2Index = count( $headings ) - 1;
+				$level3Index = null;
 				continue;
 			}
-			if ( $line[2] !== '*' ) {
-				// Second level menu
-				// Initialize item
-				$icon = null;
-				$text = null;
-				$title = null;
-				$href = null;
-				$access = null;
-				$classes = [];
-				$group = null;
-				$right = null;
 
-				$data = [];
-				$split = explode( '|', $line );
-				$split[0] = substr( $split[0], 2 );
-				foreach ( $split as $key => $value ) {
-					$valueArr = explode( '=', trim( $value ) );
-					if ( isset( $valueArr[1] ) ) {
-						$data[$valueArr[0]] = $valueArr[1];
-					} else {
-						$data[$types[$key]] = trim( $value );
-					}
-				}
-
-				// Icon
-				$icon = isset( $data['icon'] ) ? htmlentities( $data['icon'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// Group
-				$group = isset( $data['group'] ) ? htmlentities( $data['group'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// Right
-				$right = isset( $data['right'] ) ? htmlentities( $data['right'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// support the usual [[MediaWiki:Sidebar]] syntax of
-				// ** link target|<some MW: message name> and if the
-				// thing on the right side of the pipe isn't the name of a MW:
-				// message, then and _only_ then render it as-is
-				if ( isset( $data['display'] ) ) {
-					$textObj = $skin->msg( $data['display'] );
-					if ( $textObj->isDisabled() ) {
-						$text = htmlentities( $data['display'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$text = $textObj->text();
-					}
-				} else {
-					$text = '';
-				}
-
-				// If icon and text both empty
-				if ( empty( $icon ) && empty( $text ) ) {
-					continue;
-				}
-
-				// Title
-				if ( isset( $data['title'] ) ) {
-					$titleObj = $skin->msg( $data['title'] );
-					if ( $titleObj->isDisabled() ) {
-						$title = htmlentities( $data['title'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$title = $titleObj->text();
-					}
-				} else {
-					$title = $text;
-				}
-
-				if ( isset( $data['link'] ) ) {
-					// Link href
-					// @todo CHECKME: Should this use wfUrlProtocols() or somesuch instead?
-					if ( preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $data['link'] ) ) {
-						$href = htmlentities( $data['link'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$href = str_replace( '%3A', ':', urlencode( $data['link'] ) );
-						$href = str_replace( '$1', $href, $wgArticlePath );
-					}
-				}
-
-				if ( isset( $data['access'] ) ) {
-					// Access
-					$access = preg_match( '/^([0-9a-z]{1})$/i', $data['access'] ) ? $data['access'] : '';
-				} else {
-					$access = null;
-				}
-
-				if ( isset( $data['class'] ) ) {
-					// Classes
-					$classes = explode( ',', htmlentities( $data['class'], ENT_QUOTES, 'UTF-8' ) );
-					foreach ( $classes as $key => $value ) {
-						$classes[$key] = trim( $value );
-					}
-				} else {
-					$classes = [];
-				}
-
-				$item = [
-					'access' => $access,
-					'classes' => $classes,
-					'href' => $href,
-					'icon' => $icon,
-					'text' => $text,
-					'title' => $title,
-					'group' => $group,
-					'right' => $right
-				];
-				$level3Children = &$item['children'];
-				$level2Children[] = $item;
+			if ( $level === 2 && $level2Index !== null ) {
+				$item['children'] = [];
+				$headings[$level2Index]['children'][] = $item;
+				$level3Index = count( $headings[$level2Index]['children'] ) - 1;
 				continue;
 			}
-			if ( $line[3] !== '*' ) {
-				// Third level menu
-				// Initialize item
-				$icon = null;
-				$text = null;
-				$title = null;
-				$href = null;
-				$access = null;
-				$classes = [];
-				$group = null;
-				$right = null;
 
-				$data = [];
-				$split = explode( '|', $line );
-				$split[0] = substr( $split[0], 3 );
-				foreach ( $split as $key => $value ) {
-					$valueArr = explode( '=', trim( $value ) );
-					if ( isset( $valueArr[1] ) ) {
-						$data[$valueArr[0]] = $valueArr[1];
-					} else {
-						$data[$types[$key]] = trim( $value );
-					}
-				}
-
-				// Icon
-				$icon = isset( $data['icon'] ) ? htmlentities( $data['icon'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// Group
-				$group = isset( $data['group'] ) ? htmlentities( $data['group'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// Right
-				$right = isset( $data['right'] ) ? htmlentities( $data['right'], ENT_QUOTES, 'UTF-8' ) : null;
-
-				// support the usual [[MediaWiki:Sidebar]] syntax of
-				// ** link target|<some MW: message name> and if the
-				// thing on the right side of the pipe isn't the name of a MW:
-				// message, then and _only_ then render it as-is
-				if ( isset( $data['display'] ) ) {
-					$textObj = $skin->msg( $data['display'] );
-					if ( $textObj->isDisabled() ) {
-						$text = htmlentities( $data['display'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$text = $textObj->text();
-					}
-				} else {
-					$text = '';
-				}
-
-				// If icon and text both empty
-				if ( empty( $icon ) && empty( $text ) ) {
-					continue;
-				}
-
-				// Title
-				if ( isset( $data['title'] ) ) {
-					$titleObj = $skin->msg( $data['title'] );
-					if ( $titleObj->isDisabled() ) {
-						$title = htmlentities( $data['title'], ENT_QUOTES, 'UTF-8' );
-					} else {
-						$title = $titleObj->text();
-					}
-				} else {
-					if ( isset( $text ) ) {
-						$title = $text;
-					} else {
-						$title = '';
-					}
-				}
-
-				// Link href
-				// @todo CHECKME: Should this use wfUrlProtocols() or somesuch instead?
-				if ( preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $data['link'] ) ) {
-					$href = htmlentities( $data['link'], ENT_QUOTES, 'UTF-8' );
-				} else {
-					$href = str_replace( '%3A', ':', urlencode( $data['link'] ) );
-					$href = str_replace( '$1', $href, $wgArticlePath );
-				}
-
-				// Access
-				if ( isset( $data['access'] ) ) {
-					$access = preg_match( '/^([0-9a-z]{1})$/i', $data['access'] ) ? $data['access'] : '';
-				} else {
-					$access = null;
-				}
-
-				if ( isset( $data['class'] ) ) {
-					// Classes
-					$classes = explode( ',', htmlentities( $data['class'], ENT_QUOTES, 'UTF-8' ) );
-					foreach ( $classes as $key => $value ) {
-						$classes[$key] = trim( $value );
-					}
-				} else {
-					$classes = [];
-				}
-
-				$item = [
-					'access' => $access,
-					'classes' => $classes,
-					'href' => $href,
-					'icon' => $icon,
-					'text' => $text,
-					'title' => $title,
-					'group' => $group,
-					'right' => $right
-				];
-				$level3Children[] = $item;
-				continue;
-			} else {
-				// Not supported
-				continue;
+			if ( $level === 3 && $level2Index !== null && $level3Index !== null ) {
+				$headings[$level2Index]['children'][$level3Index]['children'][] = $item;
 			}
 		}
 
 		return $headings;
+	}
+
+	/**
+	 * @return array<string,mixed>|null
+	 */
+	private function parseNavbarLine( string $line ): ?array {
+		global $wgArticlePath;
+
+		$skin = $this->skin;
+		$types = [ 'icon', 'display', 'title', 'link', 'access', 'class' ];
+		$data = [];
+		foreach ( explode( '|', $line ) as $key => $value ) {
+			$value = trim( $value );
+			$valueArr = explode( '=', $value );
+			if ( isset( $valueArr[1] ) ) {
+				$data[$valueArr[0]] = implode( '=', array_slice( $valueArr, 1 ) );
+			} elseif ( isset( $types[$key] ) ) {
+				$data[$types[$key]] = $value;
+			}
+		}
+
+		$text = $this->messageOrRaw( $data['display'] ?? '' );
+		$icon = isset( $data['icon'] ) && preg_match( '/^[a-z0-9-]+$/i', $data['icon'] )
+			? strtolower( $data['icon'] )
+			: null;
+		if ( $icon === null && $text === '' ) {
+			return null;
+		}
+
+		$href = '#';
+		if ( isset( $data['link'] ) && trim( $data['link'] ) !== '' ) {
+			if ( preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $data['link'] ) ) {
+				$href = $data['link'];
+			} else {
+				$href = str_replace( '%3A', ':', urlencode( $data['link'] ) );
+				$href = str_replace( '$1', $href, $wgArticlePath );
+			}
+		}
+
+		$classes = [];
+		if ( isset( $data['class'] ) ) {
+			foreach ( explode( ',', $data['class'] ) as $class ) {
+				$class = trim( $class );
+				if ( preg_match( '/^[a-z0-9_-]+$/i', $class ) ) {
+					$classes[] = $class;
+				}
+			}
+		}
+
+		return [
+			'access' => isset( $data['access'] ) && preg_match( '/^[0-9a-z]$/i', $data['access'] ) ? $data['access'] : null,
+			'classes' => $classes,
+			'href' => $href,
+			'icon' => $icon,
+			'text' => $text,
+			'title' => $this->messageOrRaw( $data['title'] ?? '' ) ?: $text,
+			'group' => $this->safeToken( $data['group'] ?? null ),
+			'right' => $this->safeToken( $data['right'] ?? null ),
+		];
+	}
+
+	private function messageOrRaw( string $value ): string {
+		if ( $value === '' ) {
+			return '';
+		}
+
+		$message = $this->skin->msg( $value );
+		return $message->isDisabled() ? $value : $message->text();
+	}
+
+	private function safeToken( ?string $value ): ?string {
+		if ( !is_string( $value ) || $value === '' || !preg_match( '/^[a-z0-9_-]+$/i', $value ) ) {
+			return null;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * @param array<string,int> $counts
+	 * @param array<int,int> $levels
+	 * @return array{weeks:array<int,array<string,mixed>>,legend:array<int,array<string,string>>}
+	 */
+	private function buildContributionGraph( array $counts, int $days, array $levels ): array {
+		$today = new DateTimeImmutable( 'today', new DateTimeZone( 'UTC' ) );
+		$start = $today->modify( '-' . ( $days - 1 ) . ' days' );
+		$weeks = [];
+		$currentWeek = [ 'days' => [] ];
+		$weekday = (int)$start->format( 'w' );
+
+		for ( $i = 0; $i < $weekday; $i++ ) {
+			$currentWeek['days'][] = [ 'is-empty' => true ];
+		}
+
+		for ( $i = 0; $i < $days; $i++ ) {
+			$date = $start->modify( '+' . $i . ' days' );
+			$key = $date->format( 'Ymd' );
+			$count = $counts[$key] ?? 0;
+			$currentWeek['days'][] = [
+				'date' => $date->format( 'Y-m-d' ),
+				'count' => (string)$count,
+				'level' => 'whale-contrib-level-' . $this->getContributionLevel( $count, $levels ),
+				'label' => $this->skin->msg( 'whale-contrib-graph-day', $count, $date->format( 'Y-m-d' ) )->text(),
+			];
+
+			if ( count( $currentWeek['days'] ) === 7 ) {
+				$weeks[] = $currentWeek;
+				$currentWeek = [ 'days' => [] ];
+			}
+		}
+
+		if ( count( $currentWeek['days'] ) > 0 ) {
+			while ( count( $currentWeek['days'] ) < 7 ) {
+				$currentWeek['days'][] = [ 'is-empty' => true ];
+			}
+			$weeks[] = $currentWeek;
+		}
+
+		return [
+			'weeks' => $weeks,
+			'legend' => [
+				[ 'level' => 'whale-contrib-level-0' ],
+				[ 'level' => 'whale-contrib-level-1' ],
+				[ 'level' => 'whale-contrib-level-2' ],
+				[ 'level' => 'whale-contrib-level-3' ],
+				[ 'level' => 'whale-contrib-level-4' ],
+			],
+		];
+	}
+
+	/**
+	 * @param array<int,int> $levels
+	 */
+	private function getContributionLevel( int $count, array $levels ): int {
+		$level = 0;
+		foreach ( $levels as $index => $threshold ) {
+			if ( $count >= $threshold ) {
+				$level = min( 4, $index + 1 );
+			}
+		}
+
+		return $level;
+	}
+
+	/**
+	 * @param array<int,int>|null $namespaces
+	 * @return array<string,int>
+	 */
+	private function getContributionCounts( string $userName, int $days, ?array $namespaces, int $ttl ): array {
+		$services = MediaWikiServices::getInstance();
+		$cache = $services->getMainWANObjectCache();
+		$cacheKey = $cache->makeKey(
+			'whale',
+			'contrib-graph',
+			$userName,
+			$days,
+			$namespaces === null ? 'all' : implode( ',', $namespaces )
+		);
+
+		return $cache->getWithSetCallback(
+			$cacheKey,
+			$ttl,
+			function () use ( $userName, $days, $namespaces ) {
+				$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+				$db = $lb->getConnection( DB_REPLICA );
+				$start = gmdate( 'Ymd000000', time() - ( $days - 1 ) * 86400 );
+				$tables = [ 'revision', 'actor' ];
+				$joins = [ 'actor' => [ 'JOIN', 'rev_actor = actor_id' ] ];
+				$conds = [
+					'actor_name' => $userName,
+					'rev_deleted' => 0,
+					'rev_timestamp >= ' . $db->addQuotes( $start ),
+				];
+
+				if ( $namespaces !== null ) {
+					$tables[] = 'page';
+					$joins['page'] = [ 'JOIN', 'rev_page = page_id' ];
+					$conds['page_namespace'] = $namespaces;
+				}
+
+				$rows = $db->select(
+					$tables,
+					[
+						'day' => 'SUBSTR(rev_timestamp,1,8)',
+						'edits' => 'COUNT(*)',
+					],
+					$conds,
+					__METHOD__,
+					[
+						'GROUP BY' => 'SUBSTR(rev_timestamp,1,8)',
+						'ORDER BY' => 'day ASC',
+					],
+					$joins
+				);
+				$counts = [];
+				foreach ( $rows as $row ) {
+					$counts[$row->day] = (int)$row->edits;
+				}
+
+				return $counts;
+			}
+		);
+	}
+
+	private function getLatestRevisionId( Title $title ): int {
+		$wikiPage = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+		if ( method_exists( $wikiPage, 'getLatest' ) ) {
+			return (int)$wikiPage->getLatest();
+		}
+
+		return method_exists( $title, 'getLatestRevID' ) ? (int)$title->getLatestRevID() : 0;
 	}
 
 	private function renderIcon( ?string $icon ): string {
@@ -1356,7 +1183,7 @@ class WhaleRenderer {
 			'upload' => '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8 12 3 7 8"/><path d="M12 3v12"/>',
 			'user' => '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
 			'users' => '<path d="M16 21a6 6 0 0 0-12 0"/><circle cx="10" cy="8" r="4"/><path d="M22 21a5 5 0 0 0-4-4.9"/><path d="M17 4.3a4 4 0 0 1 0 7.4"/>',
-			'wrench' => '<path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5L15 12l-3-3z"/>'
+			'wrench' => '<path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5L15 12l-3-3z"/>',
 		];
 
 		$iconKey = strtolower( $icon );
@@ -1378,44 +1205,11 @@ class WhaleRenderer {
 			'class' => $classes,
 			'focusable' => 'false',
 			'viewBox' => $solidIcons[$iconKey] ?? '0 0 24 24',
-			'xmlns' => 'http://www.w3.org/2000/svg'
+			'xmlns' => 'http://www.w3.org/2000/svg',
 		], $iconPaths[$iconKey] );
 	}
 
-	/**
-	 * Build an AdSense ad unit wrapped in a div tag.
-	 *
-	 * @param string $position Ad position
-	 */
-	protected function buildAd( $position ) {
-		global $wgWhaleAdSetting;
-
-		$adFormat = 'auto';
-		$fullWidthResponsive = 'true';
-		if ( $position === 'header' ) {
-			$adFormat = 'horizontal';
-			$fullWidthResponsive = 'false';
-		}
-		?>
-		<div class="<?php echo $position; ?>-ads">
-			<ins class="adsbygoogle" 
-				data-full-width-responsive="<?php echo $fullWidthResponsive; ?>" 
-				data-ad-client="<?php echo $wgWhaleAdSetting['client']; ?>" 
-				data-ad-slot="<?php echo $wgWhaleAdSetting[$position]; ?>"
-				data-ad-format="<?php echo $adFormat; ?>">
-			</ins>
-		</div>
-<?php
-	}
-
-	/**
-	 * Helper function for parseNavbar() to not trigger deprecation warnings on MW 1.37+ and to continue
-	 * functioning on MW 1.43+.
-	 *
-	 * @param Content|null $content
-	 * @return string|null Textual form of the content, if available.
-	 */
-	private function getContentText( ?Content $content = null ) {
+	private function getContentText( ?Content $content = null ): ?string {
 		if ( $content === null ) {
 			return '';
 		}
@@ -1447,8 +1241,6 @@ class WhaleRenderer {
 	}
 
 	private function getContentOfTitle( Title $title ): ?Content {
-		$page = null;
-
 		$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
 		$page = $wikiPageFactory->newFromTitle( $title );
 
