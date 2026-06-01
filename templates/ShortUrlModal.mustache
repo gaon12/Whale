@@ -1,0 +1,21 @@
+{{#data-whale-short-url}}
+{{#has-short-url}}
+<div class="whale-modal whale-modal-fade whale-short-url-modal" id="whale-short-url-modal" tabindex="-1" role="dialog" aria-labelledby="whale-short-url-modal-label" aria-hidden="true">
+	<div class="whale-modal-dialog whale-modal-sm">
+		<div class="whale-modal-content">
+			<div class="whale-modal-header">
+				<button type="button" class="whale-modal-close" data-whale-dismiss="modal" aria-label="{{close-label}}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="whale-modal-title" id="whale-short-url-modal-label">{{modal-title}}</h4>
+			</div>
+			<div class="whale-modal-body">
+				<p class="whale-short-url-description">{{description}}</p>
+				<div class="whale-short-url-copy-row">
+					<input class="whale-form-control whale-short-url-value" type="text" value="{{url}}" readonly>
+					<button type="button" class="whale-btn whale-btn-success whale-short-url-copy">{{copy-label}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{/has-short-url}}
+{{/data-whale-short-url}}

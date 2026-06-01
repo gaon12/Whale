@@ -1,0 +1,33 @@
+{{#data-whale-login-modal}}
+{{#show-login-modal}}
+<div class="whale-modal whale-modal-fade whale-login-modal" id="whale-login-modal" tabindex="-1" role="dialog" aria-labelledby="whale-login-modal-label" aria-hidden="true">
+	<div class="whale-modal-dialog whale-modal-sm">
+		<div class="whale-modal-content">
+			<div class="whale-modal-header">
+				<button type="button" class="whale-modal-close" data-whale-dismiss="modal" aria-label="{{close-label}}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="whale-modal-title" id="whale-login-modal-label">{{title}}</h4>
+			</div>
+			<div class="whale-modal-body">
+				<div id="whale-login-alert" class="whale-alert whale-alert-hidden whale-alert-danger" role="alert" aria-label="{{alert-label}}"></div>
+				<form id="whale-login-form" name="userlogin" class="whale-login-form" method="post">
+					<input class="loginText whale-form-control" id="wpName1" tabindex="1" placeholder="{{name-placeholder}}" value="" name="lgname">
+					<label for="wpPassword1" class="whale-sr-only">{{password-label}}</label>
+					<input class="loginPassword whale-form-control" id="wpPassword1" tabindex="2" placeholder="{{password-placeholder}}" type="password" name="lgpassword">
+					<div class="whale-login-checkbox">
+						<input id="wpRemember" tabindex="3" type="checkbox" value="1" name="wpRemember">
+						<label for="wpRemember">{{remember-label}}</label>
+					</div>
+					<input class="whale-btn whale-btn-success whale-btn-block" type="submit" value="{{login-label}}" tabindex="4">
+					<div class="whale-login-links">
+						{{{ join-html }}}
+						{{{ forgot-html }}}
+						{{{ alternate-html }}}
+					</div>
+					<input type="hidden" name="action" value="login">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{{/show-login-modal}}
+{{/data-whale-login-modal}}

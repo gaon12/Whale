@@ -1,6 +1,6 @@
 <header>
 	<div class="whale-nav-wrapper whale-navbar-fixed">
-		{{{ html-whale-nav-menu }}}
+		{{>Nav}}
 	</div>
 </header>
 <section>
@@ -9,7 +9,7 @@
 			<aside>
 				<div class="whale-sidebar">
 					<div class="live-recent-wrapper">
-						{{{ html-whale-live-recent }}}
+						{{>LiveRecent}}
 					</div>
 					{{{ html-whale-right-ad }}}
 				</div>
@@ -26,7 +26,7 @@
 					</div>
 				{{/has-whale-site-notice}}
 				{{{ html-whale-header-ad }}}
-				{{{ html-whale-contents-toolbox }}}
+				{{>ContentTools}}
 				<div class="title">
 					<h1>{{{ html-title }}}</h1>
 				</div>
@@ -38,6 +38,9 @@
 				{{#html-user-message}}
 					<div class="usermessage">{{{ html-user-message }}}</div>
 				{{/html-user-message}}
+				{{#has-whale-user-contribution-graph}}
+					{{>UserContributionGraph}}
+				{{/has-whale-user-contribution-graph}}
 				{{{ html-categories }}}
 				<article class="mw-body-content" id="mw-content-text">
 					{{{ html-body-content }}}
@@ -46,7 +49,7 @@
 			</div>
 			{{#has-whale-mobile-live-recent}}
 				<div class="mobile-live-recent-wrapper">
-					{{{ html-whale-mobile-live-recent }}}
+					{{>LiveRecentMobile}}
 				</div>
 			{{/has-whale-mobile-live-recent}}
 			<footer>
@@ -56,7 +59,7 @@
 					{{#has-whale-mobile-ad}}
 						<div class="mobile-ads"></div>
 					{{/has-whale-mobile-ad}}
-					{{{ html-whale-footer }}}
+					{{>Footer}}
 				</div>
 			</footer>
 			<div id="whale-bottombtn">
@@ -68,5 +71,6 @@
 	</div>
 </section>
 {{{ html-whale-adsense-script }}}
-{{{ html-whale-login-modal }}}
+{{>LoginModal}}
+{{>ShortUrlModal}}
 {{{ html-whale-debughtml }}}
