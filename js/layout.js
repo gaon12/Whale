@@ -35,11 +35,15 @@
 			return;
 		}
 
-		const shouldOpen = !owner.classList.contains('is-open');
+		if (owner.classList.contains('is-open')) {
+			closeDropdown(owner);
+			return;
+		}
+
 		closeAllDropdowns(owner);
-		owner.classList.toggle('is-open', shouldOpen);
-		menu.classList.toggle('is-open', shouldOpen);
-		toggle.setAttribute('aria-expanded', String(shouldOpen));
+		owner.classList.add('is-open');
+		menu.classList.add('is-open');
+		toggle.setAttribute('aria-expanded', 'true');
 	};
 
 	const getModal = (trigger) => {
