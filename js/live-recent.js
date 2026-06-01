@@ -130,6 +130,10 @@
 
 	const renderFeed = (feed, changes) => {
 		const visibleChanges = changes.slice(0, feed.limit);
+		feed.list.classList.toggle(
+			'live-recent-list-no-data',
+			visibleChanges.length === 0,
+		);
 
 		if (visibleChanges.length === 0) {
 			feed.list.replaceChildren(createNoDataRow());
@@ -145,11 +149,13 @@
 	};
 
 	const showSkeletonRows = (feed) => {
+		feed.list.classList.remove('live-recent-list-no-data');
 		feed.list.setAttribute('aria-busy', 'true');
 		fillRows(feed.list, feed.limit, createPlaceholderRow);
 	};
 
 	const showNoDataRows = (feed) => {
+		feed.list.classList.add('live-recent-list-no-data');
 		feed.list.setAttribute('aria-busy', 'false');
 		feed.list.replaceChildren(createNoDataRow());
 		feed.loaded = true;
