@@ -483,12 +483,29 @@ body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when
 	display: inline-flex;
 }
 
+.Whale .whale-theme-toggle-when-dark,
+body.whale-dark.Whale .whale-theme-toggle-when-light {
+	display: none;
+}
+
+body.whale-dark.Whale .whale-theme-toggle-when-dark {
+	display: inline-flex;
+}
+
 @media (prefers-color-scheme: dark) {
 	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-light {
 		display: none;
 	}
 
 	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-dark {
+		display: inline-flex;
+	}
+
+	body.whale-auto-dark.Whale .whale-theme-toggle-when-light {
+		display: none;
+	}
+
+	body.whale-auto-dark.Whale .whale-theme-toggle-when-dark {
 		display: inline-flex;
 	}
 }
@@ -1292,10 +1309,6 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 .Whale .content-wrapper .whale-footer .designedbylibre-img {
 	height: 31px;
 }
-
-.Whale .content-wrapper .whale-footer .whale-footer-short-url {
-	margin-bottom: 0.8rem;
-}
 /* Footer End */
 
 /* Login modal */
@@ -1371,18 +1384,65 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	padding-left: 1.5rem;
 }
 
-.Whale .whale-short-url-description {
+.Whale .whale-short-url-modal .whale-modal-header,
+.Whale .whale-external-link-modal .whale-modal-header {
+	padding: 0.85rem 1rem;
+}
+
+.Whale .whale-short-url-modal .whale-modal-title,
+.Whale .whale-external-link-modal .whale-modal-title {
+	flex: 1;
+	margin: 0;
+	color: #202326;
+	font-size: 1.05rem;
+	text-align: left;
+}
+
+.Whale .whale-short-url-description,
+.Whale .whale-external-link-description {
 	margin-top: 0;
+	color: #4f5b63;
+	line-height: 1.5;
 }
 
 .Whale .whale-short-url-copy-row {
 	display: flex;
 	gap: 0.5rem;
+	align-items: stretch;
+	margin-top: 0.75rem;
 }
 
 .Whale .whale-short-url-copy-row .whale-short-url-value {
 	flex: 1 1 auto;
 	min-width: 0;
+	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+	font-size: 0.85rem;
+}
+
+.Whale .whale-external-link-url {
+	max-height: 7.5rem;
+	margin: 0.75rem 0;
+	padding: 0.75rem;
+	overflow: auto;
+	border: 1px solid #d8e0e7;
+	border-radius: var(--whale-radius-sm);
+	background-color: #f8fafc;
+	color: #202326;
+	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+	font-size: 0.85rem;
+	line-height: 1.45;
+	overflow-wrap: anywhere;
+}
+
+.Whale .whale-external-link-toggle {
+	margin-bottom: 0.75rem;
+}
+
+.Whale .whale-external-link-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
 }
 
 .whale-modal-close {
@@ -1633,6 +1693,7 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 }
 
 #whale-bottombtn .scroll-button {
+	appearance: none;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -1645,6 +1706,10 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 	text-align: center;
 	cursor: pointer;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+#whale-bottombtn button.scroll-button {
+	font: inherit;
 }
 
 #whale-bottombtn .scroll-button:hover {
@@ -1762,6 +1827,7 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 #whale-bottombtn .scroll-button .whale-icon {
 	width: 1.35rem;
 	height: 1.35rem;
+	margin: 0;
 }
 /* Dropdown End */
 
@@ -1937,6 +2003,19 @@ body.whale-dark .navbox > tbody > tr:nth-child(even) > .navbox-list {
 	color: #ddd;
 }
 
+body.whale-dark.Whale,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main,
+body.whale-dark.Whale .mw-datatable th,
+body.whale-dark.Whale .mw-datatable tr:hover td,
+body.whale-dark.Whale textarea,
+body.whale-dark.Whale div.mw-warning-with-logexcerpt,
+body.whale-dark.Whale div.mw-lag-warn-high,
+body.whale-dark.Whale div.mw-cascadeprotectedwarning,
+body.whale-dark.Whale div#mw-protect-cascadeon {
+	background-color: #000;
+	color: #ddd;
+}
+
 body.whale-dark .whale-content-header,
 body.whale-dark .whale-footer,
 body.whale-dark .Whale .content-wrapper .live-recent .live-recent-feed,
@@ -1951,6 +2030,24 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table
 body.whale-dark #preferences,
 body.whale-dark .navbox-list,
 body.whale-dark .whale-dropdown-divider {
+	background-color: #1f2023;
+	color: #ddd;
+}
+
+body.whale-dark.Whale .whale-content-header,
+body.whale-dark.Whale .whale-footer,
+body.whale-dark.Whale .content-wrapper .live-recent .live-recent-feed,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-header,
+body.whale-dark.Whale .content-wrapper .whale-footer,
+body.whale-dark.Whale .editOptions,
+body.whale-dark.Whale #pagehistory li.selected,
+body.whale-dark.Whale .mw-datatable td,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox,
+body.whale-dark.Whale #preferences,
+body.whale-dark.Whale .navbox-list,
+body.whale-dark.Whale .whale-dropdown-divider,
+body.whale-dark.Whale .whale-modal-content {
 	background-color: #1f2023;
 	color: #ddd;
 }
@@ -1970,7 +2067,19 @@ body.whale-dark .Whale {
 	color-scheme: dark;
 }
 
+body.whale-dark.Whale {
+	color-scheme: dark;
+}
+
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main {
+	color: var(--whale-dark-text-color);
+}
+
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main p,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main li,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main dd,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main td {
 	color: var(--whale-dark-text-color);
 }
 
@@ -1980,6 +2089,24 @@ body.whale-dark .Whale .content-wrapper .live-recent .recent-item-time,
 body.whale-dark caption,
 body.whale-dark .flow-post,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
+	color: #ddd;
+}
+
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-header .title > h1,
+body.whale-dark.Whale .content-wrapper .live-recent .live-recent-title,
+body.whale-dark.Whale .content-wrapper .live-recent .recent-item-time,
+body.whale-dark.Whale caption,
+body.whale-dark.Whale .flow-post,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main h1,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main h2,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main h3,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main h4,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main h5,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main h6,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main .toc .toctext,
+body.whale-dark.Whale .whale-modal-title,
+body.whale-dark.Whale .whale-short-url-description,
+body.whale-dark.Whale .whale-external-link-description {
 	color: #ddd;
 }
 
@@ -2082,10 +2209,28 @@ body.whale-dark #whale-bottombtn .scroll-button {
 	color: #ddd;
 }
 
+body.whale-dark.Whale .whale-floating-toc a,
+body.whale-dark.Whale #whale-bottombtn .scroll-button,
+body.whale-dark.Whale .whale-external-link-url,
+body.whale-dark.Whale .whale-short-url-copy-row .whale-short-url-value {
+	background-color: #1f2023;
+	border-color: #555;
+	color: #ddd;
+}
+
 body.whale-dark .whale-floating-toc a:hover,
 body.whale-dark .whale-floating-toc a:focus,
 body.whale-dark .whale-floating-toc a.is-active,
 body.whale-dark #whale-bottombtn .scroll-button:hover {
+	background-color: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
+}
+
+body.whale-dark.Whale .whale-floating-toc a:hover,
+body.whale-dark.Whale .whale-floating-toc a:focus,
+body.whale-dark.Whale .whale-floating-toc a.is-active,
+body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 	background-color: var(--whale-main-color);
 	border-color: var(--whale-main-color);
 	color: #fff;
@@ -2110,6 +2255,19 @@ body.whale-dark #whale-bottombtn .scroll-button:hover {
 		color: #ddd;
 	}
 
+	body.whale-auto-dark.Whale,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main,
+	body.whale-auto-dark.Whale .mw-datatable th,
+	body.whale-auto-dark.Whale .mw-datatable tr:hover td,
+	body.whale-auto-dark.Whale textarea,
+	body.whale-auto-dark.Whale div.mw-warning-with-logexcerpt,
+	body.whale-auto-dark.Whale div.mw-lag-warn-high,
+	body.whale-auto-dark.Whale div.mw-cascadeprotectedwarning,
+	body.whale-auto-dark.Whale div#mw-protect-cascadeon {
+		background-color: #000;
+		color: #ddd;
+	}
+
 	body.whale-auto-dark .whale-content-header,
 	body.whale-auto-dark .whale-footer,
 	body.whale-auto-dark .Whale .content-wrapper .live-recent .live-recent-feed,
@@ -2124,6 +2282,24 @@ body.whale-dark #whale-bottombtn .scroll-button:hover {
 	body.whale-auto-dark #preferences,
 	body.whale-auto-dark .navbox-list,
 	body.whale-auto-dark .whale-dropdown-divider {
+		background-color: #1f2023;
+		color: #ddd;
+	}
+
+	body.whale-auto-dark.Whale .whale-content-header,
+	body.whale-auto-dark.Whale .whale-footer,
+	body.whale-auto-dark.Whale .content-wrapper .live-recent .live-recent-feed,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-header,
+	body.whale-auto-dark.Whale .content-wrapper .whale-footer,
+	body.whale-auto-dark.Whale .editOptions,
+	body.whale-auto-dark.Whale #pagehistory li.selected,
+	body.whale-auto-dark.Whale .mw-datatable td,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox,
+	body.whale-auto-dark.Whale #preferences,
+	body.whale-auto-dark.Whale .navbox-list,
+	body.whale-auto-dark.Whale .whale-dropdown-divider,
+	body.whale-auto-dark.Whale .whale-modal-content {
 		background-color: #1f2023;
 		color: #ddd;
 	}
@@ -2143,7 +2319,19 @@ body.whale-dark #whale-bottombtn .scroll-button:hover {
 		color-scheme: dark;
 	}
 
+	body.whale-auto-dark.Whale {
+		color-scheme: dark;
+	}
+
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main {
+		color: var(--whale-dark-text-color);
+	}
+
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main p,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main li,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main dd,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main td {
 		color: var(--whale-dark-text-color);
 	}
 
@@ -2153,6 +2341,24 @@ body.whale-dark #whale-bottombtn .scroll-button:hover {
 	body.whale-auto-dark caption,
 	body.whale-auto-dark .flow-post,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
+		color: #ddd;
+	}
+
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-header .title > h1,
+	body.whale-auto-dark.Whale .content-wrapper .live-recent .live-recent-title,
+	body.whale-auto-dark.Whale .content-wrapper .live-recent .recent-item-time,
+	body.whale-auto-dark.Whale caption,
+	body.whale-auto-dark.Whale .flow-post,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main h1,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main h2,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main h3,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main h4,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main h5,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main h6,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main .toc .toctext,
+	body.whale-auto-dark.Whale .whale-modal-title,
+	body.whale-auto-dark.Whale .whale-short-url-description,
+	body.whale-auto-dark.Whale .whale-external-link-description {
 		color: #ddd;
 	}
 
@@ -2255,10 +2461,28 @@ body.whale-dark #whale-bottombtn .scroll-button:hover {
 		color: #ddd;
 	}
 
+	body.whale-auto-dark.Whale .whale-floating-toc a,
+	body.whale-auto-dark.Whale #whale-bottombtn .scroll-button,
+	body.whale-auto-dark.Whale .whale-external-link-url,
+	body.whale-auto-dark.Whale .whale-short-url-copy-row .whale-short-url-value {
+		background-color: #1f2023;
+		border-color: #555;
+		color: #ddd;
+	}
+
 	body.whale-auto-dark .whale-floating-toc a:hover,
 	body.whale-auto-dark .whale-floating-toc a:focus,
 	body.whale-auto-dark .whale-floating-toc a.is-active,
 	body.whale-auto-dark #whale-bottombtn .scroll-button:hover {
+		background-color: var(--whale-main-color);
+		border-color: var(--whale-main-color);
+		color: #fff;
+	}
+
+	body.whale-auto-dark.Whale .whale-floating-toc a:hover,
+	body.whale-auto-dark.Whale .whale-floating-toc a:focus,
+	body.whale-auto-dark.Whale .whale-floating-toc a.is-active,
+	body.whale-auto-dark.Whale #whale-bottombtn .scroll-button:hover {
 		background-color: var(--whale-main-color);
 		border-color: var(--whale-main-color);
 		color: #fff;

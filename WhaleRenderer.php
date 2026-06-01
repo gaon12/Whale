@@ -588,10 +588,29 @@ class WhaleRenderer {
 			'has-short-url' => true,
 			'url' => $url,
 			'code' => $code,
+			'html-icon' => $this->renderIcon( 'link' ),
 			'button-label' => $skin->msg( 'whale-short-url-button' )->text(),
 			'modal-title' => $skin->msg( 'whale-short-url-title' )->text(),
 			'description' => $skin->msg( 'whale-short-url-description' )->text(),
 			'copy-label' => $skin->msg( 'whale-short-url-copy' )->text(),
+			'close-label' => $skin->msg( 'close' )->text(),
+		];
+	}
+
+	/**
+	 * @return array<string,string|bool>
+	 */
+	public function getExternalLinkWarningData(): array {
+		$skin = $this->skin;
+
+		return [
+			'enabled' => true,
+			'title' => $skin->msg( 'whale-external-link-title' )->text(),
+			'description' => $skin->msg( 'whale-external-link-description' )->text(),
+			'cancel-label' => $skin->msg( 'cancel' )->text(),
+			'continue-label' => $skin->msg( 'whale-external-link-continue' )->text(),
+			'show-decoded-label' => $skin->msg( 'whale-external-link-show-decoded' )->text(),
+			'show-original-label' => $skin->msg( 'whale-external-link-show-original' )->text(),
 			'close-label' => $skin->msg( 'close' )->text(),
 		];
 	}

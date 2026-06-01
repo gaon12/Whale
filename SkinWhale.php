@@ -195,6 +195,16 @@ class SkinWhale extends SkinMustache {
 				--whale-main-color: $darkMainColor;
 				--whale-second-color: $darkSecondColor;
 			}
+
+			body.whale-auto-dark.Whale {
+				--whale-main-color: $darkMainColor;
+				--whale-second-color: $darkSecondColor;
+			}
+		}
+
+		body.whale-dark.Whale {
+			--whale-main-color: $darkMainColor;
+			--whale-second-color: $darkSecondColor;
 		}"
 		);
 
@@ -273,6 +283,7 @@ class SkinWhale extends SkinMustache {
 			$categoryBlur !== false
 		) : $categoriesHtml;
 		$data['data-whale-nav'] = $renderer->getNavData();
+		$data['data-whale-theme-toggle'] = $data['data-whale-nav']['theme-toggle'] ?? false;
 		$data['has-whale-site-notice'] = $siteNoticeHtml !== '';
 		$data['html-whale-site-notice'] = $siteNoticeHtml;
 		$data['data-whale-content-tools'] = $renderer->getContentToolsData();
@@ -307,6 +318,7 @@ class SkinWhale extends SkinMustache {
 		$footerData['short-url-button-label'] = $shortUrlData['button-label'] ?? '';
 		$data['data-whale-footer'] = $footerData;
 		$data['data-whale-short-url'] = $shortUrlData;
+		$data['data-whale-external-link-warning'] = $renderer->getExternalLinkWarningData();
 		$data['data-whale-login-modal'] = $renderer->getLoginModalData();
 		$data['data-whale-user-contribution-graph'] = $renderer->getUserContributionGraphData();
 		$data['has-whale-user-contribution-graph'] =

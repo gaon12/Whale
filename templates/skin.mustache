@@ -61,6 +61,17 @@
 				</div>
 			</footer>
 			<div id="whale-bottombtn">
+				{{#data-whale-theme-toggle}}
+					<button type="button" class="scroll-button whale-theme-toggle" data-whale-theme-toggle aria-label="{{label}}" title="{{label}}" aria-pressed="{{aria-pressed}}">
+						<span class="whale-theme-toggle-icon whale-theme-toggle-when-light">{{{ html-moon-icon }}}</span>
+						<span class="whale-theme-toggle-icon whale-theme-toggle-when-dark">{{{ html-sun-icon }}}</span>
+					</button>
+				{{/data-whale-theme-toggle}}
+				{{#data-whale-short-url}}
+					{{#has-short-url}}
+						<button type="button" class="scroll-button whale-short-url-open" data-whale-toggle="modal" data-whale-target="#whale-short-url-modal" aria-label="{{button-label}}" title="{{button-label}}">{{{ html-icon }}}</button>
+					{{/has-short-url}}
+				{{/data-whale-short-url}}
 				<div class="scroll-button" id="whale-scrolltoc">{{{ html-whale-scroll-toc-icon }}}</div>
 				<div class="scroll-button" id="whale-scrollup">{{{ html-whale-scroll-up-icon }}}</div>
 				<div class="scroll-button" id="whale-scrolldown">{{{ html-whale-scroll-down-icon }}}</div>
@@ -71,4 +82,5 @@
 {{{ html-whale-adsense-script }}}
 {{>LoginModal}}
 {{>ShortUrlModal}}
+{{>ExternalLinkModal}}
 {{{ html-whale-debughtml }}}

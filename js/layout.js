@@ -333,5 +333,9 @@
 				toggleCollapsibleContent(event.target);
 			}
 		});
+
+		document.addEventListener('whale:openModal', (event) => {
+			openModal(event.detail?.modal);
+		});
 	});
 })();
