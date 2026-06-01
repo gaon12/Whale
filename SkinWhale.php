@@ -164,7 +164,7 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.tables';
 		}
 
-		if ( ( $GLOBALS['wgWhaleEnableShortUrls'] ?? true ) !== false ) {
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableShortUrls', 'whale-short-url' ) ) {
 			$modules[] = 'skins.whale.shortUrl';
 		}
 
@@ -382,7 +382,7 @@ class SkinWhale extends SkinMustache {
 		}
 
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-		return $userOptionsLookup->getOption( $this->getUser(), $optionKey ) !== false;
+		return $userOptionsLookup->getOption( $this->getUser(), $optionKey, true ) !== false;
 	}
 
 	private function shouldRenderAd( string $position, string $optionKey ): bool {
