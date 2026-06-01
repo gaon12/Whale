@@ -40,10 +40,10 @@
 		} catch {}
 	};
 
-	const applyMode = (mode) => {
+	const applyMode = (mode, explicit = true) => {
 		const isDark = mode === 'dark';
 		document.body.classList.toggle('whale-dark', isDark);
-		document.body.classList.remove('whale-auto-dark');
+		document.body.classList.toggle('whale-auto-dark', !explicit);
 		document.querySelectorAll('[data-whale-theme-toggle]').forEach((button) => {
 			const label = mw
 				.message(
@@ -57,7 +57,8 @@
 	};
 
 	whale.ready(() => {
-		applyMode(getCurrentMode());
+		const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+		applyMode(getCurrentMode(), Boolean(getStoredMode()));
 
 		document.addEventListener('click', (event) => {
 			const button = whale.closest(event.target, '[data-whale-theme-toggle]');
@@ -70,5 +71,13 @@
 			persistMode(nextMode);
 			applyMode(nextMode);
 		});
+
+		if (mediaQuery) {
+			whale.onMediaChange(mediaQuery, () => {
+				if (!getStoredMode()) {
+					applyMode(getCurrentMode(), false);
+				}
+			});
+		}
 	});
 })();
