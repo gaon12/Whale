@@ -10,6 +10,10 @@ class WhaleHooks {
 	private const FOLDING_MODE_OFF = 'off';
 	private const SCROLL_BUTTONS_VERTICAL = 'vertical';
 	private const SCROLL_BUTTONS_HORIZONTAL = 'horizontal';
+	private const FONT_SCALE_SMALL = 'small';
+	private const FONT_SCALE_NORMAL = 'normal';
+	private const FONT_SCALE_LARGE = 'large';
+	private const FONT_SCALE_XLARGE = 'x-large';
 
 	/**
 	 * @since 1.17.0
@@ -18,7 +22,9 @@ class WhaleHooks {
 	 * @param array &$bodyAttrs
 	 */
 	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, &$bodyAttrs ) {
-		global $wgWhaleEnableFloatingToc;
+		global $wgWhaleEnableFloatingToc, $wgWhaleEnableReadingProgress, $wgWhaleEnableHeadingAnchors,
+			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
+			$wgWhaleMobileUserToolsPosition;
 
 		if ( $sk->getSkinName() === 'whale' ) {
 			$bodyAttrs['class'] .= ' Whale width-size';
@@ -48,6 +54,53 @@ class WhaleHooks {
 			) {
 				$bodyAttrs['class'] .= ' whale-floating-toc-enabled';
 			}
+
+			if (
+				( $wgWhaleEnableReadingProgress ?? true ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-reading-progress' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-reading-progress-enabled';
+			}
+
+			if (
+				( $wgWhaleEnableHeadingAnchors ?? true ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-heading-anchors' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-heading-anchors-enabled';
+			}
+
+			if (
+				( $wgWhaleEnableResponsiveTables ?? true ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-responsive-tables' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-responsive-tables-enabled';
+			}
+
+			if (
+				( $wgWhaleEnableSortableTables ?? true ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-sortable-tables' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-sortable-tables-enabled';
+			}
+
+			if (
+				( $wgWhaleMobileUserToolsPosition ?? 'right' ) === 'right' &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-mobile-user-tools-right' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-mobile-user-tools-right';
+			}
+
+			if ( ( $wgWhaleEnableContentFontScale ?? true ) !== false ) {
+				$fontScale = $userOptionsLookup->getOption( $sk->getUser(), 'whale-content-font-scale' );
+				if ( !in_array( $fontScale, [
+					self::FONT_SCALE_SMALL,
+					self::FONT_SCALE_LARGE,
+					self::FONT_SCALE_XLARGE
+				] ) ) {
+					$fontScale = self::FONT_SCALE_NORMAL;
+				}
+				$bodyAttrs['class'] .= ' whale-font-scale-' . $fontScale;
+			}
 		}
 	}
 
@@ -58,7 +111,10 @@ class WhaleHooks {
 	 * @param Preferences &$preferences preferences
 	 */
 	public static function onGetPreferences( $user, &$preferences ) {
-		global $wgWhaleAdSetting, $wgWhaleAdGroup;
+		global $wgWhaleAdSetting, $wgWhaleAdGroup, $wgWhaleEnableUserContributionGraph,
+			$wgWhaleEnableShortUrls, $wgWhaleEnableHeadingAnchors, $wgWhaleEnableReadingProgress,
+			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
+			$wgWhaleMobileUserToolsPosition;
 
 		$service = MediaWiki\MediaWikiServices::getInstance();
 		$userGroupManager = $service->getUserGroupManager();
@@ -166,6 +222,84 @@ class WhaleHooks {
 			'section' => 'whale/content',
 		];
 
+		if ( ( $wgWhaleEnableReadingProgress ?? true ) !== false ) {
+			$preferences['whale-reading-progress'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-reading-progress',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
+
+		if ( ( $wgWhaleEnableHeadingAnchors ?? true ) !== false ) {
+			$preferences['whale-heading-anchors'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-heading-anchors',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
+
+		if ( ( $wgWhaleEnableResponsiveTables ?? true ) !== false ) {
+			$preferences['whale-responsive-tables'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-responsive-tables',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
+
+		if ( ( $wgWhaleEnableSortableTables ?? true ) !== false ) {
+			$preferences['whale-sortable-tables'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-sortable-tables',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
+
+		if ( ( $wgWhaleEnableContentFontScale ?? true ) !== false ) {
+			$preferences['whale-content-font-scale'] = [
+				'type' => 'select',
+				'label-message' => 'whale-pref-content-font-scale',
+				'section' => 'whale/content',
+				'options' => [
+					wfMessage( 'whale-font-scale-small' )->text() => self::FONT_SCALE_SMALL,
+					wfMessage( 'whale-font-scale-normal' )->text() => self::FONT_SCALE_NORMAL,
+					wfMessage( 'whale-font-scale-large' )->text() => self::FONT_SCALE_LARGE,
+					wfMessage( 'whale-font-scale-x-large' )->text() => self::FONT_SCALE_XLARGE,
+				],
+				'default' => self::FONT_SCALE_NORMAL
+			];
+		}
+
+		if ( ( $wgWhaleEnableUserContributionGraph ?? true ) !== false ) {
+			$preferences['whale-user-contribution-graph'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-user-contribution-graph',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
+
+		if ( ( $wgWhaleEnableShortUrls ?? true ) !== false ) {
+			$preferences['whale-short-url'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-short-url',
+				'section' => 'whale/layout',
+				'default' => true
+			];
+		}
+
+		if ( ( $wgWhaleMobileUserToolsPosition ?? 'right' ) === 'right' ) {
+			$preferences['whale-mobile-user-tools-right'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-mobile-user-tools-right',
+				'section' => 'whale/layout',
+				'default' => true
+			];
+		}
+
 		if (
 			isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'] &&
 			isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup == 'differ'
@@ -196,7 +330,7 @@ class WhaleHooks {
 				isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'] &&
 				$permissionManager->userHasRight( $user, 'blockads-right' )
 			) {
-				$preferences['whale-ads-rightads'] = [
+				$preferences['whale-ads-right'] = [
 					'type' => 'toggle',
 					'label-message' => 'whale-pref-ads-right',
 					'section' => 'whale/ads',

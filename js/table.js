@@ -60,6 +60,10 @@
 	};
 
 	const initSortableTables = (content) => {
+		if (!document.body.classList.contains('whale-sortable-tables-enabled')) {
+			return;
+		}
+
 		const tables = new Set(content.querySelectorAll('table.sortable'));
 
 		content.querySelectorAll('th.headerSort').forEach((header) => {
@@ -101,6 +105,10 @@
 	};
 
 	const syncTableWrappers = (content) => {
+		if (!document.body.classList.contains('whale-responsive-tables-enabled')) {
+			return;
+		}
+
 		const contentWidth = content.clientWidth;
 
 		for (const table of content.querySelectorAll('table')) {
