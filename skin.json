@@ -51,7 +51,21 @@
 		"WhaleLiveRCTalkNamespaces": [1, 3, 5, 7, 9, 11, 13, 15],
 		"WhaleLiveRCRefreshInterval": 60,
 		"WhaleLiveRecentFixedHeight": true,
-		"WhaleMaxRecent": 10
+		"WhaleMaxRecent": 10,
+		"WhaleEnableUserContributionGraph": true,
+		"WhaleContributionGraphDays": 365,
+		"WhaleContributionGraphNamespaces": null,
+		"WhaleContributionGraphCacheTTL": 3600,
+		"WhaleContributionGraphLevels": [1, 3, 6, 10],
+		"WhaleEnableShortUrls": true,
+		"WhaleShortUrlPathPrefix": "/s",
+		"WhaleShortUrlRedirectStatus": 302,
+		"WhaleEnableHeadingAnchors": true,
+		"WhaleEnableReadingProgress": true,
+		"WhaleEnableResponsiveTables": true,
+		"WhaleEnableSortableTables": true,
+		"WhaleEnableContentFontScale": true,
+		"WhaleMobileUserToolsPosition": "right"
 	},
 	"AvailableRights": [
 		"blockads-header",
@@ -106,10 +120,23 @@
 				"js/delay-scrolling.js",
 				"js/index-button.js",
 				"js/share-button.js",
-				"js/layout.js",
-				"js/table.js"
+				"js/layout.js"
 			],
 			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
+		},
+		"skins.whale.headingAnchors": {
+			"scripts": "js/heading-anchors.js",
+			"messages": ["whale-heading-link-copied", "whale-heading-link-copy"],
+			"dependencies": "skins.whale.common"
+		},
+		"skins.whale.tables": {
+			"scripts": "js/table.js",
+			"dependencies": "skins.whale.common"
+		},
+		"skins.whale.shortUrl": {
+			"scripts": "js/short-url.js",
+			"messages": ["whale-short-url-copied"],
+			"dependencies": "skins.whale.common"
 		},
 		"skins.whale.liverc": {
 			"scripts": "js/live-recent.js",
@@ -136,7 +163,22 @@
 	"AutoloadClasses": {
 		"SkinWhale": "SkinWhale.php",
 		"WhaleRenderer": "WhaleRenderer.php",
-		"WhaleHooks": "WhaleHooks.php"
+		"WhaleHooks": "WhaleHooks.php",
+		"WhaleShortUrl": "WhaleShortUrl.php",
+		"SpecialWhaleShortUrl": "SpecialWhaleShortUrl.php"
+	},
+	"SpecialPages": {
+		"WhaleShortUrl": "SpecialWhaleShortUrl"
+	},
+	"DefaultUserOptions": {
+		"whale-reading-progress": true,
+		"whale-heading-anchors": true,
+		"whale-responsive-tables": true,
+		"whale-sortable-tables": true,
+		"whale-content-font-scale": "normal",
+		"whale-user-contribution-graph": true,
+		"whale-short-url": true,
+		"whale-mobile-user-tools-right": true
 	},
 	"Hooks": {
 		"GetPreferences": "WhaleHooks::onGetPreferences",
