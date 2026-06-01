@@ -41,7 +41,22 @@
 				{{>UserContributionGraph}}
 				{{{ html-categories }}}
 				<article class="mw-body-content" id="mw-content-text">
-					{{{ html-body-content }}}
+					{{#has-whale-not-found}}
+						{{#data-whale-not-found}}
+							<div class="whale-not-found">
+								<div class="whale-not-found-icon">{{{ html-icon }}}</div>
+								<div class="whale-not-found-copy">
+									<p class="whale-not-found-kicker">404</p>
+									<h2>{{title}}</h2>
+									<p>{{description}}</p>
+									<div class="whale-not-found-actions">{{{ html-actions }}}</div>
+								</div>
+							</div>
+						{{/data-whale-not-found}}
+					{{/has-whale-not-found}}
+					{{^has-whale-not-found}}
+						{{{ html-body-content }}}
+					{{/has-whale-not-found}}
 				</article>
 				{{{ html-whale-belowarticle-ad }}}
 			</div>

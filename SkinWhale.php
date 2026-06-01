@@ -282,6 +282,8 @@ class SkinWhale extends SkinMustache {
 			$categoriesHtml,
 			$categoryBlur !== false
 		) : $categoriesHtml;
+		$data['data-whale-not-found'] = $this->getNotFoundPageData();
+		$data['has-whale-not-found'] = !empty( $data['data-whale-not-found']['has-not-found'] );
 		$data['data-whale-nav'] = $renderer->getNavData();
 		$data['data-whale-theme-toggle'] = $data['data-whale-nav']['theme-toggle'] ?? false;
 		$data['has-whale-site-notice'] = $siteNoticeHtml !== '';
@@ -357,6 +359,51 @@ class SkinWhale extends SkinMustache {
 		$hasVisibleMedia = preg_match( '/<(?:img|picture|svg|video|iframe|object|embed)\b/i', $withoutComments ) === 1;
 
 		return $visibleText !== '' || $hasVisibleMedia ? $siteNoticeHtml : '';
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	private function getNotFoundPageData(): array {
+		$title = $this->getTitle();
+		$request = $this->getRequest();
+
+		if (
+			!$title ||
+			$title->exists() ||
+			$title->getNamespace() === NS_SPECIAL ||
+			$request->getVal( 'action', 'view' ) !== 'view' ||
+			$request->getCheck( 'oldid' )
+		) {
+			return [ 'has-not-found' => false ];
+		}
+
+		$pageName = $title->getPrefixedText();
+		$searchUrl = SpecialPage::getTitleFor( 'Search' )->getLocalURL( [
+			'search' => $pageName,
+		] );
+		$mainPage = Title::newMainPage();
+
+		return [
+			'has-not-found' => true,
+			'html-icon' => ( new WhaleRenderer( $this ) )->getIcon( 'question' ),
+			'title' => $this->msg( 'whale-not-found-title', $pageName )->text(),
+			'description' => $this->msg( 'whale-not-found-description' )->text(),
+			'html-actions' => implode( '', [
+				Html::element( 'a', [
+					'class' => 'whale-btn whale-btn-primary whale-not-found-action',
+					'href' => $title->getLocalURL( [ 'action' => 'edit' ] ),
+				], $this->msg( 'whale-not-found-create' )->text() ),
+				Html::element( 'a', [
+					'class' => 'whale-btn whale-btn-secondary whale-not-found-action',
+					'href' => $searchUrl,
+				], $this->msg( 'search' )->text() ),
+				Html::element( 'a', [
+					'class' => 'whale-btn whale-btn-secondary whale-not-found-action',
+					'href' => $mainPage->getLocalURL(),
+				], $this->msg( 'mainpage' )->text() ),
+			] ),
+		];
 	}
 
 	private function shouldRenderSidebar(): bool {
