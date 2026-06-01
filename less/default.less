@@ -1676,6 +1676,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	display: flex;
 	gap: 0.45rem;
 	z-index: 1000;
+	transition: transform 180ms ease;
 }
 
 body.whale-scroll-buttons-vertical #whale-bottombtn {
@@ -1782,19 +1783,8 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 }
 
 @media screen and (min-width: 1280px) {
-	body.whale-floating-toc-enabled #whale-bottombtn {
-		right: auto;
-		left: 0.9rem;
-	}
-
-	body.whale-floating-toc-enabled #whale-bottombtn .whale-bottom-tools-menu {
-		right: auto;
-		left: 0;
-	}
-
-	body.whale-floating-toc-enabled #whale-bottombtn .whale-bottom-tools-menu::after {
-		right: auto;
-		left: 0.9rem;
+	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled.whale-floating-toc-hover #whale-bottombtn {
+		transform: translateX(-9.65rem);
 	}
 }
 /* scroll button end */
