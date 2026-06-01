@@ -45,6 +45,7 @@
 
 	const removeFloatingToc = () => {
 		document.querySelector('.whale-floating-toc')?.remove();
+		document.body.classList.remove('whale-floating-toc-hover');
 		if (activeScrollUpdate) {
 			window.removeEventListener('scroll', activeScrollUpdate);
 			activeScrollUpdate = null;
@@ -80,6 +81,24 @@
 		const list = document.createElement('ol');
 		toc.className = 'whale-floating-toc';
 		toc.setAttribute('aria-label', '문단 목차');
+		toc.addEventListener('pointerover', (event) => {
+			if (event.target.closest('a')) {
+				document.body.classList.add('whale-floating-toc-hover');
+			}
+		});
+		toc.addEventListener('pointerout', (event) => {
+			if (!event.relatedTarget || !toc.contains(event.relatedTarget)) {
+				document.body.classList.remove('whale-floating-toc-hover');
+			}
+		});
+		toc.addEventListener('focusin', () => {
+			document.body.classList.add('whale-floating-toc-hover');
+		});
+		toc.addEventListener('focusout', (event) => {
+			if (!event.relatedTarget || !toc.contains(event.relatedTarget)) {
+				document.body.classList.remove('whale-floating-toc-hover');
+			}
+		});
 
 		links.forEach(({ link, target, text }) => {
 			const item = document.createElement('li');
