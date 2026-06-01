@@ -172,6 +172,10 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.themeToggle';
 		}
 
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableImageLazyLoad', 'whale-lazy-images' ) ) {
+			$modules[] = 'skins.whale.lazyImages';
+		}
+
 		$out->addModules( $modules );
 
 		// @codingStandardsIgnoreStart

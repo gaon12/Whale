@@ -536,6 +536,7 @@ Available rights:
 | `$wgWhaleEnableSortableTables` | Enable client-side table sorting | `true` | `true` |
 | `$wgWhaleEnableContentFontScale` | Enable per-user article font size | `true` | `true` |
 | `$wgWhaleEnableAnonThemeToggle` | Enable the light/dark toggle for anonymous users | `true` | `true` |
+| `$wgWhaleEnableImageLazyLoad` | Enable lazy loading and skeleton placeholders for article images | `true` | `true` |
 | `$wgWhaleMobileUserToolsPosition` | Mobile login/profile position | `'right'` | `'right'` |
 
 ### 11. Maintained Languages
