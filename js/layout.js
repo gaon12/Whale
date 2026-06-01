@@ -51,7 +51,10 @@
 	const initReadingProgress = () => {
 		const skinRoot = document.querySelector('.Whale');
 
-		if (!skinRoot) {
+		if (
+			!skinRoot ||
+			!document.body.classList.contains('whale-reading-progress-enabled')
+		) {
 			return;
 		}
 
@@ -193,7 +196,7 @@
 			modal.classList.add('is-open');
 			activeBackdrop?.classList.add('is-open');
 			modal.dataset.whaleModalState = 'open';
-			document.getElementById('wpName1')?.focus();
+			modal.querySelector('input:not([type="hidden"]), button, a')?.focus();
 		});
 	};
 
