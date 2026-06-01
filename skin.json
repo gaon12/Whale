@@ -65,6 +65,7 @@
 		"WhaleEnableResponsiveTables": true,
 		"WhaleEnableSortableTables": true,
 		"WhaleEnableContentFontScale": true,
+		"WhaleEnableAnonThemeToggle": true,
 		"WhaleMobileUserToolsPosition": "right"
 	},
 	"AvailableRights": [
@@ -137,6 +138,11 @@
 			"scripts": "js/short-url.js",
 			"messages": ["whale-short-url-copied"],
 			"dependencies": "skins.whale.common"
+		},
+		"skins.whale.themeToggle": {
+			"scripts": "js/theme-toggle.js",
+			"messages": ["whale-theme-toggle-light", "whale-theme-toggle-dark"],
+			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
 		},
 		"skins.whale.liverc": {
 			"scripts": "js/live-recent.js",

@@ -535,6 +535,7 @@ Available rights:
 | `$wgWhaleEnableResponsiveTables` | Enable responsive wide tables | `true` | `true` |
 | `$wgWhaleEnableSortableTables` | Enable client-side table sorting | `true` | `true` |
 | `$wgWhaleEnableContentFontScale` | Enable per-user article font size | `true` | `true` |
+| `$wgWhaleEnableAnonThemeToggle` | Enable the light/dark toggle for anonymous users | `true` | `true` |
 | `$wgWhaleMobileUserToolsPosition` | Mobile login/profile position | `'right'` | `'right'` |
 
 ### 11. Maintained Languages
