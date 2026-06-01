@@ -53,6 +53,15 @@
 			button.setAttribute('aria-pressed', String(isDark));
 			button.setAttribute('aria-label', label);
 			button.setAttribute('title', label);
+			button
+				.querySelector('[data-whale-theme-toggle-label]')
+				?.replaceChildren(document.createTextNode(label));
+			button.querySelectorAll('.whale-theme-toggle-icon').forEach((icon) => {
+				icon.hidden = !(
+					(isDark && icon.classList.contains('whale-theme-toggle-when-dark')) ||
+					(!isDark && icon.classList.contains('whale-theme-toggle-when-light'))
+				);
+			});
 		});
 	};
 
