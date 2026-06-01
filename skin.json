@@ -66,6 +66,7 @@
 		"WhaleEnableSortableTables": true,
 		"WhaleEnableContentFontScale": true,
 		"WhaleEnableAnonThemeToggle": true,
+		"WhaleEnableImageLazyLoad": true,
 		"WhaleMobileUserToolsPosition": "right"
 	},
 	"AvailableRights": [
@@ -144,6 +145,10 @@
 			"messages": ["whale-theme-toggle-light", "whale-theme-toggle-dark"],
 			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
 		},
+		"skins.whale.lazyImages": {
+			"scripts": "js/lazy-images.js",
+			"dependencies": "skins.whale.common"
+		},
 		"skins.whale.liverc": {
 			"scripts": "js/live-recent.js",
 			"messages": ["whale-feed-new"],
@@ -184,6 +189,7 @@
 		"whale-content-font-scale": "normal",
 		"whale-user-contribution-graph": true,
 		"whale-short-url": true,
+		"whale-lazy-images": true,
 		"whale-mobile-user-tools-right": true
 	},
 	"Hooks": {

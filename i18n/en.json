@@ -89,6 +89,7 @@
 	"whale-font-scale-x-large": "Extra large",
 	"whale-pref-user-contribution-graph": "Show contribution graph on user pages",
 	"whale-pref-short-url": "Show short URL tool in the footer",
+	"whale-pref-lazy-images": "Lazy load article images with skeleton placeholders",
 	"whale-pref-mobile-user-tools-right": "Keep login and profile buttons on the right on mobile",
 	"whale-theme-toggle-dark": "Switch to dark mode",
 	"whale-theme-toggle-light": "Switch to light mode",

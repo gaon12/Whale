@@ -231,6 +231,45 @@ html .suggestions-result-current {
 .Whale .content-wrapper .whale-content .whale-content-main .thumb img {
 	box-shadow: 0.25rem 0.25rem 0 0 #e1e8ed;
 }
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	overflow: hidden;
+	vertical-align: middle;
+	background: linear-gradient(90deg, #eef2f5 25%, #f8fafc 37%, #eef2f5 63%);
+	background-size: 400% 100%;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell.is-loading {
+	animation: whale-live-recent-skeleton 1.2s ease-in-out infinite;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell > img,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell > picture,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell > picture > img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell.is-loading > img,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell.is-loading > picture {
+	opacity: 0;
+}
+
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
+	background: linear-gradient(90deg, #2c3136 25%, #353b41 37%, #2c3136 63%);
+	background-size: 400% 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
+		background: linear-gradient(90deg, #2c3136 25%, #353b41 37%, #2c3136 63%);
+		background-size: 400% 100%;
+	}
+}
 /* Image End */
 
 /* Left ToC */
