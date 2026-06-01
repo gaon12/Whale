@@ -547,8 +547,10 @@ class WhaleRenderer {
 		global $wgWhaleEnableShortUrls;
 
 		$skin = $this->skin;
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$title = $skin->getTitle();
-		$enabled = ( $wgWhaleEnableShortUrls ?? true ) !== false;
+		$enabled = ( $wgWhaleEnableShortUrls ?? true ) !== false &&
+			$userOptionsLookup->getOption( $skin->getUser(), 'whale-short-url', true ) !== false;
 
 		if ( !$enabled || !$title || $title->getNamespace() === NS_SPECIAL ) {
 			return [ 'has-short-url' => false ];
@@ -639,8 +641,10 @@ class WhaleRenderer {
 			$wgWhaleContributionGraphLevels;
 
 		$skin = $this->skin;
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$title = $skin->getTitle();
-		$enabled = ( $wgWhaleEnableUserContributionGraph ?? true ) !== false;
+		$enabled = ( $wgWhaleEnableUserContributionGraph ?? true ) !== false &&
+			$userOptionsLookup->getOption( $skin->getUser(), 'whale-user-contribution-graph', true ) !== false;
 
 		if (
 			!$enabled ||
