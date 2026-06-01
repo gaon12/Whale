@@ -113,7 +113,7 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | --- | --- |
 | 반응형 레이아웃 | 데스크톱과 모바일 화면에 맞춰 레이아웃이 바뀝니다. |
 | 상단 내비게이션 | `MediaWiki:Whale-Navbar` 문서에서 메뉴를 설정합니다. |
-| 검색 영역 | 상단 바에서 바로 문서를 검색할 수 있습니다. |
+| 검색 영역 | 상단 바에서 바로 문서를 검색할 수 있으며, 입력창과 버튼이 하나의 그룹으로 표시됩니다. |
 | 로그인 모달 | 비로그인 사용자에게 로그인 창을 보여줍니다. |
 | 오른쪽 사이드바 | 최근 변경과 최근 토론을 보여줍니다. |
 | 읽기 진행 표시줄 | 문서를 얼마나 읽었는지 상단에 표시합니다. |
@@ -121,12 +121,16 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | 접기 블록 | `{{{#!folding 제목 ... }}}` 형식의 접기/펼치기 블록을 제공합니다. |
 | 흐림 분류 | `[[분류:이름#blur]]`에서 표시 이름의 `#blur`를 제거하고 흐림 처리합니다. |
 | 다크 모드 | 시스템 설정을 따르거나 사용자가 직접 밝은/어두운 모드를 고를 수 있습니다. |
+| 하단 도구 메뉴 | 화면 하단의 도구 버튼에서 테마 전환, 단축 URL 같은 보조 기능을 엽니다. |
+| 사용자 기여 그래프 | `사용자:예시`처럼 루트 사용자 문서에 GitHub 스타일 기여도 그래프를 표시합니다. |
+| 단축 URL | 현재 문서 최신판의 revision id로 `/s/{base62}` 형식의 링크를 만들고 모달에서 복사할 수 있습니다. |
+| 없는 문서 안내 | 존재하지 않는 일반 문서에는 새 문서 만들기, 검색, 대문 이동 버튼이 있는 Whale 404 안내 카드를 표시합니다. |
 | 광고 슬롯 | 헤더, 오른쪽, 문서 아래, 하단 광고 위치를 설정할 수 있습니다. |
 | 다국어 메시지 | 한국어, 영어, 일본어, 중국어 간체, 중국어 번체 메시지를 관리합니다. |
 
 ### 7. 단축 URL 서버 설정
 
-단축 URL 기능은 `/s/{code}` 요청을 `Special:WhaleShortUrl/{code}`로 넘기는 웹 서버 rewrite가 필요합니다. 스킨에는 바로 복사해서 쓸 수 있는 예시 파일이 들어 있습니다.
+단축 URL 기능은 문서 하단 도구 메뉴와 푸터 도구에서 현재 문서 최신판을 가리키는 짧은 링크를 보여줍니다. 복사 버튼이 있는 모달을 열 수 있으며, 실제 `/s/{code}` 요청은 `Special:WhaleShortUrl/{code}`로 넘기는 웹 서버 rewrite가 필요합니다. 스킨에는 바로 복사해서 쓸 수 있는 예시 파일이 들어 있습니다.
 
 | 서버 | 예시 파일 |
 | --- | --- |
@@ -291,6 +295,22 @@ $wgWhaleAdGroup = 'differ';
 | `$wgWhaleAdSetting` | 광고 클라이언트와 슬롯 설정 | 위 예시 참고 | `null` |
 | `$wgWhaleAdGroup` | 권한별 광고 숨김 설정 사용 | `'differ'` | `null` |
 | `$wgWhaleMobileReplaceAd` | 모바일에서 오른쪽 광고를 하단으로 이동 | `true` | `false` |
+| `$wgWhaleEnableUserContributionGraph` | 사용자 문서 기여도 그래프 사용 | `true` | `true` |
+| `$wgWhaleContributionGraphDays` | 기여도 그래프 표시 기간 | `365` | `365` |
+| `$wgWhaleContributionGraphNamespaces` | 기여도 그래프 이름공간 제한 | `[ NS_MAIN ]` | `null` |
+| `$wgWhaleContributionGraphCacheTTL` | 기여도 그래프 캐시 시간(초) | `3600` | `3600` |
+| `$wgWhaleContributionGraphLevels` | 기여도 그래프 색상 단계 기준 | `[1, 3, 6, 10]` | `[1, 3, 6, 10]` |
+| `$wgWhaleEnableShortUrls` | 푸터/도구 단축 URL과 특수문서 redirect 사용 | `true` | `true` |
+| `$wgWhaleShortUrlPathPrefix` | 단축 URL 경로 접두어 | `'/s'` | `'/s'` |
+| `$wgWhaleShortUrlRedirectStatus` | 단축 URL redirect 상태 코드 | `302` | `302` |
+| `$wgWhaleEnableHeadingAnchors` | 문단 링크 복사 버튼 사용 | `true` | `true` |
+| `$wgWhaleEnableReadingProgress` | 읽기 진행 표시줄 사용 | `true` | `true` |
+| `$wgWhaleEnableResponsiveTables` | 넓은 표 가로 스크롤 처리 | `true` | `true` |
+| `$wgWhaleEnableSortableTables` | 클라이언트 표 정렬 사용 | `true` | `true` |
+| `$wgWhaleEnableContentFontScale` | 사용자별 본문 글자 크기 설정 사용 | `true` | `true` |
+| `$wgWhaleEnableAnonThemeToggle` | 비로그인 사용자 테마 전환 버튼 사용 | `true` | `true` |
+| `$wgWhaleEnableImageLazyLoad` | 문서 이미지 lazy load와 스켈레톤 표시 사용 | `true` | `true` |
+| `$wgWhaleMobileUserToolsPosition` | 모바일 로그인/프로필 버튼 위치 | `'right'` | `'right'` |
 
 ### 12. 관리하는 언어
 
@@ -398,7 +418,7 @@ Advanced site-wide color override variables still exist for compatibility: `$wgW
 | --- | --- |
 | Responsive layout | Adjusts for desktop and mobile screens. |
 | Top navigation | Configured from `MediaWiki:Whale-Navbar`. |
-| Search area | Search directly from the top bar. |
+| Search area | Search directly from the top bar with the input and action buttons rendered as one connected control. |
 | Login modal | Shows a login dialog for anonymous users. |
 | Right sidebar | Shows live recent changes and recent discussions. |
 | Reading progress | Displays article reading progress at the top. |
@@ -406,16 +426,18 @@ Advanced site-wide color override variables still exist for compatibility: `$wgW
 | Folding blocks | Supports `{{{#!folding title ... }}}` folding blocks. |
 | Blurred categories | Removes `#blur` from `[[Category:Name#blur]]` labels and blurs the category. |
 | Dark mode | Follows the system setting or a user-selected mode. |
+| Bottom tools menu | Opens helper actions such as theme toggle and short URL from the floating tools button. |
 | User contribution graph | Shows a GitHub-style contribution grid on root user pages such as `User:Example`. |
-| Short URLs | Adds a footer tool that creates `/s/{base62}` URLs from the page's latest revision id. |
+| Short URLs | Adds a footer/tools modal that creates and copies `/s/{base62}` URLs from the page's latest revision id. |
+| Missing-page help | Shows a Whale 404 card with create, search, and main-page actions for nonexistent normal pages. |
 | Ad slots | Supports header, right, below-article, and bottom slots. |
 | Localization | Maintains Korean, English, Japanese, Simplified Chinese, and Traditional Chinese messages. |
 
-Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. See `docs/rewrite/apache-whale-short-url.htaccess` and `docs/rewrite/nginx-whale-short-url.conf`.
+Short URLs appear in the footer/tools UI as a copyable modal for the latest revision of the current page. The public `/s/{code}` URL requires a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. See `docs/rewrite/apache-whale-short-url.htaccess` and `docs/rewrite/nginx-whale-short-url.conf`.
 
 ### 7. Short URL Server Rewrite
 
-Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. Ready-to-copy examples are included in the repository.
+Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. The skin renders a modal with the short code, full URL, and copy button when the current page has a latest revision id. Ready-to-copy rewrite examples are included in the repository.
 
 | Server | Example file |
 | --- | --- |
