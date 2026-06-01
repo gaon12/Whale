@@ -122,7 +122,12 @@
 				"js/delay-scrolling.js",
 				"js/index-button.js",
 				"js/share-button.js",
+				"js/external-link-warning.js",
 				"js/layout.js"
+			],
+			"messages": [
+				"whale-external-link-show-decoded",
+				"whale-external-link-show-original"
 			],
 			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
 		},

@@ -102,6 +102,8 @@
 
 		const updatePositions = () => {
 			const maxScrollY = getMaxScrollY();
+			const minGap = Math.min(0.12, 1 / Math.max(1, links.length - 1));
+			let previousRatio = -minGap;
 
 			links.forEach((item, index) => {
 				item.scrollY = getTargetScrollY(item.target);
@@ -110,8 +112,16 @@
 					maxScrollY === 0 || links.length === 1
 						? index / Math.max(1, links.length - 1)
 						: getTargetPositionRatio(item.target);
+				const remainingItems = links.length - index - 1;
+				const maxRatio = 1 - remainingItems * minGap;
+				const safeRatio = Math.min(
+					maxRatio,
+					Math.max(previousRatio + minGap, ratio),
+				);
 
-				items[index].style.top = `${Math.min(1, Math.max(0, ratio)) * 100}%`;
+				previousRatio = safeRatio;
+				items[index].style.top =
+					`${Math.min(1, Math.max(0, safeRatio)) * 100}%`;
 			});
 		};
 
