@@ -448,6 +448,51 @@ strike {
 	width: 0.9rem;
 }
 
+.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle {
+	order: 28;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	margin-left: 0.55rem;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.14);
+	color: #fff;
+	cursor: pointer;
+}
+
+.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:hover,
+.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:focus {
+	background-color: rgba(255, 255, 255, 0.24);
+	outline: 0;
+}
+
+.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle .whale-icon {
+	font-size: 1.2rem;
+}
+
+.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-dark,
+body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-light {
+	display: none;
+}
+
+body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-dark {
+	display: inline-flex;
+}
+
+@media (prefers-color-scheme: dark) {
+	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-light {
+		display: none;
+	}
+
+	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle-when-dark {
+		display: inline-flex;
+	}
+}
+
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login {
 	order: 30;
 	flex: 0 0 auto;

@@ -30,6 +30,12 @@ class WhaleHooks {
 			$bodyAttrs['class'] .= ' Whale width-size';
 			$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
 			$darkMode = $userOptionsLookup->getOption( $sk->getUser(), 'whale-dark' );
+			if ( $sk->getUser()->isAnon() ) {
+				$cookieDarkMode = self::getAnonDarkMode( $sk );
+				if ( $cookieDarkMode !== null ) {
+					$darkMode = $cookieDarkMode;
+				}
+			}
 
 			if ( $darkMode === 'dark' ) {
 				$bodyAttrs['class'] .= ' whale-dark';
@@ -843,5 +849,10 @@ class WhaleHooks {
 			return $item !== '' && $item !== $class;
 		} );
 		$element->setAttribute( 'class', implode( ' ', $classes ) );
+	}
+
+	private static function getAnonDarkMode( Skin $sk ): ?string {
+		$mode = $sk->getRequest()->getCookie( 'whale-dark-mode' );
+		return in_array( $mode, [ 'dark', 'light' ], true ) ? $mode : null;
 	}
 }

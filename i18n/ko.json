@@ -90,6 +90,8 @@
 	"whale-pref-user-contribution-graph": "사용자 문서에 기여도 그래프 표시",
 	"whale-pref-short-url": "푸터에 단축 URL 도구 표시",
 	"whale-pref-mobile-user-tools-right": "모바일에서 로그인/프로필 버튼을 오른쪽에 고정",
+	"whale-theme-toggle-dark": "?? ??? ??",
+	"whale-theme-toggle-light": "??? ??? ??",
 	"whale-heading-link-copy": "이 문단 링크 복사",
 	"whale-heading-link-copied": "문단 링크를 복사했습니다",
 	"whale-contrib-graph-title": "$1의 기여도",

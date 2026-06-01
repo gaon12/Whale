@@ -24,6 +24,12 @@
 			</li>
 		{{/items}}
 	</ul>
+	{{#theme-toggle}}
+		<button type="button" class="whale-theme-toggle" data-whale-theme-toggle aria-label="{{label}}" title="{{label}}" aria-pressed="{{aria-pressed}}">
+			<span class="whale-theme-toggle-icon whale-theme-toggle-when-light">{{{ html-moon-icon }}}</span>
+			<span class="whale-theme-toggle-icon whale-theme-toggle-when-dark">{{{ html-sun-icon }}}</span>
+		</button>
+	{{/theme-toggle}}
 	{{>LoginMenu}}
 	{{#notifications}}
 		{{{ html }}}

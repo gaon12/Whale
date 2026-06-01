@@ -168,6 +168,10 @@ class SkinWhale extends SkinMustache {
 			$modules[] = 'skins.whale.shortUrl';
 		}
 
+		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) !== false && $skin->getUser()->isAnon() ) {
+			$modules[] = 'skins.whale.themeToggle';
+		}
+
 		$out->addModules( $modules );
 
 		// @codingStandardsIgnoreStart

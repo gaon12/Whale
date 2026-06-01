@@ -90,6 +90,8 @@
 	"whale-pref-user-contribution-graph": "Show contribution graph on user pages",
 	"whale-pref-short-url": "Show short URL tool in the footer",
 	"whale-pref-mobile-user-tools-right": "Keep login and profile buttons on the right on mobile",
+	"whale-theme-toggle-dark": "Switch to dark mode",
+	"whale-theme-toggle-light": "Switch to light mode",
 	"whale-heading-link-copy": "Copy link to this heading",
 	"whale-heading-link-copied": "Heading link copied",
 	"whale-contrib-graph-title": "$1's contributions",

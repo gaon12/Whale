@@ -90,6 +90,8 @@
 	"whale-pref-user-contribution-graph": "在用户页面显示贡献图",
 	"whale-pref-short-url": "在页脚显示短链接工具",
 	"whale-pref-mobile-user-tools-right": "移动端将登录/个人按钮固定在右侧",
+	"whale-theme-toggle-dark": "???????",
+	"whale-theme-toggle-light": "???????",
 	"whale-heading-link-copy": "复制此标题链接",
 	"whale-heading-link-copied": "标题链接已复制",
 	"whale-contrib-graph-title": "$1的贡献",

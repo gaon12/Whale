@@ -90,6 +90,8 @@
 	"whale-pref-user-contribution-graph": "在使用者頁面顯示貢獻圖",
 	"whale-pref-short-url": "在頁尾顯示短連結工具",
 	"whale-pref-mobile-user-tools-right": "行動版將登入/個人按鈕固定在右側",
+	"whale-theme-toggle-dark": "???????",
+	"whale-theme-toggle-light": "???????",
 	"whale-heading-link-copy": "複製此標題連結",
 	"whale-heading-link-copied": "標題連結已複製",
 	"whale-contrib-graph-title": "$1的貢獻",

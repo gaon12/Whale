@@ -90,6 +90,8 @@
 	"whale-pref-user-contribution-graph": "利用者ページに投稿グラフを表示",
 	"whale-pref-short-url": "フッターに短縮URLツールを表示",
 	"whale-pref-mobile-user-tools-right": "モバイルでログイン/プロフィール按钮を右側に固定",
+	"whale-theme-toggle-dark": "???????????",
+	"whale-theme-toggle-light": "???????????",
 	"whale-heading-link-copy": "この見出しへのリンクをコピー",
 	"whale-heading-link-copied": "見出しリンクをコピーしました",
 	"whale-contrib-graph-title": "$1の投稿",
