@@ -297,6 +297,15 @@ class WhaleHooks {
 			];
 		}
 
+		if ( ( $GLOBALS['wgWhaleEnableImageLazyLoad'] ?? true ) !== false ) {
+			$preferences['whale-lazy-images'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-lazy-images',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
+
 		if ( ( $wgWhaleMobileUserToolsPosition ?? 'right' ) === 'right' ) {
 			$preferences['whale-mobile-user-tools-right'] = [
 				'type' => 'toggle',
