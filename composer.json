@@ -12,7 +12,11 @@
 			"phpstan analyse --level=max"
 		],
 		"test": [
-			"phpcs -p -s"
+			"phpcs -p -s",
+			"@test:folding"
+		],
+		"test:folding": [
+			"php scripts/check-folding.php"
 		],
 		"fix": "phpcbf"
 	},
