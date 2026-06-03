@@ -1,6 +1,6 @@
 {
 	"name": "whale-mw-skin",
-	"version": "1.13.8",
+	"version": "1.13.9",
 	"description": "Whale MediaWiki skin tooling.",
 	"scripts": {
 		"format": "biome format --write .",
