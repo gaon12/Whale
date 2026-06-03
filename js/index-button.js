@@ -9,13 +9,49 @@
 		),
 	];
 
-	const getLinkText = (link) => {
-		const number = link.querySelector('.tocnumber')?.textContent?.trim() || '';
-		const text = link.querySelector('.toctext')?.textContent?.trim() || '';
-		return [number, text || link.textContent?.trim()]
-			.filter(Boolean)
-			.join('. ')
-			.replace(/^\s*([0-9.]+)\.\s*\1\s*/, '$1. ');
+	const getTocLevel = (link) => {
+		const item = link.closest('li');
+		const levelClass = [...(item?.classList || [])].find((className) =>
+			/^toclevel-\d+$/.test(className),
+		);
+		const level = Number(levelClass?.replace('toclevel-', ''));
+
+		return Number.isInteger(level) && level > 0 ? Math.min(level, 6) : 1;
+	};
+
+	const getTargetText = (target) => {
+		if (!target) {
+			return '';
+		}
+
+		const label = target.querySelector?.('.mw-headline') || target;
+		const clone = label.cloneNode(true);
+		clone
+			.querySelectorAll?.('.whale-heading-anchor, .mw-editsection')
+			.forEach((node) => {
+				node.remove();
+			});
+
+		return clone.textContent?.trim().replace(/\s+/g, ' ') || '';
+	};
+
+	const getLinkText = (link, target) => {
+		const targetText = getTargetText(target);
+		if (targetText) {
+			return targetText;
+		}
+
+		const text = link.querySelector('.toctext')?.textContent?.trim();
+		if (text) {
+			return text.replace(/\s+/g, ' ');
+		}
+
+		const clone = link.cloneNode(true);
+		clone.querySelectorAll?.('.tocnumber').forEach((node) => {
+			node.remove();
+		});
+
+		return clone.textContent?.trim().replace(/\s+/g, ' ') || '';
 	};
 
 	const getTarget = (link) => whale.getAnchorTarget(link.getAttribute('href'));
@@ -62,11 +98,16 @@
 		}
 
 		const links = getTocLinks()
-			.map((link) => ({
-				link,
-				target: getTarget(link),
-				text: getLinkText(link),
-			}))
+			.map((link) => {
+				const target = getTarget(link);
+
+				return {
+					link,
+					target,
+					level: getTocLevel(link),
+					text: getLinkText(link, target),
+				};
+			})
 			.filter((item) => item.target && item.text)
 			.slice(0, MAX_ITEMS);
 
@@ -80,7 +121,7 @@
 		const toc = document.createElement('nav');
 		const list = document.createElement('ol');
 		toc.className = 'whale-floating-toc';
-		toc.setAttribute('aria-label', '문단 목차');
+		toc.setAttribute('aria-label', mw.message('whale-floating-toc').text());
 		toc.addEventListener('pointerover', (event) => {
 			if (event.target.closest('a')) {
 				document.body.classList.add('whale-floating-toc-hover');
@@ -100,9 +141,10 @@
 			}
 		});
 
-		links.forEach(({ link, target, text }) => {
+		links.forEach(({ link, target, text, level }) => {
 			const item = document.createElement('li');
 			const anchor = document.createElement('a');
+			item.className = `whale-floating-toc-level-${level}`;
 			anchor.href = link.getAttribute('href');
 			anchor.textContent = text;
 			anchor.addEventListener('click', (event) => {
