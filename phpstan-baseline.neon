@@ -1,0 +1,739 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Binary operation "\." between mixed and '','' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Binary operation "\." between mixed and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and MediaWiki\\Title\\Title\|null results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Output\\OutputPage\:\:addModuleStyles\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Title\\Title\:\:getPrefixedText\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Call to an undefined method WebRequest\:\:getCheck\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: SkinWhale.php
+
+		-
+			message: '#^Call to an undefined method WebRequest\:\:getHeader\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Call to an undefined method WebRequest\:\:getVal\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: SkinWhale.php
+
+		-
+			message: '#^Call to static method newMainPage\(\) on an unknown class Title\.$#'
+			identifier: class.notFound
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Cannot access offset ''client'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: SkinWhale.php
+
+		-
+			message: '#^Cannot access offset ''right'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Cannot call method getLocalURL\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Method MediaWiki\\Title\\Title\:\:getLocalURL\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 2
+			path: SkinWhale.php
+
+		-
+			message: '#^Method SkinWhale\:\:setupCss\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strip_tags expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Parameter \#2 \$subject of function preg_match expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Parameter \#2 \$value of method OutputPage\:\:addMeta\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: SkinWhale.php
+
+		-
+			message: '#^Part \$WhaleUserWidthSettings \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: SkinWhale.php
+
+		-
+			message: '#^Part \$wgTwitterAccount \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: SkinWhale.php
+
+		-
+			message: '#^Property SkinWhale\:\:\$skinname has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Property SkinWhale\:\:\$stylename has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Property SkinWhale\:\:\$template has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: SkinWhale.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$page_namespace\.$#'
+			identifier: property.notFound
+			count: 1
+			path: SpecialWhaleShortUrl.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$page_title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: SpecialWhaleShortUrl.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 2
+			path: SpecialWhaleShortUrl.php
+
+		-
+			message: '#^Method SpecialWhaleShortUrl\:\:execute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: SpecialWhaleShortUrl.php
+
+		-
+			message: '#^Parameter \#2 \$title of static method MediaWiki\\Title\\Title\:\:makeTitleSafe\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: SpecialWhaleShortUrl.php
+
+		-
+			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, array\<string, int\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: SpecialWhaleShortUrl.php
+
+		-
+			message: '#^Cannot access offset ''Whale'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Whale.php
+
+		-
+			message: '#^Argument of an invalid type DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 3
+			path: WhaleHooks.php
+
+		-
+			message: '#^Binary operation "\." between '' whale\-font\-scale\-'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Binary operation "\.\=" between mixed and '' Whale width\-size'' results in an error\.$#'
+			identifier: assignOp.invalid
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\PermissionManager\:\:userHasRight\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: WhaleHooks.php
+
+		-
+			message: '#^Call to function method_exists\(\) with OutputPage and ''getSkin'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot access offset ''belowarticle'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot access offset ''bottom'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot access offset ''client'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot access offset ''header'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot access offset ''right'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot access offset ''whale\-layout\-width'' on Preferences\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot call method createTextNode\(\) on DOMDocument\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Cannot call method replaceChild\(\) on DOMNode\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Instanceof between DOMElement and DOMElement will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 2
+			path: WhaleHooks.php
+
+		-
+			message: '#^Method WhaleHooks\:\:onGetPreferences\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Method WhaleHooks\:\:onOutputPageBodyAttributes\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Method WhaleHooks\:\:onOutputPageBodyAttributes\(\) has parameter \$bodyAttrs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: WhaleHooks.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$day\.$#'
+			identifier: property.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$edits\.$#'
+			identifier: property.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$page_latest\.$#'
+			identifier: property.notFound
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Binary operation "\+" between mixed and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Binary operation "\." between ''\<span class\="whale…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Binary operation "\." between ''Whale\-Navbar/'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Binary operation "\." between ''footer\-'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Binary operation "\." between mixed and ''/Whale/img…'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 4
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\MediaWikiServices\:\:getWatchlistManager\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\PermissionManager\:\:getUserPermissions\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\PermissionManager\:\:quickUserCan\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Title\\Title\:\:getSubjectPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Title\\Title\:\:getTalkPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Title\\Title\:\:getText\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Title\\Title\:\:inNamespaces\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\Title\\Title\:\:isTalkPage\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method MediaWiki\\WikiPage\:\:getContent\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method Message\:\:escaped\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method SkinWhale\:\:getLanguage\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method SkinWhale\:\:getRelevantTitle\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined method WebRequest\:\:getVal\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined static method MediaWiki\\Title\\Title\:\:newFromText\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to an undefined static method Sanitizer\:\:escapeClass\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to function method_exists\(\) with MediaWiki\\Title\\Title and ''getLatestRevID'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Call to function method_exists\(\) with MediaWiki\\WikiPage and ''getLatest'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access an offset on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''array\-items'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''children'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''client'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''counter\-num'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''data'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''href'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''html'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot call method formatNum\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot call method getCode\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot call method isWatchedIgnoringRights\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 8
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Class Html not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Class Linker not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Constant NS_MEDIAWIKI not found\.$#'
+			identifier: constant.notFound
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Method MediaWiki\\LinkRenderer\:\:makeKnownLink\(\) invoked with 4 parameters, 2\-3 required\.$#'
+			identifier: arguments.count
+			count: 8
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Method WhaleRenderer\:\:getContentOfTitle\(\) should return MediaWiki\\Content\\Content\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Method WhaleRenderer\:\:getContributionCounts\(\) should return array\<string, int\> but returns array\<int\>\.$#'
+			identifier: return.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, ''intval'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, array\{''Sanitizer'', ''escapeClass''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(string\)\: mixed\)\|null, array\{''Sanitizer'', ''escapeClass''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$icon of method WhaleRenderer\:\:renderIcon\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$item of method WhaleRenderer\:\:buildPortalChildItem\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$item of method WhaleRenderer\:\:canShowPortalItem\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$tables of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$title of method WhaleRenderer\:\:getCachedContentText\(\) expects MediaWiki\\Title\\Title, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$userName of method WhaleRenderer\:\:getContributionCounts\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$classes of method WhaleRenderer\:\:buildPortalLink\(\) expects array\<int, string\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$subPage of static method SpecialPage\:\:getTitleFor\(\) expects string\|null, MediaWiki\\Title\\Title given\.$#'
+			identifier: argument.type
+			count: 2
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$subPage of static method SpecialPage\:\:getTitleFor\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$text of method MediaWiki\\LinkRenderer\:\:makeKnownLink\(\) expects string, HtmlArmor given\.$#'
+			identifier: argument.type
+			count: 4
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$text of method MediaWiki\\LinkRenderer\:\:makeKnownLink\(\) expects string, Message given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$text of method MediaWiki\\LinkRenderer\:\:makeKnownLink\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \$userGroups of method WhaleRenderer\:\:canShowPortalItem\(\) expects array\<int, string\>, array\<string\> given\.$#'
+			identifier: argument.type
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:select\(\) expects array\<string\>, array\<int\|string, array\<int, int\>\|int\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, array\<string, int\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#3 \$contents of static method MediaWiki\\Html\\Html\:\:element\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Parameter \#3 \$userRights of method WhaleRenderer\:\:canShowPortalItem\(\) expects array\<int, string\>, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: WhaleRenderer.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: WhaleRenderer.php

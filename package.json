@@ -3,9 +3,10 @@
 	"version": "1.13.8",
 	"description": "Whale MediaWiki skin tooling.",
 	"scripts": {
+		"format": "biome format --write .",
+		"format:check": "biome format .",
 		"lint": "biome lint .",
-		"test": "node scripts/check-js.mjs",
-		"format": "biome format --write ."
+		"test": "node scripts/check-js.mjs"
 	},
 	"repository": {
 		"type": "git",

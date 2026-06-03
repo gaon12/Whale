@@ -8,6 +8,9 @@
 		"phpstan/phpstan": "^2.2"
 	},
 	"scripts": {
+		"analyse": [
+			"phpstan analyse --level=max"
+		],
 		"test": [
 			"phpcs -p -s"
 		],
