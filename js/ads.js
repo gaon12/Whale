@@ -5,7 +5,9 @@
 		const ads = document.querySelectorAll('.adsbygoogle');
 
 		if (mobileAds && rightAds && window.innerWidth < 1024) {
-			mobileAds.innerHTML = rightAds.innerHTML;
+			while (rightAds.firstChild) {
+				mobileAds.append(rightAds.firstChild);
+			}
 			rightAds.remove();
 		}
 

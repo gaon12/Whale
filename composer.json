@@ -1,6 +1,6 @@
 {
 	"name": "librewiki/whale-mw-skin",
-	"version": "1.13.8",
+	"version": "1.13.9",
 	"description": "Whale MediaWiki Skin",
 	"license": "GPL-3.0-or-later",
 	"require-dev": {
