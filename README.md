@@ -132,7 +132,35 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | 광고 슬롯 | 헤더, 오른쪽, 문서 아래, 하단 광고 위치를 설정할 수 있습니다. |
 | 다국어 메시지 | 한국어, 영어, 일본어, 중국어 간체, 중국어 번체 메시지를 관리합니다. |
 
-### 7. 단축 URL 서버 설정
+### 7. 접기 블록 꾸미기
+
+접기 블록은 제목 헤더, 별도 토글 바, 본문 영역으로 나뉘어 출력됩니다. 기본 구조는 아래처럼 렌더링됩니다.
+
+```html
+<div class="whale-folding">
+	<div class="whale-folding-header">
+		<span class="whale-folding-title">제목</span>
+	</div>
+	<button class="whale-folding-toggle">펼치기 · 접기</button>
+	<div class="whale-folding-body">본문</div>
+</div>
+```
+
+사이트 CSS나 문서 템플릿에서 아래 CSS 변수를 바꾸면 색상과 테두리를 조정할 수 있습니다.
+
+```css
+.whale-folding {
+	--whale-folding-accent: #00a3d9;
+	--whale-folding-accent-contrast: #fff;
+	--whale-folding-border: var(--whale-folding-accent);
+	--whale-folding-body-bg: #fff;
+	--whale-folding-row-bg: #f1f3f5;
+}
+```
+
+본문 안에서 `whale-folding-header`, `whale-folding-band`, `whale-folding-row` 클래스를 쓰면 행정구역 표처럼 구역 제목과 행 배경을 맞춰 구성할 수 있습니다.
+
+### 8. 단축 URL 서버 설정
 
 단축 URL 기능은 문서 하단 도구 메뉴와 푸터 도구에서 현재 문서 최신판을 가리키는 짧은 링크를 보여줍니다. 복사 버튼이 있는 모달을 열 수 있으며, 실제 `/s/{code}` 요청은 `Special:WhaleShortUrl/{code}`로 넘기는 웹 서버 rewrite가 필요합니다. 스킨에는 바로 복사해서 쓸 수 있는 예시 파일이 들어 있습니다.
 
@@ -158,7 +186,7 @@ location ~ ^/s/([A-Za-z0-9]+)$ {
 
 경로 접두어를 바꾸고 싶다면 `LocalSettings.php`에서 `$wgWhaleShortUrlPathPrefix`도 같은 값으로 맞춰 주세요.
 
-### 8. 내비게이션 메뉴 만들기
+### 9. 내비게이션 메뉴 만들기
 
 Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다. 이 문서는 위키 안에서 직접 만들거나 수정합니다.
 
@@ -193,7 +221,7 @@ Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다.
 
 `icon`과 `display` 중 하나는 반드시 있어야 합니다. 둘 다 없으면 사용자가 무엇을 눌러야 하는지 알 수 없습니다.
 
-### 9. 최근 변경 사이드바 설정
+### 10. 최근 변경 사이드바 설정
 
 오른쪽 사이드바의 최근 변경 기능은 기본적으로 켜져 있습니다.
 
@@ -230,7 +258,7 @@ $wgWhaleLiveRCTalkNamespaces = [
 ];
 ```
 
-### 10. 광고 설정
+### 11. 광고 설정
 
 Google AdSense 광고를 쓰려면 `$wgWhaleAdSetting`을 설정합니다.
 
@@ -275,7 +303,31 @@ $wgWhaleAdGroup = 'differ';
 | `blockads-belowarticle` | 문서 아래 광고를 숨길 수 있음 |
 | `blockads-bottom` | 하단 광고를 숨길 수 있음 |
 
-### 11. 설정 전체 표
+### 12. GitHub Actions와 배포
+
+저장소에는 품질 게이트 workflow와 선택형 beta 배포 workflow가 들어 있습니다.
+
+품질 게이트는 push와 pull request에서 아래 명령을 실행합니다.
+
+```bash
+npm run format:check
+npm run lint
+npm test
+composer test
+composer analyse
+```
+
+beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때만 동작합니다. 다음 secrets를 GitHub 저장소에 등록해야 합니다.
+
+| Secret | 의미 |
+| --- | --- |
+| `WHALE_DEPLOY_KEY` | rsync/SSH에 사용할 private key |
+| `WHALE_DEPLOY_HOST` | 배포 대상 host |
+| `WHALE_DEPLOY_PORT` | SSH port. 없으면 `22` |
+| `WHALE_DEPLOY_USER` | SSH 사용자 |
+| `WHALE_DEPLOY_PATH` | 서버의 `skins/Whale` 경로 |
+
+### 13. 설정 전체 표
 
 | 설정 | 설명 | 예시 | 기본값 |
 | --- | --- | --- | --- |
@@ -316,7 +368,7 @@ $wgWhaleAdGroup = 'differ';
 | `$wgWhaleEnableImageLazyLoad` | 문서 이미지 lazy load와 스켈레톤 표시 사용 | `true` | `true` |
 | `$wgWhaleMobileUserToolsPosition` | 모바일 로그인/프로필 버튼 위치 | `'right'` | `'right'` |
 
-### 12. 관리하는 언어
+### 14. 관리하는 언어
 
 현재 이 저장소에서 직접 관리하는 다국어 파일은 아래 다섯 개입니다.
 
@@ -443,7 +495,35 @@ Advanced site-wide color override variables still exist for compatibility: `$wgW
 
 Short URLs appear in the footer/tools UI as a copyable modal for the latest revision of the current page. The public `/s/{code}` URL requires a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. See `docs/rewrite/apache-whale-short-url.htaccess` and `docs/rewrite/nginx-whale-short-url.conf`.
 
-### 7. Short URL Server Rewrite
+### 7. Styling Folding Blocks
+
+Folding blocks render as a title header, a separate toggle bar, and a body area.
+
+```html
+<div class="whale-folding">
+	<div class="whale-folding-header">
+		<span class="whale-folding-title">Title</span>
+	</div>
+	<button class="whale-folding-toggle">Expand · collapse</button>
+	<div class="whale-folding-body">Body</div>
+</div>
+```
+
+Site CSS or wiki templates can customize the frame with CSS variables:
+
+```css
+.whale-folding {
+	--whale-folding-accent: #00a3d9;
+	--whale-folding-accent-contrast: #fff;
+	--whale-folding-border: var(--whale-folding-accent);
+	--whale-folding-body-bg: #fff;
+	--whale-folding-row-bg: #f1f3f5;
+}
+```
+
+Inside the body, `whale-folding-header`, `whale-folding-band`, and `whale-folding-row` can be used to build table-like grouped content.
+
+### 8. Short URL Server Rewrite
 
 Short URLs require a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. The skin renders a modal with the short code, full URL, and copy button when the current page has a latest revision id. Ready-to-copy rewrite examples are included in the repository.
 
@@ -469,7 +549,7 @@ location ~ ^/s/([A-Za-z0-9]+)$ {
 
 If you change the path prefix, set `$wgWhaleShortUrlPathPrefix` in `LocalSettings.php` to the same value.
 
-### 8. Navigation Menu
+### 9. Navigation Menu
 
 Create or edit `MediaWiki:Whale-Navbar` on your wiki.
 
@@ -502,7 +582,7 @@ Supported fields:
 
 At least one of `icon` or `display` must be present.
 
-### 9. Live Recent Sidebar
+### 10. Live Recent Sidebar
 
 Live recent changes are enabled by default. To disable them:
 
@@ -537,7 +617,7 @@ $wgWhaleLiveRCTalkNamespaces = [
 ];
 ```
 
-### 10. Ads
+### 11. Ads
 
 Example Google AdSense configuration:
 
@@ -580,7 +660,31 @@ Available rights:
 | `blockads-belowarticle` | Can hide below-article ads |
 | `blockads-bottom` | Can hide bottom ads |
 
-### 11. Configuration Reference
+### 12. GitHub Actions and Deployment
+
+The repository includes a quality-gate workflow and an optional beta deploy workflow.
+
+The quality gate runs these commands on push and pull request:
+
+```bash
+npm run format:check
+npm run lint
+npm test
+composer test
+composer analyse
+```
+
+The beta deploy workflow only runs when the repository variable `WHALE_ENABLE_DEPLOY` is set to `true`. Configure these GitHub secrets before enabling it:
+
+| Secret | Meaning |
+| --- | --- |
+| `WHALE_DEPLOY_KEY` | Private key used by rsync/SSH |
+| `WHALE_DEPLOY_HOST` | Deployment host |
+| `WHALE_DEPLOY_PORT` | SSH port. Defaults to `22` when unset |
+| `WHALE_DEPLOY_USER` | SSH user |
+| `WHALE_DEPLOY_PATH` | Server path to `skins/Whale` |
+
+### 13. Configuration Reference
 
 | Setting | Description | Example | Default |
 | --- | --- | --- | --- |
@@ -621,7 +725,7 @@ Available rights:
 | `$wgWhaleEnableImageLazyLoad` | Enable lazy loading and skeleton placeholders for article images | `true` | `true` |
 | `$wgWhaleMobileUserToolsPosition` | Mobile login/profile position | `'right'` | `'right'` |
 
-### 12. Maintained Languages
+### 14. Maintained Languages
 
 This repository intentionally maintains these message files:
 
