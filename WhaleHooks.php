@@ -407,6 +407,7 @@ class WhaleHooks {
 	 * @param Parser $parser Parser
 	 * @param string &$text Wikitext
 	 * @param StripState $stripState Strip state
+	 * @return bool
 	 */
 	public static function onParserBeforePreprocess( $parser, &$text, $stripState ) {
 		global $wgWhaleEnableFoldingBlocks;
@@ -425,6 +426,7 @@ class WhaleHooks {
 	 *
 	 * @param OutputPage $out OutputPage
 	 * @param string &$text Article HTML
+	 * @return bool
 	 */
 	public static function onOutputPageBeforeHTML( $out, &$text ) {
 		global $wgWhaleEnableSectionCollapse, $wgWhaleEnableFoldingBlocks;
@@ -511,10 +513,13 @@ class WhaleHooks {
 				}
 
 				$output[] = '<div class="whale-folding is-collapsed">';
-				$output[] = '<div class="whale-folding-toggle" role="button" tabindex="0" aria-expanded="false">' .
+				$output[] = '<div class="whale-folding-header">' .
 					'<span class="whale-folding-title">' .
 					htmlspecialchars( $title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) .
 					'</span></div>';
+				$output[] = '<button type="button" class="whale-folding-toggle" aria-expanded="false">' .
+					htmlspecialchars( wfMessage( 'whale-folding-toggle-label' )->text(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) .
+					'</button>';
 				$output[] = '<div class="whale-folding-body" hidden="">';
 				$stackDepth++;
 				continue;

@@ -1,10 +1,10 @@
 <?php // @codingStandardsIgnoreLine
 
+use MediaWiki\Content\Content;
+use MediaWiki\Content\TextContent;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Content\Content;
-use MediaWiki\Content\TextContent;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 
@@ -122,7 +122,8 @@ class WhaleRenderer {
 		if ( class_exists( 'EchoEvent' ) ) {
 			$notiCount = 0;
 			if (
-				isset( $personalTools['notifications-alert'], $personalTools['notifications-notice'] )
+				isset( $personalTools['notifications-alert'] ) &&
+				isset( $personalTools['notifications-notice'] )
 			) {
 				$notiCount =
 					( $personalTools['notifications-alert']['links'][0]['data']['counter-num'] ?? 0 ) +
@@ -1044,6 +1045,7 @@ class WhaleRenderer {
 
 	/**
 	 * @param array<string,int> $counts
+	 * @param int $days
 	 * @param array<int,int> $levels
 	 * @return array{weeks:array<int,array<string,mixed>>,legend:array<int,array<string,string>>}
 	 */
@@ -1095,6 +1097,7 @@ class WhaleRenderer {
 	}
 
 	/**
+	 * @param int $count
 	 * @param array<int,int> $levels
 	 */
 	private function getContributionLevel( int $count, array $levels ): int {
@@ -1109,7 +1112,10 @@ class WhaleRenderer {
 	}
 
 	/**
+	 * @param string $userName
+	 * @param int $days
 	 * @param array<int,int>|null $namespaces
+	 * @param int $ttl
 	 * @return array<string,int>
 	 */
 	private function getContributionCounts( string $userName, int $days, ?array $namespaces, int $ttl ): array {
@@ -1127,7 +1133,7 @@ class WhaleRenderer {
 			return $cache->getWithSetCallback(
 				$cacheKey,
 				$ttl,
-				function () use ( $userName, $days, $namespaces ) {
+				static function () use ( $userName, $days, $namespaces ) {
 					$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
 					$db = $lb->getConnection( DB_REPLICA );
 					$start = gmdate( 'Ymd000000', time() - ( $days - 1 ) * 86400 );
@@ -1152,7 +1158,7 @@ class WhaleRenderer {
 							'edits' => 'COUNT(*)',
 						],
 						$conds,
-						__METHOD__,
+						WhaleRenderer::class . '::getContributionCounts',
 						[
 							'GROUP BY' => 'SUBSTR(rev_timestamp,1,8)',
 							'ORDER BY' => 'day ASC',

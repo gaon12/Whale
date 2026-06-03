@@ -65,7 +65,10 @@
 		const progress = document.createElement('div');
 		progress.className = 'whale-reading-progress';
 		progress.setAttribute('role', 'progressbar');
-		progress.setAttribute('aria-label', 'Reading progress');
+		progress.setAttribute(
+			'aria-label',
+			mw.message('whale-reading-progress').text(),
+		);
 		progress.setAttribute('aria-valuemin', '0');
 		progress.setAttribute('aria-valuemax', '100');
 		progress.setAttribute('aria-valuenow', '0');
@@ -129,8 +132,17 @@
 	};
 
 	const MODAL_TRANSITION_MS = 300;
+	const FOCUSABLE_SELECTOR = [
+		'a[href]',
+		'button:not([disabled])',
+		'input:not([disabled]):not([type="hidden"])',
+		'select:not([disabled])',
+		'textarea:not([disabled])',
+		'[tabindex]:not([tabindex="-1"])',
+	].join(',');
 	let activeModal = null;
 	let activeBackdrop = null;
+	let activeModalTrigger = null;
 	let modalTimer = null;
 
 	const removeBackdrop = () => {
@@ -159,10 +171,12 @@
 			document.body.classList.remove('whale-modal-open');
 			removeBackdrop();
 			activeModal = null;
+			activeModalTrigger?.focus?.();
+			activeModalTrigger = null;
 		}, MODAL_TRANSITION_MS);
 	};
 
-	const openModal = (modal) => {
+	const openModal = (modal, trigger = null) => {
 		if (!modal) {
 			return;
 		}
@@ -186,6 +200,7 @@
 		modal.removeAttribute('aria-hidden');
 		document.body.classList.add('whale-modal-open');
 		activeModal = modal;
+		activeModalTrigger = trigger;
 
 		activeBackdrop = document.createElement('div');
 		activeBackdrop.className = 'whale-modal-backdrop';
@@ -200,8 +215,33 @@
 			modal.classList.add('is-open');
 			activeBackdrop?.classList.add('is-open');
 			modal.dataset.whaleModalState = 'open';
-			modal.querySelector('input:not([type="hidden"]), button, a')?.focus();
+			modal.querySelector(FOCUSABLE_SELECTOR)?.focus();
 		});
+	};
+
+	const trapModalFocus = (event) => {
+		if (!activeModal || event.key !== 'Tab') {
+			return;
+		}
+
+		const focusable = [
+			...activeModal.querySelectorAll(FOCUSABLE_SELECTOR),
+		].filter((element) => element.offsetParent !== null);
+		if (focusable.length === 0) {
+			event.preventDefault();
+			activeModal.focus();
+			return;
+		}
+
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+		if (event.shiftKey && document.activeElement === first) {
+			event.preventDefault();
+			last.focus();
+		} else if (!event.shiftKey && document.activeElement === last) {
+			event.preventDefault();
+			first.focus();
+		}
 	};
 
 	whale.ready(() => {
@@ -267,7 +307,7 @@
 			if (modalTrigger) {
 				event.preventDefault();
 				closeAllDropdowns();
-				openModal(getModal(modalTrigger));
+				openModal(getModal(modalTrigger), modalTrigger);
 				return;
 			}
 
@@ -293,7 +333,8 @@
 				const notice = noticeDismiss.closest('.whale-notice');
 				mw.cookie.set('disable-notice', true, {
 					expires: 3600 * 24,
-					secure: false,
+					secure: location.protocol === 'https:',
+					sameSite: 'Lax',
 				});
 				notice?.remove();
 				return;
@@ -321,6 +362,8 @@
 		});
 
 		document.addEventListener('keydown', (event) => {
+			trapModalFocus(event);
+
 			if (event.key === 'Escape') {
 				closeAllDropdowns();
 				closeModal(activeModal);
@@ -336,7 +379,7 @@
 		});
 
 		document.addEventListener('whale:openModal', (event) => {
-			openModal(event.detail?.modal);
+			openModal(event.detail?.modal, event.detail?.trigger || null);
 		});
 	});
 })();

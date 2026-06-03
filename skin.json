@@ -126,6 +126,8 @@
 				"js/layout.js"
 			],
 			"messages": [
+				"whale-floating-toc",
+				"whale-reading-progress",
 				"whale-external-link-show-decoded",
 				"whale-external-link-show-original"
 			],
@@ -156,7 +158,7 @@
 		},
 		"skins.whale.liverc": {
 			"scripts": "js/live-recent.js",
-			"messages": ["whale-feed-new"],
+			"messages": ["whale-feed-new", "whale-live-recent-no-data"],
 			"dependencies": ["mediawiki.util", "skins.whale.common"]
 		},
 		"skins.whale.loginjs": {

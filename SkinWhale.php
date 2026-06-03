@@ -330,6 +330,10 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-scroll-toc-icon'] = $renderer->getIcon( 'list' );
 		$data['html-whale-tools-icon'] = $renderer->getIcon( 'wrench' );
 		$data['whale-tools-label'] = $this->msg( 'whale-tools' )->text();
+		$data['whale-close-label'] = $this->msg( 'close' )->text();
+		$data['whale-scroll-up-label'] = $this->msg( 'whale-scroll-up' )->text();
+		$data['whale-scroll-down-label'] = $this->msg( 'whale-scroll-down' )->text();
+		$data['whale-scroll-toc-label'] = $this->msg( 'whale-scroll-toc' )->text();
 		$data['html-whale-adsense-script'] = $hasAds
 			? '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'
 			: '';
@@ -458,7 +462,8 @@ class SkinWhale extends SkinMustache {
 		global $wgWhaleAdSetting, $wgWhaleAdGroup;
 
 		if (
-			!isset( $wgWhaleAdSetting['client'], $wgWhaleAdSetting[$position] ) ||
+			!isset( $wgWhaleAdSetting['client'] ) ||
+			!isset( $wgWhaleAdSetting[$position] ) ||
 			!$wgWhaleAdSetting['client'] ||
 			!$wgWhaleAdSetting[$position]
 		) {
@@ -521,6 +526,7 @@ class SkinWhale extends SkinMustache {
 	}
 
 	/**
+	 * @param string $key Item key
 	 * @param array<string,mixed> $item
 	 */
 	public function makeWhaleListItem( string $key, array $item ): string {
