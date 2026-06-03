@@ -9,51 +9,6 @@
 		),
 	];
 
-	const getTocLevel = (link) => {
-		const item = link.closest('li');
-		const levelClass = [...(item?.classList || [])].find((className) =>
-			/^toclevel-\d+$/.test(className),
-		);
-		const level = Number(levelClass?.replace('toclevel-', ''));
-
-		return Number.isInteger(level) && level > 0 ? Math.min(level, 6) : 1;
-	};
-
-	const getTargetText = (target) => {
-		if (!target) {
-			return '';
-		}
-
-		const label = target.querySelector?.('.mw-headline') || target;
-		const clone = label.cloneNode(true);
-		clone
-			.querySelectorAll?.('.whale-heading-anchor, .mw-editsection')
-			.forEach((node) => {
-				node.remove();
-			});
-
-		return clone.textContent?.trim().replace(/\s+/g, ' ') || '';
-	};
-
-	const getLinkText = (link, target) => {
-		const targetText = getTargetText(target);
-		if (targetText) {
-			return targetText;
-		}
-
-		const text = link.querySelector('.toctext')?.textContent?.trim();
-		if (text) {
-			return text.replace(/\s+/g, ' ');
-		}
-
-		const clone = link.cloneNode(true);
-		clone.querySelectorAll?.('.tocnumber').forEach((node) => {
-			node.remove();
-		});
-
-		return clone.textContent?.trim().replace(/\s+/g, ' ') || '';
-	};
-
 	const getTarget = (link) => whale.getAnchorTarget(link.getAttribute('href'));
 
 	const getMaxScrollY = () =>
@@ -104,8 +59,8 @@
 				return {
 					link,
 					target,
-					level: getTocLevel(link),
-					text: getLinkText(link, target),
+					level: whale.tocUtils.getTocLevel(link),
+					text: whale.tocUtils.getLinkText(link, target),
 				};
 			})
 			.filter((item) => item.target && item.text)
