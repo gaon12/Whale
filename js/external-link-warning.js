@@ -78,7 +78,7 @@
 		setDisplayedUrl();
 		document.dispatchEvent(
 			new CustomEvent('whale:openModal', {
-				detail: { modal },
+				detail: { modal, trigger: link },
 			}),
 		);
 		return true;

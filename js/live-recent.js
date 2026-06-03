@@ -1,7 +1,6 @@
 (() => {
 	const DEFAULT_REFRESH_INTERVAL = 60 * 1000;
 	const RELATIVE_TIME_INTERVAL = 30 * 1000;
-	const NO_DATA_TEXT = 'No data';
 	const feedCache = new Map();
 	const relativeTimeFormatter = new Intl.RelativeTimeFormat(
 		mw.config.get('wgUserLanguage') || document.documentElement.lang || 'ko',
@@ -62,7 +61,7 @@
 		bubble.className = 'live-recent-no-data-bubble';
 		dots.className = 'live-recent-no-data-dots';
 		text.className = 'live-recent-no-data-text';
-		text.textContent = NO_DATA_TEXT;
+		text.textContent = mw.message('whale-live-recent-no-data').text();
 
 		bubble.append(dots);
 		visual.append(tray, paper, bubble);

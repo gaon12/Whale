@@ -43,7 +43,7 @@
 					loginreturnurl: location.href,
 					username: getInputValue('wpName1'),
 					password: getInputValue('wpPassword1'),
-					rememberMe: document.getElementById('lgremember')?.checked ? 1 : 0,
+					rememberMe: document.getElementById('wpRemember')?.checked ? 1 : 0,
 					logintoken: tokenResult.query.tokens.logintoken,
 				});
 

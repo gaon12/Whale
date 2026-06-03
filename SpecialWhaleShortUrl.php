@@ -15,13 +15,15 @@ class SpecialWhaleShortUrl extends SpecialPage {
 		parent::__construct( 'WhaleShortUrl' );
 	}
 
+	/**
+	 * @param string|null $subPage Encoded revision identifier
+	 */
 	public function execute( $subPage ) {
-		global $wgWhaleEnableShortUrls, $wgWhaleShortUrlRedirectStatus;
-
 		$this->setHeaders();
 		$out = $this->getOutput();
+		$config = $this->getConfig();
 
-		if ( ( $wgWhaleEnableShortUrls ?? true ) === false ) {
+		if ( $config->get( 'WhaleEnableShortUrls' ) === false ) {
 			$out->showErrorPage( 'error', 'whale-short-url-disabled' );
 			return;
 		}
@@ -42,7 +44,7 @@ class SpecialWhaleShortUrl extends SpecialPage {
 		$this->getRequest()->response()->header(
 			'Location: ' . $title->getFullURL(),
 			true,
-			max( 300, min( 308, (int)( $wgWhaleShortUrlRedirectStatus ?? 302 ) ) )
+			max( 300, min( 308, (int)$config->get( 'WhaleShortUrlRedirectStatus' ) ) )
 		);
 		$out->disable();
 	}
