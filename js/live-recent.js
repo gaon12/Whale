@@ -39,7 +39,7 @@
 
 		listItem.className = 'live-recent-row live-recent-empty';
 		placeholder.className = 'recent-item recent-item-placeholder is-loading';
-		placeholder.innerHTML = '&nbsp;';
+		placeholder.textContent = '\u00a0';
 		listItem.append(placeholder);
 
 		return listItem;
