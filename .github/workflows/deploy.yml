@@ -1,0 +1,36 @@
+---
+name: Deploy beta
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Sync skin to beta host
+    runs-on: ubuntu-24.04
+    if: vars.WHALE_ENABLE_DEPLOY == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s' "${{ secrets.WHALE_DEPLOY_KEY }}" > ~/.ssh/whale_deploy_key
+          chmod 600 ~/.ssh/whale_deploy_key
+          ssh-keyscan -p "${{ secrets.WHALE_DEPLOY_PORT || 22 }}" "${{ secrets.WHALE_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: |
+          rsync -az --delete \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude 'vendor' \
+            -e "ssh -i ~/.ssh/whale_deploy_key -p ${{ secrets.WHALE_DEPLOY_PORT || 22 }}" \
+            ./ "${{ secrets.WHALE_DEPLOY_USER }}@${{ secrets.WHALE_DEPLOY_HOST }}:${{ secrets.WHALE_DEPLOY_PATH }}"

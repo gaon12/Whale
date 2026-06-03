@@ -1,0 +1,17 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+	level: max
+	bootstrapFiles:
+		- tests/phpstan/mediawiki-stubs.php
+	paths:
+		- SkinWhale.php
+		- SpecialWhaleShortUrl.php
+		- Whale.php
+		- WhaleHooks.php
+		- WhaleRenderer.php
+		- WhaleShortUrl.php
+	excludePaths:
+		analyseAndScan:
+			- vendor (?)
