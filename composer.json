@@ -8,10 +8,10 @@
 	},
 	"scripts": {
 		"analyse": [
-			"phpstan analyse --level=max"
+			"php vendor/bin/phpstan.phar analyse --level=max"
 		],
 		"test": [
-			"phpcs -p -s",
+			"php vendor/bin/phpcs -p -s",
 			"@test:folding",
 			"@test:short-url",
 			"@test:sections",
@@ -33,7 +33,7 @@
 		"test:navbar": [
 			"php scripts/check-navbar.php"
 		],
-		"fix": "phpcbf"
+		"fix": "php vendor/bin/phpcbf"
 	},
 	"config": {
 		"allow-plugins": {
