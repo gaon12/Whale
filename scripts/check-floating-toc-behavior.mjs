@@ -323,20 +323,29 @@ const createContext = ({ desktop }) => {
 	return { context, document, readyCallbacks };
 };
 
-const mountHeadings = (document) => {
+const mountHeadings = (
+	document,
+	headings = [
+		{ tagName: 'h2', title: 'Alpha section', top: 200, key: 'alpha' },
+		{ tagName: 'h3', title: 'Beta child', top: 500, key: 'beta' },
+	],
+) => {
 	const toolbar = new TestElement('div', { id: 'whale-bottombtn' });
 	const content = new TestElement('main', { className: 'whale-content-main' });
-	const alpha = createHeading('h2', 'Alpha section', 200);
-	const beta = createHeading('h3', 'Beta child', 500);
-	content.append(alpha, beta);
+	const mountedHeadings = {};
+	for (const heading of headings) {
+		const node = createHeading(heading.tagName, heading.title, heading.top);
+		mountedHeadings[heading.key] = node;
+		content.append(node);
+	}
 	document.body.append(toolbar, content);
-	return { toolbar, alpha, beta };
+	return { toolbar, ...mountedHeadings };
 };
 
-const runFloatingToc = ({ desktop }) => {
+const runFloatingToc = ({ desktop, headings }) => {
 	const env = createContext({ desktop });
 	const { document, readyCallbacks } = env;
-	const mounted = mountHeadings(document);
+	const mounted = mountHeadings(document, headings);
 
 	if (desktop) {
 		document.body.classList.add('whale-floating-toc-enabled');
@@ -426,5 +435,44 @@ if (
 ) {
 	throw new Error(
 		'Mobile TOC drawer should expose itself and backdrop when open.',
+	);
+}
+
+const singleHeadingRun = runFloatingToc({
+	desktop: true,
+	headings: [{ tagName: 'h2', title: 'Solo section', top: 200, key: 'solo' }],
+});
+const singleHeadingLabels = singleHeadingRun.document
+	.querySelector('.whale-floating-toc')
+	?.querySelectorAll('a')
+	.map((anchor) => anchor.textContent);
+if (singleHeadingLabels?.join('|') !== '1. Solo section') {
+	throw new Error(
+		`Single-heading pages should still render a TOC: ${singleHeadingLabels?.join('|')}`,
+	);
+}
+
+const h3FirstRun = runFloatingToc({
+	desktop: true,
+	headings: [
+		{
+			tagName: 'h3',
+			title: 'First nested-looking section',
+			top: 200,
+			key: 'first',
+		},
+		{ tagName: 'h4', title: 'Nested child', top: 500, key: 'child' },
+	],
+});
+const h3FirstLabels = h3FirstRun.document
+	.querySelector('.whale-floating-toc')
+	?.querySelectorAll('a')
+	.map((anchor) => anchor.textContent);
+if (
+	h3FirstLabels?.join('|') !==
+	'1. First nested-looking section|1.1 Nested child'
+) {
+	throw new Error(
+		`Fallback numbering should normalize skipped heading levels: ${h3FirstLabels?.join('|')}`,
 	);
 }
