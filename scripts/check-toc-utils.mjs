@@ -101,8 +101,13 @@ const source = readFileSync(resolve('js/toc-utils.js'), 'utf8');
 const context = { window: {} };
 runInNewContext(source, context);
 
-const { getLinkText, getTargetText, getTocLevel } =
-	context.window.whale.tocUtils;
+const {
+	formatTocNumber,
+	getLinkText,
+	getTargetText,
+	getTocLevel,
+	getTocNumber,
+} = context.window.whale.tocUtils;
 
 const tocLink = new TestElement('a', {
 	children: [
@@ -123,6 +128,10 @@ const heading = new TestElement('h2', {
 			text: '  Correct   section  ',
 			children: [
 				new TestElement('span', {
+					classes: ['whale-heading-number'],
+					text: '2.1 ',
+				}),
+				new TestElement('span', {
 					classes: ['whale-heading-anchor'],
 					text: '#',
 				}),
@@ -139,12 +148,20 @@ if (getTocLevel(tocLink) !== 3) {
 	throw new Error('TOC level should come from the closest toclevel class.');
 }
 
-if (getLinkText(tocLink, heading) !== 'Correct section') {
-	throw new Error('Floating TOC label should prefer cleaned heading text.');
+if (getTocNumber(tocLink) !== '2.1') {
+	throw new Error('Nested TOC numbers should keep dotted numbering.');
+}
+
+if (getLinkText(tocLink, heading) !== '2.1 Correct section') {
+	throw new Error(
+		'Floating TOC label should include the cleaned section number.',
+	);
 }
 
 if (getTargetText(heading) !== 'Correct section') {
-	throw new Error('Heading helper should remove anchors/edit links.');
+	throw new Error(
+		'Heading helper should remove numbers, anchors, and edit links.',
+	);
 }
 
 const deepLink = new TestElement('a');
@@ -165,6 +182,10 @@ const fallbackLink = new TestElement('a', {
 	],
 });
 
-if (getLinkText(fallbackLink, null) !== 'Fallback title') {
-	throw new Error('TOC label fallback should use .toctext without numbers.');
+if (formatTocNumber('1') !== '1.') {
+	throw new Error('Top-level TOC numbers should render with a trailing dot.');
+}
+
+if (getLinkText(fallbackLink, null) !== '1. Fallback title') {
+	throw new Error('TOC label fallback should include .tocnumber and .toctext.');
 }

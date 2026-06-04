@@ -1,6 +1,19 @@
 (() => {
 	const normalizeText = (text) => text?.trim().replace(/\s+/g, ' ') || '';
 
+	const formatTocNumber = (number) => {
+		const cleanNumber = normalizeText(number).replace(/\.$/, '');
+
+		if (!cleanNumber) {
+			return '';
+		}
+
+		return cleanNumber.includes('.') ? cleanNumber : `${cleanNumber}.`;
+	};
+
+	const getTocNumber = (link) =>
+		formatTocNumber(link.querySelector('.tocnumber')?.textContent);
+
 	const getTocLevel = (link) => {
 		const item = link.closest('li');
 		const levelClass = [...(item?.classList || [])].find((className) =>
@@ -19,7 +32,9 @@
 		const label = target.querySelector?.('.mw-headline') || target;
 		const clone = label.cloneNode(true);
 		clone
-			.querySelectorAll?.('.whale-heading-anchor, .mw-editsection')
+			.querySelectorAll?.(
+				'.whale-heading-anchor, .whale-heading-number, .mw-editsection',
+			)
 			.forEach((node) => {
 				node.remove();
 			});
@@ -28,14 +43,15 @@
 	};
 
 	const getLinkText = (link, target) => {
+		const number = getTocNumber(link);
 		const targetText = getTargetText(target);
 		if (targetText) {
-			return targetText;
+			return [number, targetText].filter(Boolean).join(' ');
 		}
 
 		const text = normalizeText(link.querySelector('.toctext')?.textContent);
 		if (text) {
-			return text;
+			return [number, text].filter(Boolean).join(' ');
 		}
 
 		const clone = link.cloneNode(true);
@@ -43,15 +59,17 @@
 			node.remove();
 		});
 
-		return normalizeText(clone.textContent);
+		return [number, normalizeText(clone.textContent)].filter(Boolean).join(' ');
 	};
 
 	window.whale = {
 		...(window.whale || {}),
 		tocUtils: {
+			formatTocNumber,
 			getLinkText,
 			getTargetText,
 			getTocLevel,
+			getTocNumber,
 		},
 	};
 })();
