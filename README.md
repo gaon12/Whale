@@ -222,17 +222,32 @@ Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다.
 가장 간단한 예시는 다음과 같습니다.
 
 ```text
-* icon=sync | display=recentchanges | title=최근 바뀜 | link=Special:RecentChanges | access=r
-* icon=book | display=도움말 | title=도움말 | link=Help:Contents
-* icon=link | display=공식 사이트 | link=https://example.org
+- text: 최근 바뀜
+  link: Special:RecentChanges
+  icon: sync
+  access: r
+
+- text: 도움말
+  link: Help:Contents
+  icon: book
+
+- text: 공식 사이트
+  link: https://example.org
+  icon: link
 ```
 
-하위 메뉴가 필요하면 별표를 더 붙입니다.
+하위 메뉴는 `children:` 아래에 다시 `- text:` 항목을 넣습니다.
 
 ```text
-* icon=book | display=도움말 | link=Help:Contents
-** icon=link | display=초보자 안내 | link=Help:Beginner
-*** icon=link | display=문법 도움말 | link=Help:Syntax
+- text: 도움말
+  link: Help:Contents
+  icon: book
+  children:
+    - text: 초보자 안내
+      link: Help:Beginner
+      children:
+        - text: 문법 도움말
+          link: Help:Syntax
 ```
 
 각 항목에서 쓸 수 있는 값은 다음과 같습니다.
@@ -240,7 +255,7 @@ Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다.
 | 값 | 뜻 |
 | --- | --- |
 | `icon` | 메뉴 앞에 보여줄 아이콘 이름 |
-| `display` | 화면에 보이는 메뉴 이름 |
+| `text` | 화면에 보이는 메뉴 이름 |
 | `title` | 마우스를 올렸을 때 보이는 설명 |
 | `link` | 이동할 문서 이름 또는 URL |
 | `access` | 단축키로 쓸 문자 |
@@ -248,7 +263,7 @@ Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다.
 | `group` | 이 메뉴를 볼 수 있는 사용자 그룹 |
 | `right` | 이 메뉴를 볼 수 있는 사용자 권한 |
 
-`icon`과 `display` 중 하나는 반드시 있어야 합니다. 둘 다 없으면 사용자가 무엇을 눌러야 하는지 알 수 없습니다.
+`icon`과 `text` 중 하나는 반드시 있어야 합니다. 둘 다 없으면 사용자가 무엇을 눌러야 하는지 알 수 없습니다. 기존 별표 문법도 fallback으로 읽지만, 새 메뉴를 만들 때는 위 블록형 구조를 권장합니다.
 
 ### 10. 최근 변경 사이드바 설정
 
@@ -615,17 +630,32 @@ If you change the path prefix, set `$wgWhaleShortUrlPathPrefix` in `LocalSetting
 Create or edit `MediaWiki:Whale-Navbar` on your wiki.
 
 ```text
-* icon=sync | display=recentchanges | title=Recent changes | link=Special:RecentChanges | access=r
-* icon=book | display=Help | title=Help | link=Help:Contents
-* icon=link | display=Official site | link=https://example.org
+- text: Recent changes
+  link: Special:RecentChanges
+  icon: sync
+  access: r
+
+- text: Help
+  link: Help:Contents
+  icon: book
+
+- text: Official site
+  link: https://example.org
+  icon: link
 ```
 
-Use more asterisks for submenus.
+Put child items under `children:`.
 
 ```text
-* icon=book | display=Help | link=Help:Contents
-** icon=link | display=Beginner guide | link=Help:Beginner
-*** icon=link | display=Syntax help | link=Help:Syntax
+- text: Help
+  link: Help:Contents
+  icon: book
+  children:
+    - text: Beginner guide
+      link: Help:Beginner
+      children:
+        - text: Syntax help
+          link: Help:Syntax
 ```
 
 Supported fields:
@@ -633,7 +663,7 @@ Supported fields:
 | Field | Meaning |
 | --- | --- |
 | `icon` | Icon name shown before the item |
-| `display` | Visible menu label |
+| `text` | Visible menu label |
 | `title` | Tooltip text |
 | `link` | Page name or URL |
 | `access` | Access-key suffix |
@@ -641,7 +671,7 @@ Supported fields:
 | `group` | Required user group |
 | `right` | Required user right |
 
-At least one of `icon` or `display` must be present.
+At least one of `icon` or `text` must be present. The older asterisk syntax is still accepted as a fallback, but the block structure above is the recommended format for new menus.
 
 ### 10. Live Recent Sidebar
 

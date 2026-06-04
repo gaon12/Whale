@@ -1140,6 +1140,30 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	color: #fff;
 }
 
+.whale-heading-anchor-alert {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	z-index: 1100;
+	max-width: min(20rem, calc(100vw - 2rem));
+	padding: 0.55rem 0.75rem;
+	border: 1px solid var(--whale-main-color);
+	border-radius: var(--whale-radius);
+	background-color: #fff;
+	box-shadow: 0 0.45rem 1.2rem rgba(0, 0, 0, 0.18);
+	color: #202326;
+	font-size: 0.9rem;
+	line-height: 1.35;
+	opacity: 0;
+	transform: translateY(0.4rem);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.whale-heading-anchor-alert.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph {
 	margin: 0 0 1rem;
 	padding: 1rem;
@@ -1568,26 +1592,21 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 .Whale .whale-short-url-copy-row {
 	display: flex;
 	align-items: stretch;
+	gap: 0.65rem;
 	margin-top: 0.75rem;
-	overflow: hidden;
-	border: 1px solid #d8e0e7;
-	border-radius: var(--whale-radius);
-	background-color: #fff;
 }
 
 .Whale .whale-short-url-copy-row .whale-short-url-value {
 	flex: 1 1 auto;
 	min-width: 0;
-	border: 0;
-	border-radius: 0;
+	border: 1px solid #d8e0e7;
+	border-radius: var(--whale-radius-sm);
 	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 	font-size: 0.85rem;
 }
 
 .Whale .whale-short-url-copy-row .whale-short-url-copy {
-	border: 0;
-	border-left: 1px solid #d8e0e7;
-	border-radius: 0;
+	flex: 0 0 auto;
 	padding-right: 0.9rem;
 	padding-left: 0.9rem;
 }
@@ -1619,15 +1638,16 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 }
 
 .whale-modal-close {
+	position: absolute;
+	top: 0.55rem;
+	right: 0.7rem;
 	background: transparent;
 	border: 0;
 	color: #000;
 	cursor: pointer;
-	float: right;
 	font-size: 1.5rem;
 	font-weight: 700;
 	line-height: 1;
-	margin-left: 0.75rem;
 	opacity: 0.5;
 	padding: 0.1rem 0.25rem;
 	text-shadow: 0 1px 0 #fff;
@@ -1875,6 +1895,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	background-color: #fff;
 	border-left: 1px solid #d7dee5;
 	box-shadow: -0.4rem 0 1.5rem rgba(0, 0, 0, 0.18);
+	scrollbar-gutter: stable;
 	transform: translateX(100%);
 	transition: transform 180ms ease;
 }
@@ -2638,8 +2659,6 @@ body.whale-dark.Whale .whale-floating-toc a,
 body.whale-dark.Whale #whale-bottombtn .scroll-button,
 body.whale-dark.Whale .whale-external-link-url,
 body.whale-dark.Whale .whale-short-url-card,
-body.whale-dark.Whale .whale-short-url-code,
-body.whale-dark.Whale .whale-short-url-copy-row,
 body.whale-dark.Whale .whale-not-found,
 body.whale-dark.Whale .whale-short-url-copy-row .whale-short-url-value {
 	background-color: #1f2023;
@@ -2998,8 +3017,6 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 	body.whale-auto-dark.Whale #whale-bottombtn .scroll-button,
 	body.whale-auto-dark.Whale .whale-external-link-url,
 	body.whale-auto-dark.Whale .whale-short-url-card,
-	body.whale-auto-dark.Whale .whale-short-url-code,
-	body.whale-auto-dark.Whale .whale-short-url-copy-row,
 	body.whale-auto-dark.Whale .whale-not-found,
 	body.whale-auto-dark.Whale .whale-short-url-copy-row .whale-short-url-value {
 		background-color: #1f2023;
@@ -3164,11 +3181,6 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 
 	.Whale .whale-short-url-copy-row {
 		flex-direction: column;
-	}
-
-	.Whale .whale-short-url-copy-row .whale-short-url-copy {
-		border-top: 1px solid #d8e0e7;
-		border-left: 0;
 	}
 
 	.Whale .whale-not-found {
