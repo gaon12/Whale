@@ -50,6 +50,16 @@ assertIncludes(
 const layout = read('js/layout.js');
 assertIncludes(layout, 'whale:toggleFloatingToc', 'Layout scroll TOC handler');
 
+const skinPhp = read('SkinWhale.php');
+assertIncludes(
+	skinPhp,
+	"addMeta( 'viewport', 'width=device-width, initial-scale=1' )",
+	'Viewport meta',
+);
+if (skinPhp.includes('maximum-scale=1')) {
+	throw new Error('Viewport meta should not disable user zoom.');
+}
+
 const styles = read('less/default.less');
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
 assertIncludes(
@@ -63,3 +73,21 @@ const shortUrlTemplate = read('templates/ShortUrlModal.mustache');
 if (shortUrlTemplate.includes('whale-short-url-code')) {
 	throw new Error('Short URL modal should not render the internal code pill.');
 }
+
+const searchTemplate = read('templates/SearchBox.mustache');
+assertIncludes(searchTemplate, 'aria-label="{{go-label}}"', 'Search form');
+assertIncludes(searchTemplate, 'aria-label="{{search-label}}"', 'Search form');
+
+const navTemplate = read('templates/Nav.mustache');
+assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
+
+const rendererPhp = read('WhaleRenderer.php');
+assertIncludes(rendererPhp, "'width' => '174'", 'Footer badge image');
+assertIncludes(rendererPhp, "'height' => '62'", 'Footer badge image');
+
+const externalLinkTemplate = read('templates/ExternalLinkModal.mustache');
+assertIncludes(
+	externalLinkTemplate,
+	'href="#" data-whale-external-continue',
+	'External link modal continue link',
+);

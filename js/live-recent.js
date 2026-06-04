@@ -311,7 +311,11 @@
 			});
 		});
 
-		syncControllers();
+		const scheduleInitialSync =
+			window.requestIdleCallback ||
+			((callback) => window.setTimeout(callback, 300));
+
+		scheduleInitialSync(syncControllers);
 		window.addEventListener('resize', syncControllers);
 	});
 })();

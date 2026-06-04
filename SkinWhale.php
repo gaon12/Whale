@@ -87,7 +87,7 @@ class SkinWhale extends SkinMustache {
 
 		parent::initPage( $out );
 
-		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1, maximum-scale=1' );
+		$out->addMeta( 'viewport', 'width=device-width, initial-scale=1' );
 
 		if (
 			!class_exists( ArticleMetaDescription::class ) ||
