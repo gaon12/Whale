@@ -27,15 +27,6 @@
 		}, 1800);
 	};
 
-	const copyText = async (text) => {
-		if (navigator.clipboard?.writeText) {
-			await navigator.clipboard.writeText(text);
-			return true;
-		}
-
-		return false;
-	};
-
 	const initHeadingAnchors = (content) => {
 		if (!document.body.classList.contains('whale-heading-anchors-enabled')) {
 			return;
@@ -60,9 +51,10 @@
 				const url = `${location.origin}${location.pathname}${location.search}#${encodeURIComponent(id)}`;
 				history.replaceState(null, '', `#${encodeURIComponent(id)}`);
 				try {
-					await copyText(url);
-					button.title = mw.msg('whale-heading-link-copied');
-					showCopyAlert(mw.msg('whale-heading-link-copied'));
+					if (await whale.copyText(url)) {
+						button.title = mw.msg('whale-heading-link-copied');
+						showCopyAlert(mw.msg('whale-heading-link-copied'));
+					}
 				} catch (error) {
 					console.error('Heading link copy failed: ', error);
 				}

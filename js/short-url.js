@@ -23,8 +23,9 @@
 
 			input.select();
 			try {
-				await navigator.clipboard?.writeText(input.value);
-				setButtonState(button, mw.msg('whale-short-url-copied'));
+				if (await whale.copyText(input.value)) {
+					setButtonState(button, mw.msg('whale-short-url-copied'));
+				}
 			} catch (error) {
 				console.error('Short URL copy failed: ', error);
 			}

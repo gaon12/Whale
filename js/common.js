@@ -76,6 +76,41 @@
 		});
 	};
 
+	const fallbackCopyText = (text) => {
+		if (typeof document.execCommand !== 'function') {
+			return false;
+		}
+
+		const textarea = document.createElement('textarea');
+		textarea.value = text;
+		textarea.setAttribute('readonly', 'readonly');
+		textarea.style.position = 'fixed';
+		textarea.style.top = '-9999px';
+		textarea.style.opacity = '0';
+		document.body.append(textarea);
+		textarea.select();
+		textarea.setSelectionRange?.(0, textarea.value.length);
+
+		try {
+			return document.execCommand('copy');
+		} finally {
+			textarea.remove();
+		}
+	};
+
+	const copyText = async (text) => {
+		if (navigator.clipboard?.writeText) {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch {
+				return fallbackCopyText(text);
+			}
+		}
+
+		return fallbackCopyText(text);
+	};
+
 	const onMediaChange = (mediaQuery, callback) => {
 		if (typeof mediaQuery.addEventListener === 'function') {
 			mediaQuery.addEventListener('change', callback);
@@ -101,6 +136,7 @@
 		getAnchorTarget,
 		getNavHeight,
 		scrollToTarget,
+		copyText,
 		onMediaChange,
 		getApi,
 		closest,
