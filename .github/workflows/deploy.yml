@@ -18,9 +18,19 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  preflight:
+    name: Report beta deploy readiness
+    runs-on: ubuntu-24.04
+    if: vars.WHALE_ENABLE_DEPLOY != 'true' && github.event_name != 'workflow_dispatch'
+    steps:
+      - name: Report disabled beta deploy
+        run: |
+          echo "::notice::Beta deploy is disabled. Set repository variable WHALE_ENABLE_DEPLOY=true and configure the WHALE_DEPLOY_* secrets to deploy on main pushes."
+
   deploy:
     name: Sync skin to beta host
     runs-on: ubuntu-24.04
+    if: vars.WHALE_ENABLE_DEPLOY == 'true' || github.event_name == 'workflow_dispatch'
     timeout-minutes: 15
     env:
       WHALE_DEPLOY_KEY: ${{ secrets.WHALE_DEPLOY_KEY }}
