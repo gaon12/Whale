@@ -21,17 +21,34 @@ jobs:
   deploy:
     name: Sync skin to beta host
     runs-on: ubuntu-24.04
-    if: vars.WHALE_ENABLE_DEPLOY == 'true'
+    timeout-minutes: 15
+    env:
+      WHALE_DEPLOY_KEY: ${{ secrets.WHALE_DEPLOY_KEY }}
+      WHALE_DEPLOY_HOST: ${{ secrets.WHALE_DEPLOY_HOST }}
+      WHALE_DEPLOY_PORT: ${{ secrets.WHALE_DEPLOY_PORT || 22 }}
+      WHALE_DEPLOY_USER: ${{ secrets.WHALE_DEPLOY_USER }}
+      WHALE_DEPLOY_PATH: ${{ secrets.WHALE_DEPLOY_PATH }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate deploy configuration
+        run: |
+          missing=0
+          for name in WHALE_DEPLOY_KEY WHALE_DEPLOY_HOST WHALE_DEPLOY_USER WHALE_DEPLOY_PATH; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required deploy secret: ${name}"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
       - name: Setup SSH
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s' "${{ secrets.WHALE_DEPLOY_KEY }}" > ~/.ssh/whale_deploy_key
+          printf '%s' "$WHALE_DEPLOY_KEY" > ~/.ssh/whale_deploy_key
           chmod 600 ~/.ssh/whale_deploy_key
-          ssh-keyscan -p "${{ secrets.WHALE_DEPLOY_PORT || 22 }}" "${{ secrets.WHALE_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -p "$WHALE_DEPLOY_PORT" "$WHALE_DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
         run: |
@@ -39,11 +56,15 @@ jobs:
             --exclude '.git' \
             --exclude 'node_modules' \
             --exclude 'vendor' \
-            -e "ssh -i ~/.ssh/whale_deploy_key -p ${{ secrets.WHALE_DEPLOY_PORT || 22 }}" \
-            ./ "${{ secrets.WHALE_DEPLOY_USER }}@${{ secrets.WHALE_DEPLOY_HOST }}:${{ secrets.WHALE_DEPLOY_PATH }}"
+            -e "ssh -i ~/.ssh/whale_deploy_key -p $WHALE_DEPLOY_PORT" \
+            ./ "$WHALE_DEPLOY_USER@$WHALE_DEPLOY_HOST:$WHALE_DEPLOY_PATH"
 
       - name: Install production PHP dependencies
         run: |
-          ssh -i ~/.ssh/whale_deploy_key -p "${{ secrets.WHALE_DEPLOY_PORT || 22 }}" \
-            "${{ secrets.WHALE_DEPLOY_USER }}@${{ secrets.WHALE_DEPLOY_HOST }}" \
-            "cd '${{ secrets.WHALE_DEPLOY_PATH }}' && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader"
+          ssh -i ~/.ssh/whale_deploy_key -p "$WHALE_DEPLOY_PORT" \
+            "$WHALE_DEPLOY_USER@$WHALE_DEPLOY_HOST" \
+            'bash -s' -- "$WHALE_DEPLOY_PATH" <<'REMOTE'
+          set -euo pipefail
+          cd "$1"
+          composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+          REMOTE
