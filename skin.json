@@ -36,6 +36,7 @@
 		"WhaleEnableFoldingBlocks": true,
 		"WhaleEnableBlurredCategories": true,
 		"WhaleEnableFloatingToc": true,
+		"WhaleEnableMobileFloatingToc": true,
 		"WhaleUseGravatar": true,
 		"WhaleTheme": null,
 		"WhalePrimaryColor": null,
@@ -198,6 +199,7 @@
 		"whale-user-contribution-graph": true,
 		"whale-short-url": true,
 		"whale-lazy-images": true,
+		"whale-layout-mobile-toc": true,
 		"whale-mobile-user-tools-right": true
 	},
 	"Hooks": {

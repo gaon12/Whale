@@ -588,7 +588,6 @@ class WhaleRenderer {
 		return [
 			'has-short-url' => true,
 			'url' => $url,
-			'code' => $code,
 			'html-icon' => $this->renderIcon( 'link' ),
 			'button-label' => $skin->msg( 'whale-short-url-button' )->text(),
 			'modal-title' => $skin->msg( 'whale-short-url-title' )->text(),
