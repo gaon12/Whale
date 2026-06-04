@@ -81,6 +81,11 @@ assertIncludes(layout, 'container?.classList.toggle', 'Section folding state');
 assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
 
 const skinPhp = read('SkinWhale.php');
+assertIncludes(
+	skinPhp,
+	"addMeta( 'color-scheme', 'light dark' )",
+	'Color scheme meta',
+);
 if (skinPhp.includes("addMeta( 'viewport'")) {
 	throw new Error('Whale should rely on MediaWiki viewport metadata.');
 }
@@ -89,6 +94,8 @@ if (skinPhp.includes('maximum-scale=1')) {
 }
 
 const styles = read('less/default.less');
+assertIncludes(styles, 'color-scheme: light dark', 'Stylesheet');
+assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
 assertIncludes(styles, 'scrollbar-gutter: stable', 'Stylesheet');
 assertIncludes(

@@ -63,6 +63,7 @@
 
 	const applyMode = (mode, explicit = true) => {
 		const isDark = mode === 'dark';
+		document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 		document.body.classList.toggle('whale-dark', isDark);
 		document.body.classList.toggle('whale-auto-dark', !explicit);
 		updateBrowserThemeColor();
