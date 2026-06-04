@@ -1092,6 +1092,12 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	line-height: 1.9rem;
 }
 
+.Whale .content-wrapper .whale-content .whale-content-main .whale-heading-number {
+	margin-right: 0.4rem;
+	color: var(--whale-main-color);
+	font-weight: 700;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main .whale-heading-anchor {
 	appearance: none;
 	margin-left: 0.35rem;
@@ -1782,7 +1788,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	width: 9rem;
 	max-width: 9rem;
 	overflow: visible;
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .whale-floating-toc ol {
@@ -1792,6 +1798,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	padding: 0;
 	margin: 0;
 	list-style: none;
+	pointer-events: none;
 }
 
 .whale-floating-toc li {
@@ -1799,6 +1806,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	right: 0;
 	padding-right: 1rem;
 	transform: translateY(-50%);
+	pointer-events: none;
 }
 
 .whale-floating-toc .whale-floating-toc-level-2 {
