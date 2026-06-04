@@ -361,7 +361,7 @@ composer test
 composer analyse
 ```
 
-beta 배포 workflow는 `main` push와 수동 실행에서 동작합니다. 다음 secrets를 GitHub 저장소에 등록해야 하며, 누락되면 workflow가 명확한 오류와 함께 실패합니다.
+beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 `main` push에서 동작합니다. 변수가 꺼져 있으면 preflight job이 배포 비활성 notice를 남기고, 수동 실행은 변수와 관계없이 배포를 시도합니다. 다음 secrets를 GitHub 저장소에 등록해야 하며, 누락되면 실제 배포 job이 명확한 오류와 함께 실패합니다.
 
 | Secret | 의미 |
 | --- | --- |
@@ -765,7 +765,7 @@ composer test
 composer analyse
 ```
 
-The beta deploy workflow runs on `main` pushes and manual dispatches. Configure these GitHub secrets first; missing secrets make the workflow fail with an explicit error.
+The beta deploy workflow runs on `main` pushes when the repository variable `WHALE_ENABLE_DEPLOY` is set to `true`. When the variable is off, a preflight job leaves a deploy-disabled notice; manual dispatches attempt deployment regardless of the variable. Configure these GitHub secrets first; missing secrets make the actual deploy job fail with an explicit error.
 
 | Secret | Meaning |
 | --- | --- |
