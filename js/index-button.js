@@ -23,10 +23,13 @@
 
 	const getTarget = (link) => whale.getAnchorTarget(link.getAttribute('href'));
 
-	const getHeadingLevel = (heading) => {
+	const getRawHeadingLevel = (heading) => {
 		const headingLevel = Number(heading.tagName.match(/^H([1-6])$/)?.[1]);
-		return Number.isInteger(headingLevel) ? Math.max(1, headingLevel - 1) : 1;
+		return Number.isInteger(headingLevel) ? headingLevel : 2;
 	};
+
+	const getHeadingLevel = (heading, baseLevel) =>
+		Math.min(6, Math.max(1, getRawHeadingLevel(heading) - baseLevel + 1));
 
 	const getHeadingHref = (heading) => {
 		const id = heading.querySelector('.mw-headline')?.id || heading.id;
@@ -91,10 +94,13 @@
 
 	const getFloatingTocItemsFromHeadings = () => {
 		const counters = [];
+		const headings = getContentHeadings();
+		const rawLevels = headings.map(getRawHeadingLevel);
+		const baseLevel = rawLevels.length > 0 ? Math.min(...rawLevels) : 2;
 
-		return getContentHeadings()
+		return headings
 			.map((heading) => {
-				const level = getHeadingLevel(heading);
+				const level = getHeadingLevel(heading, baseLevel);
 				counters[level - 1] = (counters[level - 1] || 0) + 1;
 				counters.length = level;
 
@@ -271,7 +277,7 @@
 		const links = getFloatingTocItems();
 		syncHeadingNumbers(links);
 
-		if ((!shouldRenderDesktop && !shouldRenderMobile) || links.length < 2) {
+		if ((!shouldRenderDesktop && !shouldRenderMobile) || links.length < 1) {
 			removeFloatingToc();
 			return;
 		}
