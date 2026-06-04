@@ -233,6 +233,10 @@ class SpecialPage {
 	public function getConfig(): Config {
 		return new Config();
 	}
+
+	public function getUser(): User {
+		return new User();
+	}
 }
 
 class TitleValue {
@@ -344,6 +348,9 @@ namespace MediaWiki {
 	}
 
 	class PermissionManager {
+		public function quickUserCan( string $action, \User $user, mixed $target ): bool {
+			return true;
+		}
 	}
 
 	class LinkRenderer {

@@ -207,6 +207,16 @@ if (document.dispatchClick(javascriptLink)) {
 	throw new Error('javascript: links should not open the external warning.');
 }
 
+const dataLink = createLink('data:text/html,<script>alert(1)</script>');
+if (document.dispatchClick(dataLink)) {
+	throw new Error('data: links should not open the external warning.');
+}
+
+const vbscriptLink = createLink('vbscript:msgbox(1)');
+if (document.dispatchClick(vbscriptLink)) {
+	throw new Error('vbscript: links should not open the external warning.');
+}
+
 const externalLink = createLink(
 	'https://external.example/encoded%20path',
 	'_self',
