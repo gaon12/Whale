@@ -84,7 +84,10 @@ class WhaleRenderer {
 		}
 
 		$personalTools = $skin->getWhalePersonalTools();
-		$avatar = '';
+		$avatar = Html::rawElement( 'span', [
+			'class' => 'profile-img profile-img-fallback',
+			'aria-hidden' => 'true',
+		], $this->renderIcon( 'user' ) );
 		if ( class_exists( WhaleAvatar::class ) ) {
 			$avatarStyle = is_string( $wgWhaleAvatarStyle ?? null ) ? $wgWhaleAvatarStyle : 'identicon';
 			$avatarSrc = WhaleAvatar::createDataUri(
@@ -1521,7 +1524,8 @@ class WhaleRenderer {
 			'whale',
 			'whale-nav-content',
 			$title->getNamespace(),
-			$title->getDBkey()
+			$title->getDBkey(),
+			$title->getLatestRevID()
 		);
 
 		return $cache->getWithSetCallback(
