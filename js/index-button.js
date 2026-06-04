@@ -1,6 +1,7 @@
 (() => {
 	const DESKTOP_QUERY = '(min-width: 1280px)';
 	const MAX_ITEMS = 18;
+	const SECTION_NUMBER_SELECTOR = '.whale-heading-number';
 	let activeScrollUpdate = null;
 
 	const getTocLinks = () => [
@@ -34,6 +35,50 @@
 		return Math.min(1, Math.max(0, targetTop / documentHeight));
 	};
 
+	const getFloatingTocItems = () =>
+		getTocLinks()
+			.map((link) => {
+				const target = getTarget(link);
+				const number = whale.tocUtils.getTocNumber(link);
+
+				return {
+					link,
+					number,
+					target,
+					level: whale.tocUtils.getTocLevel(link),
+					text: whale.tocUtils.getLinkText(link, target),
+				};
+			})
+			.filter((item) => item.target && item.text)
+			.slice(0, MAX_ITEMS);
+
+	const removeHeadingNumbers = () => {
+		document.querySelectorAll(SECTION_NUMBER_SELECTOR).forEach((number) => {
+			number.remove();
+		});
+	};
+
+	const syncHeadingNumbers = (links) => {
+		removeHeadingNumbers();
+
+		links.forEach(({ target, number }) => {
+			if (!number || !target) {
+				return;
+			}
+
+			const label = target.querySelector?.('.mw-headline') || target;
+			if (!label || label.querySelector?.(SECTION_NUMBER_SELECTOR)) {
+				return;
+			}
+
+			const numberNode = document.createElement('span');
+			numberNode.className = SECTION_NUMBER_SELECTOR.slice(1);
+			numberNode.setAttribute('aria-hidden', 'true');
+			numberNode.textContent = `${number} `;
+			label.insertBefore(numberNode, label.firstChild);
+		});
+	};
+
 	const removeFloatingToc = () => {
 		document.querySelector('.whale-floating-toc')?.remove();
 		document.body.classList.remove('whale-floating-toc-hover');
@@ -44,29 +89,16 @@
 	};
 
 	const buildFloatingToc = () => {
-		if (
-			!document.body.classList.contains('whale-floating-toc-enabled') ||
-			!window.matchMedia(DESKTOP_QUERY).matches
-		) {
+		if (!document.body.classList.contains('whale-floating-toc-enabled')) {
+			removeHeadingNumbers();
 			removeFloatingToc();
 			return;
 		}
 
-		const links = getTocLinks()
-			.map((link) => {
-				const target = getTarget(link);
+		const links = getFloatingTocItems();
+		syncHeadingNumbers(links);
 
-				return {
-					link,
-					target,
-					level: whale.tocUtils.getTocLevel(link),
-					text: whale.tocUtils.getLinkText(link, target),
-				};
-			})
-			.filter((item) => item.target && item.text)
-			.slice(0, MAX_ITEMS);
-
-		if (links.length < 2) {
+		if (!window.matchMedia(DESKTOP_QUERY).matches || links.length < 2) {
 			removeFloatingToc();
 			return;
 		}
@@ -78,7 +110,7 @@
 		toc.className = 'whale-floating-toc';
 		toc.setAttribute('aria-label', mw.message('whale-floating-toc').text());
 		toc.addEventListener('pointerover', (event) => {
-			if (event.target.closest('a')) {
+			if (toc.contains(event.target)) {
 				document.body.classList.add('whale-floating-toc-hover');
 			}
 		});
