@@ -551,6 +551,8 @@ class WhaleRenderer {
 				'src' => $this->skin->getConfig()->get( 'StylePath' ) . '/Whale/img/designedbylibre.png',
 				'class' => 'designedbylibre-img',
 				'alt' => 'Designed by Librewiki',
+				'width' => '174',
+				'height' => '62',
 				'decoding' => 'async',
 			] ) ),
 		];
