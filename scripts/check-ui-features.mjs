@@ -81,11 +81,9 @@ assertIncludes(layout, 'container?.classList.toggle', 'Section folding state');
 assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
 
 const skinPhp = read('SkinWhale.php');
-assertIncludes(
-	skinPhp,
-	"addMeta( 'viewport', 'width=device-width, initial-scale=1' )",
-	'Viewport meta',
-);
+if (skinPhp.includes("addMeta( 'viewport'")) {
+	throw new Error('Whale should rely on MediaWiki viewport metadata.');
+}
 if (skinPhp.includes('maximum-scale=1')) {
 	throw new Error('Viewport meta should not disable user zoom.');
 }
