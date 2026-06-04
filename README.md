@@ -349,7 +349,7 @@ $wgWhaleAdGroup = 'differ';
 
 ### 12. GitHub Actions와 배포
 
-저장소에는 품질 게이트 workflow와 선택형 beta 배포 workflow가 들어 있습니다.
+저장소에는 품질 게이트 workflow와 beta 배포 workflow가 들어 있습니다.
 
 품질 게이트는 push와 pull request에서 아래 명령을 실행합니다.
 
@@ -361,7 +361,7 @@ composer test
 composer analyse
 ```
 
-beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때만 동작합니다. 다음 secrets를 GitHub 저장소에 등록해야 합니다.
+beta 배포 workflow는 `main` push와 수동 실행에서 동작합니다. 다음 secrets를 GitHub 저장소에 등록해야 하며, 누락되면 workflow가 명확한 오류와 함께 실패합니다.
 
 | Secret | 의미 |
 | --- | --- |
@@ -753,7 +753,7 @@ Available rights:
 
 ### 12. GitHub Actions and Deployment
 
-The repository includes a quality-gate workflow and an optional beta deploy workflow.
+The repository includes a quality-gate workflow and a beta deploy workflow.
 
 The quality gate runs these commands on push and pull request:
 
@@ -765,7 +765,7 @@ composer test
 composer analyse
 ```
 
-The beta deploy workflow only runs when the repository variable `WHALE_ENABLE_DEPLOY` is set to `true`. Configure these GitHub secrets before enabling it:
+The beta deploy workflow runs on `main` pushes and manual dispatches. Configure these GitHub secrets first; missing secrets make the workflow fail with an explicit error.
 
 | Secret | Meaning |
 | --- | --- |
