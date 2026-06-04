@@ -11,6 +11,8 @@ if (
 }
 
 class SpecialWhaleShortUrl extends SpecialPage {
+	private const ALLOWED_REDIRECT_STATUSES = [ 301, 302, 303, 307, 308 ];
+
 	public function __construct() {
 		parent::__construct( 'WhaleShortUrl' );
 	}
@@ -41,10 +43,16 @@ class SpecialWhaleShortUrl extends SpecialPage {
 			return;
 		}
 
+		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
+		if ( !$permissionManager->quickUserCan( 'read', $this->getUser(), $title ) ) {
+			$out->showErrorPage( 'badaccess', 'badaccess-group0' );
+			return;
+		}
+
 		$this->getRequest()->response()->header(
 			'Location: ' . $title->getFullURL(),
 			true,
-			max( 300, min( 308, (int)$config->get( 'WhaleShortUrlRedirectStatus' ) ) )
+			$this->getRedirectStatus( $config->get( 'WhaleShortUrlRedirectStatus' ) )
 		);
 		$out->disable();
 	}
@@ -68,5 +76,11 @@ class SpecialWhaleShortUrl extends SpecialPage {
 		}
 
 		return Title::makeTitleSafe( (int)$row->page_namespace, $row->page_title );
+	}
+
+	private function getRedirectStatus( mixed $status ): int {
+		$status = (int)$status;
+
+		return in_array( $status, self::ALLOWED_REDIRECT_STATUSES, true ) ? $status : 302;
 	}
 }
