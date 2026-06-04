@@ -1,4 +1,13 @@
 (() => {
+	const setButtonState = (button, label) => {
+		const original = button.dataset.originalLabel || button.textContent;
+		button.dataset.originalLabel = original;
+		button.textContent = label;
+		window.setTimeout(() => {
+			button.textContent = original;
+		}, 1600);
+	};
+
 	const getShareData = () => {
 		let host = mw.config.get('wgServer');
 		const namespace = mw.config.get('wgNamespaceNumber');
@@ -22,11 +31,13 @@
 	};
 
 	whale.ready(() => {
-		document.addEventListener('click', (event) => {
-			if (!whale.closest(event.target, '.tools-share')) {
+		document.addEventListener('click', async (event) => {
+			const button = whale.closest(event.target, '.tools-share');
+			if (!button) {
 				return;
 			}
 
+			event.preventDefault();
 			const shareData = getShareData();
 
 			if (navigator.share) {
@@ -36,9 +47,13 @@
 				return;
 			}
 
-			whale.copyText(shareData.url).catch((error) => {
+			try {
+				if (await whale.copyText(shareData.url)) {
+					setButtonState(button, mw.msg('whale-share-copied'));
+				}
+			} catch (error) {
 				console.error('Clipboard API error: ', error);
-			});
+			}
 		});
 	});
 })();
