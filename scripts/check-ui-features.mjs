@@ -21,6 +21,28 @@ if (skin.DefaultUserOptions['whale-layout-mobile-toc'] !== true) {
 	);
 }
 
+if (skin.config.WhaleAvatarStyle !== 'identicon') {
+	throw new Error('DiceBear avatar style should default to identicon.');
+}
+
+if (
+	typeof skin.config.WhaleAvatarOptions !== 'object' ||
+	skin.config.WhaleAvatarOptions === null ||
+	Array.isArray(skin.config.WhaleAvatarOptions)
+) {
+	throw new Error('DiceBear avatar options should default to an object.');
+}
+
+if ('WhaleAvatarEndpoint' in skin.config || 'WhaleUseGravatar' in skin.config) {
+	throw new Error('Avatar config should not depend on external avatar APIs.');
+}
+
+if (skin.AutoloadClasses.WhaleAvatar !== 'WhaleAvatar.php') {
+	throw new Error(
+		'WhaleAvatar should be registered for MediaWiki autoloading.',
+	);
+}
+
 for (const locale of ['en', 'ja', 'ko', 'zh-hans', 'zh-hant']) {
 	const messages = JSON.parse(read(`i18n/${locale}.json`));
 	for (const key of [
@@ -84,6 +106,29 @@ assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
 const rendererPhp = read('WhaleRenderer.php');
 assertIncludes(rendererPhp, "'width' => '174'", 'Footer badge image');
 assertIncludes(rendererPhp, "'height' => '62'", 'Footer badge image');
+assertIncludes(
+	rendererPhp,
+	'WhaleAvatar::createDataUri',
+	'Login avatar rendering',
+);
+if (
+	rendererPhp.includes('secure.gravatar.com') ||
+	rendererPhp.includes('wAvatar')
+) {
+	throw new Error('Login avatar rendering should use server-side DiceBear.');
+}
+
+const avatarPhp = read('WhaleAvatar.php');
+assertIncludes(
+	avatarPhp,
+	"getInstallPath( 'dicebear/styles' )",
+	'DiceBear PHP avatar',
+);
+assertIncludes(
+	avatarPhp,
+	'new Avatar( $style, $avatarOptions )',
+	'DiceBear PHP avatar',
+);
 
 const externalLinkTemplate = read('templates/ExternalLinkModal.mustache');
 assertIncludes(

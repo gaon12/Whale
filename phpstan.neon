@@ -9,6 +9,7 @@ parameters:
 		- SkinWhale.php
 		- SpecialWhaleShortUrl.php
 		- Whale.php
+		- WhaleAvatar.php
 		- WhaleHooks.php
 		- WhaleRenderer.php
 		- WhaleShortUrl.php

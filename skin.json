@@ -37,7 +37,8 @@
 		"WhaleEnableBlurredCategories": true,
 		"WhaleEnableFloatingToc": true,
 		"WhaleEnableMobileFloatingToc": true,
-		"WhaleUseGravatar": true,
+		"WhaleAvatarStyle": "identicon",
+		"WhaleAvatarOptions": {},
 		"WhaleTheme": null,
 		"WhalePrimaryColor": null,
 		"WhaleSecondaryColor": null,
@@ -183,6 +184,7 @@
 	"AutoloadClasses": {
 		"SkinWhale": "SkinWhale.php",
 		"WhaleRenderer": "WhaleRenderer.php",
+		"WhaleAvatar": "WhaleAvatar.php",
 		"WhaleHooks": "WhaleHooks.php",
 		"WhaleShortUrl": "WhaleShortUrl.php",
 		"SpecialWhaleShortUrl": "SpecialWhaleShortUrl.php"

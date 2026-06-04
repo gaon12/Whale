@@ -13,10 +13,14 @@
 		],
 		"test": [
 			"phpcs -p -s",
-			"@test:folding"
+			"@test:folding",
+			"@test:avatar"
 		],
 		"test:folding": [
 			"php scripts/check-folding.php"
+		],
+		"test:avatar": [
+			"php scripts/check-avatar.php"
 		],
 		"fix": "phpcbf"
 	},
@@ -24,5 +28,9 @@
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
+	},
+	"require": {
+		"dicebear/core": "^10.0",
+		"dicebear/styles": "^10.1"
 	}
 }
