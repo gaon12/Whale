@@ -36,7 +36,7 @@
 				return;
 			}
 
-			navigator.clipboard?.writeText(shareData.url).catch((error) => {
+			whale.copyText(shareData.url).catch((error) => {
 				console.error('Clipboard API error: ', error);
 			});
 		});
