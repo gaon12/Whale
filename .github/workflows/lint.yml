@@ -11,6 +11,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: quality-gates-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -61,7 +65,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - name: Validate Composer metadata
-        run: composer validate
+        run: composer validate --strict
 
       - name: Audit PHP dependencies
         run: composer audit
