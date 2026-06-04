@@ -1,8 +1,9 @@
 (() => {
 	const DESKTOP_QUERY = '(min-width: 1280px)';
 	const MAX_ITEMS = 18;
-	const MOBILE_EDGE_SWIPE_PX = 28;
+	const MOBILE_EDGE_SWIPE_PX = 64;
 	const MOBILE_SWIPE_DISTANCE_PX = 48;
+	const MOBILE_SWIPE_MAX_VERTICAL_PX = 42;
 	const SECTION_NUMBER_SELECTOR = '.whale-heading-number';
 	let activeScrollUpdate = null;
 	let mobileGestureStart = null;
@@ -170,23 +171,49 @@
 		}
 
 		mobileGesturesBound = true;
+		const startGesture = (event, point) => {
+			const toc = document.querySelector('.whale-floating-toc');
+			if (!point || isDesktop() || !isMobileFloatingTocEnabled()) {
+				mobileGestureStart = null;
+				return;
+			}
+
+			const startsAtEdge =
+				point.clientX >= window.innerWidth - MOBILE_EDGE_SWIPE_PX;
+			const startsInToc = toc?.contains(event.target);
+			mobileGestureStart =
+				startsAtEdge || startsInToc
+					? { x: point.clientX, y: point.clientY, inToc: startsInToc }
+					: null;
+		};
+
+		const moveGesture = (point) => {
+			if (!mobileGestureStart || !point) {
+				return;
+			}
+
+			const deltaX = point.clientX - mobileGestureStart.x;
+			const deltaY = Math.abs(point.clientY - mobileGestureStart.y);
+			if (deltaY > MOBILE_SWIPE_MAX_VERTICAL_PX || deltaY > Math.abs(deltaX)) {
+				return;
+			}
+
+			if (deltaX <= -MOBILE_SWIPE_DISTANCE_PX) {
+				setMobileTocOpen(true);
+				mobileGestureStart = null;
+			} else if (
+				mobileGestureStart.inToc &&
+				deltaX >= MOBILE_SWIPE_DISTANCE_PX
+			) {
+				setMobileTocOpen(false);
+				mobileGestureStart = null;
+			}
+		};
+
 		document.addEventListener(
 			'touchstart',
 			(event) => {
-				const touch = event.touches?.[0];
-				const toc = document.querySelector('.whale-floating-toc');
-				if (!touch || isDesktop() || !isMobileFloatingTocEnabled()) {
-					mobileGestureStart = null;
-					return;
-				}
-
-				const startsAtEdge =
-					touch.clientX >= window.innerWidth - MOBILE_EDGE_SWIPE_PX;
-				const startsInToc = toc?.contains(event.target);
-				mobileGestureStart =
-					startsAtEdge || startsInToc
-						? { x: touch.clientX, y: touch.clientY, inToc: startsInToc }
-						: null;
+				startGesture(event, event.touches?.[0]);
 			},
 			{ passive: true },
 		);
@@ -194,36 +221,42 @@
 		document.addEventListener(
 			'touchmove',
 			(event) => {
-				if (!mobileGestureStart) {
+				moveGesture(event.touches?.[0]);
+			},
+			{ passive: true },
+		);
+
+		document.addEventListener(
+			'pointerdown',
+			(event) => {
+				if (event.pointerType === 'mouse') {
 					return;
 				}
 
-				const touch = event.touches?.[0];
-				if (!touch) {
+				startGesture(event, event);
+			},
+			{ passive: true },
+		);
+
+		document.addEventListener(
+			'pointermove',
+			(event) => {
+				if (event.pointerType === 'mouse') {
 					return;
 				}
 
-				const deltaX = touch.clientX - mobileGestureStart.x;
-				const deltaY = Math.abs(touch.clientY - mobileGestureStart.y);
-				if (deltaY > Math.abs(deltaX)) {
-					return;
-				}
-
-				if (deltaX <= -MOBILE_SWIPE_DISTANCE_PX) {
-					setMobileTocOpen(true);
-					mobileGestureStart = null;
-				} else if (
-					mobileGestureStart.inToc &&
-					deltaX >= MOBILE_SWIPE_DISTANCE_PX
-				) {
-					setMobileTocOpen(false);
-					mobileGestureStart = null;
-				}
+				moveGesture(event);
 			},
 			{ passive: true },
 		);
 
 		document.addEventListener('touchend', () => {
+			mobileGestureStart = null;
+		});
+		document.addEventListener('pointerup', () => {
+			mobileGestureStart = null;
+		});
+		document.addEventListener('pointercancel', () => {
 			mobileGestureStart = null;
 		});
 

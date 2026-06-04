@@ -1,6 +1,31 @@
 (() => {
 	const getHeadingText = (heading) =>
 		heading.textContent?.trim().replace(/\s+/g, ' ') || '';
+	let toastTimer = null;
+
+	const showCopyAlert = (message) => {
+		let alert = document.querySelector('.whale-heading-anchor-alert');
+		if (!alert) {
+			alert = document.createElement('div');
+			alert.className = 'whale-heading-anchor-alert';
+			alert.setAttribute('role', 'status');
+			alert.setAttribute('aria-live', 'polite');
+			document.body.append(alert);
+		}
+
+		alert.textContent = message;
+		alert.hidden = false;
+		window.clearTimeout(toastTimer);
+		window.requestAnimationFrame(() => {
+			alert.classList.add('is-visible');
+		});
+		toastTimer = window.setTimeout(() => {
+			alert.classList.remove('is-visible');
+			window.setTimeout(() => {
+				alert.hidden = true;
+			}, 220);
+		}, 1800);
+	};
 
 	const copyText = async (text) => {
 		if (navigator.clipboard?.writeText) {
@@ -37,6 +62,7 @@
 				try {
 					await copyText(url);
 					button.title = mw.msg('whale-heading-link-copied');
+					showCopyAlert(mw.msg('whale-heading-link-copied'));
 				} catch (error) {
 					console.error('Heading link copy failed: ', error);
 				}

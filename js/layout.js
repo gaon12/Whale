@@ -105,10 +105,9 @@
 	const setToggleState = (toggle, expanded) => {
 		const targetId = toggle.getAttribute('aria-controls');
 		const target = targetId ? document.getElementById(targetId) : null;
-		const root = toggle.closest(
-			'.whale-section-container, .whale-section-heading, .whale-folding',
-		);
+		const folding = toggle.closest('.whale-folding');
 		const heading = toggle.closest('.whale-section-heading');
+		const container = heading?.closest('.whale-section-container');
 		const collapseLabel = toggle.getAttribute('data-collapse-label') || '';
 		const expandLabel = toggle.getAttribute('data-expand-label') || '';
 
@@ -119,8 +118,9 @@
 		target.hidden = !expanded;
 		toggle.setAttribute('aria-expanded', String(expanded));
 		toggle.setAttribute('aria-label', expanded ? collapseLabel : expandLabel);
-		root?.classList.toggle('is-collapsed', !expanded);
+		folding?.classList.toggle('is-collapsed', !expanded);
 		heading?.classList.toggle('is-collapsed', !expanded);
+		container?.classList.toggle('is-collapsed', !expanded);
 	};
 
 	const toggleCollapsibleContent = (toggle) => {
