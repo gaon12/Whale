@@ -84,6 +84,33 @@ if (
 	exit( 1 );
 }
 
+$external = $renderer->parseForTest( <<<NAV
+- text: External
+  link: https://example.org/path
+- text: Protocol relative
+  link: //example.org/path
+- text: Spaced URL
+  link: https://example.org/has space
+- text: Script URL
+  link: javascript:alert(1)
+NAV );
+
+if (
+	$external[0]['href'] !== 'https://example.org/path' ||
+	$external[1]['href'] !== '//example.org/path'
+) {
+	fwrite( STDERR, "Safe external navbar URLs should be preserved.\n" );
+	exit( 1 );
+}
+
+if (
+	$external[2]['href'] !== '/wiki/https:%2F%2Fexample.org%2Fhas+space' ||
+	$external[3]['href'] !== '/wiki/javascript:alert%281%29'
+) {
+	fwrite( STDERR, "Unsafe navbar URLs should fall back to local page links.\n" );
+	exit( 1 );
+}
+
 $legacy = $renderer->parseForTest( '* icon=sync | display=recentchanges | link=Special:RecentChanges' );
 if (
 	count( $legacy ) !== 1 ||
