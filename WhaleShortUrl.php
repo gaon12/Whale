@@ -2,6 +2,7 @@
 
 class WhaleShortUrl {
 	private const ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	private const MAX_CODE_LENGTH = 11;
 
 	public static function encode( int $value ): string {
 		if ( $value <= 0 ) {
@@ -19,7 +20,10 @@ class WhaleShortUrl {
 	}
 
 	public static function decode( string $code ): ?int {
-		if ( !preg_match( '/^[0-9A-Za-z]+$/', $code ) ) {
+		if (
+			strlen( $code ) > self::MAX_CODE_LENGTH ||
+			!preg_match( '/^[0-9A-Za-z]+$/', $code )
+		) {
 			return null;
 		}
 
@@ -29,6 +33,9 @@ class WhaleShortUrl {
 		for ( $i = 0; $i < $length; $i++ ) {
 			$position = strpos( self::ALPHABET, $code[$i] );
 			if ( $position === false ) {
+				return null;
+			}
+			if ( $value > intdiv( PHP_INT_MAX - $position, $base ) ) {
 				return null;
 			}
 			$value = $value * $base + $position;
