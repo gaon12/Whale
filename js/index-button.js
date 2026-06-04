@@ -5,6 +5,7 @@
 	const MOBILE_SWIPE_DISTANCE_PX = 48;
 	const MOBILE_SWIPE_MAX_VERTICAL_PX = 42;
 	const SECTION_NUMBER_SELECTOR = '.whale-heading-number';
+	const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 	let activeScrollUpdate = null;
 	let mobileGestureStart = null;
 	let mobileGesturesBound = false;
@@ -23,6 +24,10 @@
 	];
 
 	const getTarget = (link) => whale.getAnchorTarget(link.getAttribute('href'));
+	const getTargetHeading = (target) =>
+		target?.matches?.(HEADING_SELECTOR)
+			? target
+			: target?.closest?.(HEADING_SELECTOR) || null;
 
 	const getRawHeadingLevel = (heading) => {
 		const headingLevel = Number(heading.tagName.match(/^H([1-6])$/)?.[1]);
@@ -31,6 +36,10 @@
 
 	const getHeadingLevel = (heading, baseLevel) =>
 		Math.min(6, Math.max(1, getRawHeadingLevel(heading) - baseLevel + 1));
+	const getHeadingBaseLevel = (headings = getContentHeadings()) => {
+		const rawLevels = headings.map(getRawHeadingLevel);
+		return rawLevels.length > 0 ? Math.min(...rawLevels) : 2;
+	};
 
 	const getHeadingHref = (heading) => {
 		const id = heading.querySelector('.mw-headline')?.id || heading.id;
@@ -76,28 +85,33 @@
 		}
 	};
 
-	const getFloatingTocItemsFromLinks = () =>
-		getTocLinks()
+	const getFloatingTocItemsFromLinks = () => {
+		const baseLevel = getHeadingBaseLevel();
+
+		return getTocLinks()
 			.map((link) => {
 				const target = getTarget(link);
+				const heading = getTargetHeading(target);
 				const number = whale.tocUtils.getTocNumber(link);
 
 				return {
 					link,
 					number,
 					target,
-					level: whale.tocUtils.getTocLevel(link),
+					level: heading
+						? getHeadingLevel(heading, baseLevel)
+						: whale.tocUtils.getTocLevel(link),
 					text: whale.tocUtils.getLinkText(link, target),
 				};
 			})
 			.filter((item) => item.target && item.text)
 			.slice(0, MAX_ITEMS);
+	};
 
 	const getFloatingTocItemsFromHeadings = () => {
 		const counters = [];
 		const headings = getContentHeadings();
-		const rawLevels = headings.map(getRawHeadingLevel);
-		const baseLevel = rawLevels.length > 0 ? Math.min(...rawLevels) : 2;
+		const baseLevel = getHeadingBaseLevel(headings);
 
 		return headings
 			.map((heading) => {
