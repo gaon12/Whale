@@ -1210,12 +1210,34 @@ class WhaleRenderer {
 			return '#';
 		}
 
-		if ( preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $link ) ) {
+		if ( $this->isSafeExternalNavbarHref( $link ) ) {
 			return $link;
 		}
 
 		$encoded = str_replace( '%3A', ':', urlencode( $link ) );
 		return str_replace( '$1', $encoded, $wgArticlePath );
+	}
+
+	private function isSafeExternalNavbarHref( string $link ): bool {
+		if ( preg_match( '/[\x00-\x20\x7F]/', $link ) ) {
+			return false;
+		}
+
+		if ( !preg_match( '/^(?:https?:)?\/\//i', $link ) ) {
+			return false;
+		}
+
+		$url = str_starts_with( $link, '//' ) ? 'https:' . $link : $link;
+		$parts = parse_url( $url );
+
+		if ( !is_array( $parts ) ) {
+			return false;
+		}
+
+		$scheme = strtolower( (string)( $parts['scheme'] ?? '' ) );
+		$host = (string)( $parts['host'] ?? '' );
+
+		return ( $scheme === 'http' || $scheme === 'https' ) && $host !== '';
 	}
 
 	/**
