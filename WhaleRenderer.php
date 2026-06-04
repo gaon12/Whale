@@ -66,7 +66,7 @@ class WhaleRenderer {
 	 * @return array<string,mixed>
 	 */
 	public function getLoginData(): array {
-		global $wgWhaleUseGravatar;
+		global $wgWhaleAvatarOptions, $wgWhaleAvatarStyle;
 
 		$skin = $this->skin;
 		$user = $skin->getUser();
@@ -85,22 +85,24 @@ class WhaleRenderer {
 
 		$personalTools = $skin->getWhalePersonalTools();
 		$avatar = '';
-		if ( $wgWhaleUseGravatar ) {
-			$email = '00000000000000000000000000000000?d=identicon&f=y';
-			if ( $user->getEmailAuthenticationTimestamp() ) {
-				$email = md5( strtolower( trim( $user->getEmail() ) ) ) . '?d=identicon';
-			}
-			$avatar = Html::element( 'img', [
-				'class' => 'profile-img',
-				'src' => '//secure.gravatar.com/avatar/' . $email,
-				'alt' => '',
-				'decoding' => 'async',
-			] );
-		}
+		if ( class_exists( WhaleAvatar::class ) ) {
+			$avatarStyle = is_string( $wgWhaleAvatarStyle ?? null ) ? $wgWhaleAvatarStyle : 'identicon';
+			$avatarSrc = WhaleAvatar::createDataUri(
+				WhaleAvatar::getSeedForUser( $user ),
+				$avatarStyle,
+				$this->getAvatarOptions( $wgWhaleAvatarOptions ?? [] )
+			);
 
-		if ( class_exists( 'wAvatar' ) ) {
-			$avatarObject = new wAvatar( $user->getId(), 'm' );
-			$avatar = $avatarObject->getAvatarURL( [ 'class' => 'profile-img' ] );
+			if ( $avatarSrc !== null ) {
+				$avatar = Html::element( 'img', [
+					'class' => 'profile-img',
+					'src' => $avatarSrc,
+					'alt' => '',
+					'width' => '64',
+					'height' => '64',
+					'decoding' => 'async',
+				] );
+			}
 		}
 
 		$links = [
@@ -200,6 +202,25 @@ class WhaleRenderer {
 		];
 
 		return $data;
+	}
+
+	/**
+	 * @param mixed $options
+	 * @return array<string,mixed>
+	 */
+	private function getAvatarOptions( $options ): array {
+		if ( !is_array( $options ) ) {
+			return [];
+		}
+
+		$avatarOptions = [];
+		foreach ( $options as $name => $value ) {
+			if ( is_string( $name ) ) {
+				$avatarOptions[$name] = $value;
+			}
+		}
+
+		return $avatarOptions;
 	}
 
 	/**
