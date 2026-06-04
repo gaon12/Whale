@@ -40,10 +40,32 @@
 		} catch {}
 	};
 
+	const updateBrowserThemeColor = () => {
+		const whaleRoot = document.querySelector('.Whale');
+		const themeColor = whaleRoot
+			? getComputedStyle(whaleRoot)
+					.getPropertyValue('--whale-main-color')
+					.trim()
+			: '';
+
+		if (!themeColor) {
+			return;
+		}
+
+		document
+			.querySelectorAll(
+				'meta[name="theme-color"], meta[name="msapplication-navbutton-color"]',
+			)
+			.forEach((meta) => {
+				meta.setAttribute('content', themeColor);
+			});
+	};
+
 	const applyMode = (mode, explicit = true) => {
 		const isDark = mode === 'dark';
 		document.body.classList.toggle('whale-dark', isDark);
 		document.body.classList.toggle('whale-auto-dark', !explicit);
+		updateBrowserThemeColor();
 		document.querySelectorAll('[data-whale-theme-toggle]').forEach((button) => {
 			const label = mw
 				.message(
