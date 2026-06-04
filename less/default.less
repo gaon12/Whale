@@ -35,6 +35,8 @@
 /* HTML Tag */
 html {
 	box-sizing: border-box;
+	/* Whale manages dark colors itself; opt out of browser auto-dark rewrites. */
+	color-scheme: only light;
 	font-size: 15px;
 	-webkit-text-size-adjust: 100%;
 }
@@ -251,7 +253,7 @@ strike {
 	--whale-radius-sm: 0.25rem;
 	background-color: #f5f5f5;
 	color: var(--whale-text-color);
-	color-scheme: light;
+	color-scheme: only light;
 }
 
 .Whale .whale-reading-progress {
