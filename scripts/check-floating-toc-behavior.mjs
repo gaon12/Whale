@@ -514,6 +514,39 @@ if (
 	);
 }
 
+const mobileTocLink = mobileToc.querySelector('a');
+mobileTocLink.dispatch('click', {
+	preventDefault: () => {},
+});
+if (
+	mobileRun.document.body.classList.contains('whale-floating-toc-open') ||
+	mobileToc.getAttribute('aria-hidden') !== 'true' ||
+	backdrop.hidden !== true ||
+	mobileRun.context.scrolledTo !== mobileRun.alpha
+) {
+	throw new Error('Mobile TOC links should close the drawer and scroll.');
+}
+
+mobileRun.document.dispatchEvent(
+	new mobileRun.context.CustomEvent('whale:toggleFloatingToc'),
+);
+let escapePrevented = false;
+mobileRun.document.dispatchEvent({
+	type: 'keydown',
+	key: 'Escape',
+	preventDefault: () => {
+		escapePrevented = true;
+	},
+});
+if (
+	!escapePrevented ||
+	mobileRun.document.body.classList.contains('whale-floating-toc-open') ||
+	mobileToc.getAttribute('aria-hidden') !== 'true' ||
+	backdrop.hidden !== true
+) {
+	throw new Error('Escape should close the open mobile TOC drawer.');
+}
+
 const singleHeadingRun = runFloatingToc({
 	desktop: true,
 	headings: [{ tagName: 'h2', title: 'Solo section', top: 200, key: 'solo' }],

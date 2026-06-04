@@ -73,6 +73,8 @@
 
 	const isMobileFloatingTocEnabled = () =>
 		document.body.classList.contains('whale-mobile-floating-toc-enabled');
+	const isMobileTocOpen = () =>
+		document.body.classList.contains('whale-floating-toc-open');
 
 	const setMobileTocOpen = (open) => {
 		document.body.classList.toggle('whale-floating-toc-open', open);
@@ -276,9 +278,19 @@
 
 		document.addEventListener('whale:toggleFloatingToc', () => {
 			if (!isDesktop() && isMobileFloatingTocEnabled()) {
-				setMobileTocOpen(
-					!document.body.classList.contains('whale-floating-toc-open'),
-				);
+				setMobileTocOpen(!isMobileTocOpen());
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (
+				event.key === 'Escape' &&
+				!isDesktop() &&
+				isMobileFloatingTocEnabled() &&
+				isMobileTocOpen()
+			) {
+				event.preventDefault();
+				setMobileTocOpen(false);
 			}
 		});
 	};
