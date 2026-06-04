@@ -24,6 +24,8 @@
 	"whale-scroll-buttons-vertical": "Vertical",
 	"whale-scroll-buttons-horizontal": "Horizontal",
 	"whale-pref-layout-floating-toc": "Show right-side section index on desktop",
+	"whale-pref-layout-mobile-toc": "Show swipe section index on mobile and tablet",
+	"whale-pref-layout-mobile-toc-help": "Open a desktop-like section index panel by swiping left from the right edge of the screen.",
 	"whale-pref-live-recent-fixed-height": "Keep recent feed height fixed",
 	"whale-pref-live-recent-fixed-height-help": "Keep the sidebar height stable even when the recent changes or discussions list has fewer items than the maximum.",
 	"whale-pref-layout-morearticle": "Remove ads below article area",

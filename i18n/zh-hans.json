@@ -24,6 +24,8 @@
 	"whale-scroll-buttons-vertical": "垂直",
 	"whale-scroll-buttons-horizontal": "水平",
 	"whale-pref-layout-floating-toc": "在桌面端显示右侧章节目录",
+	"whale-pref-layout-mobile-toc": "在手机/平板显示滑动章节目录",
+	"whale-pref-layout-mobile-toc-help": "从屏幕右侧边缘向左滑动时，打开类似桌面端的章节目录面板。",
 	"whale-pref-live-recent-fixed-height": "固定最近动态列表高度",
 	"whale-pref-live-recent-fixed-height-help": "即使最近更改或讨论少于最大数量，也保持侧栏高度稳定。",
 	"whale-pref-layout-morearticle": "移除正文下方广告",

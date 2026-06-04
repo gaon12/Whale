@@ -24,7 +24,7 @@ class WhaleHooks {
 	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, &$bodyAttrs ) {
 		global $wgWhaleEnableFloatingToc, $wgWhaleEnableReadingProgress, $wgWhaleEnableHeadingAnchors,
 			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
-			$wgWhaleMobileUserToolsPosition;
+			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition;
 
 		if ( $sk->getSkinName() === 'whale' ) {
 			$bodyAttrs['class'] .= ' Whale width-size';
@@ -59,6 +59,13 @@ class WhaleHooks {
 				$userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-floating-toc' ) !== false
 			) {
 				$bodyAttrs['class'] .= ' whale-floating-toc-enabled';
+			}
+
+			if (
+				( $wgWhaleEnableMobileFloatingToc ?? true ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-mobile-toc' ) !== false
+			) {
+				$bodyAttrs['class'] .= ' whale-mobile-floating-toc-enabled';
 			}
 
 			if (
@@ -120,7 +127,7 @@ class WhaleHooks {
 		global $wgWhaleAdSetting, $wgWhaleAdGroup, $wgWhaleEnableUserContributionGraph,
 			$wgWhaleEnableShortUrls, $wgWhaleEnableHeadingAnchors, $wgWhaleEnableReadingProgress,
 			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
-			$wgWhaleMobileUserToolsPosition;
+			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition;
 
 		$service = MediaWiki\MediaWikiServices::getInstance();
 		$userGroupManager = $service->getUserGroupManager();
@@ -181,6 +188,16 @@ class WhaleHooks {
 			'default' => true
 		];
 
+		if ( ( $wgWhaleEnableMobileFloatingToc ?? true ) !== false ) {
+			$preferences['whale-layout-mobile-toc'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-layout-mobile-toc',
+				'section' => 'whale/layout',
+				'help-message' => 'whale-pref-layout-mobile-toc-help',
+				'default' => true
+			];
+		}
+
 		$preferences['whale-live-recent-fixed-height'] = [
 			'type' => 'toggle',
 			'label-message' => 'whale-pref-live-recent-fixed-height',
@@ -199,7 +216,7 @@ class WhaleHooks {
 				wfMessage( 'whale-section-collapse-off' )->text() => self::SECTION_COLLAPSE_OFF,
 			],
 			'help-message' => 'whale-pref-content-section-collapse-help',
-			'default' => self::SECTION_COLLAPSE_MARKED
+			'default' => self::SECTION_COLLAPSE_ALL
 		];
 
 		$preferences['whale-content-folding'] = [

@@ -1252,12 +1252,10 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle::before {
 	display: block;
-	width: 0;
-	height: 0;
-	border-top: 0.3em solid transparent;
-	border-bottom: 0.3em solid transparent;
-	border-left: 0.42em solid currentColor;
-	content: "";
+	content: ">";
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1;
 	transform: rotate(90deg);
 	transition: transform 0.2s ease;
 }
@@ -1559,22 +1557,6 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	margin: 0;
 }
 
-.Whale .whale-short-url-code {
-	display: inline-flex;
-	width: fit-content;
-	max-width: 100%;
-	margin-bottom: 0.75rem;
-	padding: 0.2rem 0.5rem;
-	overflow: hidden;
-	border-radius: 999px;
-	background-color: #eef4ff;
-	color: var(--whale-second-color);
-	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-	font-size: 0.8rem;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
 .Whale .whale-short-url-copy-row {
 	display: flex;
 	align-items: stretch;
@@ -1872,6 +1854,84 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	color: #fff;
 	text-decoration: none;
 }
+
+.whale-floating-toc.is-mobile {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1002;
+	width: min(82vw, 22rem);
+	max-width: 22rem;
+	padding: 4.25rem 1rem 1rem;
+	overflow-y: auto;
+	background-color: #fff;
+	border-left: 1px solid #d7dee5;
+	box-shadow: -0.4rem 0 1.5rem rgba(0, 0, 0, 0.18);
+	transform: translateX(100%);
+	transition: transform 180ms ease;
+}
+
+body.whale-floating-toc-open .whale-floating-toc.is-mobile {
+	transform: translateX(0);
+}
+
+.whale-floating-toc.is-mobile ol {
+	height: auto;
+	pointer-events: auto;
+}
+
+.whale-floating-toc.is-mobile li,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-2,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-3,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-4,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-5,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-6 {
+	position: static;
+	right: auto;
+	padding-right: 0;
+	margin-bottom: 0.45rem;
+	transform: none;
+	pointer-events: auto;
+}
+
+.whale-floating-toc.is-mobile li::after {
+	display: none;
+}
+
+.whale-floating-toc.is-mobile a {
+	max-width: none;
+	padding: 0.55rem 0.7rem;
+	text-align: left;
+	white-space: normal;
+}
+
+.whale-floating-toc.is-mobile .whale-floating-toc-level-2 a {
+	margin-left: 0.75rem;
+}
+
+.whale-floating-toc.is-mobile .whale-floating-toc-level-3 a {
+	margin-left: 1.5rem;
+}
+
+.whale-floating-toc.is-mobile .whale-floating-toc-level-4 a,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-5 a,
+.whale-floating-toc.is-mobile .whale-floating-toc-level-6 a {
+	margin-left: 2.25rem;
+}
+
+.whale-floating-toc-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 1001;
+	padding: 0;
+	border: 0;
+	background: rgba(0, 0, 0, 0.28);
+	cursor: default;
+}
+
+.whale-floating-toc-backdrop[hidden] {
+	display: none;
+}
 /* Floating ToC End */
 
 /* scroll button */
@@ -1991,7 +2051,7 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 }
 
 @media screen and (min-width: 1280px) {
-	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled.whale-floating-toc-hover #whale-bottombtn {
+	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled.whale-floating-toc-hover:not(.whale-floating-toc-toolbar-hover) #whale-bottombtn {
 		transform: translateX(-9.65rem);
 	}
 }
@@ -2561,6 +2621,11 @@ body.whale-dark #whale-bottombtn .scroll-button {
 	color: #ddd;
 }
 
+body.whale-dark .whale-floating-toc.is-mobile {
+	background-color: #1f2023;
+	border-color: #555;
+}
+
 body.whale-dark.Whale .whale-floating-toc a,
 body.whale-dark.Whale #whale-bottombtn .scroll-button,
 body.whale-dark.Whale .whale-external-link-url,
@@ -2916,6 +2981,11 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 		color: #ddd;
 	}
 
+	body.whale-auto-dark .whale-floating-toc.is-mobile {
+		background-color: #1f2023;
+		border-color: #555;
+	}
+
 	body.whale-auto-dark.Whale .whale-floating-toc a,
 	body.whale-auto-dark.Whale #whale-bottombtn .scroll-button,
 	body.whale-auto-dark.Whale .whale-external-link-url,
@@ -3153,6 +3223,10 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 
 	.whale-floating-toc {
 		display: none;
+	}
+
+	.whale-floating-toc.is-mobile {
+		display: block;
 	}
 }
 
