@@ -24,6 +24,8 @@
 	"whale-scroll-buttons-vertical": "세로 배치",
 	"whale-scroll-buttons-horizontal": "가로 배치",
 	"whale-pref-layout-floating-toc": "PC에서 오른쪽 문단 목차 표시",
+	"whale-pref-layout-mobile-toc": "모바일/태블릿에서 스와이프 문단 목차 표시",
+	"whale-pref-layout-mobile-toc-help": "화면 오른쪽 가장자리에서 왼쪽으로 밀면 PC처럼 문단 목차 패널을 엽니다.",
 	"whale-pref-live-recent-fixed-height": "최근 바뀜/토론 목록 높이 고정",
 	"whale-pref-live-recent-fixed-height-help": "목록 항목 수가 최대 갯수보다 적어도 사이드바 높이를 일정하게 유지합니다.",
 	"whale-pref-layout-morearticle": "문서 영역 하단 광고 제거",

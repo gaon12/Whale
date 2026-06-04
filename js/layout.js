@@ -268,6 +268,16 @@
 			const scrollToc = whale.closest(event.target, '#whale-scrolltoc');
 			if (scrollToc) {
 				event.preventDefault();
+				if (
+					document.body.classList.contains(
+						'whale-mobile-floating-toc-enabled',
+					) &&
+					!window.matchMedia?.('(min-width: 1280px)').matches
+				) {
+					document.dispatchEvent(new CustomEvent('whale:toggleFloatingToc'));
+					return;
+				}
+
 				whale.scrollToTarget(getTocTarget());
 				return;
 			}

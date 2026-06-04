@@ -24,6 +24,8 @@
 	"whale-scroll-buttons-vertical": "縦配置",
 	"whale-scroll-buttons-horizontal": "横配置",
 	"whale-pref-layout-floating-toc": "PCで右側の節目次を表示",
+	"whale-pref-layout-mobile-toc": "モバイル/タブレットでスワイプ節目次を表示",
+	"whale-pref-layout-mobile-toc-help": "画面右端から左へスワイプすると、PCのような節目次パネルを開きます。",
 	"whale-pref-live-recent-fixed-height": "最近の更新/議論の高さを固定",
 	"whale-pref-live-recent-fixed-height-help": "項目数が最大数より少ない場合でもサイドバーの高さを一定に保ちます。",
 	"whale-pref-layout-morearticle": "記事下部の広告を削除",
