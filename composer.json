@@ -13,11 +13,15 @@
 		"test": [
 			"phpcs -p -s",
 			"@test:folding",
+			"@test:sections",
 			"@test:avatar",
 			"@test:navbar"
 		],
 		"test:folding": [
 			"php scripts/check-folding.php"
+		],
+		"test:sections": [
+			"php scripts/check-section-decoration.php"
 		],
 		"test:avatar": [
 			"php scripts/check-avatar.php"

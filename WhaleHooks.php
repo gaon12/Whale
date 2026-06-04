@@ -724,9 +724,7 @@ class WhaleHooks {
 			$cursor = $next;
 		}
 
-		if ( $body->hasChildNodes() ) {
-			$parent->insertBefore( $body, $cursor );
-		}
+		$parent->insertBefore( $body, $cursor );
 	}
 
 	private static function createToggleButton(
