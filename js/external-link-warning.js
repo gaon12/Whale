@@ -45,19 +45,17 @@
 		}
 
 		const href = link.getAttribute('href');
-		if (
-			!href ||
-			href.startsWith('#') ||
-			href.startsWith('mailto:') ||
-			href.startsWith('tel:') ||
-			href.startsWith('javascript:')
-		) {
+		if (!href || href.startsWith('#')) {
 			return false;
 		}
 
 		try {
 			const url = new URL(href, location.href);
-			return /^https?:$/.test(url.protocol) && url.origin !== location.origin;
+			if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+				return false;
+			}
+
+			return url.origin !== location.origin;
 		} catch {
 			return false;
 		}
