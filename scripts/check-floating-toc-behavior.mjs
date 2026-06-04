@@ -192,6 +192,24 @@ class TestElement {
 		return this.tagName.toLowerCase() === selector.toLowerCase();
 	}
 
+	matches(selector) {
+		return selector
+			.split(',')
+			.map((item) => item.trim())
+			.some((item) => this.matchesSimpleSelector(item));
+	}
+
+	closest(selector) {
+		let node = this;
+		while (node) {
+			if (node.matches(selector)) {
+				return node;
+			}
+			node = node.parentNode;
+		}
+		return null;
+	}
+
 	cloneNode(deep) {
 		const clone = new TestElement(this.tagName, {
 			className: this.className,
@@ -234,7 +252,8 @@ class TestDocument extends TestElement {
 				: [];
 		}
 		if (selector.includes('#toc li > a')) {
-			return [];
+			const toc = this.querySelector('#toc');
+			return toc ? toc.querySelectorAll('a') : [];
 		}
 		return this.body.querySelectorAll(selector);
 	}
@@ -264,7 +283,19 @@ const createHeading = (tagName, title, top) => {
 	return heading;
 };
 
-const createContext = ({ desktop }) => {
+const createTocLink = ({ href, number, text, level }) => {
+	const item = new TestElement('li', { className: `toclevel-${level}` });
+	const link = new TestElement('a');
+	link.setAttribute('href', href);
+	link.append(
+		new TestElement('span', { className: 'tocnumber', text: number }),
+		new TestElement('span', { className: 'toctext', text }),
+	);
+	item.append(link);
+	return item;
+};
+
+const createContext = ({ desktop, targetByHref = {} }) => {
 	const document = new TestDocument();
 	const readyCallbacks = [];
 	const windowListeners = new Map();
@@ -310,7 +341,7 @@ const createContext = ({ desktop }) => {
 	runInNewContext(read('js/toc-utils.js'), context);
 	context.whale = {
 		...context.window.whale,
-		getAnchorTarget: () => null,
+		getAnchorTarget: (href) => targetByHref[href] || null,
 		getNavHeight: () => 0,
 		rafThrottle: (callback) => callback,
 		ready: (callback) => readyCallbacks.push(callback),
@@ -342,10 +373,27 @@ const mountHeadings = (
 	return { toolbar, ...mountedHeadings };
 };
 
-const runFloatingToc = ({ desktop, headings }) => {
-	const env = createContext({ desktop });
+const runFloatingToc = ({ desktop, headings, tocItems }) => {
+	const targetByHref = {};
+	const env = createContext({ desktop, targetByHref });
 	const { document, readyCallbacks } = env;
 	const mounted = mountHeadings(document, headings);
+	for (const node of Object.values(mounted)) {
+		const id = node.querySelector?.('.mw-headline')?.id;
+		if (id) {
+			targetByHref[`#${id}`] = node.querySelector('.mw-headline');
+		}
+	}
+
+	if (tocItems) {
+		const toc = new TestElement('div', { id: 'toc' });
+		const list = new TestElement('ol');
+		for (const item of tocItems) {
+			list.append(createTocLink(item));
+		}
+		toc.append(list);
+		document.body.append(toc);
+	}
 
 	if (desktop) {
 		document.body.classList.add('whale-floating-toc-enabled');
@@ -502,5 +550,40 @@ if (
 ) {
 	throw new Error(
 		`Fallback numbering should normalize skipped heading levels: ${h3FirstLabels?.join('|')}`,
+	);
+}
+
+const tocBackedRun = runFloatingToc({
+	desktop: true,
+	headings: [
+		{ tagName: 'h2', title: 'Toc parent', top: 200, key: 'parent' },
+		{ tagName: 'h3', title: 'Toc child', top: 500, key: 'child' },
+	],
+	tocItems: [
+		{ href: '#toc parent', number: '2', text: 'Wrong parent', level: 4 },
+		{ href: '#toc child', number: '2.1', text: 'Wrong child', level: 5 },
+	],
+});
+const tocBackedItems = tocBackedRun.document
+	.querySelector('.whale-floating-toc')
+	?.querySelectorAll('li');
+const tocBackedLabels = tocBackedRun.document
+	.querySelector('.whale-floating-toc')
+	?.querySelectorAll('a')
+	.map((anchor) => anchor.textContent);
+if (tocBackedLabels?.join('|') !== '2. Toc parent|2.1 Toc child') {
+	throw new Error(
+		`TOC-backed labels should prefer real heading text: ${tocBackedLabels?.join('|')}`,
+	);
+}
+
+if (
+	tocBackedItems?.[0]?.className !== 'whale-floating-toc-level-1' ||
+	tocBackedItems?.[1]?.className !== 'whale-floating-toc-level-2'
+) {
+	throw new Error(
+		`TOC-backed levels should normalize from target headings: ${tocBackedItems
+			?.map((item) => item.className)
+			.join('|')}`,
 	);
 }
