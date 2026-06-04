@@ -37,3 +37,9 @@ jobs:
             --exclude 'vendor' \
             -e "ssh -i ~/.ssh/whale_deploy_key -p ${{ secrets.WHALE_DEPLOY_PORT || 22 }}" \
             ./ "${{ secrets.WHALE_DEPLOY_USER }}@${{ secrets.WHALE_DEPLOY_HOST }}:${{ secrets.WHALE_DEPLOY_PATH }}"
+
+      - name: Install production PHP dependencies
+        run: |
+          ssh -i ~/.ssh/whale_deploy_key -p "${{ secrets.WHALE_DEPLOY_PORT || 22 }}" \
+            "${{ secrets.WHALE_DEPLOY_USER }}@${{ secrets.WHALE_DEPLOY_HOST }}" \
+            "cd '${{ secrets.WHALE_DEPLOY_PATH }}' && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader"
