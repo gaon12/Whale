@@ -97,6 +97,7 @@ const styles = read('less/default.less');
 assertIncludes(styles, 'color-scheme: light dark', 'Stylesheet');
 assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
+assertIncludes(styles, '.whale-content-no-sidebar', 'No-sidebar layout');
 assertIncludes(styles, 'scrollbar-gutter: stable', 'Stylesheet');
 assertIncludes(
 	styles,
@@ -137,13 +138,16 @@ assertIncludes(rendererPhp, "'height' => '62'", 'Footer badge image');
 assertIncludes(rendererPhp, 'parseSimpleNavbar', 'Simple navbar parser');
 assertIncludes(
 	rendererPhp,
+	'$title->getLatestRevID()',
+	'Navbar content cache key',
+);
+assertIncludes(
+	rendererPhp,
 	'WhaleAvatar::createDataUri',
 	'Login avatar rendering',
 );
-if (
-	rendererPhp.includes('secure.gravatar.com') ||
-	rendererPhp.includes('wAvatar')
-) {
+assertIncludes(rendererPhp, 'profile-img-fallback', 'Login avatar fallback');
+if (/\bwAvatar\b|Gravatar/i.test(rendererPhp)) {
 	throw new Error('Login avatar rendering should use server-side DiceBear.');
 }
 
@@ -173,6 +177,44 @@ if (
 		'External link modal close button should sit after the title.',
 	);
 }
+
+const skinTemplate = read('templates/skin.mustache');
+assertIncludes(skinTemplate, 'whale-content-no-sidebar', 'No-sidebar layout');
+assertIncludes(
+	skinTemplate,
+	'whale-content-wrapper-no-sidebar',
+	'No-sidebar layout',
+);
+
+const hooksPhp = read('WhaleHooks.php');
+assertIncludes(
+	hooksPhp,
+	"$preferences['whale-ads-belowarticle']",
+	'Below-article ad preference',
+);
+if (hooksPhp.includes("$preferences['whale-ads-morearticle']")) {
+	throw new Error('Below-article ad preference should use belowarticle key.');
+}
+assertIncludes(
+	hooksPhp,
+	'$wgWhaleEnableSectionCollapse ?? true',
+	'Feature preference guards',
+);
+
+assertIncludes(skinPhp, 'NS_SPECIAL', 'Special-page sidebar suppression');
+assertIncludes(skinPhp, '$legacyOptionKey', 'Legacy ad preference migration');
+
+const shortUrlPhp = read('SpecialWhaleShortUrl.php');
+assertIncludes(
+	shortUrlPhp,
+	"quickUserCan( 'read'",
+	'Short URL permission check',
+);
+assertIncludes(
+	shortUrlPhp,
+	'ALLOWED_REDIRECT_STATUSES',
+	'Short URL redirect status validation',
+);
 
 const readme = read('README.md');
 assertIncludes(readme, 'children:', 'Simple navbar docs');

@@ -4,7 +4,7 @@
 	</div>
 </header>
 <section>
-	<div class="content-wrapper">
+	<div class="content-wrapper{{^has-whale-sidebar}} whale-content-wrapper-no-sidebar{{/has-whale-sidebar}}">
 		{{#has-whale-sidebar}}
 			<aside>
 				<div class="whale-sidebar">
@@ -15,7 +15,7 @@
 				</div>
 			</aside>
 		{{/has-whale-sidebar}}
-		<div class="whale-content">
+		<div class="whale-content{{^has-whale-sidebar}} whale-content-no-sidebar{{/has-whale-sidebar}}">
 			<div class="whale-content-header">
 				{{#has-whale-site-notice}}
 					<div class="whale-notice" role="alert">
