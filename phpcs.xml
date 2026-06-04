@@ -8,5 +8,6 @@
 	<arg name="encoding" value="UTF-8"/>
 	<exclude-pattern>vendor</exclude-pattern>
 	<exclude-pattern>scripts/check-folding.php</exclude-pattern>
+	<exclude-pattern>scripts/check-navbar.php</exclude-pattern>
 	<exclude-pattern>tests/phpstan</exclude-pattern>
 </ruleset>

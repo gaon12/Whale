@@ -14,13 +14,17 @@
 		"test": [
 			"phpcs -p -s",
 			"@test:folding",
-			"@test:avatar"
+			"@test:avatar",
+			"@test:navbar"
 		],
 		"test:folding": [
 			"php scripts/check-folding.php"
 		],
 		"test:avatar": [
 			"php scripts/check-avatar.php"
+		],
+		"test:navbar": [
+			"php scripts/check-navbar.php"
 		],
 		"fix": "phpcbf"
 	},

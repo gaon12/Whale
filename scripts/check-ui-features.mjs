@@ -58,6 +58,12 @@ for (const locale of ['en', 'ja', 'ko', 'zh-hans', 'zh-hant']) {
 const indexButton = read('js/index-button.js');
 assertIncludes(indexButton, 'whale:toggleFloatingToc', 'Floating TOC script');
 assertIncludes(indexButton, 'MOBILE_SWIPE_DISTANCE_PX', 'Floating TOC script');
+assertIncludes(indexButton, 'MOBILE_EDGE_SWIPE_PX = 64', 'Floating TOC script');
+assertIncludes(
+	indexButton,
+	"event.pointerType === 'mouse'",
+	'Floating TOC script',
+);
 assertIncludes(
 	indexButton,
 	'getFloatingTocItemsFromHeadings',
@@ -71,6 +77,8 @@ assertIncludes(
 
 const layout = read('js/layout.js');
 assertIncludes(layout, 'whale:toggleFloatingToc', 'Layout scroll TOC handler');
+assertIncludes(layout, 'container?.classList.toggle', 'Section folding state');
+assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
 
 const skinPhp = read('SkinWhale.php');
 assertIncludes(
@@ -84,17 +92,32 @@ if (skinPhp.includes('maximum-scale=1')) {
 
 const styles = read('less/default.less');
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
+assertIncludes(styles, 'scrollbar-gutter: stable', 'Stylesheet');
 assertIncludes(
 	styles,
 	':not(.whale-floating-toc-toolbar-hover) #whale-bottombtn',
 	'Toolbar hover guard style',
 );
 assertIncludes(styles, 'content: ">"', 'Section collapse toggle style');
+assertIncludes(
+	styles,
+	'.whale-heading-anchor-alert',
+	'Heading link copy alert',
+);
+assertIncludes(styles, 'gap: 0.65rem', 'Short URL copy row spacing');
 
 const shortUrlTemplate = read('templates/ShortUrlModal.mustache');
 if (shortUrlTemplate.includes('whale-short-url-code')) {
 	throw new Error('Short URL modal should not render the internal code pill.');
 }
+
+const headingAnchors = read('js/heading-anchors.js');
+assertIncludes(headingAnchors, 'showCopyAlert', 'Heading anchor copy feedback');
+assertIncludes(
+	headingAnchors,
+	"alert.setAttribute('role', 'status')",
+	'Heading anchor copy feedback',
+);
 
 const searchTemplate = read('templates/SearchBox.mustache');
 assertIncludes(searchTemplate, 'aria-label="{{go-label}}"', 'Search form');
@@ -106,6 +129,7 @@ assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
 const rendererPhp = read('WhaleRenderer.php');
 assertIncludes(rendererPhp, "'width' => '174'", 'Footer badge image');
 assertIncludes(rendererPhp, "'height' => '62'", 'Footer badge image');
+assertIncludes(rendererPhp, 'parseSimpleNavbar', 'Simple navbar parser');
 assertIncludes(
 	rendererPhp,
 	'WhaleAvatar::createDataUri',
@@ -136,3 +160,15 @@ assertIncludes(
 	'href="#" data-whale-external-continue',
 	'External link modal continue link',
 );
+if (
+	externalLinkTemplate.indexOf('whale-modal-title') >
+	externalLinkTemplate.indexOf('whale-modal-close')
+) {
+	throw new Error(
+		'External link modal close button should sit after the title.',
+	);
+}
+
+const readme = read('README.md');
+assertIncludes(readme, 'children:', 'Simple navbar docs');
+assertIncludes(readme, '- text: Beginner guide', 'Simple navbar docs');

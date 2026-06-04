@@ -422,6 +422,34 @@ if (
 	throw new Error('Mobile floating TOC should start closed.');
 }
 
+mobileRun.document.dispatchEvent({
+	type: 'touchstart',
+	target: mobileRun.document.body,
+	touches: [{ clientX: 384, clientY: 240 }],
+});
+mobileRun.document.dispatchEvent({
+	type: 'touchmove',
+	target: mobileRun.document.body,
+	touches: [{ clientX: 320, clientY: 246 }],
+});
+if (!mobileRun.document.body.classList.contains('whale-floating-toc-open')) {
+	throw new Error('Mobile edge swipe should open the TOC drawer.');
+}
+
+mobileRun.document.dispatchEvent({
+	type: 'touchstart',
+	target: mobileToc,
+	touches: [{ clientX: 300, clientY: 240 }],
+});
+mobileRun.document.dispatchEvent({
+	type: 'touchmove',
+	target: mobileToc,
+	touches: [{ clientX: 360, clientY: 246 }],
+});
+if (mobileRun.document.body.classList.contains('whale-floating-toc-open')) {
+	throw new Error('Mobile swipe right inside the drawer should close it.');
+}
+
 mobileRun.document.dispatchEvent(
 	new mobileRun.context.CustomEvent('whale:toggleFloatingToc'),
 );
