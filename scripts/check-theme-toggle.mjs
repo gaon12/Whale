@@ -73,6 +73,7 @@ let clickHandler = null;
 const context = {
 	document: {
 		body: { classList: bodyClassList },
+		documentElement: { style: {} },
 		addEventListener: (type, handler) => {
 			if (type === 'click') {
 				clickHandler = handler;
@@ -134,6 +135,10 @@ if (!bodyClassList.has('whale-dark') || !bodyClassList.has('whale-auto-dark')) {
 	);
 }
 
+if (context.document.documentElement.style.colorScheme !== 'dark') {
+	throw new Error('System dark mode should set root color-scheme to dark.');
+}
+
 if (!metas.every((meta) => meta.content === '#99ccff')) {
 	throw new Error(
 		'Browser theme metadata should follow the dark Whale palette.',
@@ -149,6 +154,10 @@ if (bodyClassList.has('whale-dark') || bodyClassList.has('whale-auto-dark')) {
 	throw new Error(
 		'Explicit light mode should remove dark and auto-dark classes.',
 	);
+}
+
+if (context.document.documentElement.style.colorScheme !== 'light') {
+	throw new Error('Explicit light mode should set root color-scheme to light.');
 }
 
 if (!metas.every((meta) => meta.content === '#4188f1')) {

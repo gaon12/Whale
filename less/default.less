@@ -35,8 +35,8 @@
 /* HTML Tag */
 html {
 	box-sizing: border-box;
-	/* Whale manages dark colors itself; opt out of browser auto-dark rewrites. */
-	color-scheme: only light;
+	/* Whale manages both schemes itself; tell browsers not to auto-rewrite colors. */
+	color-scheme: light dark;
 	font-size: 15px;
 	-webkit-text-size-adjust: 100%;
 }
@@ -253,7 +253,7 @@ strike {
 	--whale-radius-sm: 0.25rem;
 	background-color: #f5f5f5;
 	color: var(--whale-text-color);
-	color-scheme: only light;
+	color-scheme: light;
 }
 
 .Whale .whale-reading-progress {
@@ -2415,10 +2415,8 @@ body.whale-dark div#mw-protect-cascadeon {
 	background-color: #000;
 }
 
-body.whale-dark .Whale {
-	color-scheme: dark;
-}
-
+body.whale-dark,
+body.whale-dark .Whale,
 body.whale-dark.Whale {
 	color-scheme: dark;
 }
@@ -2773,10 +2771,8 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 		background-color: #000;
 	}
 
-	body.whale-auto-dark .Whale {
-		color-scheme: dark;
-	}
-
+	body.whale-auto-dark,
+	body.whale-auto-dark .Whale,
 	body.whale-auto-dark.Whale {
 		color-scheme: dark;
 	}

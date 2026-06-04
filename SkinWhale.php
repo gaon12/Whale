@@ -112,6 +112,7 @@ class SkinWhale extends SkinMustache {
 		$out->addMeta( 'mobile-web-app-capable', 'Yes' );
 
 		/* 모바일에서의 테마 컬러 적용 */
+		$out->addMeta( 'color-scheme', 'light dark' );
 		// 크롬, 파이어폭스 OS, 오페라
 		$out->addMeta( 'theme-color', $mainColor );
 		// 윈도우 폰
