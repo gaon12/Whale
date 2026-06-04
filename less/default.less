@@ -544,11 +544,23 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	width: 2rem;
 	height: 2rem;
 	border-radius: 0.35rem;
 	margin: 0;
 	border: 1px solid #e1e8ed;
+}
+
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img-fallback {
+	background-color: rgba(255, 255, 255, 0.16);
+	color: #fff;
+}
+
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img-fallback .whale-icon {
+	font-size: 1.15rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
@@ -889,6 +901,10 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	margin-right: 21rem;
 	padding: 0;
 	padding-bottom: 1rem;
+}
+
+.Whale .content-wrapper .whale-content-no-sidebar {
+	margin-right: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header {

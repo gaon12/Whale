@@ -411,8 +411,11 @@ class SkinWhale extends SkinMustache {
 
 	private function shouldRenderSidebar(): bool {
 		$request = $this->getRequest();
+		$title = $this->getTitle();
 
 		if (
+			!$title ||
+			$title->getNamespace() === NS_SPECIAL ||
 			$request->getCheck( 'handheld' ) ||
 			$request->getVal( 'useformat' ) === 'mobile' ||
 			$request->getCheck( 'mobileaction' )
@@ -471,7 +474,11 @@ class SkinWhale extends SkinMustache {
 
 		if ( isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup === 'differ' ) {
 			$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-			if ( $userOptionsLookup->getOption( $this->getUser(), $optionKey ) ) {
+			$legacyOptionKey = $optionKey === 'whale-ads-belowarticle' ? 'whale-ads-morearticle' : null;
+			if (
+				$userOptionsLookup->getOption( $this->getUser(), $optionKey ) ||
+				( $legacyOptionKey !== null && $userOptionsLookup->getOption( $this->getUser(), $legacyOptionKey ) )
+			) {
 				return false;
 			}
 		}

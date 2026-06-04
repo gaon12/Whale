@@ -127,7 +127,9 @@ class WhaleHooks {
 		global $wgWhaleAdSetting, $wgWhaleAdGroup, $wgWhaleEnableUserContributionGraph,
 			$wgWhaleEnableShortUrls, $wgWhaleEnableHeadingAnchors, $wgWhaleEnableReadingProgress,
 			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
-			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition;
+			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition, $wgWhaleEnableFloatingToc,
+			$wgWhaleEnableLiveRC, $wgWhaleEnableSectionCollapse, $wgWhaleEnableFoldingBlocks,
+			$wgWhaleEnableBlurredCategories;
 
 		$service = MediaWiki\MediaWikiServices::getInstance();
 		$userGroupManager = $service->getUserGroupManager();
@@ -181,12 +183,14 @@ class WhaleHooks {
 			'default' => self::SCROLL_BUTTONS_VERTICAL
 		];
 
-		$preferences['whale-layout-floating-toc'] = [
-			'type' => 'toggle',
-			'label-message' => 'whale-pref-layout-floating-toc',
-			'section' => 'whale/layout',
-			'default' => true
-		];
+		if ( ( $wgWhaleEnableFloatingToc ?? true ) !== false ) {
+			$preferences['whale-layout-floating-toc'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-layout-floating-toc',
+				'section' => 'whale/layout',
+				'default' => true
+			];
+		}
 
 		if ( ( $wgWhaleEnableMobileFloatingToc ?? true ) !== false ) {
 			$preferences['whale-layout-mobile-toc'] = [
@@ -198,46 +202,54 @@ class WhaleHooks {
 			];
 		}
 
-		$preferences['whale-live-recent-fixed-height'] = [
-			'type' => 'toggle',
-			'label-message' => 'whale-pref-live-recent-fixed-height',
-			'section' => 'whale/layout',
-			'help-message' => 'whale-pref-live-recent-fixed-height-help',
-			'default' => true
-		];
+		if ( ( $wgWhaleEnableLiveRC ?? true ) !== false ) {
+			$preferences['whale-live-recent-fixed-height'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-live-recent-fixed-height',
+				'section' => 'whale/layout',
+				'help-message' => 'whale-pref-live-recent-fixed-height-help',
+				'default' => true
+			];
+		}
 
-		$preferences['whale-content-section-collapse'] = [
-			'type' => 'select',
-			'label-message' => 'whale-pref-content-section-collapse',
-			'section' => 'whale/content',
-			'options' => [
-				wfMessage( 'whale-section-collapse-marked' )->text() => self::SECTION_COLLAPSE_MARKED,
-				wfMessage( 'whale-section-collapse-all' )->text() => self::SECTION_COLLAPSE_ALL,
-				wfMessage( 'whale-section-collapse-off' )->text() => self::SECTION_COLLAPSE_OFF,
-			],
-			'help-message' => 'whale-pref-content-section-collapse-help',
-			'default' => self::SECTION_COLLAPSE_ALL
-		];
+		if ( ( $wgWhaleEnableSectionCollapse ?? true ) !== false ) {
+			$preferences['whale-content-section-collapse'] = [
+				'type' => 'select',
+				'label-message' => 'whale-pref-content-section-collapse',
+				'section' => 'whale/content',
+				'options' => [
+					wfMessage( 'whale-section-collapse-marked' )->text() => self::SECTION_COLLAPSE_MARKED,
+					wfMessage( 'whale-section-collapse-all' )->text() => self::SECTION_COLLAPSE_ALL,
+					wfMessage( 'whale-section-collapse-off' )->text() => self::SECTION_COLLAPSE_OFF,
+				],
+				'help-message' => 'whale-pref-content-section-collapse-help',
+				'default' => self::SECTION_COLLAPSE_ALL
+			];
+		}
 
-		$preferences['whale-content-folding'] = [
-			'type' => 'select',
-			'label-message' => 'whale-pref-content-folding',
-			'section' => 'whale/content',
-			'options' => [
-				wfMessage( 'whale-folding-mode-default' )->text() => self::FOLDING_MODE_DEFAULT,
-				wfMessage( 'whale-folding-mode-open' )->text() => self::FOLDING_MODE_OPEN,
-				wfMessage( 'whale-folding-mode-off' )->text() => self::FOLDING_MODE_OFF,
-			],
-			'help-message' => 'whale-pref-content-folding-help',
-			'default' => self::FOLDING_MODE_DEFAULT
-		];
+		if ( ( $wgWhaleEnableFoldingBlocks ?? true ) !== false ) {
+			$preferences['whale-content-folding'] = [
+				'type' => 'select',
+				'label-message' => 'whale-pref-content-folding',
+				'section' => 'whale/content',
+				'options' => [
+					wfMessage( 'whale-folding-mode-default' )->text() => self::FOLDING_MODE_DEFAULT,
+					wfMessage( 'whale-folding-mode-open' )->text() => self::FOLDING_MODE_OPEN,
+					wfMessage( 'whale-folding-mode-off' )->text() => self::FOLDING_MODE_OFF,
+				],
+				'help-message' => 'whale-pref-content-folding-help',
+				'default' => self::FOLDING_MODE_DEFAULT
+			];
+		}
 
-		$preferences['whale-content-category-blur'] = [
-			'type' => 'toggle',
-			'label-message' => 'whale-pref-content-category-blur',
-			'section' => 'whale/content',
-			'default' => true
-		];
+		if ( ( $wgWhaleEnableBlurredCategories ?? true ) !== false ) {
+			$preferences['whale-content-category-blur'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-content-category-blur',
+				'section' => 'whale/content',
+				'default' => true
+			];
+		}
 
 		$preferences['whale-content-reduce-motion'] = [
 			'type' => 'toggle',
@@ -340,7 +352,7 @@ class WhaleHooks {
 				isset( $wgWhaleAdSetting['belowarticle'] ) && $wgWhaleAdSetting['belowarticle'] &&
 				$permissionManager->userHasRight( $user, 'blockads-belowarticle' )
 			) {
-				$preferences['whale-ads-morearticle'] = [
+				$preferences['whale-ads-belowarticle'] = [
 					'type' => 'toggle',
 					'label-message' => 'whale-pref-ads-belowarticle',
 					'section' => 'whale/ads',
@@ -455,10 +467,10 @@ class WhaleHooks {
 
 		$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$user = $skin->getUser();
-		$sectionMode = $wgWhaleEnableSectionCollapse === false
+		$sectionMode = ( $wgWhaleEnableSectionCollapse ?? true ) === false
 			? self::SECTION_COLLAPSE_OFF
 			: $userOptionsLookup->getOption( $user, 'whale-content-section-collapse' );
-		$foldingMode = $wgWhaleEnableFoldingBlocks === false
+		$foldingMode = ( $wgWhaleEnableFoldingBlocks ?? true ) === false
 			? self::FOLDING_MODE_OFF
 			: $userOptionsLookup->getOption( $user, 'whale-content-folding' );
 
@@ -483,7 +495,7 @@ class WhaleHooks {
 
 		if (
 			!$enableBlur ||
-			$wgWhaleEnableBlurredCategories === false ||
+			( $wgWhaleEnableBlurredCategories ?? true ) === false ||
 			( strpos( $html, '#blur' ) === false && stripos( $html, '%23blur' ) === false )
 		) {
 			return $html;
