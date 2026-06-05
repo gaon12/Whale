@@ -93,7 +93,9 @@
 						{{/data-whale-short-url}}
 					</div>
 				</div>
-				<button type="button" class="scroll-button" id="whale-scrolltoc" aria-label="{{whale-scroll-toc-label}}" title="{{whale-scroll-toc-label}}">{{{ html-whale-scroll-toc-icon }}}</button>
+				{{#has-whale-section-tools}}
+					<button type="button" class="scroll-button" id="whale-scrolltoc" aria-label="{{whale-scroll-toc-label}}" title="{{whale-scroll-toc-label}}">{{{ html-whale-scroll-toc-icon }}}</button>
+				{{/has-whale-section-tools}}
 				<button type="button" class="scroll-button" id="whale-scrollup" aria-label="{{whale-scroll-up-label}}" title="{{whale-scroll-up-label}}">{{{ html-whale-scroll-up-icon }}}</button>
 				<button type="button" class="scroll-button" id="whale-scrolldown" aria-label="{{whale-scroll-down-label}}" title="{{whale-scroll-down-label}}">{{{ html-whale-scroll-down-icon }}}</button>
 			</div>

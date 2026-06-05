@@ -69,6 +69,7 @@
 		"WhaleEnableContentFontScale": true,
 		"WhaleEnableAnonThemeToggle": true,
 		"WhaleEnableImageLazyLoad": true,
+		"WhaleEnableContentSkeleton": false,
 		"WhaleMobileUserToolsPosition": "right"
 	},
 	"AvailableRights": [
@@ -202,6 +203,7 @@
 		"whale-user-contribution-graph": true,
 		"whale-short-url": true,
 		"whale-lazy-images": true,
+		"whale-content-skeleton": false,
 		"whale-layout-mobile-toc": true,
 		"whale-mobile-user-tools-right": true
 	},

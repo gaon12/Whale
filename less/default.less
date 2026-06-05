@@ -1034,6 +1034,37 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	line-height: 1.6rem;
 }
 
+body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main {
+	position: relative;
+	min-height: 18rem;
+}
+
+body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main::before {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	bottom: 1rem;
+	left: 1rem;
+	z-index: 4;
+	border-radius: var(--whale-radius-sm);
+	background:
+		linear-gradient(#e6edf3 0 0) 0 0.25rem / 42% 1.4rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 3rem / 94% 0.85rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 4.55rem / 88% 0.85rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 6.1rem / 76% 0.85rem no-repeat,
+		linear-gradient(#e6edf3 0 0) 0 8.3rem / 30% 1.15rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 10.3rem / 92% 0.85rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 11.85rem / 82% 0.85rem no-repeat,
+		linear-gradient(90deg, #f5f8fb 25%, #fff 37%, #f5f8fb 63%) 0 0 / 240% 100%;
+	animation: whale-live-recent-skeleton 1.2s ease-in-out infinite;
+	content: "";
+	pointer-events: none;
+}
+
+body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main > * {
+	opacity: 0;
+}
+
 .Whale .whale-not-found {
 	display: grid;
 	grid-template-columns: auto minmax(0, 1fr);
@@ -1491,9 +1522,9 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 
 .Whale .content-wrapper .whale-footer .whale-footer-brand-img {
 	display: block;
-	width: 150px;
-	max-width: 100%;
-	height: auto;
+	width: auto;
+	max-width: 88px;
+	height: 31px;
 	object-fit: contain;
 }
 /* Footer End */
@@ -2504,6 +2535,18 @@ body.whale-dark .Whale .content-wrapper .live-recent .recent-item-placeholder.is
 	background-size: 400% 100%;
 }
 
+body.whale-dark.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main::before {
+	background:
+		linear-gradient(#34373b 0 0) 0 0.25rem / 42% 1.4rem no-repeat,
+		linear-gradient(#25272a 0 0) 0 3rem / 94% 0.85rem no-repeat,
+		linear-gradient(#25272a 0 0) 0 4.55rem / 88% 0.85rem no-repeat,
+		linear-gradient(#25272a 0 0) 0 6.1rem / 76% 0.85rem no-repeat,
+		linear-gradient(#34373b 0 0) 0 8.3rem / 30% 1.15rem no-repeat,
+		linear-gradient(#25272a 0 0) 0 10.3rem / 92% 0.85rem no-repeat,
+		linear-gradient(#25272a 0 0) 0 11.85rem / 82% 0.85rem no-repeat,
+		linear-gradient(90deg, #1f2023 25%, #34373b 37%, #1f2023 63%) 0 0 / 240% 100%;
+}
+
 body.whale-dark .Whale .content-wrapper .live-recent .live-recent-progress {
 	background-color: #25272a;
 }
@@ -2858,6 +2901,18 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 	body.whale-auto-dark .Whale .content-wrapper .live-recent .recent-item-placeholder.is-loading {
 		background: linear-gradient(90deg, #25272a 25%, #34373b 37%, #25272a 63%);
 		background-size: 400% 100%;
+	}
+
+	body.whale-auto-dark.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main::before {
+		background:
+			linear-gradient(#34373b 0 0) 0 0.25rem / 42% 1.4rem no-repeat,
+			linear-gradient(#25272a 0 0) 0 3rem / 94% 0.85rem no-repeat,
+			linear-gradient(#25272a 0 0) 0 4.55rem / 88% 0.85rem no-repeat,
+			linear-gradient(#25272a 0 0) 0 6.1rem / 76% 0.85rem no-repeat,
+			linear-gradient(#34373b 0 0) 0 8.3rem / 30% 1.15rem no-repeat,
+			linear-gradient(#25272a 0 0) 0 10.3rem / 92% 0.85rem no-repeat,
+			linear-gradient(#25272a 0 0) 0 11.85rem / 82% 0.85rem no-repeat,
+			linear-gradient(90deg, #1f2023 25%, #34373b 37%, #1f2023 63%) 0 0 / 240% 100%;
 	}
 
 	body.whale-auto-dark .Whale .content-wrapper .live-recent .live-recent-progress {
@@ -3356,6 +3411,15 @@ body.whale-reduce-motion .Whale .content-wrapper .whale-content .whale-content-m
 
 @media screen and (max-width: 34rem) {
 	.Whale .whale-login-modal .whale-modal-sm {
-		width: auto;
+		width: calc(100% - 2rem);
+		max-width: 25rem;
+		margin: 1rem auto;
+	}
+}
+
+@media screen and (max-width: 22rem) {
+	.Whale .whale-login-modal .whale-modal-sm {
+		width: 100%;
+		margin: 0.75rem 0;
 	}
 }

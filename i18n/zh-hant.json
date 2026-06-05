@@ -94,6 +94,8 @@
 	"whale-pref-user-contribution-graph": "在使用者頁面顯示貢獻圖",
 	"whale-pref-short-url": "在頁尾顯示短連結工具",
 	"whale-pref-lazy-images": "延遲載入正文圖片並顯示骨架佔位",
+	"whale-pref-content-skeleton": "顯示正文骨架畫面",
+	"whale-pref-content-skeleton-help": "頁面完全載入前，在正文區域顯示佔位動畫。預設停用。",
 	"whale-floating-toc": "章節目錄",
 	"whale-reading-progress": "閱讀進度",
 	"whale-live-recent-no-data": "沒有可顯示的內容",

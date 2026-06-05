@@ -94,6 +94,8 @@
 	"whale-pref-user-contribution-graph": "在用户页面显示贡献图",
 	"whale-pref-short-url": "在页脚显示短链接工具",
 	"whale-pref-lazy-images": "延迟加载正文图片并显示骨架占位",
+	"whale-pref-content-skeleton": "显示正文骨架屏",
+	"whale-pref-content-skeleton-help": "页面完全加载前，在正文区域显示占位动画。默认禁用。",
 	"whale-floating-toc": "章节目录",
 	"whale-reading-progress": "阅读进度",
 	"whale-live-recent-no-data": "没有可显示的内容",
