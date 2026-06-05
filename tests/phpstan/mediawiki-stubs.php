@@ -279,18 +279,6 @@ class Description2 {
 class EchoEvent {
 }
 
-class wAvatar {
-	public function __construct( int $userId, string $size ) {
-	}
-
-	/**
-	 * @param array<string,string> $attrs
-	 */
-	public function getAvatarURL( array $attrs = [] ): string {
-		return '';
-	}
-}
-
 }
 
 namespace MediaWiki {

@@ -122,7 +122,7 @@ $wgWhaleTheme = 'han-river-blue';
 
 사용자가 환경설정에서 `기본값`을 고르면 사이트 관리자가 정한 `$wgWhaleTheme`를 따릅니다. 사용자가 특정 팔레트를 직접 고르면 그 사용자에게는 그 팔레트가 우선 적용됩니다.
 
-고급 호환 설정으로 `$wgWhalePrimaryColor`, `$wgWhaleSecondaryColor`, `$wgWhaleMainColor`, `$wgWhaleSecondColor`도 남아 있습니다. 다만 이 값들은 사이트 전체 설정용입니다. 사용자 환경설정 화면에서는 직접 색상 코드를 입력하지 않습니다.
+고급 사이트 색상 설정으로 `$wgWhalePrimaryColor`, `$wgWhaleSecondaryColor`, `$wgWhaleMainColor`, `$wgWhaleSecondColor`를 사용할 수 있습니다. 다만 이 값들은 사이트 전체 설정용입니다. 사용자 환경설정 화면에서는 직접 색상 코드를 입력하지 않습니다.
 
 ### 6. 주요 기능
 
@@ -263,7 +263,7 @@ Whale의 상단 메뉴는 `MediaWiki:Whale-Navbar` 문서에서 설정합니다.
 | `group` | 이 메뉴를 볼 수 있는 사용자 그룹 |
 | `right` | 이 메뉴를 볼 수 있는 사용자 권한 |
 
-`icon`과 `text` 중 하나는 반드시 있어야 합니다. 둘 다 없으면 사용자가 무엇을 눌러야 하는지 알 수 없습니다. 기존 별표 문법도 fallback으로 읽지만, 새 메뉴를 만들 때는 위 블록형 구조를 권장합니다.
+`icon`과 `text` 중 하나는 반드시 있어야 합니다. 둘 다 없으면 사용자가 무엇을 눌러야 하는지 알 수 없습니다.
 
 ### 10. 최근 변경 사이드바 설정
 
@@ -378,8 +378,8 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 | `$wgWhaleTheme` | 사이트 기본 테마 팔레트 | `'han-river-blue'` | `null` |
 | `$wgWhalePrimaryColor` | 고급 사이트 전체 주 색상 override | `'#336699'` | `null` |
 | `$wgWhaleSecondaryColor` | 고급 사이트 전체 보조 색상 override | `'#003366'` | `null` |
-| `$wgWhaleMainColor` | 예전 버전 호환용 주 색상 | `'#4188F1'` | `'#4188F1'` |
-| `$wgWhaleSecondColor` | 예전 버전 호환용 보조 색상 | `'#2774DC'` | `null` |
+| `$wgWhaleMainColor` | 사이트 전체 주 색상 | `'#4188F1'` | `'#4188F1'` |
+| `$wgWhaleSecondColor` | 사이트 전체 보조 색상 | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph에 사용할 로고 이미지 | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgTwitterAccount` | Twitter/X 카드에 넣을 계정 | `'librewiki'` | 설정 안 함 |
 | `$wgNaverVerification` | 네이버 사이트 인증 코드 | `'abcdef...'` | 설정 안 함 |
@@ -532,7 +532,7 @@ Available palettes:
 
 If a user chooses `Default`, Whale uses the site administrator's `$wgWhaleTheme`. If a user chooses a specific palette, that user's choice takes priority.
 
-Advanced site-wide color override variables still exist for compatibility: `$wgWhalePrimaryColor`, `$wgWhaleSecondaryColor`, `$wgWhaleMainColor`, and `$wgWhaleSecondColor`. They are administrator settings, not user preference fields.
+Advanced site-wide color variables are available through `$wgWhalePrimaryColor`, `$wgWhaleSecondaryColor`, `$wgWhaleMainColor`, and `$wgWhaleSecondColor`. They are administrator settings, not user preference fields.
 
 ### 6. Main Features
 
@@ -671,7 +671,7 @@ Supported fields:
 | `group` | Required user group |
 | `right` | Required user right |
 
-At least one of `icon` or `text` must be present. The older asterisk syntax is still accepted as a fallback, but the block structure above is the recommended format for new menus.
+At least one of `icon` or `text` must be present.
 
 ### 10. Live Recent Sidebar
 
@@ -782,8 +782,8 @@ The beta deploy workflow runs on `main` pushes when the repository variable `WHA
 | `$wgWhaleTheme` | Default site theme palette | `'han-river-blue'` | `null` |
 | `$wgWhalePrimaryColor` | Advanced site-wide primary override | `'#336699'` | `null` |
 | `$wgWhaleSecondaryColor` | Advanced site-wide secondary override | `'#003366'` | `null` |
-| `$wgWhaleMainColor` | Legacy primary color setting | `'#4188F1'` | `'#4188F1'` |
-| `$wgWhaleSecondColor` | Legacy secondary color setting | `'#2774DC'` | `null` |
+| `$wgWhaleMainColor` | Site-wide primary color | `'#4188F1'` | `'#4188F1'` |
+| `$wgWhaleSecondColor` | Site-wide secondary color | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgTwitterAccount` | Twitter/X card account | `'librewiki'` | unset |
 | `$wgNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
