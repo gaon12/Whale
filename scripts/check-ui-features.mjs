@@ -114,7 +114,11 @@ assertIncludes(
 	':not(.whale-floating-toc-toolbar-hover) #whale-bottombtn',
 	'Toolbar hover guard style',
 );
-assertIncludes(styles, 'content: ">"', 'Section collapse toggle style');
+assertIncludes(
+	styles,
+	'border-right: 2px solid currentColor',
+	'Section collapse toggle style',
+);
 assertIncludes(
 	styles,
 	'.whale-section-heading .mw-editsection',
@@ -153,6 +157,17 @@ assertIncludes(
 	'.toc .toctogglelabel::before',
 	'Article TOC collapse chevron',
 );
+assertIncludes(
+	mediaWikiStyles,
+	'border-right: 1.5px solid currentColor',
+	'Article TOC collapse chevron',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'.toc .toctogglecheckbox:checked ~ ul',
+	'Article TOC collapse state',
+);
+assertIncludes(mediaWikiStyles, 'display: none', 'Article TOC collapse state');
 assertIncludes(mediaWikiStyles, 'color: #0066d9', 'Article TOC link color');
 assertIncludes(
 	mediaWikiStyles,

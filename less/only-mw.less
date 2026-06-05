@@ -50,16 +50,26 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglelabel::before {
-	content: ">";
-	font-size: 0.95rem;
-	font-weight: 700;
-	line-height: 1;
-	transform: rotate(90deg);
+	box-sizing: border-box;
+	width: 0.45rem;
+	height: 0.45rem;
+	border-right: 1.5px solid currentColor;
+	border-bottom: 1.5px solid currentColor;
+	content: "";
+	transform: translateY(-0.08rem) rotate(45deg);
 	transition: transform 0.16s ease;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglecheckbox:checked + .toctitle .toctogglelabel::before {
-	transform: rotate(0deg);
+	transform: translateX(-0.08rem) rotate(-45deg);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglecheckbox:checked + .toctitle {
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglecheckbox:checked ~ ul {
+	display: none;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc ul,
