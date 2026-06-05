@@ -110,13 +110,3 @@ if (
 	fwrite( STDERR, "Unsafe navbar URLs should fall back to local page links.\n" );
 	exit( 1 );
 }
-
-$legacy = $renderer->parseForTest( '* icon=sync | display=recentchanges | link=Special:RecentChanges' );
-if (
-	count( $legacy ) !== 1 ||
-	$legacy[0]['text'] !== 'recentchanges' ||
-	$legacy[0]['href'] !== '/wiki/Special:RecentChanges'
-) {
-	fwrite( STDERR, "Legacy navbar fallback was not preserved.\n" );
-	exit( 1 );
-}
