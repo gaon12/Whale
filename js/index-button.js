@@ -455,6 +455,9 @@
 			anchors.forEach((anchor, index) => {
 				anchor.classList.toggle('is-active', index === activeIndex);
 			});
+			items.forEach((item, index) => {
+				item.classList.toggle('is-active', index === activeIndex);
+			});
 		});
 
 		updateActive();

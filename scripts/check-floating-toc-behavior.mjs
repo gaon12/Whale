@@ -611,8 +611,8 @@ if (tocBackedLabels?.join('|') !== '2. Toc parent|2.1 Toc child') {
 }
 
 if (
-	tocBackedItems?.[0]?.className !== 'whale-floating-toc-level-1' ||
-	tocBackedItems?.[1]?.className !== 'whale-floating-toc-level-2'
+	!tocBackedItems?.[0]?.classList.contains('whale-floating-toc-level-1') ||
+	!tocBackedItems?.[1]?.classList.contains('whale-floating-toc-level-2')
 ) {
 	throw new Error(
 		`TOC-backed levels should normalize from target headings: ${tocBackedItems
