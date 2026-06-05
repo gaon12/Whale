@@ -183,6 +183,7 @@ const context = {
 	window: {
 		clearTimeout,
 		matchMedia: () => ({ matches: true }),
+		PointerEvent: function PointerEvent() {},
 		requestAnimationFrame: (callback) => callback(),
 		scrollTo: () => {},
 		setTimeout: (callback) => callback(),
@@ -268,5 +269,32 @@ if (
 ) {
 	throw new Error(
 		'Section toggle should collapse body, heading, and container.',
+	);
+}
+
+document.dispatch('pointerup', {
+	target: toggle,
+	pointerType: 'touch',
+	preventDefault: () => {},
+	stopPropagation: () => {},
+});
+
+if (
+	body.hidden ||
+	toggle.getAttribute('aria-expanded') !== 'true' ||
+	heading.classList.contains('is-collapsed') ||
+	container.classList.contains('is-collapsed')
+) {
+	throw new Error('Touch pointerup should expand the section immediately.');
+}
+
+document.dispatch('click', {
+	target: toggle,
+	preventDefault: () => {},
+});
+
+if (body.hidden || toggle.getAttribute('aria-expanded') !== 'true') {
+	throw new Error(
+		'Synthetic click after touch pointerup should be suppressed.',
 	);
 }

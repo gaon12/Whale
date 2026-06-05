@@ -82,12 +82,18 @@ assertIncludes(
 	'whale-floating-toc-toolbar-hover',
 	'Floating TOC script',
 );
+assertIncludes(
+	indexButton,
+	"item.classList.toggle('is-active'",
+	'Floating TOC active dot state',
+);
 
 const layout = read('js/layout.js');
 assertIncludes(layout, 'whale:toggleFloatingToc', 'Layout scroll TOC handler');
 assertIncludes(layout, 'container?.classList.toggle', 'Section folding state');
 assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
 assertIncludes(layout, 'initContentSkeleton', 'Content skeleton state');
+assertIncludes(layout, 'handleDirectToggle', 'Mobile direct section toggle');
 
 const skinPhp = read('SkinWhale.php');
 assertIncludes(
@@ -111,8 +117,28 @@ assertIncludes(styles, '.whale-content-no-sidebar', 'No-sidebar layout');
 assertIncludes(styles, 'scrollbar-gutter: stable', 'Stylesheet');
 assertIncludes(
 	styles,
-	':not(.whale-floating-toc-toolbar-hover) #whale-bottombtn',
-	'Toolbar hover guard style',
+	'body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn',
+	'Fixed desktop scroll toolbar position',
+);
+assertIncludes(
+	styles,
+	'right: 10.55rem',
+	'Fixed desktop scroll toolbar position',
+);
+assertIncludes(
+	styles,
+	'body.whale-floating-toc-hover .whale-floating-toc a',
+	'Desktop floating TOC hover labels',
+);
+assertIncludes(
+	styles,
+	'pointer-events: none',
+	'Desktop floating TOC dot-only default',
+);
+assertIncludes(
+	styles,
+	'.whale-floating-toc li.is-active::after',
+	'Desktop floating TOC active dot',
 );
 assertIncludes(
 	styles,
@@ -134,6 +160,7 @@ assertIncludes(
 	'box-shadow: inset 0 -1px 0 #cfd4d9',
 	'Section heading divider',
 );
+assertIncludes(styles, 'margin-bottom: 1.25rem', 'Collapsed section spacing');
 assertIncludes(
 	styles,
 	'background-color: transparent',
