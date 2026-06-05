@@ -1,22 +1,65 @@
 /* ToC */
 .Whale .content-wrapper .whale-content .whale-content-main .toc {
-	border-radius: 0 0 0.35rem 0.35rem;
 	display: inline-block;
-	font-size: 0.9rem;
+	min-width: 10.75rem;
+	max-width: 100%;
+	padding: 0.85rem 1rem 1rem;
+	border: 1px solid #cfd4d9;
+	border-radius: 0;
+	background-color: #fff;
+	font-size: 0.95rem;
+	line-height: 1.55;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle {
-	background-color: #f5f8fa;
-	border: 1px solid #e1e8ed;
-	border-radius: 0.35rem 0.35rem 0 0;
-	padding: 0.6rem 1.2rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.45rem;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle h2 {
-	display: inline;
-	font-size: 1.2rem;
-	font-weight: bold;
+	display: inline-block;
+	margin: 0;
 	border: none;
+	color: #11181f;
+	font-size: 1.05rem;
+	font-weight: 700;
+	line-height: 1.25;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglespan {
+	margin-left: auto;
+	color: #5f666d;
+	font-size: 0;
+	line-height: 1;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglelabel {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.4rem;
+	height: 1.4rem;
+	color: inherit;
+	cursor: pointer;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglelabel::before {
+	content: ">";
+	font-size: 0.95rem;
+	font-weight: 700;
+	line-height: 1;
+	transform: rotate(90deg);
+	transition: transform 0.16s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglecheckbox:checked + .toctitle .toctogglelabel::before {
+	transform: rotate(0deg);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc ul,
@@ -28,25 +71,42 @@
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc > ul {
 	margin: 0;
-	padding: 0.6rem 1.2rem;
-	border: 1px solid #e1e8ed;
-	border-top: none;
-	border-radius: 0 0 0.35rem 0.35rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc ul ul {
-	margin: 0 0 0 1rem !important;
+	margin: 0 0 0 1.15rem !important;
+	padding: 0;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
-	color: #373a3c;
+.Whale .content-wrapper .whale-content .whale-content-main .toc li {
+	margin: 0.08rem 0;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main .toc a:hover {
+.Whale .content-wrapper .whale-content .whale-content-main .toc a {
+	color: #0066d9;
 	text-decoration: none;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main .toc a > .tocnumber:hover {
+.Whale .content-wrapper .whale-content .whale-content-main .toc .tocnumber {
+	color: #0066d9;
+	font-variant-numeric: tabular-nums;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
+	color: #11181f;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc a:hover,
+.Whale .content-wrapper .whale-content .whale-content-main .toc a:focus {
+	color: #004ea8;
+	text-decoration: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .toc a:hover .toctext,
+.Whale .content-wrapper .whale-content .whale-content-main .toc a:focus .toctext {
 	text-decoration: underline;
 }
 /* ToC End */
@@ -80,6 +140,22 @@
 	padding-bottom: 0;
 	overflow-wrap: inherit;
 	overflow: inherit;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h1.whale-section-heading,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h2.whale-section-heading,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h3.whale-section-heading,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h4.whale-section-heading,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h5.whale-section-heading,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading h6.whale-section-heading {
+	display: flex;
+	width: 100%;
+	margin-top: 1.35rem;
+	margin-bottom: 0.8rem;
+	padding-bottom: 0.55rem;
+	border-bottom: 1px solid #cfd4d9;
+	box-shadow: inset 0 -1px 0 #cfd4d9;
+	overflow: visible;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-headline-number {

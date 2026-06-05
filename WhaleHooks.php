@@ -16,6 +16,87 @@ class WhaleHooks {
 	private const FONT_SCALE_XLARGE = 'x-large';
 
 	/**
+	 * @param OutputPage $out
+	 * @param Skin $sk
+	 */
+	public static function onBeforePageDisplay( OutputPage $out, Skin $sk ): void {
+		global $wgWhaleEnableLiveRC, $wgWhaleEnableHeadingAnchors,
+			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables,
+			$wgWhaleEnableShortUrls, $wgWhaleEnableAnonThemeToggle,
+			$wgWhaleEnableImageLazyLoad;
+
+		if ( $sk->getSkinName() !== 'whale' ) {
+			return;
+		}
+
+		$user = $sk->getUser();
+		$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$modules = [ 'skins.whale.layoutjs' ];
+
+		if ( ( $GLOBALS['wgWhaleAdSetting'] ?? null ) !== null ) {
+			$modules[] = 'skins.whale.ads';
+		}
+
+		if ( ( $wgWhaleEnableLiveRC ?? true ) !== false ) {
+			$modules[] = 'skins.whale.liverc';
+		}
+
+		if ( $user->isAnon() ) {
+			$modules[] = 'skins.whale.loginjs';
+		}
+
+		if ( self::isClientFeatureEnabled(
+			$userOptionsLookup,
+			$user,
+			$wgWhaleEnableHeadingAnchors ?? true,
+			'whale-heading-anchors'
+		) ) {
+			$modules[] = 'skins.whale.headingAnchors';
+		}
+
+		if (
+			self::isClientFeatureEnabled(
+				$userOptionsLookup,
+				$user,
+				$wgWhaleEnableResponsiveTables ?? true,
+				'whale-responsive-tables'
+			) ||
+			self::isClientFeatureEnabled(
+				$userOptionsLookup,
+				$user,
+				$wgWhaleEnableSortableTables ?? true,
+				'whale-sortable-tables'
+			)
+		) {
+			$modules[] = 'skins.whale.tables';
+		}
+
+		if ( self::isClientFeatureEnabled(
+			$userOptionsLookup,
+			$user,
+			$wgWhaleEnableShortUrls ?? true,
+			'whale-short-url'
+		) ) {
+			$modules[] = 'skins.whale.shortUrl';
+		}
+
+		if ( ( $wgWhaleEnableAnonThemeToggle ?? true ) !== false ) {
+			$modules[] = 'skins.whale.themeToggle';
+		}
+
+		if ( self::isClientFeatureEnabled(
+			$userOptionsLookup,
+			$user,
+			$wgWhaleEnableImageLazyLoad ?? true,
+			'whale-lazy-images'
+		) ) {
+			$modules[] = 'skins.whale.lazyImages';
+		}
+
+		$out->addModules( array_values( array_unique( $modules ) ) );
+	}
+
+	/**
 	 * @since 1.17.0
 	 * @param OutputPage $out
 	 * @param Skin $sk
@@ -125,6 +206,20 @@ class WhaleHooks {
 				$bodyAttrs['class'] .= ' whale-content-skeleton-enabled whale-content-skeleton-loading';
 			}
 		}
+	}
+
+	private static function isClientFeatureEnabled(
+		object $userOptionsLookup,
+		object $user,
+		mixed $configValue,
+		string $optionName
+	): bool {
+		if ( $configValue === false ) {
+			return false;
+		}
+
+		$getOption = [ $userOptionsLookup, 'getOption' ];
+		return is_callable( $getOption ) && $getOption( $user, $optionName ) !== false;
 	}
 
 	private static function shouldRenderSectionNavigation( object $out ): bool {
@@ -678,6 +773,10 @@ class WhaleHooks {
 
 		$counter = 0;
 		foreach ( $headings as $heading ) {
+			if ( self::isNavigationHeading( $heading ) ) {
+				continue;
+			}
+
 			$level = self::getHeadingLevel( $heading );
 			if ( $level === null ) {
 				continue;
@@ -828,6 +927,24 @@ class WhaleHooks {
 		$button->setAttribute( 'data-collapse-label', $collapseLabel );
 
 		return $button;
+	}
+
+	private static function isNavigationHeading( DOMElement $heading ): bool {
+		if ( $heading->getAttribute( 'id' ) === 'mw-toc-heading' ) {
+			return true;
+		}
+
+		$node = $heading->parentNode;
+		while ( $node instanceof DOMElement ) {
+			foreach ( [ 'toc', 'navbox', 'metadata', 'mw-editsection' ] as $class ) {
+				if ( self::hasClass( $node, $class ) ) {
+					return true;
+				}
+			}
+			$node = $node->parentNode;
+		}
+
+		return false;
 	}
 
 	private static function getHeadingLevel( DOMElement $heading ): ?int {
