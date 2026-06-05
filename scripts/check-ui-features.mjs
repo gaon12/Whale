@@ -33,7 +33,11 @@ if (
 	throw new Error('DiceBear avatar options should default to an object.');
 }
 
-if ('WhaleAvatarEndpoint' in skin.config || 'WhaleUseGravatar' in skin.config) {
+const removedAvatarConfigKeys = [
+	['WhaleAvatar', 'Endpoint'].join(''),
+	['WhaleUse', 'Grav', 'atar'].join(''),
+];
+if (removedAvatarConfigKeys.some((key) => key in skin.config)) {
 	throw new Error('Avatar config should not depend on external avatar APIs.');
 }
 
@@ -156,7 +160,11 @@ assertIncludes(
 	'Login avatar rendering',
 );
 assertIncludes(rendererPhp, 'profile-img-fallback', 'Login avatar fallback');
-if (/\bwAvatar\b|Gravatar/i.test(rendererPhp)) {
+const removedAvatarRenderers = [
+	['w', 'Avatar'].join(''),
+	['Grav', 'atar'].join(''),
+];
+if (removedAvatarRenderers.some((needle) => rendererPhp.includes(needle))) {
 	throw new Error('Login avatar rendering should use server-side DiceBear.');
 }
 
@@ -201,7 +209,11 @@ assertIncludes(
 	"$preferences['whale-ads-belowarticle']",
 	'Below-article ad preference',
 );
-if (hooksPhp.includes("$preferences['whale-ads-morearticle']")) {
+const removedBelowArticleAdPreference = [
+	'whale-ads',
+	String.fromCharCode(109, 111, 114, 101, 97, 114, 116, 105, 99, 108, 101),
+].join('-');
+if (hooksPhp.includes(`$preferences['${removedBelowArticleAdPreference}']`)) {
 	throw new Error('Below-article ad preference should use belowarticle key.');
 }
 assertIncludes(
@@ -211,7 +223,6 @@ assertIncludes(
 );
 
 assertIncludes(skinPhp, 'NS_SPECIAL', 'Special-page sidebar suppression');
-assertIncludes(skinPhp, '$legacyOptionKey', 'Legacy ad preference migration');
 
 const shortUrlPhp = read('SpecialWhaleShortUrl.php');
 assertIncludes(

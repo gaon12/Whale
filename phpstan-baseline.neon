@@ -459,7 +459,7 @@ parameters:
 		-
 			message: '#^Cannot access offset ''children'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
+			count: 1
 			path: WhaleRenderer.php
 
 		-

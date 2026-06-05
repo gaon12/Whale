@@ -957,58 +957,7 @@ class WhaleRenderer {
 	 * @return array<int,array<string,mixed>>
 	 */
 	protected function parseNavbarContent( string $data ): array {
-		$simpleItems = $this->parseSimpleNavbar( $data );
-		if ( count( $simpleItems ) > 0 ) {
-			return $simpleItems;
-		}
-
-		return $this->parseLegacyNavbar( $data );
-	}
-
-	/**
-	 * @return array<int,array<string,mixed>>
-	 */
-	private function parseLegacyNavbar( string $data ): array {
-		$headings = [];
-		$level2Index = null;
-		$level3Index = null;
-		foreach ( explode( "\n", $data ) as $line ) {
-			$line = rtrim( $line, "\r" );
-			if ( $line === '' || $line[0] !== '*' ) {
-				continue;
-			}
-
-			$level = strspn( $line, '*' );
-			if ( $level < 1 || $level > 3 ) {
-				continue;
-			}
-
-			$item = $this->parseNavbarLine( substr( $line, $level ) );
-			if ( $item === null ) {
-				continue;
-			}
-
-			if ( $level === 1 ) {
-				$item['children'] = [];
-				$headings[] = $item;
-				$level2Index = count( $headings ) - 1;
-				$level3Index = null;
-				continue;
-			}
-
-			if ( $level === 2 && $level2Index !== null ) {
-				$item['children'] = [];
-				$headings[$level2Index]['children'][] = $item;
-				$level3Index = count( $headings[$level2Index]['children'] ) - 1;
-				continue;
-			}
-
-			if ( $level === 3 && $level2Index !== null && $level3Index !== null ) {
-				$headings[$level2Index]['children'][$level3Index]['children'][] = $item;
-			}
-		}
-
-		return $headings;
+		return $this->parseSimpleNavbar( $data );
 	}
 
 	/**
@@ -1095,25 +1044,6 @@ class WhaleRenderer {
 		}
 
 		return [ 'text' => trim( $line ) ];
-	}
-
-	/**
-	 * @return array<string,mixed>|null
-	 */
-	private function parseNavbarLine( string $line ): ?array {
-		$types = [ 'icon', 'display', 'title', 'link', 'access', 'class' ];
-		$data = [];
-		foreach ( explode( '|', $line ) as $key => $value ) {
-			$value = trim( $value );
-			$valueArr = explode( '=', $value );
-			if ( isset( $valueArr[1] ) ) {
-				$data[$valueArr[0]] = implode( '=', array_slice( $valueArr, 1 ) );
-			} elseif ( isset( $types[$key] ) ) {
-				$data[$types[$key]] = $value;
-			}
-		}
-
-		return $this->buildNavbarItemFromFields( $data );
 	}
 
 	/**

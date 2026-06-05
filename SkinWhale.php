@@ -18,7 +18,7 @@ class SkinWhale extends SkinMustache {
 	public $template = 'skin';
 	// @codingStandardsIgnoreEnd
 
-	private const LEGACY_THEME_COLORS = [
+	private const DEFAULT_THEME_COLORS = [
 		'light' => [ 'primary' => '#4188F1', 'secondary' => '#2774DC' ],
 		'dark' => [ 'primary' => '#4188F1', 'secondary' => '#2774DC' ],
 	];
@@ -474,11 +474,7 @@ class SkinWhale extends SkinMustache {
 
 		if ( isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup === 'differ' ) {
 			$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-			$legacyOptionKey = $optionKey === 'whale-ads-belowarticle' ? 'whale-ads-morearticle' : null;
-			if (
-				$userOptionsLookup->getOption( $this->getUser(), $optionKey ) ||
-				( $legacyOptionKey !== null && $userOptionsLookup->getOption( $this->getUser(), $legacyOptionKey ) )
-			) {
+			if ( $userOptionsLookup->getOption( $this->getUser(), $optionKey ) ) {
 				return false;
 			}
 		}
@@ -551,26 +547,26 @@ class SkinWhale extends SkinMustache {
 			: null;
 		$themeSlug = $userThemeSlug ?? $siteThemeSlug;
 		$hasTheme = $themeSlug !== null && isset( self::THEME_PALETTES[$themeSlug] );
-		$colors = $hasTheme ? self::THEME_PALETTES[$themeSlug] : self::LEGACY_THEME_COLORS;
+		$colors = $hasTheme ? self::THEME_PALETTES[$themeSlug] : self::DEFAULT_THEME_COLORS;
 		$primary = $userThemeSlug === null
 			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhalePrimaryColor'] ?? null )
 			: null;
 		$secondary = $userThemeSlug === null
 			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondaryColor'] ?? null )
 			: null;
-		$legacyPrimary = $userThemeSlug === null
+		$configPrimary = $userThemeSlug === null
 			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleMainColor'] ?? null )
 			: null;
-		$legacySecondary = $userThemeSlug === null
+		$configSecondary = $userThemeSlug === null
 			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondColor'] ?? null )
 			: null;
 
-		if ( $primary === null && ( !$hasTheme || $legacyPrimary !== self::LEGACY_THEME_COLORS['light']['primary'] ) ) {
-			$primary = $legacyPrimary;
+		if ( $primary === null && ( !$hasTheme || $configPrimary !== self::DEFAULT_THEME_COLORS['light']['primary'] ) ) {
+			$primary = $configPrimary;
 		}
 
 		if ( $secondary === null ) {
-			$secondary = $legacySecondary;
+			$secondary = $configSecondary;
 		}
 
 		$hasPrimaryOverride = $primary !== null;
