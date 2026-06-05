@@ -75,16 +75,18 @@ wfLoadSkin( 'Whale' );
 $wgDefaultSkin = 'whale';
 ```
 
-로그인 메뉴의 프로필 아이콘은 DiceBear PHP 라이브러리로 서버에서 SVG를 생성합니다. 브라우저 JavaScript나 DiceBear HTTP API를 호출하지 않습니다. 기본 스타일은 `identicon`이며, `LocalSettings.php`에서 스타일과 옵션을 바꿀 수 있습니다.
+로그인 메뉴의 프로필 아이콘은 DiceBear PHP 라이브러리로 서버에서 SVG를 생성합니다. 브라우저 JavaScript나 DiceBear HTTP API를 호출하지 않습니다. 기본 스타일은 `identicon`이며, `LocalSettings.php`에서 스타일과 옵션을 바꿀 수 있습니다. 스타일 이름은 `pixel-art-neutral`처럼 kebab-case로 쓰거나 DiceBear 문서의 `pixelArtNeutral`처럼 camelCase로 쓸 수 있습니다.
 
 ```php
-$wgWhaleAvatarStyle = 'identicon';
+$wgWhaleAvatarStyle = 'pixel-art-neutral';
 $wgWhaleAvatarOptions = [
 	'backgroundColor' => [ 'f8fafc' ],
 	'borderRadius' => 12,
 	'size' => 64,
 ];
 ```
+
+대표 스타일: `identicon`, `bottts`, `bottts-neutral`, `initials`, `pixel-art`, `pixel-art-neutral`, `adventurer`, `avataaars`, `lorelei`, `notionists`, `open-peeps`, `personas`.
 
 ### 4. 사용자 환경설정에서 바꿀 수 있는 것
 
@@ -513,16 +515,18 @@ Users can now choose Whale in their preferences. To make Whale the default skin 
 $wgDefaultSkin = 'whale';
 ```
 
-The login menu profile icon is generated on the server with the DiceBear PHP library. It does not use browser-side JavaScript and does not call the DiceBear HTTP API. The default style is `identicon`, and administrators can customize the style and options from `LocalSettings.php`.
+The login menu profile icon is generated on the server with the DiceBear PHP library. It does not use browser-side JavaScript and does not call the DiceBear HTTP API. The default style is `identicon`, and administrators can customize the style and options from `LocalSettings.php`. Style names may use kebab-case such as `pixel-art-neutral` or DiceBear-style camelCase such as `pixelArtNeutral`.
 
 ```php
-$wgWhaleAvatarStyle = 'identicon';
+$wgWhaleAvatarStyle = 'pixel-art-neutral';
 $wgWhaleAvatarOptions = [
 	'backgroundColor' => [ 'f8fafc' ],
 	'borderRadius' => 12,
 	'size' => 64,
 ];
 ```
+
+Representative styles: `identicon`, `bottts`, `bottts-neutral`, `initials`, `pixel-art`, `pixel-art-neutral`, `adventurer`, `avataaars`, `lorelei`, `notionists`, `open-peeps`, `personas`.
 
 ### 4. User Preferences
 

@@ -29,6 +29,12 @@ if ( !is_string( $customAvatar ) || !str_contains( rawurldecode( $customAvatar )
 	exit( 1 );
 }
 
+$styleAvatar = WhaleAvatar::createDataUri( 'whale-test-user', 'pixelArtNeutral' );
+if ( !is_string( $styleAvatar ) || !str_contains( rawurldecode( $styleAvatar ), '<svg' ) ) {
+	fwrite( STDERR, "DiceBear avatar style from LocalSettings-style config was not applied.\n" );
+	exit( 1 );
+}
+
 $fallbackAvatar = WhaleAvatar::createDataUri( 'whale-test-user', '../../bad-style' );
 if ( !is_string( $fallbackAvatar ) || !str_contains( rawurldecode( $fallbackAvatar ), '<svg' ) ) {
 	fwrite( STDERR, "DiceBear avatar did not fall back to the default style.\n" );
