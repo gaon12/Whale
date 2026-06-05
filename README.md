@@ -316,6 +316,26 @@ $wgWhaleAdSetting = [
 ];
 ```
 
+각 광고 위치는 문자열 슬롯 ID 대신 배열로도 설정할 수 있습니다. 이 방식은 AdSense의
+`data-ad-format`, `data-ad-layout`, `data-ad-layout-key`,
+`data-full-width-responsive` 값을 위치별로 조정할 때 사용합니다.
+
+```php
+$wgWhaleAdSetting = [
+	'client' => 'ca-pub-0000000000000000',
+	'header' => [
+		'slot' => '1234567890',
+		'format' => 'auto',
+		'fullWidthResponsive' => false,
+	],
+	'belowarticle' => [
+		'slot' => '1313135452',
+		'format' => 'fluid',
+		'layout' => 'in-article',
+	],
+];
+```
+
 각 위치의 의미는 다음과 같습니다.
 
 | 값 | 위치 |
@@ -325,6 +345,10 @@ $wgWhaleAdSetting = [
 | `right` | 오른쪽 사이드바 광고 |
 | `belowarticle` | 문서 본문 아래 광고 |
 | `bottom` | 화면 하단 광고 |
+
+클라이언트 ID는 `ca-pub-...`, 슬롯은 숫자 ID일 때만 렌더링됩니다.
+광고 스크립트는 `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=...`
+형식으로 로드됩니다.
 
 모바일에서 오른쪽 사이드바 광고를 하단으로 옮기고 싶다면 다음 값을 켭니다.
 
@@ -381,7 +405,7 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 | `$wgWhaleMainColor` | 사이트 전체 주 색상 | `'#4188F1'` | `'#4188F1'` |
 | `$wgWhaleSecondColor` | 사이트 전체 보조 색상 | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph에 사용할 로고 이미지 | `'https://example.org/logo.png'` | `$wgLogo` |
-| `$wgTwitterAccount` | Twitter/X 카드에 넣을 계정 | `'librewiki'` | 설정 안 함 |
+| `$wgTwitterAccount` | Twitter/X 카드에 넣을 계정 | `'gaonwiki'` | 설정 안 함 |
 | `$wgNaverVerification` | 네이버 사이트 인증 코드 | `'abcdef...'` | 설정 안 함 |
 | `$wgWhaleAvatarStyle` | 로그인 메뉴 DiceBear 프로필 아이콘 스타일 | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | DiceBear PHP 라이브러리에 전달할 프로필 아이콘 옵션 | `[ 'borderRadius' => 12 ]` | `[]` |
@@ -431,7 +455,7 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 
 ## English
 
-Whale is a responsive MediaWiki skin. It is based on the skin used by LibreWiki and provides a compact wiki reading layout with a top navigation bar, right sidebar, live recent changes, reading progress bar, share controls, dark mode, and optional ad slots.
+Whale is a responsive MediaWiki skin with a compact wiki reading layout, top navigation bar, right sidebar, live recent changes, reading progress bar, share controls, dark mode, and optional ad slots.
 
 This guide explains the setup slowly so a first-time MediaWiki skin installer can follow it.
 
@@ -722,6 +746,26 @@ $wgWhaleAdSetting = [
 ];
 ```
 
+Each ad position may also be configured as an array instead of a string slot ID.
+Use this when a slot needs its own `data-ad-format`, `data-ad-layout`,
+`data-ad-layout-key`, or `data-full-width-responsive` value.
+
+```php
+$wgWhaleAdSetting = [
+	'client' => 'ca-pub-0000000000000000',
+	'header' => [
+		'slot' => '1234567890',
+		'format' => 'auto',
+		'fullWidthResponsive' => false,
+	],
+	'belowarticle' => [
+		'slot' => '1313135452',
+		'format' => 'fluid',
+		'layout' => 'in-article',
+	],
+];
+```
+
 | Value | Position |
 | --- | --- |
 | `client` | Google AdSense client ID |
@@ -729,6 +773,10 @@ $wgWhaleAdSetting = [
 | `right` | Right sidebar ad |
 | `belowarticle` | Ad below the article body |
 | `bottom` | Bottom ad |
+
+The client ID must use the `ca-pub-...` form and slots must be numeric IDs.
+Whale loads the modern AdSense script URL with the `client` query parameter and
+`crossorigin="anonymous"`.
 
 Move the right sidebar ad to the bottom on mobile:
 
@@ -785,7 +833,7 @@ The beta deploy workflow runs on `main` pushes when the repository variable `WHA
 | `$wgWhaleMainColor` | Site-wide primary color | `'#4188F1'` | `'#4188F1'` |
 | `$wgWhaleSecondColor` | Site-wide secondary color | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
-| `$wgTwitterAccount` | Twitter/X card account | `'librewiki'` | unset |
+| `$wgTwitterAccount` | Twitter/X card account | `'gaonwiki'` | unset |
 | `$wgNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
 | `$wgWhaleAvatarStyle` | DiceBear profile icon style for the login menu | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | Profile icon options passed to the DiceBear PHP library | `[ 'borderRadius' => 12 ]` | `[]` |

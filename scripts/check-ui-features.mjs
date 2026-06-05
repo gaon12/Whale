@@ -124,6 +124,18 @@ if (rawLessCssFunction) {
 }
 assertIncludes(styles, '~"min(82vw, 22rem)"', 'Mobile TOC CSS min escape');
 assertIncludes(styles, 'gap: 0.65rem', 'Short URL copy row spacing');
+assertIncludes(
+	styles,
+	'.Whale .content-wrapper .whale-content .whale-content-main p a:hover',
+	'Content link hover underline',
+);
+if (
+	/whale-content-main p a,\s*[\s\S]*?whale-content-main dd a\s*\{\s*text-decoration:\s*underline;/.test(
+		styles,
+	)
+) {
+	throw new Error('Content links should not be underlined before hover/focus.');
+}
 
 const shortUrlTemplate = read('templates/ShortUrlModal.mustache');
 if (shortUrlTemplate.includes('whale-short-url-code')) {
@@ -146,8 +158,10 @@ const navTemplate = read('templates/Nav.mustache');
 assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
 
 const rendererPhp = read('WhaleRenderer.php');
-assertIncludes(rendererPhp, "'width' => '174'", 'Footer badge image');
-assertIncludes(rendererPhp, "'height' => '62'", 'Footer badge image');
+assertIncludes(rendererPhp, 'img/whale_footer_img.png', 'Footer badge image');
+assertIncludes(rendererPhp, 'whale-footer-brand-img', 'Footer badge image');
+assertIncludes(rendererPhp, "'width' => '150'", 'Footer badge image');
+assertIncludes(rendererPhp, "'height' => '60'", 'Footer badge image');
 assertIncludes(rendererPhp, 'parseSimpleNavbar', 'Simple navbar parser');
 assertIncludes(
 	rendererPhp,
@@ -166,6 +180,42 @@ const removedAvatarRenderers = [
 ];
 if (removedAvatarRenderers.some((needle) => rendererPhp.includes(needle))) {
 	throw new Error('Login avatar rendering should use server-side DiceBear.');
+}
+const removedFooterImage = ['designed', 'by', 'libre.png'].join('');
+if (rendererPhp.includes(removedFooterImage)) {
+	throw new Error('Footer badge should not use the legacy footer image.');
+}
+const removedFooterClass = ['designed', 'by', 'libre'].join('');
+if (
+	rendererPhp.includes(removedFooterClass) ||
+	styles.includes(removedFooterClass)
+) {
+	throw new Error('Footer badge should not keep legacy footer classes.');
+}
+
+assertIncludes(
+	skinPhp,
+	'WHALE_AD_POSITIONS',
+	'Centralized AdSense position config',
+);
+assertIncludes(
+	skinPhp,
+	'pagead/js/adsbygoogle.js?client=',
+	'Modern AdSense loader',
+);
+assertIncludes(
+	skinPhp,
+	"'crossorigin' => 'anonymous'",
+	'Modern AdSense loader',
+);
+assertIncludes(skinPhp, 'normalizeAdBoolean', 'AdSense slot normalization');
+const removedAdsenseLoader = ['src="//', 'pagead2.googlesyndication.com'].join(
+	'',
+);
+if (skinPhp.includes(removedAdsenseLoader)) {
+	throw new Error(
+		'AdSense loader should not use protocol-relative legacy URLs.',
+	);
 }
 
 const avatarPhp = read('WhaleAvatar.php');

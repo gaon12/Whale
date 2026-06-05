@@ -180,6 +180,26 @@ $wgWhaleAdSetting = [
 ];
 ```
 
+Each ad position may also be configured as an array instead of a string slot ID.
+Use this when a slot needs its own `data-ad-format`, `data-ad-layout`,
+`data-ad-layout-key`, or `data-full-width-responsive` value.
+
+```php
+$wgWhaleAdSetting = [
+	'client' => 'ca-pub-0000000000000000',
+	'header' => [
+		'slot' => '1234567890',
+		'format' => 'auto',
+		'fullWidthResponsive' => false,
+	],
+	'belowarticle' => [
+		'slot' => '1313135452',
+		'format' => 'fluid',
+		'layout' => 'in-article',
+	],
+];
+```
+
 | Value | Position |
 | --- | --- |
 | `client` | Google AdSense client ID |
@@ -187,6 +207,10 @@ $wgWhaleAdSetting = [
 | `right` | Right sidebar ad |
 | `belowarticle` | Ad below the article body |
 | `bottom` | Bottom ad |
+
+The client ID must use the `ca-pub-...` form and slots must be numeric IDs.
+Whale loads the modern AdSense script URL with the `client` query parameter and
+`crossorigin="anonymous"`.
 
 Move the right sidebar ad to the bottom on mobile:
 
@@ -216,12 +240,13 @@ Available rights:
 | `$wgWhaleTheme` | Default site theme palette | `'han-river-blue'` | `null` |
 | `$wgWhalePrimaryColor` | Advanced site-wide primary override | `'#336699'` | `null` |
 | `$wgWhaleSecondaryColor` | Advanced site-wide secondary override | `'#003366'` | `null` |
-| `$wgWhaleMainColor` | Legacy primary color setting | `'#4188F1'` | `'#4188F1'` |
-| `$wgWhaleSecondColor` | Legacy secondary color setting | `'#2774DC'` | `null` |
+| `$wgWhaleMainColor` | Site-wide primary color | `'#4188F1'` | `'#4188F1'` |
+| `$wgWhaleSecondColor` | Site-wide secondary color | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgTwitterAccount` | Twitter/X card account | `'librewiki'` | unset |
 | `$wgNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
-| `$wgWhaleUseGravatar` | Use Gravatar in login menu | `true` | `true` |
+| `$wgWhaleAvatarStyle` | DiceBear profile icon style for the login menu | `'bottts'` | `'identicon'` |
+| `$wgWhaleAvatarOptions` | Profile icon options passed to DiceBear PHP | `[ 'borderRadius' => 12 ]` | `[]` |
 | `$wgWhaleEnableLiveRC` | Enable right-sidebar recent changes | `true` | `true` |
 | `$wgWhaleMaxRecent` | Number of recent rows | `10` | `10` |
 | `$wgWhaleNavBarLogoImage` | Top navigation logo image | `'/images/logo.svg'` | `null` |

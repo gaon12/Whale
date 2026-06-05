@@ -569,14 +569,17 @@ class WhaleRenderer {
 			];
 		}
 
+		$stylePath = $this->skin->getConfig()->get( 'StylePath' );
+		$stylePath = is_string( $stylePath ) ? $stylePath : '';
+
 		$iconBlocks[] = [
-			'class' => 'designedbylibre',
-			'html' => Html::rawElement( 'a', [ 'href' => '//librewiki.net' ], Html::element( 'img', [
-				'src' => $this->skin->getConfig()->get( 'StylePath' ) . '/Whale/img/designedbylibre.png',
-				'class' => 'designedbylibre-img',
-				'alt' => 'Designed by Librewiki',
-				'width' => '174',
-				'height' => '62',
+			'class' => 'whale-footer-brand',
+			'html' => Html::rawElement( 'a', [ 'href' => 'https://github.com/gaon12/Whale' ], Html::element( 'img', [
+				'src' => $stylePath . '/Whale/img/whale_footer_img.png',
+				'class' => 'whale-footer-brand-img',
+				'alt' => 'Designed by Whale',
+				'width' => '150',
+				'height' => '60',
 				'decoding' => 'async',
 			] ) ),
 		];
@@ -672,22 +675,6 @@ class WhaleRenderer {
 				[ 'class' => 'whale-login-help' ]
 			),
 			'close-label' => $skin->msg( 'close' )->text(),
-		];
-	}
-
-	/**
-	 * @return array<string,mixed>
-	 */
-	public function getAdData( string $position ): array {
-		global $wgWhaleAdSetting;
-
-		$adFormat = $position === 'header' ? 'horizontal' : 'auto';
-		return [
-			'class' => $position . '-ads',
-			'client' => $wgWhaleAdSetting['client'] ?? '',
-			'slot' => $wgWhaleAdSetting[$position] ?? '',
-			'format' => $adFormat,
-			'full-width-responsive' => $position === 'header' ? 'false' : 'true',
 		];
 	}
 

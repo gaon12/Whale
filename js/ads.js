@@ -1,22 +1,42 @@
 (() => {
-	whale.ready(() => {
+	const MOBILE_AD_QUERY = '(max-width: 1023px)';
+
+	const moveRightAdToMobileSlot = () => {
 		const mobileAds = document.querySelector('.mobile-ads');
 		const rightAds = document.querySelector('.right-ads');
-		const ads = document.querySelectorAll('.adsbygoogle');
 
-		if (mobileAds && rightAds && window.innerWidth < 1024) {
-			while (rightAds.firstChild) {
-				mobileAds.append(rightAds.firstChild);
-			}
-			rightAds.remove();
+		if (
+			!mobileAds ||
+			!rightAds ||
+			!window.matchMedia(MOBILE_AD_QUERY).matches
+		) {
+			return;
 		}
 
-		if (ads.length > 0) {
-			window.adsbygoogle = window.adsbygoogle || [];
+		while (rightAds.firstChild) {
+			mobileAds.append(rightAds.firstChild);
+		}
+		rightAds.remove();
+	};
+
+	const queueAds = () => {
+		const ads = document.querySelectorAll(
+			'ins.adsbygoogle:not([data-whale-ad-queued])',
+		);
+
+		if (ads.length < 1) {
+			return;
 		}
 
-		ads.forEach(() => {
+		window.adsbygoogle = window.adsbygoogle || [];
+		ads.forEach((ad) => {
+			ad.dataset.whaleAdQueued = 'true';
 			window.adsbygoogle.push({});
 		});
+	};
+
+	whale.ready(() => {
+		moveRightAdToMobileSlot();
+		queueAds();
 	});
 })();
