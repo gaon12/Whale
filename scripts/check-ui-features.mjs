@@ -110,6 +110,15 @@ assertIncludes(
 	'.whale-heading-anchor-alert',
 	'Heading link copy alert',
 );
+const rawLessCssFunction = styles
+	.split('\n')
+	.find((line) => /\b(?:min|max|clamp)\(/.test(line) && !line.includes('~"'));
+if (rawLessCssFunction) {
+	throw new Error(
+		'CSS min/max/clamp functions in LESS should be escaped for MediaWiki less.php.',
+	);
+}
+assertIncludes(styles, '~"min(82vw, 22rem)"', 'Mobile TOC CSS min escape');
 assertIncludes(styles, 'gap: 0.65rem', 'Short URL copy row spacing');
 
 const shortUrlTemplate = read('templates/ShortUrlModal.mustache');
