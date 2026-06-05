@@ -5,7 +5,7 @@
 		]
 	},
 	"skinname-whale": "Whale",
-	"whale-desc": "为 [https://librewiki.net/ LibreWiki] 设计的响应式皮肤",
+	"whale-desc": "面向 Whale 的响应式 MediaWiki 皮肤",
 	"whale-dark-default": "跟随系统设置",
 	"whale-dark-dark": "始终使用深色模式",
 	"whale-dark-light": "始终使用浅色模式",

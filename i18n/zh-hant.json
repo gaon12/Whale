@@ -5,7 +5,7 @@
 		]
 	},
 	"skinname-whale": "Whale",
-	"whale-desc": "為 [https://librewiki.net/ LibreWiki] 設計的響應式外觀",
+	"whale-desc": "面向 Whale 的響應式 MediaWiki 外觀",
 	"whale-dark-default": "跟隨系統設定",
 	"whale-dark-dark": "一律使用深色模式",
 	"whale-dark-light": "一律使用淺色模式",
