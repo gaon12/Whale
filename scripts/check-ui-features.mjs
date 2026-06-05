@@ -25,6 +25,10 @@ if (skin.config.WhaleAvatarStyle !== 'identicon') {
 	throw new Error('DiceBear avatar style should default to identicon.');
 }
 
+if (skin.Hooks.BeforePageDisplay !== 'WhaleHooks::onBeforePageDisplay') {
+	throw new Error('Whale client modules should load from BeforePageDisplay.');
+}
+
 if (
 	typeof skin.config.WhaleAvatarOptions !== 'object' ||
 	skin.config.WhaleAvatarOptions === null ||
@@ -99,6 +103,7 @@ if (skinPhp.includes('maximum-scale=1')) {
 }
 
 const styles = read('less/default.less');
+const mediaWikiStyles = read('less/only-mw.less');
 assertIncludes(styles, 'color-scheme: light dark', 'Stylesheet');
 assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
@@ -110,6 +115,60 @@ assertIncludes(
 	'Toolbar hover guard style',
 );
 assertIncludes(styles, 'content: ">"', 'Section collapse toggle style');
+assertIncludes(
+	styles,
+	'.whale-section-heading .mw-editsection',
+	'Section edit link alignment',
+);
+assertIncludes(
+	styles,
+	'border-bottom: 1px solid #cfd4d9',
+	'Section heading divider',
+);
+assertIncludes(
+	styles,
+	'box-shadow: inset 0 -1px 0 #cfd4d9',
+	'Section heading divider',
+);
+assertIncludes(
+	styles,
+	'background-color: transparent',
+	'Section toggle should read as a heading affordance',
+);
+if (/\.whale-section-toggle\s*\{[\s\S]*?border-radius:\s*999px;/.test(styles)) {
+	throw new Error('Section toggles should not render as legacy round pills.');
+}
+assertIncludes(
+	mediaWikiStyles,
+	'min-width: 10.75rem',
+	'Article TOC compact document box',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'border: 1px solid #cfd4d9',
+	'Article TOC compact document box',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'.toc .toctogglelabel::before',
+	'Article TOC collapse chevron',
+);
+assertIncludes(mediaWikiStyles, 'color: #0066d9', 'Article TOC link color');
+assertIncludes(
+	mediaWikiStyles,
+	'.mw-heading h2.whale-section-heading',
+	'MediaWiki heading rule should not override section toggles',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'display: flex',
+	'MediaWiki heading rule should preserve section toggle layout',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'box-shadow: inset 0 -1px 0 #cfd4d9',
+	'MediaWiki heading rule should preserve section divider',
+);
 assertIncludes(
 	styles,
 	'whale-content-skeleton-loading',
@@ -265,6 +324,13 @@ assertIncludes(
 );
 
 const hooksPhp = read('WhaleHooks.php');
+assertIncludes(
+	hooksPhp,
+	'public static function onBeforePageDisplay',
+	'Client module loader hook',
+);
+assertIncludes(hooksPhp, "'skins.whale.layoutjs'", 'Client module loader hook');
+assertIncludes(hooksPhp, '$out->addModules', 'Client module loader hook');
 assertIncludes(
 	hooksPhp,
 	"$preferences['whale-ads-belowarticle']",

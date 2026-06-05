@@ -30,6 +30,8 @@ $method = new ReflectionMethod( WhaleHooks::class, 'decorateArticleHtml' );
 $method->setAccessible( true );
 
 $html = implode( '', [
+	'<div class="toc"><div class="toctitle"><h2 id="mw-toc-heading">Contents</h2></div>',
+	'<ul><li><a href="#parent">Parent</a></li></ul></div>',
 	'<h2><span class="mw-headline" id="parent"># Parent #</span></h2>',
 	'<p>Parent text</p>',
 	'<h3><span class="mw-headline" id="child">Child</span></h3>',
@@ -53,6 +55,16 @@ if ( !$loaded ) {
 }
 
 $xpath = new DOMXPath( $dom );
+
+$tocHeading = $dom->getElementById( 'mw-toc-heading' );
+if (
+	!$tocHeading instanceof DOMElement ||
+	strpos( $tocHeading->getAttribute( 'class' ), 'whale-section-heading' ) !== false ||
+	$xpath->query( './/button[contains(@class, "whale-section-toggle")]', $tocHeading )->length !== 0
+) {
+	fwrite( STDERR, "TOC heading should not be decorated as a collapsible section.\n" );
+	exit( 1 );
+}
 
 $parentHeading = $xpath->query( '//*[@id="parent"]/parent::h2' )->item( 0 );
 if ( !$parentHeading instanceof DOMElement ) {

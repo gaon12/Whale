@@ -208,6 +208,7 @@
 		"whale-mobile-user-tools-right": true
 	},
 	"Hooks": {
+		"BeforePageDisplay": "WhaleHooks::onBeforePageDisplay",
 		"GetPreferences": "WhaleHooks::onGetPreferences",
 		"OutputPageBodyAttributes": "WhaleHooks::onOutputPageBodyAttributes",
 		"OutputPageBeforeHTML": "WhaleHooks::onOutputPageBeforeHTML",
