@@ -5,7 +5,7 @@
 		]
 	},
 	"skinname-whale": "Whale",
-	"whale-desc": "[https://librewiki.net/ LibreWiki] 用のレスポンシブスキン",
+	"whale-desc": "Whale向けレスポンシブMediaWikiスキン",
 	"whale-dark-default": "システム設定に従う",
 	"whale-dark-dark": "常にダークモードを使用",
 	"whale-dark-light": "常にライトモードを使用",

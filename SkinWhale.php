@@ -54,6 +54,33 @@ class SkinWhale extends SkinMustache {
 		],
 	];
 
+	private const WHALE_AD_POSITIONS = [
+		'header' => [
+			'class' => 'header-ads',
+			'option' => 'whale-ads-header',
+			'format' => 'horizontal',
+			'fullWidthResponsive' => 'false',
+		],
+		'right' => [
+			'class' => 'right-ads',
+			'option' => 'whale-ads-right',
+			'format' => 'auto',
+			'fullWidthResponsive' => 'true',
+		],
+		'belowarticle' => [
+			'class' => 'belowarticle-ads',
+			'option' => 'whale-ads-belowarticle',
+			'format' => 'auto',
+			'fullWidthResponsive' => 'true',
+		],
+		'bottom' => [
+			'class' => 'bottom-ads',
+			'option' => 'whale-ads-bottom',
+			'format' => 'auto',
+			'fullWidthResponsive' => 'true',
+		],
+	];
+
 	/**
 	 * Page initialize.
 	 *
@@ -61,7 +88,7 @@ class SkinWhale extends SkinMustache {
 	 */
 	public function initPage( OutputPage $out ): void {
 		// @codingStandardsIgnoreLine
-		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC, $wgWhaleAdSetting;
+		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC;
 
 		$user = $this->getUser();
 		$services = MediaWikiServices::getInstance();
@@ -130,7 +157,7 @@ class SkinWhale extends SkinMustache {
 		];
 
 		// Only load ad-related JS if ads are enabled in site configuration
-		if ( isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'] ) {
+		if ( $this->getWhaleAdClient() !== '' ) {
 			$modules[] = 'skins.whale.ads';
 		}
 
@@ -259,13 +286,13 @@ class SkinWhale extends SkinMustache {
 	 * @return array<string,mixed>
 	 */
 	public function getTemplateData(): array {
-		global $wgWhaleAdSetting, $wgWhaleEnableLiveRC, $wgWhaleMobileReplaceAd;
+		global $wgWhaleEnableLiveRC, $wgWhaleMobileReplaceAd;
 
 		$data = parent::getTemplateData();
 		$renderer = new WhaleRenderer( $this );
 		$request = $this->getRequest();
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-		$hasAds = isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'];
+		$adClient = $this->getWhaleAdClient();
 		$hasSidebar = $this->shouldRenderSidebar();
 		$hasLiveRecent = $wgWhaleEnableLiveRC && $this->shouldRenderLiveRecent();
 		$hasDesktopLiveRecent = $hasLiveRecent && $hasSidebar;
@@ -293,25 +320,13 @@ class SkinWhale extends SkinMustache {
 		$data['has-whale-mobile-live-recent'] = $hasMobileLiveRecent;
 		$data['data-whale-live-recent'] = $hasDesktopLiveRecent ? $renderer->getLiveRecentData() : [];
 		$data['data-whale-mobile-live-recent'] = $hasMobileLiveRecent ? $renderer->getLiveRecentData( 'mobile' ) : [];
-		$data['html-whale-right-ad'] =
-			$hasSidebar && $this->shouldRenderAd( 'right', 'whale-ads-right' )
-				? $this->renderAdHtml( $renderer->getAdData( 'right' ) )
-				: '';
-		$data['html-whale-header-ad'] =
-			$this->shouldRenderAd( 'header', 'whale-ads-header' )
-				? $this->renderAdHtml( $renderer->getAdData( 'header' ) )
-				: '';
-		$data['html-whale-belowarticle-ad'] =
-			$this->shouldRenderAd( 'belowarticle', 'whale-ads-belowarticle' )
-				? $this->renderAdHtml( $renderer->getAdData( 'belowarticle' ) )
-				: '';
-		$data['html-whale-bottom-ad'] =
-			$this->shouldRenderAd( 'bottom', 'whale-ads-bottom' )
-				? $this->renderAdHtml( $renderer->getAdData( 'bottom' ) )
-				: '';
+		$data['html-whale-right-ad'] = $hasSidebar ? $this->getAdHtml( 'right' ) : '';
+		$data['html-whale-header-ad'] = $this->getAdHtml( 'header' );
+		$data['html-whale-belowarticle-ad'] = $this->getAdHtml( 'belowarticle' );
+		$data['html-whale-bottom-ad'] = $this->getAdHtml( 'bottom' );
 		$data['has-whale-mobile-ad'] =
-			isset( $wgWhaleMobileReplaceAd ) && $wgWhaleMobileReplaceAd &&
-			isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'];
+			( $wgWhaleMobileReplaceAd ?? false ) &&
+			$this->getWhaleAdData( 'right' ) !== [];
 		$shortUrlData = $renderer->getShortUrlData();
 		$footerData = $renderer->getFooterData();
 		$footerData['short-url'] = $shortUrlData;
@@ -333,8 +348,8 @@ class SkinWhale extends SkinMustache {
 		$data['whale-scroll-up-label'] = $this->msg( 'whale-scroll-up' )->text();
 		$data['whale-scroll-down-label'] = $this->msg( 'whale-scroll-down' )->text();
 		$data['whale-scroll-toc-label'] = $this->msg( 'whale-scroll-toc' )->text();
-		$data['html-whale-adsense-script'] = $hasAds
-			? '<script async defer src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>'
+		$data['html-whale-adsense-script'] = $adClient !== ''
+			? $this->renderAdsenseScript( $adClient )
 			: '';
 		$data['html-whale-debughtml'] = class_exists( MWDebug::class ) ? MWDebug::getHTMLDebugLog() : '';
 
@@ -460,43 +475,176 @@ class SkinWhale extends SkinMustache {
 		return $userOptionsLookup->getOption( $this->getUser(), $optionKey, true ) !== false;
 	}
 
-	private function shouldRenderAd( string $position, string $optionKey ): bool {
+	private function getAdHtml( string $position ): string {
+		if ( $this->isAdHiddenByUser( $position ) ) {
+			return '';
+		}
+
+		$adData = $this->getWhaleAdData( $position );
+		return $adData === [] ? '' : $this->renderAdHtml( $adData );
+	}
+
+	private function isAdHiddenByUser( string $position ): bool {
 		global $wgWhaleAdSetting, $wgWhaleAdGroup;
 
 		if (
-			!isset( $wgWhaleAdSetting['client'] ) ||
-			!isset( $wgWhaleAdSetting[$position] ) ||
-			!$wgWhaleAdSetting['client'] ||
-			!$wgWhaleAdSetting[$position]
+			!is_array( $wgWhaleAdSetting ?? null ) ||
+			!isset( self::WHALE_AD_POSITIONS[$position] )
 		) {
 			return false;
 		}
 
-		if ( isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup === 'differ' ) {
+		if ( ( $wgWhaleAdGroup ?? null ) === 'differ' ) {
 			$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+			$optionKey = self::WHALE_AD_POSITIONS[$position]['option'];
 			if ( $userOptionsLookup->getOption( $this->getUser(), $optionKey ) ) {
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	private function getWhaleAdData( string $position ): array {
+		if ( !isset( self::WHALE_AD_POSITIONS[$position] ) ) {
+			return [];
+		}
+
+		$adSettings = $this->getWhaleAdSettings();
+		$positionSetting = $adSettings[$position] ?? null;
+		$positionConfig = $this->normalizeAdConfig( $positionSetting );
+		$client = $this->getWhaleAdClient( $positionConfig );
+		$slot = $this->normalizeAdValue( $positionConfig['slot'] ?? '' );
+
+		if (
+			$client === '' ||
+			$slot === '' ||
+			!preg_match( '/^\d+$/', $slot )
+		) {
+			return [];
+		}
+
+		$defaults = self::WHALE_AD_POSITIONS[$position];
+		$adData = [
+			'class' => $defaults['class'],
+			'client' => $client,
+			'slot' => $slot,
+			'format' => $this->normalizeAdValue( $positionConfig['format'] ?? $defaults['format'] ),
+			'full-width-responsive' => $this->normalizeAdBoolean(
+				$positionConfig['fullWidthResponsive'] ??
+				$positionConfig['full-width-responsive'] ??
+				$defaults['fullWidthResponsive']
+			),
+			'layout' => $this->normalizeAdValue( $positionConfig['layout'] ?? '' ),
+			'layout-key' => $this->normalizeAdValue(
+				$positionConfig['layoutKey'] ??
+				$positionConfig['layout-key'] ??
+				''
+			),
+		];
+
+		if ( $adData['format'] === '' ) {
+			$adData['format'] = $defaults['format'];
+		}
+
+		return $adData;
+	}
+
+	/**
+	 * @param array<string,mixed>|null $positionConfig
+	 */
+	private function getWhaleAdClient( ?array $positionConfig = null ): string {
+		$adSettings = $this->getWhaleAdSettings();
+		$client = $this->normalizeAdValue(
+			$positionConfig['client'] ??
+			$adSettings['client'] ??
+			''
+		);
+
+		return preg_match( '/^ca-pub-\d+$/', $client ) ? $client : '';
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	private function getWhaleAdSettings(): array {
+		global $wgWhaleAdSetting;
+
+		return $this->normalizeAdConfig( $wgWhaleAdSetting ?? null );
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	private function normalizeAdConfig( mixed $config ): array {
+		if ( !is_array( $config ) ) {
+			return [ 'slot' => $config ];
+		}
+
+		$normalized = [];
+		foreach ( $config as $key => $value ) {
+			if ( is_string( $key ) ) {
+				$normalized[$key] = $value;
+			}
+		}
+
+		return $normalized;
+	}
+
+	private function normalizeAdValue( mixed $value ): string {
+		if ( is_string( $value ) || is_int( $value ) || is_float( $value ) ) {
+			return trim( (string)$value );
+		}
+
+		return '';
+	}
+
+	private function normalizeAdBoolean( mixed $value ): string {
+		if ( is_bool( $value ) ) {
+			return $value ? 'true' : 'false';
+		}
+
+		$normalized = strtolower( $this->normalizeAdValue( $value ) );
+		return in_array( $normalized, [ '1', 'true', 'yes', 'on' ], true ) ? 'true' : 'false';
 	}
 
 	/**
 	 * @param array<string,mixed> $adData
 	 */
 	private function renderAdHtml( array $adData ): string {
+		$insAttributes = [
+			'class' => 'adsbygoogle',
+			'data-full-width-responsive' => $adData['full-width-responsive'] ?? 'true',
+			'data-ad-client' => $adData['client'] ?? '',
+			'data-ad-slot' => $adData['slot'] ?? '',
+			'data-ad-format' => $adData['format'] ?? 'auto',
+		];
+
+		if ( ( $adData['layout'] ?? '' ) !== '' ) {
+			$insAttributes['data-ad-layout'] = $adData['layout'];
+		}
+
+		if ( ( $adData['layout-key'] ?? '' ) !== '' ) {
+			$insAttributes['data-ad-layout-key'] = $adData['layout-key'];
+		}
+
 		return Html::rawElement(
 			'div',
 			[ 'class' => $adData['class'] ?? '' ],
-			Html::rawElement( 'ins', [
-				'class' => 'adsbygoogle',
-				'data-full-width-responsive' => $adData['full-width-responsive'] ?? 'true',
-				'data-ad-client' => $adData['client'] ?? '',
-				'data-ad-slot' => $adData['slot'] ?? '',
-				'data-ad-format' => $adData['format'] ?? 'auto',
-			], '' )
+			Html::rawElement( 'ins', $insAttributes, '' )
 		);
+	}
+
+	private function renderAdsenseScript( string $client ): string {
+		return Html::element( 'script', [
+			'async' => true,
+			'src' => 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' .
+				rawurlencode( $client ),
+			'crossorigin' => 'anonymous',
+		], '' );
 	}
 
 	/**
