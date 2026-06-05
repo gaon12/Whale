@@ -131,6 +131,30 @@
 		setToggleState(toggle, toggle.getAttribute('aria-expanded') !== 'true');
 	};
 
+	const getContentToggle = (target) =>
+		whale.closest(target, '.whale-section-toggle, .whale-folding-toggle');
+
+	let lastDirectToggle = null;
+	let lastDirectToggleAt = 0;
+	const DIRECT_TOGGLE_SUPPRESS_MS = 700;
+
+	const handleDirectToggle = (event) => {
+		if (event.pointerType === 'mouse') {
+			return;
+		}
+
+		const contentToggle = getContentToggle(event.target);
+		if (!contentToggle) {
+			return;
+		}
+
+		event.preventDefault();
+		event.stopPropagation?.();
+		lastDirectToggle = contentToggle;
+		lastDirectToggleAt = Date.now();
+		toggleCollapsibleContent(contentToggle);
+	};
+
 	const initContentSkeleton = () => {
 		if (!document.body.classList.contains('whale-content-skeleton-enabled')) {
 			return;
@@ -368,12 +392,15 @@
 				return;
 			}
 
-			const contentToggle = whale.closest(
-				event.target,
-				'.whale-section-toggle, .whale-folding-toggle',
-			);
+			const contentToggle = getContentToggle(event.target);
 			if (contentToggle) {
 				event.preventDefault();
+				if (
+					lastDirectToggle === contentToggle &&
+					Date.now() - lastDirectToggleAt < DIRECT_TOGGLE_SUPPRESS_MS
+				) {
+					return;
+				}
 				toggleCollapsibleContent(contentToggle);
 				return;
 			}
@@ -409,5 +436,14 @@
 		document.addEventListener('whale:openModal', (event) => {
 			openModal(event.detail?.modal, event.detail?.trigger || null);
 		});
+
+		document.addEventListener('pointerup', handleDirectToggle, {
+			passive: false,
+		});
+		if (!window.PointerEvent) {
+			document.addEventListener('touchend', handleDirectToggle, {
+				passive: false,
+			});
+		}
 	});
 })();
