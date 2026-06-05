@@ -94,6 +94,8 @@
 	"whale-pref-user-contribution-graph": "Show contribution graph on user pages",
 	"whale-pref-short-url": "Show short URL tool in the footer",
 	"whale-pref-lazy-images": "Lazy load article images with skeleton placeholders",
+	"whale-pref-content-skeleton": "Show article content skeleton",
+	"whale-pref-content-skeleton-help": "Show a placeholder animation in the article body before the page fully loads. Disabled by default.",
 	"whale-floating-toc": "Section index",
 	"whale-reading-progress": "Reading progress",
 	"whale-live-recent-no-data": "No items to show",

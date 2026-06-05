@@ -578,8 +578,8 @@ class WhaleRenderer {
 				'src' => $stylePath . '/Whale/img/whale_footer_img.png',
 				'class' => 'whale-footer-brand-img',
 				'alt' => 'Designed by Whale',
-				'width' => '150',
-				'height' => '60',
+				'width' => '78',
+				'height' => '31',
 				'decoding' => 'async',
 			] ) ),
 		];

@@ -94,6 +94,8 @@
 	"whale-pref-user-contribution-graph": "사용자 문서에 기여도 그래프 표시",
 	"whale-pref-short-url": "푸터에 단축 URL 도구 표시",
 	"whale-pref-lazy-images": "문서 이미지를 지연 로드하고 스켈레톤 자리표시자를 표시",
+	"whale-pref-content-skeleton": "문서 본문 스켈레톤 표시",
+	"whale-pref-content-skeleton-help": "문서가 완전히 로드되기 전 본문 영역에 자리표시자 애니메이션을 표시합니다. 기본값은 사용 안 함입니다.",
 	"whale-floating-toc": "문단 목차",
 	"whale-reading-progress": "읽기 진행률",
 	"whale-live-recent-no-data": "표시할 내용이 없습니다",
