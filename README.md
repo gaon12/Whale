@@ -139,6 +139,7 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | 문단 번호 | 문서 목차 번호를 본문 문단명과 오른쪽 문단 목차에 함께 표시합니다. |
 | 문단 접기 | 문단 제목 왼쪽의 `>` 토글로 하위 문단과 본문을 접거나 펼칩니다. 기본값은 모든 문단에 토글을 붙이며, 사용자 옵션으로 `#` 표식 문단만 접거나 끌 수 있습니다. |
 | 접기 블록 | `{{{#!folding 제목 ... }}}` 형식의 접기/펼치기 블록을 제공합니다. |
+| 본문 스켈레톤 | `$wgWhaleEnableContentSkeleton`을 켜면 사용자가 본문 로딩 자리표시자를 opt-in할 수 있습니다. 기본값은 사용 안 함입니다. |
 | 스와이프 문단 목차 | 모바일/태블릿에서 화면 오른쪽 가장자리에서 왼쪽으로 밀어 PC형 문단 목차 패널을 열 수 있습니다. |
 | 흐림 분류 | `[[분류:이름#blur]]`에서 표시 이름의 `#blur`를 제거하고 흐림 처리합니다. |
 | 다크 모드 | 시스템 설정을 따르거나 사용자가 직접 밝은/어두운 모드를 고를 수 있습니다. |
@@ -437,6 +438,7 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 | `$wgWhaleEnableContentFontScale` | 사용자별 본문 글자 크기 설정 사용 | `true` | `true` |
 | `$wgWhaleEnableAnonThemeToggle` | 비로그인 사용자 테마 전환 버튼 사용 | `true` | `true` |
 | `$wgWhaleEnableImageLazyLoad` | 문서 이미지 lazy load와 스켈레톤 표시 사용 | `true` | `true` |
+| `$wgWhaleEnableContentSkeleton` | 문서 본문 스켈레톤 설정 노출 | `true` | `false` |
 | `$wgWhaleMobileUserToolsPosition` | 모바일 로그인/프로필 버튼 위치 | `'right'` | `'right'` |
 
 ### 14. 관리하는 언어
@@ -571,6 +573,7 @@ Advanced site-wide color variables are available through `$wgWhalePrimaryColor`,
 | Section numbering | Shows table-of-contents numbers in both content headings and the right-side section index. |
 | Section folding | Adds a `>` toggle to section headings so readers can collapse or expand the section body and nested subsections. By default all sections receive a toggle; users can limit folding to `#`-marked headings or disable it. |
 | Folding blocks | Supports `{{{#!folding title ... }}}` folding blocks. |
+| Content skeleton | When `$wgWhaleEnableContentSkeleton` is enabled, users may opt in to article-body loading placeholders. Disabled by default. |
 | Swipe section index | Opens a desktop-like section index panel on mobile/tablet by swiping left from the right screen edge. |
 | Blurred categories | Removes `#blur` from `[[Category:Name#blur]]` labels and blurs the category. |
 | Dark mode | Follows the system setting or a user-selected mode. |
@@ -865,6 +868,7 @@ The beta deploy workflow runs on `main` pushes when the repository variable `WHA
 | `$wgWhaleEnableContentFontScale` | Enable per-user article font size | `true` | `true` |
 | `$wgWhaleEnableAnonThemeToggle` | Enable the light/dark toggle for anonymous users | `true` | `true` |
 | `$wgWhaleEnableImageLazyLoad` | Enable lazy loading and skeleton placeholders for article images | `true` | `true` |
+| `$wgWhaleEnableContentSkeleton` | Expose the article content skeleton preference | `true` | `false` |
 | `$wgWhaleMobileUserToolsPosition` | Mobile login/profile position | `'right'` | `'right'` |
 
 ### 14. Maintained Languages

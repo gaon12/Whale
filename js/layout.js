@@ -131,6 +131,23 @@
 		setToggleState(toggle, toggle.getAttribute('aria-expanded') !== 'true');
 	};
 
+	const initContentSkeleton = () => {
+		if (!document.body.classList.contains('whale-content-skeleton-enabled')) {
+			return;
+		}
+
+		const clear = () => {
+			document.body.classList.remove('whale-content-skeleton-loading');
+		};
+
+		if (document.readyState === 'complete') {
+			window.setTimeout(clear, 120);
+			return;
+		}
+
+		window.addEventListener('load', clear, { once: true });
+	};
+
 	const MODAL_TRANSITION_MS = 300;
 	const FOCUSABLE_SELECTOR = [
 		'a[href]',
@@ -245,6 +262,7 @@
 	};
 
 	whale.ready(() => {
+		initContentSkeleton();
 		initReadingProgress();
 
 		document.addEventListener('click', (event) => {

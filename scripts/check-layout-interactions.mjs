@@ -145,6 +145,7 @@ class TestDocument extends TestElement {
 		super('document');
 		this.body = new TestElement('body');
 		this.documentElement = new TestElement('html');
+		this.readyState = 'complete';
 		this.listeners = new Map();
 		this.append(this.body);
 	}
@@ -184,7 +185,7 @@ const context = {
 		matchMedia: () => ({ matches: true }),
 		requestAnimationFrame: (callback) => callback(),
 		scrollTo: () => {},
-		setTimeout,
+		setTimeout: (callback) => callback(),
 	},
 };
 
@@ -196,6 +197,10 @@ context.whale = {
 	scrollToTarget: () => {},
 };
 context.window.whale = context.whale;
+document.body.classList.add(
+	'whale-content-skeleton-enabled',
+	'whale-content-skeleton-loading',
+);
 
 const container = new TestElement('div', {
 	className: 'whale-section-container is-collapsed',
@@ -219,6 +224,10 @@ document.body.append(container);
 runInNewContext(readFileSync(resolve('js/layout.js'), 'utf8'), context);
 for (const callback of readyCallbacks) {
 	callback();
+}
+
+if (document.body.classList.contains('whale-content-skeleton-loading')) {
+	throw new Error('Content skeleton loading state should clear after ready.');
 }
 
 document.dispatch('click', {

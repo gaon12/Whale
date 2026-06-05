@@ -99,3 +99,25 @@ if ( !$emptyBody instanceof DOMElement ) {
 	fwrite( STDERR, "Every section toggle should control an existing section body.\n" );
 	exit( 1 );
 }
+
+$markedOutput = $method->invoke( null, $html, 'marked', 'default' );
+if (
+	substr_count( $markedOutput, 'whale-section-toggle' ) !== 1 ||
+	strpos( $markedOutput, 'id="child"' ) === false
+) {
+	fwrite( STDERR, "Marked mode should only decorate headings wrapped in # markers.\n" );
+	exit( 1 );
+}
+
+$offOutput = $method->invoke( null, $html, 'off', 'default' );
+if ( strpos( $offOutput, 'whale-section-toggle' ) !== false ) {
+	fwrite( STDERR, "Off mode should not decorate section headings.\n" );
+	exit( 1 );
+}
+
+$normalizeMethod = new ReflectionMethod( WhaleHooks::class, 'normalizeSectionMode' );
+$normalizeMethod->setAccessible( true );
+if ( $normalizeMethod->invoke( null, 'broken' ) !== 'all' ) {
+	fwrite( STDERR, "Invalid section mode should fall back to all sections.\n" );
+	exit( 1 );
+}

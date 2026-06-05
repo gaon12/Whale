@@ -24,7 +24,7 @@ class WhaleHooks {
 	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, &$bodyAttrs ) {
 		global $wgWhaleEnableFloatingToc, $wgWhaleEnableReadingProgress, $wgWhaleEnableHeadingAnchors,
 			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
-			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition;
+			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition, $wgWhaleEnableContentSkeleton;
 
 		if ( $sk->getSkinName() === 'whale' ) {
 			$bodyAttrs['class'] .= ' Whale width-size';
@@ -54,7 +54,9 @@ class WhaleHooks {
 				$bodyAttrs['class'] .= ' whale-scroll-buttons-vertical';
 			}
 
+			$sectionNavigationEnabled = self::shouldRenderSectionNavigation( $out );
 			if (
+				$sectionNavigationEnabled &&
 				( $wgWhaleEnableFloatingToc ?? true ) !== false &&
 				$userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-floating-toc' ) !== false
 			) {
@@ -62,6 +64,7 @@ class WhaleHooks {
 			}
 
 			if (
+				$sectionNavigationEnabled &&
 				( $wgWhaleEnableMobileFloatingToc ?? true ) !== false &&
 				$userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-mobile-toc' ) !== false
 			) {
@@ -114,7 +117,49 @@ class WhaleHooks {
 				}
 				$bodyAttrs['class'] .= ' whale-font-scale-' . $fontScale;
 			}
+
+			if (
+				( $wgWhaleEnableContentSkeleton ?? false ) !== false &&
+				$userOptionsLookup->getOption( $sk->getUser(), 'whale-content-skeleton' ) === true
+			) {
+				$bodyAttrs['class'] .= ' whale-content-skeleton-enabled whale-content-skeleton-loading';
+			}
 		}
+	}
+
+	private static function shouldRenderSectionNavigation( object $out ): bool {
+		$getTitle = [ $out, 'getTitle' ];
+		if ( !is_callable( $getTitle ) ) {
+			return false;
+		}
+
+		$title = $getTitle();
+		if ( !is_object( $title ) ) {
+			return false;
+		}
+
+		$getNamespace = [ $title, 'getNamespace' ];
+		if ( !is_callable( $getNamespace ) || $getNamespace() === NS_SPECIAL ) {
+			return false;
+		}
+
+		$getRequest = [ $out, 'getRequest' ];
+		if ( !is_callable( $getRequest ) ) {
+			return true;
+		}
+
+		$request = $getRequest();
+		if ( !is_object( $request ) ) {
+			return true;
+		}
+
+		$getVal = [ $request, 'getVal' ];
+		if ( !is_callable( $getVal ) ) {
+			return true;
+		}
+
+		$action = $getVal( 'action', 'view' );
+		return $action === 'view';
 	}
 
 	/**
@@ -335,6 +380,16 @@ class WhaleHooks {
 			];
 		}
 
+		if ( ( $GLOBALS['wgWhaleEnableContentSkeleton'] ?? false ) !== false ) {
+			$preferences['whale-content-skeleton'] = [
+				'type' => 'toggle',
+				'label-message' => 'whale-pref-content-skeleton',
+				'section' => 'whale/content',
+				'help-message' => 'whale-pref-content-skeleton-help',
+				'default' => false
+			];
+		}
+
 		if ( ( $wgWhaleMobileUserToolsPosition ?? 'right' ) === 'right' ) {
 			$preferences['whale-mobile-user-tools-right'] = [
 				'type' => 'toggle',
@@ -465,6 +520,10 @@ class WhaleHooks {
 			return true;
 		}
 
+		if ( !self::shouldRenderSectionNavigation( $out ) ) {
+			return true;
+		}
+
 		$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$user = $skin->getUser();
 		$sectionMode = ( $wgWhaleEnableSectionCollapse ?? true ) === false
@@ -476,11 +535,23 @@ class WhaleHooks {
 
 		$text = self::decorateArticleHtml(
 			$text,
-			is_string( $sectionMode ) ? $sectionMode : self::SECTION_COLLAPSE_MARKED,
+			self::normalizeSectionMode( $sectionMode ),
 			is_string( $foldingMode ) ? $foldingMode : self::FOLDING_MODE_DEFAULT
 		);
 
 		return true;
+	}
+
+	private static function normalizeSectionMode( mixed $sectionMode ): string {
+		if ( in_array( $sectionMode, [
+			self::SECTION_COLLAPSE_MARKED,
+			self::SECTION_COLLAPSE_ALL,
+			self::SECTION_COLLAPSE_OFF,
+		], true ) ) {
+			return $sectionMode;
+		}
+
+		return self::SECTION_COLLAPSE_ALL;
 	}
 
 	/**

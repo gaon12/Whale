@@ -83,6 +83,7 @@ const layout = read('js/layout.js');
 assertIncludes(layout, 'whale:toggleFloatingToc', 'Layout scroll TOC handler');
 assertIncludes(layout, 'container?.classList.toggle', 'Section folding state');
 assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
+assertIncludes(layout, 'initContentSkeleton', 'Content skeleton state');
 
 const skinPhp = read('SkinWhale.php');
 assertIncludes(
@@ -109,6 +110,11 @@ assertIncludes(
 	'Toolbar hover guard style',
 );
 assertIncludes(styles, 'content: ">"', 'Section collapse toggle style');
+assertIncludes(
+	styles,
+	'whale-content-skeleton-loading',
+	'Content skeleton style',
+);
 assertIncludes(
 	styles,
 	'.whale-heading-anchor-alert',
@@ -160,8 +166,8 @@ assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
 const rendererPhp = read('WhaleRenderer.php');
 assertIncludes(rendererPhp, 'img/whale_footer_img.png', 'Footer badge image');
 assertIncludes(rendererPhp, 'whale-footer-brand-img', 'Footer badge image');
-assertIncludes(rendererPhp, "'width' => '150'", 'Footer badge image');
-assertIncludes(rendererPhp, "'height' => '60'", 'Footer badge image');
+assertIncludes(rendererPhp, "'width' => '78'", 'Footer badge image');
+assertIncludes(rendererPhp, "'height' => '31'", 'Footer badge image');
 assertIncludes(rendererPhp, 'parseSimpleNavbar', 'Simple navbar parser');
 assertIncludes(
 	rendererPhp,
@@ -252,6 +258,11 @@ assertIncludes(
 	'whale-content-wrapper-no-sidebar',
 	'No-sidebar layout',
 );
+assertIncludes(
+	skinTemplate,
+	'{{#has-whale-section-tools}}',
+	'Special-page section tool suppression',
+);
 
 const hooksPhp = read('WhaleHooks.php');
 assertIncludes(
@@ -271,8 +282,26 @@ assertIncludes(
 	'$wgWhaleEnableSectionCollapse ?? true',
 	'Feature preference guards',
 );
+assertIncludes(
+	hooksPhp,
+	'shouldRenderSectionNavigation',
+	'Special-page section navigation suppression',
+);
+assertIncludes(
+	hooksPhp,
+	'normalizeSectionMode',
+	'Section collapse default normalization',
+);
 
 assertIncludes(skinPhp, 'NS_SPECIAL', 'Special-page sidebar suppression');
+
+if (skin.config.WhaleEnableContentSkeleton !== false) {
+	throw new Error('Content skeleton should be disabled by default.');
+}
+
+if (skin.DefaultUserOptions['whale-content-skeleton'] !== false) {
+	throw new Error('Content skeleton user option should default to off.');
+}
 
 const shortUrlPhp = read('SpecialWhaleShortUrl.php');
 assertIncludes(

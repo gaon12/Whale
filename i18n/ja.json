@@ -94,6 +94,8 @@
 	"whale-pref-user-contribution-graph": "利用者ページに投稿グラフを表示",
 	"whale-pref-short-url": "フッターに短縮URLツールを表示",
 	"whale-pref-lazy-images": "記事画像を遅延読み込みし、スケルトンプレースホルダーを表示",
+	"whale-pref-content-skeleton": "記事本文のスケルトンを表示",
+	"whale-pref-content-skeleton-help": "ページが完全に読み込まれる前に、本文領域へプレースホルダーアニメーションを表示します。既定では無効です。",
 	"whale-floating-toc": "節目次",
 	"whale-reading-progress": "読書進行状況",
 	"whale-live-recent-no-data": "表示する項目はありません",

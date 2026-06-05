@@ -316,6 +316,7 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-site-notice'] = $siteNoticeHtml;
 		$data['data-whale-content-tools'] = $renderer->getContentToolsData();
 		$data['has-whale-sidebar'] = $hasSidebar;
+		$data['has-whale-section-tools'] = $this->shouldRenderSectionTools();
 		$data['has-whale-live-recent'] = $hasDesktopLiveRecent;
 		$data['has-whale-mobile-live-recent'] = $hasMobileLiveRecent;
 		$data['data-whale-live-recent'] = $hasDesktopLiveRecent ? $renderer->getLiveRecentData() : [];
@@ -445,6 +446,20 @@ class SkinWhale extends SkinMustache {
 
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		return !$userOptionsLookup->getOption( $this->getUser(), 'whale-layout-sidebar' );
+	}
+
+	private function shouldRenderSectionTools(): bool {
+		$title = $this->getTitle();
+		if ( !$title || $title->getNamespace() === NS_SPECIAL ) {
+			return false;
+		}
+
+		$request = $this->getRequest();
+		if ( !method_exists( $request, 'getVal' ) ) {
+			return true;
+		}
+
+		return $request->getVal( 'action', 'view' ) === 'view';
 	}
 
 	private function shouldRenderLiveRecent(): bool {
