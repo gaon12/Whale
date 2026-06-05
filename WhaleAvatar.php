@@ -67,7 +67,22 @@ class WhaleAvatar {
 	}
 
 	private static function normalizeStyleName( ?string $styleName ): string {
-		$styleName = strtolower( trim( (string)$styleName ) );
+		$styleName = trim( (string)$styleName );
+		if ( $styleName === '' ) {
+			return self::DEFAULT_STYLE;
+		}
+
+		$styleName = preg_replace( '/([a-z0-9])([A-Z])/', '$1-$2', $styleName );
+		if ( !is_string( $styleName ) ) {
+			return self::DEFAULT_STYLE;
+		}
+
+		$styleName = strtolower( str_replace( [ '_', ' ' ], '-', $styleName ) );
+		$styleName = preg_replace( '/-+/', '-', $styleName );
+		if ( !is_string( $styleName ) ) {
+			return self::DEFAULT_STYLE;
+		}
+
 		if ( !preg_match( '/^[a-z0-9][a-z0-9-]*$/', $styleName ) ) {
 			return self::DEFAULT_STYLE;
 		}
