@@ -77,11 +77,11 @@ assertIncludes(
 	'getFloatingTocItemsFromHeadings',
 	'Floating TOC script',
 );
-assertIncludes(
-	indexButton,
-	'whale-floating-toc-toolbar-hover',
-	'Floating TOC script',
-);
+if (indexButton.includes('whale-floating-toc-toolbar-hover')) {
+	throw new Error(
+		'Floating TOC script should not keep legacy toolbar hover state.',
+	);
+}
 assertIncludes(
 	indexButton,
 	"item.classList.toggle('is-active'",
