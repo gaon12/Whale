@@ -9,7 +9,6 @@
 	let activeScrollUpdate = null;
 	let mobileGestureStart = null;
 	let mobileGesturesBound = false;
-	let toolbarHoverBound = false;
 
 	const getTocLinks = () => [
 		...document.querySelectorAll(
@@ -173,7 +172,6 @@
 		document.querySelector('.whale-floating-toc')?.remove();
 		document.querySelector('.whale-floating-toc-backdrop')?.remove();
 		document.body.classList.remove('whale-floating-toc-hover');
-		document.body.classList.remove('whale-floating-toc-toolbar-hover');
 		document.body.classList.remove('whale-floating-toc-open');
 		if (activeScrollUpdate) {
 			window.removeEventListener('scroll', activeScrollUpdate);
@@ -295,26 +293,6 @@
 		});
 	};
 
-	const bindToolbarHoverGuard = () => {
-		if (toolbarHoverBound) {
-			return;
-		}
-
-		const toolbar = document.getElementById('whale-bottombtn');
-		if (!toolbar) {
-			return;
-		}
-
-		toolbarHoverBound = true;
-		toolbar.addEventListener('pointerenter', () => {
-			document.body.classList.add('whale-floating-toc-toolbar-hover');
-			document.body.classList.remove('whale-floating-toc-hover');
-		});
-		toolbar.addEventListener('pointerleave', () => {
-			document.body.classList.remove('whale-floating-toc-toolbar-hover');
-		});
-	};
-
 	const buildFloatingToc = () => {
 		const desktop = isDesktop();
 		const desktopEnabled = document.body.classList.contains(
@@ -325,7 +303,6 @@
 		const shouldRenderMobile = !desktop && mobileEnabled;
 
 		bindMobileGestures();
-		bindToolbarHoverGuard();
 
 		if (!desktopEnabled && !mobileEnabled) {
 			removeHeadingNumbers();
@@ -351,11 +328,7 @@
 		toc.setAttribute('aria-label', mw.message('whale-floating-toc').text());
 		toc.setAttribute('aria-hidden', String(shouldRenderMobile));
 		toc.addEventListener('pointerover', (event) => {
-			if (
-				shouldRenderDesktop &&
-				toc.contains(event.target) &&
-				!document.body.classList.contains('whale-floating-toc-toolbar-hover')
-			) {
+			if (shouldRenderDesktop && toc.contains(event.target)) {
 				document.body.classList.add('whale-floating-toc-hover');
 			}
 		});

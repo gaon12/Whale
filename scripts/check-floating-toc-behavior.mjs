@@ -436,20 +436,22 @@ if (
 
 desktopToc.dispatch('pointerover', { target: desktopToc });
 if (!desktopRun.document.body.classList.contains('whale-floating-toc-hover')) {
-	throw new Error('Desktop TOC hover should activate toolbar displacement.');
+	throw new Error('Desktop TOC hover should reveal floating TOC labels.');
 }
 
 desktopRun.toolbar.dispatch('pointerenter', { target: desktopRun.toolbar });
 if (
-	!desktopRun.document.body.classList.contains(
+	desktopRun.document.body.classList.contains(
 		'whale-floating-toc-toolbar-hover',
 	)
 ) {
-	throw new Error('Toolbar hover guard should mark toolbar hover state.');
+	throw new Error(
+		'Toolbar hover should not reintroduce legacy TOC hover state.',
+	);
 }
 
-if (desktopRun.document.body.classList.contains('whale-floating-toc-hover')) {
-	throw new Error('Toolbar hover guard should clear TOC hover displacement.');
+if (!desktopRun.document.body.classList.contains('whale-floating-toc-hover')) {
+	throw new Error('Toolbar hover should not hide already revealed TOC labels.');
 }
 
 const mobileRun = runFloatingToc({ desktop: false });
