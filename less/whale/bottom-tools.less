@@ -1,0 +1,122 @@
+/* scroll button */
+#whale-bottombtn {
+	position: fixed;
+	right: 0.9rem;
+	bottom: 4rem;
+	background: transparent;
+	padding: 0;
+	display: flex;
+	gap: 0.45rem;
+	z-index: 1000;
+	transition: transform 180ms ease;
+}
+
+body.whale-scroll-buttons-vertical #whale-bottombtn {
+	flex-direction: column;
+}
+
+body.whale-scroll-buttons-horizontal #whale-bottombtn {
+	right: 0;
+	bottom: 0;
+	flex-direction: row;
+	gap: 0;
+	background: var(--whale-main-color);
+	border-radius: 5px 5px 0 0;
+	overflow: hidden;
+}
+
+#whale-bottombtn .scroll-button {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	background-color: #fff;
+	border: 1px solid #d7dee5;
+	border-radius: 0.45rem;
+	color: #4f5b63;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+#whale-bottombtn button.scroll-button {
+	font: inherit;
+}
+
+#whale-bottombtn .scroll-button:hover {
+	background-color: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
+	transition: 500ms;
+}
+
+body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
+	width: 40px;
+	height: 40px;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	color: #fff;
+}
+
+body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-button {
+	border-left: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+#whale-bottombtn .whale-bottom-tools {
+	display: inline-flex;
+}
+
+#whale-bottombtn .whale-bottom-tools-menu {
+	top: auto;
+	right: 0;
+	bottom: calc(100% + 0.45rem);
+	left: auto;
+	min-width: 12.5rem;
+	padding: 0.35rem;
+}
+
+#whale-bottombtn .whale-bottom-tools-menu::after {
+	position: absolute;
+	right: 0.9rem;
+	bottom: -0.4rem;
+	width: 0.75rem;
+	height: 0.75rem;
+	background: inherit;
+	border-right: 1px solid #e1e8ed;
+	border-bottom: 1px solid #e1e8ed;
+	content: "";
+	transform: rotate(45deg);
+}
+
+#whale-bottombtn .whale-bottom-tools-menu .whale-dropdown-item {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	min-height: 2.25rem;
+	padding: 0.45rem 0.65rem;
+	border-radius: var(--whale-radius-sm);
+}
+
+#whale-bottombtn .whale-bottom-tools-menu .whale-icon {
+	flex: 0 0 auto;
+	width: 1.1rem;
+	height: 1.1rem;
+}
+
+#whale-bottombtn .whale-tools-label {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+@media screen and (min-width: 1280px) {
+	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn {
+		right: 10.55rem;
+	}
+}
+/* scroll button end */
