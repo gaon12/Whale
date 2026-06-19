@@ -29,6 +29,8 @@ class WhaleRenderer {
 	public function getNavData(): array {
 		global $wgSitename;
 
+		$notifications = $this->getNotificationItems();
+
 		return [
 			'brand-href' => Title::newMainPage()->getLocalURL(),
 			'brand-logo' => $this->getNavBarLogoUrl(),
@@ -36,7 +38,8 @@ class WhaleRenderer {
 			'items' => array_merge( $this->getDefaultNavItems(), $this->getPortalItems( $this->parseNavbar() ) ),
 			'theme-toggle' => $this->getThemeToggleData(),
 			'data-login' => $this->getLoginData(),
-			'notifications' => $this->getNotificationItems(),
+			'has-notifications' => count( $notifications ) > 0,
+			'notifications' => $notifications,
 			'data-search' => $this->getSearchData(),
 		];
 	}
