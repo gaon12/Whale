@@ -211,12 +211,14 @@
 	const createNoDataRow = () => {
 		const item = document.createElement('li');
 		const text = document.createElement('span');
+		const message = window.mw?.message
+			? mw.message('whale-live-recent-no-data').text()
+			: '';
 
 		item.className = 'live-recent-no-data';
 		text.className = 'live-recent-no-data-text';
-		text.textContent = window.mw?.message
-			? mw.message('whale-live-recent-no-data').text()
-			: '표시할 내용이 없습니다';
+		text.textContent =
+			message && !message.includes('⧼') ? message : '표시할 내용이 없습니다';
 		item.append(text);
 
 		return item;
