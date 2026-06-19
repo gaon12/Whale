@@ -149,6 +149,10 @@ class SkinWhale extends SkinMustache {
 		$out->addMeta( 'color-scheme', 'light dark' );
 		$out->addMeta( 'theme-color', $mainColor );
 		$out->addMeta( 'msapplication-navbutton-color', $mainColor );
+		$addHeadItem = [ $out, 'addHeadItem' ];
+		if ( is_callable( $addHeadItem ) ) {
+			$addHeadItem( 'whale-local-storage-fallback', $this->renderLocalStorageFallbackScript() );
+		}
 
 		/* Twitter card */
 		$out->addMeta( 'twitter:card', 'summary' );
@@ -683,6 +687,57 @@ class SkinWhale extends SkinMustache {
 				rawurlencode( $client ),
 			'crossorigin' => 'anonymous',
 		], '' );
+	}
+
+	private function renderLocalStorageFallbackScript(): string {
+		return Html::rawElement( 'script', [ 'data-cfasync' => 'false' ], <<<'JS'
+(function () {
+	var storage;
+	var isStorageUsable = function () {
+		try {
+			var key = '__whale_storage_test__';
+			window.localStorage.setItem(key, key);
+			window.localStorage.removeItem(key);
+			return true;
+		} catch (error) {
+			return false;
+		}
+	};
+
+	if ('localStorage' in window && isStorageUsable()) {
+		return;
+	}
+
+	storage = {};
+	try {
+		Object.defineProperty(window, 'localStorage', {
+			configurable: true,
+			value: {
+				get length() {
+					return Object.keys(storage).length;
+				},
+				clear: function () {
+					storage = {};
+				},
+				getItem: function (key) {
+					key = String(key);
+					return Object.prototype.hasOwnProperty.call(storage, key) ? storage[key] : null;
+				},
+				key: function (index) {
+					return Object.keys(storage)[index] || null;
+				},
+				removeItem: function (key) {
+					delete storage[String(key)];
+				},
+				setItem: function (key, value) {
+					storage[String(key)] = String(value);
+				}
+			}
+		});
+	} catch (error) {}
+}());
+JS
+		);
 	}
 
 	private function renderRocketLoaderRecoveryScript(): string {
