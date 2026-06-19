@@ -184,7 +184,7 @@
 
 		try {
 			const api = await whale.getApi();
-			const data = await api.get({
+			const params = {
 				action: 'query',
 				list: 'recentchanges',
 				rcprop: 'title|timestamp',
@@ -194,7 +194,19 @@
 				format: 'json',
 				rcnamespace: feed.namespaces,
 				rctoponly: true,
-			});
+			};
+			let data;
+
+			try {
+				data = await api.get(params);
+			} catch (error) {
+				if (params.rctoponly !== true) {
+					throw error;
+				}
+
+				const { rctoponly: _rctoponly, ...compatParams } = params;
+				data = await api.get(compatParams);
+			}
 
 			if (currentRequestId !== feed.requestId) {
 				return;
@@ -317,5 +329,15 @@
 
 		scheduleInitialSync(syncControllers);
 		window.addEventListener('resize', syncControllers);
+		document.addEventListener('visibilitychange', () => {
+			if (document.hidden) {
+				controllers.forEach((controller) => {
+					controller.stop();
+				});
+				return;
+			}
+
+			syncControllers();
+		});
 	});
 })();

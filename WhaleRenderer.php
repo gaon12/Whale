@@ -469,12 +469,20 @@ class WhaleRenderer {
 			$userOptionsLookup->getOption( $skin->getUser(), 'whale-live-recent-fixed-height' ) !== false;
 		$refreshInterval = max( 10, (int)( $wgWhaleLiveRCRefreshInterval ?? 60 ) );
 		$isMobile = $mode === 'mobile';
+		$articleNamespaces = $this->normalizeRecentChangeNamespaces(
+			$wgWhaleLiveRCArticleNamespaces ?? null,
+			[ 0, 4, 10, 12, 14 ]
+		);
+		$talkNamespaces = $this->normalizeRecentChangeNamespaces(
+			$wgWhaleLiveRCTalkNamespaces ?? null,
+			[ 1, 3, 5, 7, 9, 11, 13, 15 ]
+		);
 		$feeds = [
 			$this->getLiveRecentFeedData(
 				$mode . '-live-recent-article-list',
 				$skin->msg( 'recentchanges' )->text(),
 				'sync',
-				implode( '|', $wgWhaleLiveRCArticleNamespaces )
+				implode( '|', $articleNamespaces )
 			),
 		];
 
@@ -483,7 +491,7 @@ class WhaleRenderer {
 				$mode . '-live-recent-talk-list',
 				$skin->msg( 'whale-recent-discussions' )->text(),
 				'comments',
-				implode( '|', $wgWhaleLiveRCTalkNamespaces )
+				implode( '|', $talkNamespaces )
 			);
 		}
 
@@ -497,6 +505,20 @@ class WhaleRenderer {
 				'; --whale-live-recent-refresh: ' . $refreshInterval . 's;',
 			'feeds' => $feeds,
 		];
+	}
+
+	/**
+	 * @param mixed $namespaces
+	 * @param array<int,int> $fallback
+	 * @return array<int,int>
+	 */
+	private function normalizeRecentChangeNamespaces( mixed $namespaces, array $fallback ): array {
+		if ( !is_array( $namespaces ) ) {
+			return $fallback;
+		}
+
+		$normalized = array_values( array_unique( array_map( 'intval', $namespaces ) ) );
+		return count( $normalized ) > 0 ? $normalized : $fallback;
 	}
 
 	/**

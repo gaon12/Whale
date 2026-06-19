@@ -108,6 +108,7 @@ assertIncludes(layout, 'container?.classList.toggle', 'Section folding state');
 assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
 assertIncludes(layout, 'initContentSkeleton', 'Content skeleton state');
 assertIncludes(layout, 'handleDirectToggle', 'Mobile direct section toggle');
+assertIncludes(layout, 'getHeadingToggle', 'Heading click section toggle');
 
 const skinPhp = read('SkinWhale.php');
 assertIncludes(
@@ -180,6 +181,7 @@ assertIncludes(
 	'background-color: transparent',
 	'Section toggle should read as a heading affordance',
 );
+assertIncludes(styles, 'cursor: pointer', 'Clickable section heading');
 if (/\.whale-section-toggle\s*\{[\s\S]*?border-radius:\s*999px;/.test(styles)) {
 	throw new Error('Section toggles should not render as legacy round pills.');
 }
@@ -385,7 +387,7 @@ assertIncludes(
 	'public static function onBeforePageDisplay',
 	'Client module loader hook',
 );
-assertIncludes(hooksPhp, "'skins.whale.layoutjs'", 'Client module loader hook');
+assertIncludes(hooksPhp, 'getWhaleClientModules', 'Client module loader hook');
 assertIncludes(hooksPhp, '$out->addModules', 'Client module loader hook');
 assertIncludes(
 	hooksPhp,
