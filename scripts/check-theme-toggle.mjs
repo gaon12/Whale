@@ -95,7 +95,7 @@ const context = {
 				return '';
 			}
 
-			return bodyClassList.has('whale-dark') ? '#99ccff' : '#4188f1';
+			return bodyClassList.has('whale-dark') ? '#38b8e0' : '#168fbd';
 		},
 	}),
 	location: { protocol: 'https:' },
@@ -139,7 +139,7 @@ if (context.document.documentElement.style.colorScheme !== 'dark') {
 	throw new Error('System dark mode should set root color-scheme to dark.');
 }
 
-if (!metas.every((meta) => meta.content === '#99ccff')) {
+if (!metas.every((meta) => meta.content === '#38b8e0')) {
 	throw new Error(
 		'Browser theme metadata should follow the dark Whale palette.',
 	);
@@ -160,7 +160,7 @@ if (context.document.documentElement.style.colorScheme !== 'light') {
 	throw new Error('Explicit light mode should set root color-scheme to light.');
 }
 
-if (!metas.every((meta) => meta.content === '#4188f1')) {
+if (!metas.every((meta) => meta.content === '#168fbd')) {
 	throw new Error(
 		'Browser theme metadata should return to the light Whale palette.',
 	);
