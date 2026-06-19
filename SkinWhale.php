@@ -88,7 +88,7 @@ class SkinWhale extends SkinMustache {
 	 */
 	public function initPage( OutputPage $out ): void {
 		// @codingStandardsIgnoreLine
-		global $wgSitename, $wgTwitterAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC;
+		global $wgSitename, $wgXAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC;
 
 		$user = $this->getUser();
 		$services = MediaWikiServices::getInstance();
@@ -147,9 +147,9 @@ class SkinWhale extends SkinMustache {
 
 		/* 트위터 카드 */
 		$out->addMeta( 'twitter:card', 'summary' );
-		if ( isset( $wgTwitterAccount ) ) {
-			$out->addMeta( 'twitter:site', "@$wgTwitterAccount" );
-			$out->addMeta( 'twitter:creator', "@$wgTwitterAccount" );
+		if ( isset( $wgXAccount ) ) {
+			$out->addMeta( 'twitter:site', "@$wgXAccount" );
+			$out->addMeta( 'twitter:creator', "@$wgXAccount" );
 		}
 
 		$modules = [
