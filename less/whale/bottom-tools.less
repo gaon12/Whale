@@ -20,7 +20,7 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 	bottom: 0;
 	flex-direction: row;
 	gap: 0;
-	background: var(--whale-main-color);
+	background: linear-gradient(90deg, var(--whale-main-color), var(--whale-accent-color));
 	border-radius: 5px 5px 0 0;
 	overflow: hidden;
 }
@@ -32,13 +32,13 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 	justify-content: center;
 	width: 2.75rem;
 	height: 2.75rem;
-	background-color: #fff;
-	border: 1px solid #d7dee5;
+	background-color: rgba(255, 255, 255, 0.96);
+	border: 1px solid var(--whale-border-color);
 	border-radius: 0.45rem;
-	color: #4f5b63;
+	color: var(--whale-muted-text-color);
 	text-align: center;
 	cursor: pointer;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+	box-shadow: 0 0.35rem 1rem rgba(14, 67, 92, 0.16);
 }
 
 #whale-bottombtn button.scroll-button {
@@ -86,8 +86,8 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 	width: 0.75rem;
 	height: 0.75rem;
 	background: inherit;
-	border-right: 1px solid #e1e8ed;
-	border-bottom: 1px solid #e1e8ed;
+	border-right: 1px solid var(--whale-border-color);
+	border-bottom: 1px solid var(--whale-border-color);
 	content: "";
 	transform: rotate(45deg);
 }
