@@ -741,130 +741,14 @@ JS
 	}
 
 	private function renderRocketLoaderRecoveryScript(): string {
-		return Html::rawElement( 'script', [
+		global $wgScriptPath;
+
+		$scriptPath = is_string( $wgScriptPath ?? null ) ? rtrim( $wgScriptPath, '/' ) : '';
+		return Html::element( 'script', [
 			'data-cfasync' => 'false',
-			'data-whale-rl-recovery' => 'true',
-		], <<<'JS'
-(function () {
-	if (window.whale && window.whale.ready) {
-		return;
-	}
-
-	var ensureLocalStorage = function () {
-		var storage;
-		var isStorageUsable = function () {
-			try {
-				var key = '__whale_storage_test__';
-				window.localStorage.setItem(key, key);
-				window.localStorage.removeItem(key);
-				return true;
-			} catch (error) {
-				return false;
-			}
-		};
-
-		if ('localStorage' in window && isStorageUsable()) {
-			return;
-		}
-
-		storage = {};
-		try {
-			Object.defineProperty(window, 'localStorage', {
-				configurable: true,
-				value: {
-					get length() {
-						return Object.keys(storage).length;
-					},
-					clear: function () {
-						storage = {};
-					},
-					getItem: function (key) {
-						key = String(key);
-						return Object.prototype.hasOwnProperty.call(storage, key) ? storage[key] : null;
-					},
-					key: function (index) {
-						return Object.keys(storage)[index] || null;
-					},
-					removeItem: function (key) {
-						delete storage[String(key)];
-					},
-					setItem: function (key, value) {
-						storage[String(key)] = String(value);
-					}
-				}
-			});
-		} catch (error) {}
-	};
-	var replayed = false;
-	var isRocketScript = function (script) {
-		return /-text\/javascript$/.test(script.getAttribute('type') || '') &&
-			script.hasAttribute('data-cf-settings');
-	};
-	var isResourceLoaderScript = function (script) {
-		var text;
-
-		if (script.hasAttribute('data-whale-rl-recovery')) {
-			return false;
-		}
-
-		if (isRocketScript(script)) {
-			return true;
-		}
-
-		if (script.src) {
-			return /\/load\.php\?/.test(script.src) && /[?&]only=scripts/.test(script.src);
-		}
-
-		text = script.text || script.textContent || '';
-		return text.indexOf('RLCONF=') !== -1 ||
-			text.indexOf('RLSTATE=') !== -1 ||
-			text.indexOf('RLPAGEMODULES=') !== -1 ||
-			text.indexOf('RLQ=window.RLQ') !== -1 ||
-			text.indexOf('mw.config.set') !== -1;
-	};
-	var replayInlineScript = function (script) {
-		var replacement = document.createElement('script');
-		replacement.text = script.text || script.textContent || '';
-		if (isRocketScript(script)) {
-			script.remove();
-		}
-		document.head.appendChild(replacement).remove();
-	};
-	var replayExternalScript = function (script) {
-		return new Promise(function (resolve) {
-			var replacement = document.createElement('script');
-			replacement.src = script.src;
-			replacement.async = false;
-			replacement.onload = resolve;
-			replacement.onerror = resolve;
-			if (isRocketScript(script)) {
-				script.remove();
-			}
-			document.head.appendChild(replacement);
-		});
-	};
-	var replayScripts = function () {
-		if (replayed || (window.whale && window.whale.ready)) {
-			return;
-		}
-
-		replayed = true;
-		ensureLocalStorage();
-		Array.prototype.reduce.call(document.querySelectorAll('script'), function (chain, script) {
-			return chain.then(function () {
-				if (!isResourceLoaderScript(script)) {
-					return null;
-				}
-
-				return script.src ? replayExternalScript(script) : replayInlineScript(script);
-			});
-		}, Promise.resolve());
-	};
-
-	window.setTimeout(replayScripts, 1200);
-}());
-JS
-		);
+			'data-whale-recovery' => 'true',
+			'src' => $scriptPath . '/skins/Whale/js/recovery.js?v=1.13.10',
+		], '' );
 	}
 
 	/**
