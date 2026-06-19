@@ -22,7 +22,18 @@
 					"responsive": true,
 					"templateDirectory": "templates",
 					"tempUserBanner": false,
-					"styles": ["skins.whale.styles"]
+					"styles": ["skins.whale.styles"],
+					"scripts": [
+						"skins.whale.layoutjs",
+						"skins.whale.ads",
+						"skins.whale.headingAnchors",
+						"skins.whale.tables",
+						"skins.whale.shortUrl",
+						"skins.whale.themeToggle",
+						"skins.whale.lazyImages",
+						"skins.whale.liverc",
+						"skins.whale.loginjs"
+					]
 				}
 			]
 		}
