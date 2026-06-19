@@ -53,7 +53,6 @@ class SkinWhale extends SkinMustache {
 			'dark' => [ 'primary' => '#FFCC33', 'secondary' => '#CCCC66' ],
 		],
 	];
-
 	private const LAYOUT_WIDTHS = [
 		'1000px',
 		'1100px',
@@ -62,7 +61,6 @@ class SkinWhale extends SkinMustache {
 		'1500px',
 		'1600px',
 	];
-
 	private const WHALE_AD_POSITIONS = [
 		'header' => [
 			'class' => 'header-ads',
@@ -137,24 +135,22 @@ class SkinWhale extends SkinMustache {
 		}
 		$out->addMeta( 'keywords', $wgSitename . ',' . $skin->getTitle() );
 
-		/* 네이버 웹마스터 도구 */
+		/* Naver webmaster verification */
 		if ( isset( $wgNaverVerification ) ) {
 			$out->addMeta( 'naver-site-verification', $wgNaverVerification );
 		}
 
-		/* IOS 기기 및 모바일 크롬에서의 웹앱 옵션 켜기 및 상단바 투명화 */
+		/* iOS and mobile browser web-app metadata */
 		$out->addMeta( 'apple-mobile-web-app-capable', 'Yes' );
 		$out->addMeta( 'apple-mobile-web-app-status-bar-style', 'black-translucent' );
 		$out->addMeta( 'mobile-web-app-capable', 'Yes' );
 
-		/* 모바일에서의 테마 컬러 적용 */
+		/* Mobile browser theme color */
 		$out->addMeta( 'color-scheme', 'light dark' );
-		// 크롬, 파이어폭스 OS, 오페라
 		$out->addMeta( 'theme-color', $mainColor );
-		// 윈도우 폰
 		$out->addMeta( 'msapplication-navbutton-color', $mainColor );
 
-		/* 트위터 카드 */
+		/* Twitter card */
 		$out->addMeta( 'twitter:card', 'summary' );
 		if ( isset( $wgXAccount ) ) {
 			$out->addMeta( 'twitter:site', "@$wgXAccount" );
@@ -244,11 +240,9 @@ class SkinWhale extends SkinMustache {
 	 */
 	public function getWhaleClientModules(): array {
 		global $wgWhaleEnableLiveRC;
-
 		$modules = [
 			'skins.whale.layoutjs'
 		];
-
 		if ( $this->getWhaleAdClient() !== '' ) {
 			$modules[] = 'skins.whale.ads';
 		}
@@ -370,7 +364,6 @@ class SkinWhale extends SkinMustache {
 			( $GLOBALS['wgShowDebug'] ?? false ) && class_exists( MWDebug::class )
 				? MWDebug::getHTMLDebugLog()
 				: '';
-
 		return $data;
 	}
 
