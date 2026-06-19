@@ -366,6 +366,7 @@ class SkinWhale extends SkinMustache {
 			( $GLOBALS['wgShowDebug'] ?? false ) && class_exists( MWDebug::class )
 				? MWDebug::getHTMLDebugLog()
 				: '';
+		$data['html-whale-rocket-loader-recovery'] = $this->renderRocketLoaderRecoveryScript();
 		return $data;
 	}
 
@@ -682,6 +683,58 @@ class SkinWhale extends SkinMustache {
 				rawurlencode( $client ),
 			'crossorigin' => 'anonymous',
 		], '' );
+	}
+
+	private function renderRocketLoaderRecoveryScript(): string {
+		return Html::rawElement( 'script', [ 'data-cfasync' => 'false' ], <<<'JS'
+(function () {
+	if (window.mw || !document.querySelector('script[type$="-text/javascript"][data-cf-settings]')) {
+		return;
+	}
+
+	var replayed = false;
+	var isRocketScript = function (script) {
+		return /-text\/javascript$/.test(script.getAttribute('type') || '') &&
+			script.hasAttribute('data-cf-settings');
+	};
+	var replayInlineScript = function (script) {
+		var replacement = document.createElement('script');
+		replacement.text = script.text || script.textContent || '';
+		script.remove();
+		document.head.appendChild(replacement).remove();
+	};
+	var replayExternalScript = function (script) {
+		return new Promise(function (resolve) {
+			var replacement = document.createElement('script');
+			replacement.src = script.src;
+			replacement.async = false;
+			replacement.onload = resolve;
+			replacement.onerror = resolve;
+			script.remove();
+			document.head.appendChild(replacement);
+		});
+	};
+	var replayScripts = function () {
+		if (replayed || window.mw) {
+			return;
+		}
+
+		replayed = true;
+		Array.prototype.reduce.call(document.querySelectorAll('script'), function (chain, script) {
+			return chain.then(function () {
+				if (!isRocketScript(script)) {
+					return null;
+				}
+
+				return script.src ? replayExternalScript(script) : replayInlineScript(script);
+			});
+		}, Promise.resolve());
+	};
+
+	window.setTimeout(replayScripts, 1200);
+}());
+JS
+		);
 	}
 
 	/**
