@@ -1,0 +1,647 @@
+/* Content */
+.Whale .content-wrapper {
+	margin-top: 4.25rem;
+	z-index: -1;
+}
+
+.Whale .content-wrapper .whale-content {
+	margin-right: 21rem;
+	padding: 0;
+	padding-bottom: 1rem;
+}
+
+.Whale .content-wrapper .whale-content-no-sidebar {
+	margin-right: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header {
+	border: 1px solid #e1e8ed;
+	border-radius: 0.35rem 0.35rem 0 0;
+	background-color: #f5f8fa;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .whale-notice {
+	background-color: #d9edf7;
+	border: 1px solid #bce8f1;
+	border-radius: 0.35rem;
+	color: #31708f;
+	margin: 1rem;
+	position: relative;
+	padding: 0.8rem 2.75rem 0.8rem 1rem;
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+	white-space: normal;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	color: inherit;
+	cursor: pointer;
+	font-size: 1.4rem;
+	opacity: 0.65;
+	padding: 0;
+	position: absolute;
+	top: 0.55rem;
+	right: 0.75rem;
+	line-height: 1;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close:hover,
+.Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close:focus {
+	opacity: 1;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .whale-notice > :last-child {
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .whale-notice ul {
+	list-style-image: none;
+	list-style-type: none;
+	text-align: center;
+	line-height: 1.8rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools {
+	float: right;
+	padding-right: 1rem;
+	padding-top: 1rem;
+	max-width: 100%;
+	text-align: right;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group {
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	max-width: 100%;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
+	font-size: 0.9rem;
+	padding: 0.4rem 0.8rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	padding: 0.4rem 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle::after {
+	margin-left: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:active {
+	background-color: var(--whale-main-color);
+	color: #fff;
+	transition: 0.3s;
+	outline: 0;
+	border-color: #e1e8ed;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-menu {
+	top: 92%;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .title {
+	padding: 1rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .contentSub {
+	margin-top: -0.5rem;
+	padding: 1rem;
+	padding-top: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
+	color: #000;
+	font-weight: bold;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .header-ads {
+	margin: 1rem;
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main {
+	border-left: 1px solid #e1e8ed;
+	border-right: 1px solid #e1e8ed;
+	background-color: #fff;
+	color: var(--whale-text-color);
+	padding: 1rem;
+	overflow: visible;
+	overflow-wrap: anywhere;
+	line-height: 1.6rem;
+}
+
+body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main {
+	position: relative;
+	min-height: 18rem;
+}
+
+body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main::before {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	bottom: 1rem;
+	left: 1rem;
+	z-index: 4;
+	border-radius: var(--whale-radius-sm);
+	background:
+		linear-gradient(#e6edf3 0 0) 0 0.25rem / 42% 1.4rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 3rem / 94% 0.85rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 4.55rem / 88% 0.85rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 6.1rem / 76% 0.85rem no-repeat,
+		linear-gradient(#e6edf3 0 0) 0 8.3rem / 30% 1.15rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 10.3rem / 92% 0.85rem no-repeat,
+		linear-gradient(#edf2f7 0 0) 0 11.85rem / 82% 0.85rem no-repeat,
+		linear-gradient(90deg, #f5f8fb 25%, #fff 37%, #f5f8fb 63%) 0 0 / 240% 100%;
+	animation: whale-live-recent-skeleton 1.2s ease-in-out infinite;
+	content: "";
+	pointer-events: none;
+}
+
+body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main > * {
+	opacity: 0;
+}
+
+.Whale .whale-not-found {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: 1.25rem;
+	align-items: center;
+	max-width: 44rem;
+	margin: 2.5rem auto;
+	padding: 2rem;
+	border: 1px solid #d8e0e7;
+	border-radius: var(--whale-radius);
+	background:
+		radial-gradient(circle at top left, rgba(65, 136, 241, 0.14), transparent 16rem),
+		#f8fafc;
+}
+
+.Whale .whale-not-found-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 4.5rem;
+	height: 4.5rem;
+	border-radius: 50%;
+	background-color: #fff;
+	color: var(--whale-main-color);
+	box-shadow: 0 0.5rem 1.5rem rgba(31, 42, 55, 0.08);
+}
+
+.Whale .whale-not-found-icon .whale-icon {
+	width: 2.25rem;
+	height: 2.25rem;
+	margin: 0;
+}
+
+.Whale .whale-not-found-kicker {
+	margin: 0 0 0.35rem;
+	color: var(--whale-main-color);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+}
+
+.Whale .whale-not-found h2 {
+	margin-top: 0;
+	margin-bottom: 0.5rem;
+	color: #202326;
+	font-size: 1.5rem;
+	line-height: 1.3;
+}
+
+.Whale .whale-not-found p {
+	color: #4f5b63;
+}
+
+.Whale .whale-not-found-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.Whale .whale-not-found-action {
+	text-decoration: none;
+}
+
+body.whale-font-scale-small .Whale .content-wrapper .whale-content .whale-content-main {
+	font-size: 0.92rem;
+}
+
+body.whale-font-scale-large .Whale .content-wrapper .whale-content .whale-content-main {
+	font-size: 1.08rem;
+	line-height: 1.75rem;
+}
+
+body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-content-main {
+	font-size: 1.18rem;
+	line-height: 1.9rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-heading-number {
+	margin-right: 0.4rem;
+	color: var(--whale-main-color);
+	font-weight: 700;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main p a,
+.Whale .content-wrapper .whale-content .whale-content-main li a,
+.Whale .content-wrapper .whale-content .whale-content-main dd a {
+	text-decoration: none;
+	text-underline-offset: 0.12em;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main p a:hover,
+.Whale .content-wrapper .whale-content .whale-content-main p a:focus,
+.Whale .content-wrapper .whale-content .whale-content-main li a:hover,
+.Whale .content-wrapper .whale-content .whale-content-main li a:focus,
+.Whale .content-wrapper .whale-content .whale-content-main dd a:hover,
+.Whale .content-wrapper .whale-content .whale-content-main dd a:focus {
+	text-decoration: underline;
+	text-underline-offset: 0.12em;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-heading-anchor {
+	appearance: none;
+	margin-left: 0.35rem;
+	padding: 0.05rem 0.35rem;
+	border: 1px solid #d8e0e7;
+	border-radius: 999px;
+	background: #f5f8fa;
+	color: #5d666d;
+	cursor: pointer;
+	font-size: 0.8rem;
+	line-height: 1.2rem;
+	opacity: 0;
+	transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main h1:hover .whale-heading-anchor,
+.Whale .content-wrapper .whale-content .whale-content-main h2:hover .whale-heading-anchor,
+.Whale .content-wrapper .whale-content .whale-content-main h3:hover .whale-heading-anchor,
+.Whale .content-wrapper .whale-content .whale-content-main h4:hover .whale-heading-anchor,
+.Whale .content-wrapper .whale-content .whale-content-main h5:hover .whale-heading-anchor,
+.Whale .content-wrapper .whale-content .whale-content-main h6:hover .whale-heading-anchor,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-heading-anchor:focus {
+	opacity: 1;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-heading-anchor:hover,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-heading-anchor:focus {
+	background: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
+}
+
+.whale-heading-anchor-alert {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	z-index: 1100;
+	max-width: ~"min(20rem, calc(100vw - 2rem))";
+	padding: 0.55rem 0.75rem;
+	border: 1px solid var(--whale-main-color);
+	border-radius: var(--whale-radius);
+	background-color: #fff;
+	box-shadow: 0 0.45rem 1.2rem rgba(0, 0, 0, 0.18);
+	color: #202326;
+	font-size: 0.9rem;
+	line-height: 1.35;
+	opacity: 0;
+	transform: translateY(0.4rem);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.whale-heading-anchor-alert.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph {
+	margin: 0 0 1rem;
+	padding: 1rem;
+	border: 1px solid #e1e8ed;
+	border-radius: var(--whale-radius);
+	background: #f8fafc;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.85rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph-header h2 {
+	margin: 0;
+	border: 0;
+	font-size: 1.05rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph-header p {
+	margin: 0;
+	color: #66727b;
+	font-size: 0.9rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-grid {
+	display: flex;
+	gap: 0.22rem;
+	overflow-x: auto;
+	padding-bottom: 0.15rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-week {
+	display: grid;
+	grid-template-rows: repeat(7, 0.72rem);
+	gap: 0.22rem;
+	flex: 0 0 auto;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-day {
+	width: 0.72rem;
+	height: 0.72rem;
+	border-radius: 0.18rem;
+	background: #ebedf0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-empty {
+	background: transparent;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-level-1 {
+	background: #9be9a8;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-level-2 {
+	background: #40c463;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-level-3 {
+	background: #30a14e;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-level-4 {
+	background: #216e39;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-legend {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.25rem;
+	margin-top: 0.65rem;
+	color: #66727b;
+	font-size: 0.78rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	width: 100%;
+	margin-top: 1.35rem;
+	margin-bottom: 0.8rem;
+	padding-bottom: 0.55rem;
+	border-bottom: 1px solid #cfd4d9;
+	box-shadow: inset 0 -1px 0 #cfd4d9;
+	color: #11181f;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-headline {
+	min-width: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .whale-heading-number,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-headline-number {
+	color: #0066d9;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection {
+	margin-left: auto;
+	font-size: 0.82rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection a {
+	color: #0066d9;
+	text-decoration: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection a:hover,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection a:focus {
+	text-decoration: underline;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading.is-collapsed,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-container.is-collapsed .whale-section-heading {
+	color: #9a9fa4;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-container.is-collapsed {
+	margin-bottom: 1.25rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading.is-collapsed .mw-headline,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-container.is-collapsed .mw-headline {
+	opacity: 1;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading.is-collapsed .whale-heading-number,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading.is-collapsed .mw-headline-number,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-container.is-collapsed .whale-heading-number,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-container.is-collapsed .mw-headline-number {
+	color: #8abce9;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 1.35rem;
+	height: 1.35rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: #4f5f6d;
+	cursor: pointer;
+	transition: color 0.16s ease, transform 0.16s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle::before {
+	box-sizing: border-box;
+	display: block;
+	width: 0.55rem;
+	height: 0.55rem;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	content: "";
+	transform: translateY(-0.08rem) rotate(45deg);
+	transition: transform 0.16s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle[aria-expanded="false"]::before {
+	transform: translateX(-0.08rem) rotate(-45deg);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle:hover,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle:focus {
+	color: #0066d9;
+	text-decoration: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle:focus-visible {
+	outline: 2px solid rgba(0, 102, 217, 0.28);
+	outline-offset: 0.15rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-body[hidden],
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body[hidden] {
+	display: none !important;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-body {
+	margin-top: 0.65rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding {
+	--whale-folding-accent: var(--whale-main-color);
+	--whale-folding-border: #cfd4d9;
+	--whale-folding-header-bg: #f6f8fa;
+	--whale-folding-header-color: #11181f;
+	--whale-folding-toggle-color: #0066d9;
+	--whale-folding-body-bg: #fff;
+	--whale-folding-row-bg: #f1f3f5;
+	margin: 1rem auto;
+	border: 1px solid var(--whale-folding-border);
+	border-radius: 0;
+	background-color: var(--whale-folding-body-bg);
+	overflow: hidden;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding > .whale-folding-header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	min-height: 2.55rem;
+	padding: 0.6rem 0.85rem;
+	background-color: var(--whale-folding-header-bg);
+	color: var(--whale-folding-header-color);
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.35;
+	text-align: left;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	min-height: 0;
+	margin: 0.55rem 0.85rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--whale-folding-toggle-color);
+	cursor: pointer;
+	font-weight: 700;
+	line-height: 1.35;
+	text-align: left;
+	transition: color 0.16s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle::before {
+	box-sizing: border-box;
+	width: 0.45rem;
+	height: 0.45rem;
+	margin-right: 0.45rem;
+	border-right: 1.5px solid currentColor;
+	border-bottom: 1.5px solid currentColor;
+	color: #4f5f6d;
+	content: "";
+	transform: translateY(-0.08rem) rotate(45deg);
+	transition: transform 0.16s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle[aria-expanded="false"]::before {
+	transform: translateX(-0.08rem) rotate(-45deg);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle:hover,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle:focus {
+	color: #004ea8;
+	text-decoration: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-title {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body {
+	padding: 0.85rem;
+	border-top: 1px solid var(--whale-folding-border);
+	background-color: var(--whale-folding-body-bg);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body > :last-child {
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body table {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body .whale-folding-header,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body .whale-folding-band {
+	margin: 0.35rem -0.75rem;
+	padding: 0.35rem 0.75rem;
+	background-color: var(--whale-folding-header-bg);
+	color: var(--whale-folding-header-color);
+	font-weight: 700;
+	text-align: center;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-body .whale-folding-row {
+	margin: 0.35rem -0.75rem;
+	padding: 0.35rem 0.75rem;
+	background-color: var(--whale-folding-row-bg);
+	text-align: center;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding.is-disabled .whale-folding-toggle {
+	cursor: default;
+	opacity: 0.72;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-category-blur {
+	display: inline-block;
+	filter: blur(4px);
+	transition: filter 0.25s ease;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-category-blur:hover,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-category-blur:focus {
+	filter: blur(0);
+}
+/* Content End */
