@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-const read = (path) => readFileSync(resolve(path), 'utf8');
+const read = (path) =>
+	readFileSync(resolve(path), 'utf8').replace(/\r\n/g, '\n');
 const readLessWithImports = (path, seen = new Set()) => {
 	const absolutePath = resolve(path);
 	if (seen.has(absolutePath)) {
