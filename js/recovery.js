@@ -210,16 +210,29 @@
 
 	const createNoDataRow = () => {
 		const item = document.createElement('li');
+		const visual = document.createElement('span');
+		const tray = document.createElement('span');
+		const paper = document.createElement('span');
+		const bubble = document.createElement('span');
+		const dots = document.createElement('span');
 		const text = document.createElement('span');
 		const message = window.mw?.message
 			? mw.message('whale-live-recent-no-data').text()
 			: '';
 
 		item.className = 'live-recent-no-data';
+		visual.className = 'live-recent-no-data-visual';
+		tray.className = 'live-recent-no-data-tray';
+		paper.className = 'live-recent-no-data-paper';
+		bubble.className = 'live-recent-no-data-bubble';
+		dots.className = 'live-recent-no-data-dots';
 		text.className = 'live-recent-no-data-text';
 		text.textContent =
 			message && !message.includes('⧼') ? message : '표시할 내용이 없습니다';
-		item.append(text);
+
+		bubble.append(dots);
+		visual.append(tray, paper, bubble);
+		item.append(visual, text);
 
 		return item;
 	};

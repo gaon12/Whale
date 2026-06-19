@@ -110,6 +110,23 @@ assertIncludes(layout, 'initContentSkeleton', 'Content skeleton state');
 assertIncludes(layout, 'handleDirectToggle', 'Mobile direct section toggle');
 assertIncludes(layout, 'getHeadingToggle', 'Heading click section toggle');
 
+const recovery = read('js/recovery.js');
+assertIncludes(
+	recovery,
+	'live-recent-no-data-visual',
+	'Recovery live recent empty state',
+);
+assertIncludes(
+	recovery,
+	'live-recent-no-data-paper',
+	'Recovery live recent empty state',
+);
+assertIncludes(
+	recovery,
+	'live-recent-no-data-bubble',
+	'Recovery live recent empty state',
+);
+
 const skinPhp = read('SkinWhale.php');
 assertIncludes(
 	skinPhp,
