@@ -258,15 +258,22 @@
 			rcnamespace: feed.dataset.namespaces || '',
 			rctoponly: '1',
 		});
-		let response = await fetch(`/w/api.php?${params.toString()}`, {
-			credentials: 'same-origin',
-		});
+		const fetchWithTimeout = (url) => {
+			const controller = new AbortController();
+			const timeout = window.setTimeout(() => controller.abort(), 6000);
+
+			return fetch(url, {
+				credentials: 'same-origin',
+				signal: controller.signal,
+			}).finally(() => {
+				window.clearTimeout(timeout);
+			});
+		};
+		let response = await fetchWithTimeout(`/w/api.php?${params.toString()}`);
 
 		if (!response.ok) {
 			params.delete('rctoponly');
-			response = await fetch(`/w/api.php?${params.toString()}`, {
-				credentials: 'same-origin',
-			});
+			response = await fetchWithTimeout(`/w/api.php?${params.toString()}`);
 		}
 
 		if (!response.ok) {
