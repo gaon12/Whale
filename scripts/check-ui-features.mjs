@@ -141,6 +141,7 @@ if (skinPhp.includes('maximum-scale=1')) {
 }
 
 const styles = readLessWithImports('less/default.less');
+const wikiStyles = read('less/wiki.less');
 const mediaWikiStyles = read('less/only-mw.less');
 assertIncludes(styles, 'color-scheme: light dark', 'Stylesheet');
 assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');
@@ -268,6 +269,24 @@ assertIncludes(
 	styles,
 	'.Whale .content-wrapper .whale-content .whale-content-main p a:hover',
 	'Content link hover underline',
+);
+assertIncludes(wikiStyles, 'a,\na:visited', 'Visited document link color');
+assertIncludes(styles, 'color: #0066d9', 'Document link color');
+assertIncludes(
+	wikiStyles,
+	'a.new,\na.new:visited',
+	'Missing document link color',
+);
+assertIncludes(styles, 'color: #b32424', 'Missing document link color');
+assertIncludes(
+	styles,
+	'.whale-content-main p a:visited',
+	'Content visited document link color',
+);
+assertIncludes(
+	styles,
+	'.whale-content-main p a.new:visited',
+	'Content visited missing document link color',
 );
 if (
 	/whale-content-main p a,\s*[\s\S]*?whale-content-main dd a\s*\{\s*text-decoration:\s*underline;/.test(
