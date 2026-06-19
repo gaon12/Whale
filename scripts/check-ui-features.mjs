@@ -185,12 +185,12 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'border-bottom: 1px solid #cfd4d9',
+	'border-bottom: 2px solid var(--whale-border-strong-color)',
 	'Section heading divider',
 );
 assertIncludes(
 	styles,
-	'box-shadow: inset 0 -1px 0 #cfd4d9',
+	'box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.7)',
 	'Section heading divider',
 );
 assertIncludes(styles, 'margin-bottom: 1.25rem', 'Collapsed section spacing');
@@ -210,7 +210,7 @@ assertIncludes(
 );
 assertIncludes(
 	mediaWikiStyles,
-	'border: 1px solid #cfd4d9',
+	'border: 1px solid var(--whale-border-color)',
 	'Article TOC compact document box',
 );
 assertIncludes(
@@ -229,7 +229,11 @@ assertIncludes(
 	'Article TOC collapse state',
 );
 assertIncludes(mediaWikiStyles, 'display: none', 'Article TOC collapse state');
-assertIncludes(mediaWikiStyles, 'color: #0066d9', 'Article TOC link color');
+assertIncludes(
+	mediaWikiStyles,
+	'color: var(--whale-link-color)',
+	'Article TOC link color',
+);
 assertIncludes(
 	mediaWikiStyles,
 	'.mw-heading h2.whale-section-heading',
@@ -242,7 +246,7 @@ assertIncludes(
 );
 assertIncludes(
 	mediaWikiStyles,
-	'box-shadow: inset 0 -1px 0 #cfd4d9',
+	'box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.7)',
 	'MediaWiki heading rule should preserve section divider',
 );
 assertIncludes(
@@ -278,7 +282,7 @@ assertIncludes(
 	'Content link hover underline',
 );
 assertIncludes(wikiStyles, 'a,\na:visited', 'Visited document link color');
-assertIncludes(styles, 'color: #0066d9', 'Document link color');
+assertIncludes(styles, 'color: var(--whale-link-color)', 'Document link color');
 assertIncludes(
 	wikiStyles,
 	'a.new,\na.new:visited',
@@ -338,7 +342,7 @@ assertIncludes(
 	'Navbar notification placement',
 );
 assertIncludes(styles, 'order: 29', 'Navbar notification placement');
-assertIncludes(styles, 'height: 3.5rem', 'Navbar link height clamp');
+assertIncludes(styles, 'height: 3.75rem', 'Navbar link height clamp');
 assertIncludes(
 	styles,
 	'box-shadow: inset 0 -3px 0 transparent',
