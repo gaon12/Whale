@@ -7,21 +7,19 @@
 }
 
 .Whale .whale-nav-wrapper {
-	min-height: 3.75rem;
+	min-height: 3.5rem;
 	z-index: 1001;
-	background:
-		linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 100%) 0 0 / 1.5rem 1.5rem,
-		linear-gradient(115deg, #07577d 0%, #168fbd 48%, #18ad8b 100%);
-	border-bottom: 1px solid rgba(4, 62, 91, 0.65);
-	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 0.5rem 1.4rem rgba(7, 57, 84, 0.2);
+	background: linear-gradient(180deg, #24558f 0%, #1d477b 100%);
+	border-bottom: 1px solid #163a66;
+	box-shadow: 0 2px 0 rgba(255, 255, 255, 0.2) inset, 0 2px 8px rgba(15, 23, 42, 0.18);
 }
 
 .Whale .whale-nav-wrapper .whale-navbar {
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	min-height: 3.75rem;
-	padding: 0 1.1rem;
+	min-height: 3.5rem;
+	padding: 0 1rem;
 	border: 0;
 	border-radius: 0;
 }
@@ -30,7 +28,7 @@
 	display: inline-flex;
 	align-items: center;
 	flex: 0 1 auto;
-	height: 3.75rem;
+	height: 3.5rem;
 	width: auto;
 	max-width: 14rem;
 	padding: 0;
@@ -43,9 +41,8 @@
 	width: auto;
 	height: auto;
 	max-width: 100%;
-	max-height: 2.25rem;
+	max-height: 2.15rem;
 	object-fit: contain;
-	filter: drop-shadow(0 0.18rem 0.35rem rgba(3, 40, 60, 0.22));
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu {
@@ -81,26 +78,25 @@
 	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;
-	height: 3.75rem;
+	height: 3.5rem;
 	color: #fff;
-	font-size: 0.96rem;
+	font-size: 1rem;
 	font-weight: 700;
 	padding: 0 0.85rem;
 	line-height: 1.4rem;
 	text-decoration: none;
-	border-radius: var(--whale-radius-sm);
+	border-radius: 0;
 	box-shadow: inset 0 -3px 0 transparent;
 	outline: 0;
-	text-shadow: 0 1px 0 rgba(4, 44, 65, 0.24);
-	transition: background-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+	transition: background-color 0.16s ease, box-shadow 0.16s ease;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus {
-	background-color: rgba(255, 255, 255, 0.16);
-	box-shadow: inset 0 -3px 0 rgba(206, 255, 240, 0.86);
+	background-color: rgba(255, 255, 255, 0.13);
+	box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.78);
 	text-decoration: none;
-	transform: translateY(-1px);
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-dropdown-menu {
@@ -118,7 +114,7 @@
 	order: 10;
 	flex: 0 0 auto;
 	margin-left: auto;
-	padding: 0.65rem 0;
+	padding: 0.55rem 0;
 	min-width: 0;
 }
 
@@ -128,7 +124,7 @@
 	align-items: center;
 	flex: 0 0 auto;
 	gap: 0.2rem;
-	min-height: 3.75rem;
+	min-height: 3.5rem;
 	margin: 0 0.1rem 0 0.55rem;
 	padding: 0;
 	list-style: none;
@@ -145,10 +141,10 @@
 	height: 2.4rem;
 	min-width: 0;
 	overflow: hidden;
-	background-color: rgba(255, 255, 255, 0.94);
-	border: 1px solid rgba(255, 255, 255, 0.72);
-	border-radius: 999px;
-	box-shadow: 0 0.3rem 0.9rem rgba(3, 43, 63, 0.16);
+	background-color: #fff;
+	border: 1px solid rgba(15, 23, 42, 0.18);
+	border-radius: 0.35rem;
+	box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.05);
 	vertical-align: middle;
 }
 
@@ -158,8 +154,8 @@
 	height: 2.4rem;
 	line-height: 1.5;
 	min-width: 0;
-	width: 13rem;
-	padding: 0.2rem 0.75rem;
+	width: 12rem;
+	padding: 0.2rem 0.4rem;
 	background: transparent;
 	border: 0;
 }
@@ -170,8 +166,9 @@
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group:focus-within {
-	border-color: #c8fff0;
-	box-shadow: 0 0 0 0.18rem rgba(200, 255, 240, 0.34), 0 0.45rem 1rem rgba(3, 43, 63, 0.2);
+	border-color: #66afe9;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+		0 0 8px rgba(102, 175, 233, 0.6);
 	transition: 0.3s;
 }
 
@@ -185,7 +182,7 @@
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
 	align-items: center;
 	border: 0;
-	border-left: 1px solid rgba(22, 143, 189, 0.18);
+	border-left: 1px solid #ccc;
 	border-radius: 0;
 	display: inline-flex;
 	justify-content: center;
@@ -214,20 +211,20 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 2.35rem;
-	height: 2.35rem;
+	width: 2.25rem;
+	height: 2.25rem;
 	margin-left: 0.55rem;
 	padding: 0;
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	border-radius: var(--whale-radius);
-	background-color: rgba(255, 255, 255, 0.16);
+	border: 0;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.14);
 	color: #fff;
 	cursor: pointer;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:hover,
 .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:focus {
-	background-color: rgba(255, 255, 255, 0.28);
+	background-color: rgba(255, 255, 255, 0.24);
 	outline: 0;
 }
 
@@ -276,7 +273,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
-	height: 3.75rem;
+	height: 3.5rem;
 	padding-left: 0.55rem;
 }
 
@@ -284,7 +281,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 	display: inline-flex;
 	align-items: center;
-	height: 3.75rem;
+	height: 3.5rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon {
@@ -310,9 +307,9 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	justify-content: center;
 	width: 2rem;
 	height: 2rem;
-	border-radius: var(--whale-radius-sm);
+	border-radius: 0.35rem;
 	margin: 0;
-	border: 1px solid rgba(255, 255, 255, 0.45);
+	border: 1px solid #e1e8ed;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img-fallback {
