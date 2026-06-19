@@ -24,7 +24,7 @@ class WhaleHooks {
 			return;
 		}
 
-		if ( method_exists( $sk, 'getWhaleClientModules' ) ) {
+		if ( $sk instanceof SkinWhale ) {
 			$out->addModules( $sk->getWhaleClientModules() );
 		}
 	}
