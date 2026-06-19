@@ -95,7 +95,7 @@ class SkinWhale extends SkinMustache {
 	 */
 	public function initPage( OutputPage $out ): void {
 		// @codingStandardsIgnoreLine
-		global $wgSitename, $wgXAccount, $wgLanguageCode, $wgNaverVerification, $wgLogo, $wgWhaleEnableLiveRC;
+		global $wgSitename, $wgXAccount, $wgLanguageCode, $wgWhaleNaverVerification, $wgLogo, $wgWhaleEnableLiveRC;
 
 		$user = $this->getUser();
 		$services = MediaWikiServices::getInstance();
@@ -136,8 +136,8 @@ class SkinWhale extends SkinMustache {
 		$out->addMeta( 'keywords', $wgSitename . ',' . $skin->getTitle() );
 
 		/* Naver webmaster verification */
-		if ( isset( $wgNaverVerification ) ) {
-			$out->addMeta( 'naver-site-verification', $wgNaverVerification );
+		if ( isset( $wgWhaleNaverVerification ) ) {
+			$out->addMeta( 'naver-site-verification', $wgWhaleNaverVerification );
 		}
 
 		/* iOS and mobile browser web-app metadata */
