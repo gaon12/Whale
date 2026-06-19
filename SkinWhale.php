@@ -157,6 +157,8 @@ class SkinWhale extends SkinMustache {
 			$out->addMeta( 'twitter:creator', "@$wgXAccount" );
 		}
 
+		$out->addModules( $this->getWhaleClientModules() );
+
 		// @codingStandardsIgnoreStart
 		$out->addInlineStyle(
 			".Whale {
