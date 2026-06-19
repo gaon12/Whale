@@ -24,10 +24,14 @@
 			</li>
 		{{/items}}
 	</ul>
-	{{>LoginMenu}}
-	{{#notifications}}
-		{{{ html }}}
-	{{/notifications}}
 	{{>SearchBox}}
+	{{#has-notifications}}
+		<ul class="whale-navbar-notifications">
+			{{#notifications}}
+				{{{ html }}}
+			{{/notifications}}
+		</ul>
+	{{/has-notifications}}
+	{{>LoginMenu}}
 </nav>
 {{/data-whale-nav}}
