@@ -1,0 +1,271 @@
+/* Echo */
+#pt-notifications-alert,
+#pt-notifications-notice {
+	position: relative;
+	order: 20;
+	flex: 0 0 auto;
+	align-self: center;
+	list-style: none;
+	top: 0;
+	font-size: 0.9rem;
+	margin-right: 0.6rem;
+	margin-left: 0.8rem;
+}
+/* Echo End */
+
+#shareAPIPolyfill-container button {
+	color: inherit;
+	white-space: inherit;
+	line-height: inherit;
+}
+
+/* Responsive layout */
+@media screen and (max-width: 1023px) {
+	.Whale .whale-nav-wrapper .whale-navbar {
+		flex-wrap: wrap;
+		padding: 0 0.5rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form {
+		order: 40;
+		flex-basis: 100%;
+		margin-left: 0;
+		padding: 0.25rem 0 0.5rem;
+	}
+
+	body.whale-mobile-user-tools-right.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login,
+	body.whale-mobile-user-tools-right .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login {
+		margin-left: auto;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-search-group {
+		display: flex;
+		width: 100%;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-search-group .whale-search-input {
+		flex: 1 1 auto;
+		width: auto;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-search-group .whale-search-actions {
+		display: inline-flex;
+		flex: 0 0 auto;
+		width: auto;
+	}
+
+	.Whale .content-wrapper {
+		margin-top: 7.05rem;
+	}
+
+	.Whale .content-wrapper .whale-sidebar {
+		display: none;
+	}
+
+	.Whale .content-wrapper .mobile-live-recent-wrapper {
+		display: block;
+		padding: 0 0.5rem 0.5rem;
+	}
+
+	body.ns-special.Whale .content-wrapper .mobile-live-recent-wrapper {
+		display: none;
+	}
+
+	.Whale .content-wrapper .mobile-live-recent-wrapper .live-recent {
+		width: 100%;
+	}
+
+	.Whale .content-wrapper .whale-content {
+		margin-right: auto;
+		padding-bottom: 0.5rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .whale-notice {
+		margin: 0.5rem;
+		padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools {
+		float: none;
+		text-align: right;
+		border-bottom: 1px solid #e1e8ed;
+		padding: 0.65rem 0.5rem 0.5rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
+		margin-bottom: 0.25rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .title {
+		padding: 0.5rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .contentSub {
+		margin-top: -0.25rem;
+		padding: 0 0.5rem 0.5rem;
+	}
+
+	.Whale .whale-short-url-card,
+	.Whale .whale-not-found {
+		grid-template-columns: 1fr;
+	}
+
+	.Whale .whale-short-url-icon,
+	.Whale .whale-not-found-icon {
+		margin: 0 auto;
+	}
+
+	.Whale .whale-short-url-copy-row {
+		flex-direction: column;
+	}
+
+	.Whale .whale-not-found {
+		margin: 1.5rem auto;
+		padding: 1.25rem;
+		text-align: center;
+	}
+
+	.Whale .whale-not-found-actions {
+		justify-content: center;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .header-ads {
+		margin: 0.5rem 0.5rem 0;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main {
+		padding: 0.5rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph {
+		padding: 0.75rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph-header {
+		display: block;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph-header p {
+		margin-top: 0.25rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main #upload-div {
+		display: none;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main iframe {
+		width: 80%;
+		height: 30rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main .mobile-table-wrapper {
+		overflow-x: auto;
+	}
+
+	.Whale .content-wrapper .whale-content .bottom-ads,
+	.Whale .content-wrapper .whale-content .mobile-ads {
+		padding: 0.5rem;
+		background-color: #fff;
+		border-inline: 1px solid #e1e8ed;
+	}
+
+	.Whale .content-wrapper .whale-footer {
+		padding: 0.5rem;
+	}
+
+	#searchform {
+		width: 100%;
+	}
+
+	.whale-floating-toc {
+		display: none;
+	}
+
+	.whale-floating-toc.is-mobile {
+		display: block;
+	}
+}
+
+@media screen and (max-width: 890px) {
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-icon {
+		text-align: center;
+		margin: 0 0.25rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link .hide-title {
+		display: none;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main iframe {
+		width: 90%;
+		height: 20rem;
+	}
+}
+
+@media screen and (max-width: 520px) {
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
+		padding: 0.7rem 0.3rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .view-logout {
+		display: none;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .hide-logout {
+		display: inline-flex;
+	}
+
+	html .Whale .content-wrapper .whale-content .whale-content-main table.infobox,
+	html .Whale .content-wrapper .whale-content .whale-content-main table.wikitable {
+		float: none;
+		width: 100%;
+		margin: auto auto 1rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main iframe {
+		width: 100%;
+		height: 15rem;
+	}
+}
+
+@media screen and (max-width: 397px) {
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-brand {
+		max-width: 7rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-brand-logo {
+		max-height: 1.5rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link::after {
+		display: none;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
+		padding: 0.7rem 0.2rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login,
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-notification {
+		padding-left: 0.4rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form {
+		padding-top: 0.04rem;
+	}
+}
+
+@media screen and (max-width: 34rem) {
+	.Whale .whale-login-modal .whale-modal-sm {
+		width: calc(100% - 2rem);
+		max-width: 25rem;
+		margin: 1rem auto;
+	}
+}
+
+@media screen and (max-width: 22rem) {
+	.Whale .whale-login-modal .whale-modal-sm {
+		width: 100%;
+		margin: 0.75rem 0;
+	}
+}

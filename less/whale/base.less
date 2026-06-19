@@ -1,0 +1,279 @@
+/* Main Color #4188f1 */
+/* Border Color #e1e8ed */
+
+/* Icons */
+.whale-icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	min-width: 1em;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	vertical-align: -0.125em;
+}
+
+.whale-icon-solid {
+	fill: currentColor;
+	stroke: none;
+}
+
+.whale-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+/* Icons End */
+/* HTML Tag */
+html {
+	box-sizing: border-box;
+	/* Whale manages both schemes itself; tell browsers not to auto-rewrite colors. */
+	color-scheme: light dark;
+	font-size: 15px;
+	-webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+	margin: 0;
+	font: inherit;
+	color: inherit;
+}
+
+button {
+	overflow: visible;
+}
+
+button,
+select {
+	text-transform: none;
+}
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	cursor: pointer;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+input:hover,
+button:hover,
+select:hover {
+	transition: 0.3s;
+}
+
+body {
+	margin: 0;
+	font-size: 0.95rem;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.mw-heading {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		"Malgun Gothic", sans-serif;
+	margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+.mw-heading {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		"Malgun Gothic", sans-serif;
+}
+
+input[type="password"] {
+	font-family: sans-serif;
+}
+
+.mw-heading1,
+h1 {
+	font-size: 2rem;
+}
+
+.mw-heading2,
+h2 {
+	font-size: 1.8rem;
+}
+
+.mw-heading3,
+h3 {
+	font-size: 1.6rem;
+}
+
+.mw-heading4,
+h4 {
+	font-size: 1.5rem;
+}
+
+.mw-heading5,
+h5 {
+	font-size: 1.3rem;
+}
+
+.mw-heading6,
+h6 {
+	font-size: 1.1rem;
+}
+
+ol,
+ul,
+p {
+	margin: 0;
+	padding: 0;
+}
+
+ol,
+.mw-content-ltr ol,
+.mw-content-rtl .mw-content-ltr ol {
+	margin: 0;
+	margin-left: 2.2rem;
+	margin-right: 1rem;
+	list-style-image: none;
+}
+
+pre {
+	display: block;
+	color: #333;
+	word-break: break-all;
+	word-wrap: break-word;
+	background-color: #f5f8fa;
+	border: 1px solid #e1e8ed;
+	border-radius: 0.35rem;
+	padding: 0.8rem;
+}
+
+a:focus {
+	outline: 2px solid var(--whale-main-color);
+	outline-offset: 2px;
+}
+
+p {
+	margin-bottom: 0.8rem;
+	overflow-wrap: break-word;
+}
+
+ul {
+	list-style-image: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20width%3D%225%22%20height%3D%2213%22%3E%0A%3Ccircle%20cx%3D%222.5%22%20cy%3D%229.5%22%20r%3D%222.5%22%20fill%3D%22%23373a3c%22%2F%3E%0A%3C%2Fsvg%3E%0A);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	margin: 0;
+}
+
+th[rowspan],
+td[rowspan] {
+	position: relative;
+}
+
+th[rowspan]:after,
+td[rowspan]:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: -1px;
+	width: 1px;
+	height: 100%;
+	/*background: #e0e0e0;*/
+}
+
+input[type="search"] {
+	-webkit-appearance: none;
+	/* Removes some iOS CSS Settings */
+}
+
+textarea {
+	width: 100%;
+	border: 1px solid #e1e8ed;
+	padding: 0.5rem;
+}
+
+hr {
+	border-top: 1px solid #e1e8ed;
+}
+
+html input[type="button"]:hover,
+html input[type="submit"]:hover,
+button:hover {
+	background-color: #449d44;
+}
+
+label {
+	vertical-align: middle;
+	word-break: keep-all;
+}
+
+del,
+s,
+strike {
+	color: #808080;
+}
+/* HTML Tag End */
+
+/* Background Color */
+.Whale {
+	--whale-main-color: #4188f1;
+	--whale-second-color: #2774dc;
+	--whale-text-color: #373a3c;
+	--whale-dark-text-color: #f1f3f5;
+	--whale-radius: 0.35rem;
+	--whale-radius-sm: 0.25rem;
+	background-color: #f5f5f5;
+	color: var(--whale-text-color);
+	color-scheme: light;
+}
+
+.Whale .whale-reading-progress {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1003;
+	height: 6px;
+	pointer-events: none;
+	background-color: var(--whale-main-color);
+	transform: scaleX(0);
+	transform-origin: left center;
+}
+/* Background Color End */
+
+/* Content width, alian center */
+.Whale .whale-nav-wrapper .whale-navbar,
+.Whale .content-wrapper {
+	max-width: 1400px;
+	margin: 0 auto;
+}
+/* Content width, alian center End */

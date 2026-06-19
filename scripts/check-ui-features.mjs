@@ -1,7 +1,21 @@
 import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 const read = (path) => readFileSync(resolve(path), 'utf8');
+const readLessWithImports = (path, seen = new Set()) => {
+	const absolutePath = resolve(path);
+	if (seen.has(absolutePath)) {
+		return '';
+	}
+
+	seen.add(absolutePath);
+
+	return readFileSync(absolutePath, 'utf8').replace(
+		/@import\s+"([^"]+)";/g,
+		(_match, importPath) =>
+			readLessWithImports(resolve(dirname(absolutePath), importPath), seen),
+	);
+};
 const assertIncludes = (source, needle, label) => {
 	if (!source.includes(needle)) {
 		throw new Error(`${label} should include ${needle}`);
@@ -108,7 +122,7 @@ if (skinPhp.includes('maximum-scale=1')) {
 	throw new Error('Viewport meta should not disable user zoom.');
 }
 
-const styles = read('less/default.less');
+const styles = readLessWithImports('less/default.less');
 const mediaWikiStyles = read('less/only-mw.less');
 assertIncludes(styles, 'color-scheme: light dark', 'Stylesheet');
 assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');

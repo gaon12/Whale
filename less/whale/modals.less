@@ -1,0 +1,321 @@
+/* Login modal */
+.whale-modal-open {
+	overflow: hidden;
+}
+
+.whale-modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1050;
+	overflow: hidden;
+	outline: 0;
+}
+
+.whale-modal.is-open {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.whale-modal-fade {
+	opacity: 0;
+	transition: opacity 0.3s linear;
+}
+
+.whale-modal-fade.is-open {
+	opacity: 1;
+}
+
+.whale-modal-dialog {
+	position: relative;
+	width: auto;
+	margin: 1.75rem auto;
+	pointer-events: none;
+}
+
+.whale-modal-sm {
+	width: 25rem;
+}
+
+.whale-modal-content {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	pointer-events: auto;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0.3rem;
+	outline: 0;
+}
+
+.whale-modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.Whale .whale-login-modal .whale-modal-header {
+	padding: 0.7rem;
+}
+
+.Whale .whale-login-modal .whale-modal-title {
+	flex: 1;
+	margin: 0;
+	text-align: center;
+	padding-left: 1.5rem;
+}
+
+.Whale .whale-short-url-modal .whale-modal-header,
+.Whale .whale-external-link-modal .whale-modal-header {
+	padding: 0.85rem 1rem;
+}
+
+.Whale .whale-short-url-modal .whale-modal-title,
+.Whale .whale-external-link-modal .whale-modal-title {
+	flex: 1;
+	margin: 0;
+	color: #202326;
+	font-size: 1.05rem;
+	text-align: left;
+}
+
+.Whale .whale-short-url-description,
+.Whale .whale-external-link-description {
+	margin-top: 0;
+	color: #4f5b63;
+	line-height: 1.5;
+}
+
+.Whale .whale-short-url-card {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: 0.9rem;
+	padding: 1rem;
+	border: 1px solid #d8e0e7;
+	border-radius: var(--whale-radius);
+	background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+}
+
+.Whale .whale-short-url-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	background-color: rgba(65, 136, 241, 0.12);
+	color: var(--whale-main-color);
+}
+
+.Whale .whale-short-url-icon .whale-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	margin: 0;
+}
+
+.Whale .whale-short-url-copy-row {
+	display: flex;
+	align-items: stretch;
+	gap: 0.65rem;
+	margin-top: 0.75rem;
+}
+
+.Whale .whale-short-url-copy-row .whale-short-url-value {
+	flex: 1 1 auto;
+	min-width: 0;
+	border: 1px solid #d8e0e7;
+	border-radius: var(--whale-radius-sm);
+	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+	font-size: 0.85rem;
+}
+
+.Whale .whale-short-url-copy-row .whale-short-url-copy {
+	flex: 0 0 auto;
+	padding-right: 0.9rem;
+	padding-left: 0.9rem;
+}
+
+.Whale .whale-external-link-url {
+	max-height: 7.5rem;
+	margin: 0.75rem 0;
+	padding: 0.75rem;
+	overflow: auto;
+	border: 1px solid #d8e0e7;
+	border-radius: var(--whale-radius-sm);
+	background-color: #f8fafc;
+	color: #202326;
+	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+	font-size: 0.85rem;
+	line-height: 1.45;
+	overflow-wrap: anywhere;
+}
+
+.Whale .whale-external-link-toggle {
+	margin-bottom: 0.75rem;
+}
+
+.Whale .whale-external-link-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.whale-modal-close {
+	position: absolute;
+	top: 0.55rem;
+	right: 0.7rem;
+	background: transparent;
+	border: 0;
+	color: #000;
+	cursor: pointer;
+	font-size: 1.5rem;
+	font-weight: 700;
+	line-height: 1;
+	opacity: 0.5;
+	padding: 0.1rem 0.25rem;
+	text-shadow: 0 1px 0 #fff;
+}
+
+.whale-modal-close:focus,
+.whale-modal-close:hover {
+	opacity: 0.75;
+	outline: 0;
+	text-decoration: none;
+	transition: 0.3s;
+}
+
+.whale-modal-body {
+	position: relative;
+	padding: 1rem;
+}
+
+.Whale .whale-login-modal .whale-alert {
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+	padding: 0.8rem;
+	margin-bottom: 0.8rem;
+}
+
+.Whale .whale-login-modal .whale-alert-danger {
+	background-color: #f2dede;
+	border-color: #ebcccc;
+	color: #a94442;
+}
+
+.Whale .whale-login-modal .whale-alert-warning {
+	background-color: #fcf8e3;
+	border-color: #faf2cc;
+	color: #8a6d3b;
+}
+
+.Whale .whale-login-modal .whale-alert-hidden {
+	display: none;
+}
+
+.Whale .whale-login-modal .whale-form-control {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	padding: 0.375rem 0.75rem;
+	margin-bottom: 0.8rem;
+}
+
+.Whale .whale-login-modal .whale-form-control:focus {
+	border-color: #66afe9;
+	outline: 0;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+		0 0 8px rgba(102, 175, 233, 0.6);
+	transition: 0.3s;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) {
+	position: relative;
+	display: table;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox {
+	vertical-align: middle;
+	margin-bottom: 0.7rem;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] {
+	opacity: 0;
+	width: 2em;
+	height: 2em;
+	max-width: none;
+	margin: 0;
+	display: table-cell;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) * {
+	vertical-align: middle;
+	font: inherit;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label {
+	padding-left: 0.4em;
+	display: table-cell;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label::before {
+	-webkit-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	-moz-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	-o-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	content: "";
+	cursor: pointer;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	position: absolute;
+	left: 0;
+	border-radius: 2px;
+	width: 2em;
+	height: 2em;
+	line-height: 2em;
+	border: 1px solid #777;
+	top: 50%;
+	margin-top: -1em;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label:hover::before {
+	border: 3px solid #777;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"]:checked + label::before {
+	border: 3px solid #777;
+	background-image: linear-gradient(transparent, transparent),
+		url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M4%2012l5%205L20%205%22%20stroke%3D%22%2300B78C%22%20stroke-width%3D%223%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E%0A);
+}
+
+.Whale .whale-login-modal .whale-btn {
+	margin-bottom: 0.8rem;
+}
+
+.whale-modal-backdrop {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1040;
+	background-color: #000;
+	opacity: 0;
+	transition: opacity 0.3s linear;
+}
+
+.whale-modal-backdrop.is-open {
+	opacity: 0.5;
+}
+/* Login modal End */
