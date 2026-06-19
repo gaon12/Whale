@@ -408,7 +408,7 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 | `$wgWhaleMainColor` | 사이트 전체 주 색상 | `'#4188F1'` | `'#4188F1'` |
 | `$wgWhaleSecondColor` | 사이트 전체 보조 색상 | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph에 사용할 로고 이미지 | `'https://example.org/logo.png'` | `$wgLogo` |
-| `$wgTwitterAccount` | Twitter/X 카드에 넣을 계정 | `'gaonwiki'` | 설정 안 함 |
+| `$wgXAccount` | Twitter/X 카드에 넣을 계정 | `'gaonwiki'` | 설정 안 함 |
 | `$wgNaverVerification` | 네이버 사이트 인증 코드 | `'abcdef...'` | 설정 안 함 |
 | `$wgWhaleAvatarStyle` | 로그인 메뉴 DiceBear 프로필 아이콘 스타일 | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | DiceBear PHP 라이브러리에 전달할 프로필 아이콘 옵션 | `[ 'borderRadius' => 12 ]` | `[]` |
@@ -840,7 +840,7 @@ The beta deploy workflow runs on `main` pushes when the repository variable `WHA
 | `$wgWhaleMainColor` | Site-wide primary color | `'#4188F1'` | `'#4188F1'` |
 | `$wgWhaleSecondColor` | Site-wide secondary color | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
-| `$wgTwitterAccount` | Twitter/X card account | `'gaonwiki'` | unset |
+| `$wgXAccount` | Twitter/X card account | `'gaonwiki'` | unset |
 | `$wgNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
 | `$wgWhaleAvatarStyle` | DiceBear profile icon style for the login menu | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | Profile icon options passed to the DiceBear PHP library | `[ 'borderRadius' => 12 ]` | `[]` |

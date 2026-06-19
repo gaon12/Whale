@@ -243,7 +243,7 @@ Available rights:
 | `$wgWhaleMainColor` | Site-wide primary color | `'#4188F1'` | `'#4188F1'` |
 | `$wgWhaleSecondColor` | Site-wide secondary color | `'#2774DC'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
-| `$wgTwitterAccount` | Twitter/X card account | `'gaonwiki'` | unset |
+| `$wgXAccount` | Twitter/X card account | `'gaonwiki'` | unset |
 | `$wgNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
 | `$wgWhaleAvatarStyle` | DiceBear profile icon style for the login menu | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | Profile icon options passed to DiceBear PHP | `[ 'borderRadius' => 12 ]` | `[]` |
