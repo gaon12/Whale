@@ -317,16 +317,18 @@
 			return;
 		}
 
-		const syncControllers = whale.rafThrottle(() => {
+		const startControllers = () => {
 			controllers.forEach((controller) => {
 				controller.start();
 			});
-		});
+		};
+		const syncControllers = whale.rafThrottle(startControllers);
 
 		const scheduleInitialSync =
 			window.requestIdleCallback ||
 			((callback) => window.setTimeout(callback, 300));
 
+		startControllers();
 		scheduleInitialSync(syncControllers);
 		window.addEventListener('resize', syncControllers);
 		document.addEventListener('visibilitychange', () => {
