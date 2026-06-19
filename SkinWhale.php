@@ -747,7 +747,7 @@ JS
 		return Html::element( 'script', [
 			'data-cfasync' => 'false',
 			'data-whale-recovery' => 'true',
-			'src' => $scriptPath . '/skins/Whale/js/recovery.js?v=1.13.12',
+			'src' => $scriptPath . '/skins/Whale/js/recovery.js?v=1.13.13',
 		], '' );
 	}
 
