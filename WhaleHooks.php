@@ -24,8 +24,11 @@ class WhaleHooks {
 			return;
 		}
 
-		if ( $sk instanceof SkinWhale ) {
-			$out->addModules( $sk->getWhaleClientModules() );
+		if ( method_exists( $sk, 'getWhaleClientModules' ) ) {
+			$modules = call_user_func( [ $sk, 'getWhaleClientModules' ] );
+			if ( is_array( $modules ) ) {
+				$out->addModules( array_values( array_filter( $modules, 'is_string' ) ) );
+			}
 		}
 	}
 
