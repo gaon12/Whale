@@ -741,21 +741,93 @@ JS
 	}
 
 	private function renderRocketLoaderRecoveryScript(): string {
-		return Html::rawElement( 'script', [ 'data-cfasync' => 'false' ], <<<'JS'
+		return Html::rawElement( 'script', [
+			'data-cfasync' => 'false',
+			'data-whale-rl-recovery' => 'true',
+		], <<<'JS'
 (function () {
-	if (window.mw || !document.querySelector('script[type$="-text/javascript"][data-cf-settings]')) {
+	if (window.mw) {
 		return;
 	}
 
+	var ensureLocalStorage = function () {
+		var storage;
+		var isStorageUsable = function () {
+			try {
+				var key = '__whale_storage_test__';
+				window.localStorage.setItem(key, key);
+				window.localStorage.removeItem(key);
+				return true;
+			} catch (error) {
+				return false;
+			}
+		};
+
+		if ('localStorage' in window && isStorageUsable()) {
+			return;
+		}
+
+		storage = {};
+		try {
+			Object.defineProperty(window, 'localStorage', {
+				configurable: true,
+				value: {
+					get length() {
+						return Object.keys(storage).length;
+					},
+					clear: function () {
+						storage = {};
+					},
+					getItem: function (key) {
+						key = String(key);
+						return Object.prototype.hasOwnProperty.call(storage, key) ? storage[key] : null;
+					},
+					key: function (index) {
+						return Object.keys(storage)[index] || null;
+					},
+					removeItem: function (key) {
+						delete storage[String(key)];
+					},
+					setItem: function (key, value) {
+						storage[String(key)] = String(value);
+					}
+				}
+			});
+		} catch (error) {}
+	};
 	var replayed = false;
 	var isRocketScript = function (script) {
 		return /-text\/javascript$/.test(script.getAttribute('type') || '') &&
 			script.hasAttribute('data-cf-settings');
 	};
+	var isResourceLoaderScript = function (script) {
+		var text;
+
+		if (script.hasAttribute('data-whale-rl-recovery')) {
+			return false;
+		}
+
+		if (isRocketScript(script)) {
+			return true;
+		}
+
+		if (script.src) {
+			return /\/load\.php\?/.test(script.src) && /[?&]only=scripts/.test(script.src);
+		}
+
+		text = script.text || script.textContent || '';
+		return text.indexOf('RLCONF=') !== -1 ||
+			text.indexOf('RLSTATE=') !== -1 ||
+			text.indexOf('RLPAGEMODULES=') !== -1 ||
+			text.indexOf('RLQ=window.RLQ') !== -1 ||
+			text.indexOf('mw.config.set') !== -1;
+	};
 	var replayInlineScript = function (script) {
 		var replacement = document.createElement('script');
 		replacement.text = script.text || script.textContent || '';
-		script.remove();
+		if (isRocketScript(script)) {
+			script.remove();
+		}
 		document.head.appendChild(replacement).remove();
 	};
 	var replayExternalScript = function (script) {
@@ -765,7 +837,9 @@ JS
 			replacement.async = false;
 			replacement.onload = resolve;
 			replacement.onerror = resolve;
-			script.remove();
+			if (isRocketScript(script)) {
+				script.remove();
+			}
 			document.head.appendChild(replacement);
 		});
 	};
@@ -775,9 +849,10 @@ JS
 		}
 
 		replayed = true;
+		ensureLocalStorage();
 		Array.prototype.reduce.call(document.querySelectorAll('script'), function (chain, script) {
 			return chain.then(function () {
-				if (!isRocketScript(script)) {
+				if (!isResourceLoaderScript(script)) {
 					return null;
 				}
 
