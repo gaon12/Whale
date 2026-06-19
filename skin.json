@@ -125,7 +125,8 @@
 			}
 		},
 		"skins.whale.common": {
-			"scripts": "js/common.js"
+			"scripts": "js/common.js",
+			"dependencies": "mediawiki.api"
 		},
 		"skins.whale.ads": {
 			"scripts": "js/ads.js",
