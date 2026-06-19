@@ -54,6 +54,15 @@ class SkinWhale extends SkinMustache {
 		],
 	];
 
+	private const LAYOUT_WIDTHS = [
+		'1000px',
+		'1100px',
+		'1200px',
+		'1300px',
+		'1500px',
+		'1600px',
+	];
+
 	private const WHALE_AD_POSITIONS = [
 		'header' => [
 			'class' => 'header-ads',
@@ -152,58 +161,6 @@ class SkinWhale extends SkinMustache {
 			$out->addMeta( 'twitter:creator', "@$wgXAccount" );
 		}
 
-		$modules = [
-			'skins.whale.layoutjs'
-		];
-
-		// Only load ad-related JS if ads are enabled in site configuration
-		if ( $this->getWhaleAdClient() !== '' ) {
-			$modules[] = 'skins.whale.ads';
-		}
-
-		// Only load LiveRC JS when a desktop or mobile recent feed can render.
-		$hasSidebar = $this->shouldRenderSidebar();
-		if (
-			$wgWhaleEnableLiveRC &&
-			(
-				( $hasSidebar && $this->shouldRenderLiveRecent() ) ||
-				$this->shouldRenderMobileLiveRecent( $hasSidebar )
-			)
-		) {
-			$modules[] = 'skins.whale.liverc';
-		}
-
-		// Only load modal login JS for anons, no point in loading it for logged-in
-		// users since the modal HTML isn't even rendered for them.
-		if ( $skin->getUser()->isAnon() ) {
-			$modules[] = 'skins.whale.loginjs';
-		}
-
-		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableHeadingAnchors', 'whale-heading-anchors' ) ) {
-			$modules[] = 'skins.whale.headingAnchors';
-		}
-
-		if (
-			$this->isWhaleFeatureEnabled( 'WhaleEnableResponsiveTables', 'whale-responsive-tables' ) ||
-			$this->isWhaleFeatureEnabled( 'WhaleEnableSortableTables', 'whale-sortable-tables' )
-		) {
-			$modules[] = 'skins.whale.tables';
-		}
-
-		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableShortUrls', 'whale-short-url' ) ) {
-			$modules[] = 'skins.whale.shortUrl';
-		}
-
-		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) !== false ) {
-			$modules[] = 'skins.whale.themeToggle';
-		}
-
-		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableImageLazyLoad', 'whale-lazy-images' ) ) {
-			$modules[] = 'skins.whale.lazyImages';
-		}
-
-		$out->addModules( $modules );
-
 		// @codingStandardsIgnoreStart
 		$out->addInlineStyle(
 			".Whale {
@@ -235,7 +192,9 @@ class SkinWhale extends SkinMustache {
 		);
 
 		// layout settings
-		$WhaleUserWidthSettings = $userOptionsLookup->getOption( $user, 'whale-layout-width' );
+		$WhaleUserWidthSettings = $this->normalizeLayoutWidth(
+			$userOptionsLookup->getOption( $user, 'whale-layout-width' )
+		);
 		$WhaleUserSidebarSettings = $userOptionsLookup->getOption( $user, 'whale-layout-sidebar' );
 		$WhaleUserNavbarSettings = $userOptionsLookup->getOption( $user, 'whale-layout-navfix' );
 		$WhaleUsercontrolbarSettings = $userOptionsLookup->getOption( $user, 'whale-layout-controlbar' );
@@ -278,6 +237,61 @@ class SkinWhale extends SkinMustache {
 
 		// @codingStandardsIgnoreEnd
 		$this->setupCss( $out );
+	}
+
+	/**
+	 * @return array<int,string>
+	 */
+	public function getWhaleClientModules(): array {
+		global $wgWhaleEnableLiveRC;
+
+		$modules = [
+			'skins.whale.layoutjs'
+		];
+
+		if ( $this->getWhaleAdClient() !== '' ) {
+			$modules[] = 'skins.whale.ads';
+		}
+
+		$hasSidebar = $this->shouldRenderSidebar();
+		if (
+			( $wgWhaleEnableLiveRC ?? true ) !== false &&
+			(
+				( $hasSidebar && $this->shouldRenderLiveRecent() ) ||
+				$this->shouldRenderMobileLiveRecent( $hasSidebar )
+			)
+		) {
+			$modules[] = 'skins.whale.liverc';
+		}
+
+		if ( $this->getUser()->isAnon() ) {
+			$modules[] = 'skins.whale.loginjs';
+		}
+
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableHeadingAnchors', 'whale-heading-anchors' ) ) {
+			$modules[] = 'skins.whale.headingAnchors';
+		}
+
+		if (
+			$this->isWhaleFeatureEnabled( 'WhaleEnableResponsiveTables', 'whale-responsive-tables' ) ||
+			$this->isWhaleFeatureEnabled( 'WhaleEnableSortableTables', 'whale-sortable-tables' )
+		) {
+			$modules[] = 'skins.whale.tables';
+		}
+
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableShortUrls', 'whale-short-url' ) ) {
+			$modules[] = 'skins.whale.shortUrl';
+		}
+
+		if ( ( $GLOBALS['wgWhaleEnableAnonThemeToggle'] ?? true ) !== false ) {
+			$modules[] = 'skins.whale.themeToggle';
+		}
+
+		if ( $this->isWhaleFeatureEnabled( 'WhaleEnableImageLazyLoad', 'whale-lazy-images' ) ) {
+			$modules[] = 'skins.whale.lazyImages';
+		}
+
+		return array_values( array_unique( $modules ) );
 	}
 
 	/**
@@ -352,7 +366,10 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-adsense-script'] = $adClient !== ''
 			? $this->renderAdsenseScript( $adClient )
 			: '';
-		$data['html-whale-debughtml'] = class_exists( MWDebug::class ) ? MWDebug::getHTMLDebugLog() : '';
+		$data['html-whale-debughtml'] =
+			( $GLOBALS['wgShowDebug'] ?? false ) && class_exists( MWDebug::class )
+				? MWDebug::getHTMLDebugLog()
+				: '';
 
 		return $data;
 	}
@@ -378,6 +395,16 @@ class SkinWhale extends SkinMustache {
 		$hasVisibleMedia = preg_match( '/<(?:img|picture|svg|video|iframe|object|embed)\b/i', $withoutComments ) === 1;
 
 		return $visibleText !== '' || $hasVisibleMedia ? $siteNoticeHtml : '';
+	}
+
+	private function normalizeLayoutWidth( mixed $width ): ?string {
+		if ( $width === null || $width === false || $width === '' ) {
+			return null;
+		}
+
+		return is_string( $width ) && in_array( $width, self::LAYOUT_WIDTHS, true )
+			? $width
+			: null;
 	}
 
 	/**

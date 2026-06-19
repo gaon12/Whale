@@ -218,7 +218,12 @@ toggle.setAttribute('data-expand-label', 'Expand');
 toggle.setAttribute('data-collapse-label', 'Collapse');
 const body = new TestElement('div', { id: 'section-body' });
 body.hidden = true;
-heading.append(toggle);
+const headline = new TestElement('span', { className: 'mw-headline' });
+const editSection = new TestElement('span', { className: 'mw-editsection' });
+const editLink = new TestElement('a');
+headline.textContent = 'Heading';
+editSection.append(editLink);
+heading.append(toggle, headline, editSection);
 container.append(heading, body);
 document.body.append(container);
 
@@ -297,4 +302,34 @@ if (body.hidden || toggle.getAttribute('aria-expanded') !== 'true') {
 	throw new Error(
 		'Synthetic click after touch pointerup should be suppressed.',
 	);
+}
+
+document.dispatch('click', {
+	target: headline,
+	preventDefault: () => {},
+});
+
+if (
+	!body.hidden ||
+	toggle.getAttribute('aria-expanded') !== 'false' ||
+	!heading.classList.contains('is-collapsed') ||
+	!container.classList.contains('is-collapsed')
+) {
+	throw new Error('Clicking the section heading should collapse the section.');
+}
+
+document.dispatch('click', {
+	target: editLink,
+	preventDefault: () => {
+		throw new Error('Section edit links should keep their default behavior.');
+	},
+});
+
+if (
+	!body.hidden ||
+	toggle.getAttribute('aria-expanded') !== 'false' ||
+	!heading.classList.contains('is-collapsed') ||
+	!container.classList.contains('is-collapsed')
+) {
+	throw new Error('Section edit links should not toggle the section.');
 }
