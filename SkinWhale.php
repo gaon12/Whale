@@ -746,7 +746,7 @@ JS
 			'data-whale-rl-recovery' => 'true',
 		], <<<'JS'
 (function () {
-	if (window.mw) {
+	if (window.whale && window.whale.ready) {
 		return;
 	}
 
@@ -844,7 +844,7 @@ JS
 		});
 	};
 	var replayScripts = function () {
-		if (replayed || window.mw) {
+		if (replayed || (window.whale && window.whale.ready)) {
 			return;
 		}
 
