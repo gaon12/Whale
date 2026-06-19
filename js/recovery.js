@@ -295,18 +295,15 @@
 			}
 
 			list.dataset.whaleRecovery = 'ready';
+			list.replaceChildren(createNoDataRow());
+			list.setAttribute('aria-busy', 'false');
+
 			try {
 				const changes = await fetchRecentChanges(feed);
-				list.replaceChildren(
-					...(changes.length > 0
-						? changes.map(createChangeRow)
-						: [createNoDataRow()]),
-				);
-			} catch {
-				list.replaceChildren(createNoDataRow());
-			} finally {
-				list.setAttribute('aria-busy', 'false');
-			}
+				if (changes.length > 0) {
+					list.replaceChildren(...changes.map(createChangeRow));
+				}
+			} catch {}
 		});
 	};
 
