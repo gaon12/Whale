@@ -267,6 +267,13 @@ assertIncludes(styles, '~"min(82vw, 22rem)"', 'Mobile TOC CSS min escape');
 assertIncludes(styles, 'gap: 0.65rem', 'Short URL copy row spacing');
 assertIncludes(
 	styles,
+	'.Whale .whale-login-modal .whale-login-links',
+	'Login modal link alignment',
+);
+assertIncludes(styles, 'display: grid', 'Login modal link alignment');
+assertIncludes(styles, 'height: 2.75rem', 'Login modal button sizing');
+assertIncludes(
+	styles,
 	'.Whale .content-wrapper .whale-content .whale-content-main p a:hover',
 	'Content link hover underline',
 );
@@ -315,6 +322,30 @@ assertIncludes(searchTemplate, 'aria-label="{{search-label}}"', 'Search form');
 
 const navTemplate = read('templates/Nav.mustache');
 assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
+assertIncludes(
+	navTemplate,
+	'whale-navbar-notifications',
+	'Navbar notification placement',
+);
+assertIncludes(
+	navTemplate,
+	'{{>SearchBox}}',
+	'Navbar search should precede right-side tools',
+);
+assertIncludes(
+	styles,
+	'.whale-navbar-notifications',
+	'Navbar notification placement',
+);
+assertIncludes(styles, 'order: 29', 'Navbar notification placement');
+assertIncludes(styles, 'height: 3.5rem', 'Navbar link height clamp');
+assertIncludes(
+	styles,
+	'box-shadow: inset 0 -3px 0 transparent',
+	'Navbar tab focus',
+);
+assertIncludes(styles, 'font-weight: 700', 'Navbar menu weight');
+assertIncludes(styles, '.whale-icon-random', 'Navbar random icon sizing');
 
 const rendererPhp = read('WhaleRenderer.php');
 assertIncludes(rendererPhp, 'img/whale_footer_img.png', 'Footer badge image');
@@ -322,6 +353,11 @@ assertIncludes(rendererPhp, 'whale-footer-brand-img', 'Footer badge image');
 assertIncludes(rendererPhp, "'width' => '78'", 'Footer badge image');
 assertIncludes(rendererPhp, "'height' => '31'", 'Footer badge image');
 assertIncludes(rendererPhp, 'parseSimpleNavbar', 'Simple navbar parser');
+assertIncludes(
+	rendererPhp,
+	"'has-notifications'",
+	'Navbar notification placement',
+);
 assertIncludes(
 	rendererPhp,
 	'$title->getLatestRevID()',
