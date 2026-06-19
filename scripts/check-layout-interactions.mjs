@@ -42,6 +42,24 @@ class TestClassList {
 	}
 }
 
+class TestStyle {
+	constructor() {
+		this.values = new Map();
+	}
+
+	setProperty(name, value) {
+		this.values.set(name, String(value));
+	}
+
+	removeProperty(name) {
+		this.values.delete(name);
+	}
+
+	getPropertyValue(name) {
+		return this.values.get(name) || '';
+	}
+}
+
 class TestElement {
 	constructor(tagName, { className = '', id = '' } = {}) {
 		this.tagName = tagName.toUpperCase();
@@ -49,7 +67,10 @@ class TestElement {
 		this.children = [];
 		this.parentNode = null;
 		this.classList = new TestClassList(this);
+		this.dataset = {};
 		this.hidden = false;
+		this.listeners = new Map();
+		this.style = new TestStyle();
 
 		if (className) {
 			this.className = className;
@@ -83,15 +104,48 @@ class TestElement {
 		}
 	}
 
+	addEventListener(type, listener) {
+		const listeners = this.listeners.get(type) || [];
+		listeners.push(listener);
+		this.listeners.set(type, listeners);
+	}
+
+	remove() {
+		if (!this.parentNode) {
+			return;
+		}
+
+		this.parentNode.children = this.parentNode.children.filter(
+			(child) => child !== this,
+		);
+		this.parentNode = null;
+	}
+
 	setAttribute(name, value) {
 		this.attributes[name] = String(value);
 		if (name === 'class') {
 			this.className = value;
 		}
+		if (name.startsWith('data-')) {
+			const key = name
+				.slice(5)
+				.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
+			this.dataset[key] = String(value);
+		}
 	}
 
 	getAttribute(name) {
 		return this.attributes[name] ?? null;
+	}
+
+	removeAttribute(name) {
+		delete this.attributes[name];
+		if (name.startsWith('data-')) {
+			const key = name
+				.slice(5)
+				.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
+			delete this.dataset[key];
+		}
 	}
 
 	hasAttribute(name) {
@@ -118,6 +172,13 @@ class TestElement {
 	}
 
 	matches(selector) {
+		const attrMatch = selector.match(/^\[([^=\]]+)(?:="([^"]*)")?\]$/);
+		if (attrMatch) {
+			const [, name, value] = attrMatch;
+			return value === undefined
+				? this.hasAttribute(name)
+				: this.getAttribute(name) === value;
+		}
 		if (selector.startsWith('.')) {
 			return this.classList.contains(selector.slice(1));
 		}
@@ -138,6 +199,8 @@ class TestElement {
 		}
 		return null;
 	}
+
+	focus() {}
 }
 
 class TestDocument extends TestElement {
@@ -145,6 +208,7 @@ class TestDocument extends TestElement {
 		super('document');
 		this.body = new TestElement('body');
 		this.documentElement = new TestElement('html');
+		this.documentElement.clientWidth = 1180;
 		this.readyState = 'complete';
 		this.listeners = new Map();
 		this.append(this.body);
@@ -182,6 +246,7 @@ const context = {
 	},
 	window: {
 		clearTimeout,
+		innerWidth: 1200,
 		matchMedia: () => ({ matches: true }),
 		PointerEvent: function PointerEvent() {},
 		requestAnimationFrame: (callback) => callback(),
@@ -226,6 +291,20 @@ editSection.append(editLink);
 heading.append(toggle, headline, editSection);
 container.append(heading, body);
 document.body.append(container);
+
+const modalTrigger = new TestElement('button');
+modalTrigger.setAttribute('data-whale-toggle', 'modal');
+modalTrigger.setAttribute('data-whale-target', '#test-modal');
+const modal = new TestElement('div', {
+	className: 'whale-modal',
+	id: 'test-modal',
+});
+const modalDialog = new TestElement('div', { className: 'whale-modal-dialog' });
+const modalDismiss = new TestElement('button');
+modalDismiss.setAttribute('data-whale-dismiss', 'modal');
+modalDialog.append(modalDismiss);
+modal.append(modalDialog);
+document.body.append(modalTrigger, modal);
 
 runInNewContext(readFileSync(resolve('js/layout.js'), 'utf8'), context);
 for (const callback of readyCallbacks) {
@@ -332,4 +411,30 @@ if (
 	!container.classList.contains('is-collapsed')
 ) {
 	throw new Error('Section edit links should not toggle the section.');
+}
+
+document.dispatch('click', {
+	target: modalTrigger,
+	preventDefault: () => {},
+	stopPropagation: () => {},
+});
+
+if (
+	!document.body.classList.contains('whale-modal-open') ||
+	document.body.style.getPropertyValue('--whale-modal-scrollbar-offset') !==
+		'20px'
+) {
+	throw new Error('Opening a modal should reserve the scrollbar width.');
+}
+
+document.dispatch('click', {
+	target: modalDismiss,
+	preventDefault: () => {},
+});
+
+if (
+	document.body.classList.contains('whale-modal-open') ||
+	document.body.style.getPropertyValue('--whale-modal-scrollbar-offset') !== ''
+) {
+	throw new Error('Closing a modal should clear scrollbar compensation.');
 }
