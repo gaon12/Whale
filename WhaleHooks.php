@@ -20,80 +20,13 @@ class WhaleHooks {
 	 * @param Skin $sk
 	 */
 	public static function onBeforePageDisplay( OutputPage $out, Skin $sk ): void {
-		global $wgWhaleEnableLiveRC, $wgWhaleEnableHeadingAnchors,
-			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables,
-			$wgWhaleEnableShortUrls, $wgWhaleEnableAnonThemeToggle,
-			$wgWhaleEnableImageLazyLoad;
-
 		if ( $sk->getSkinName() !== 'whale' ) {
 			return;
 		}
 
-		$user = $sk->getUser();
-		$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
-		$modules = [ 'skins.whale.layoutjs' ];
-
-		if ( ( $GLOBALS['wgWhaleAdSetting'] ?? null ) !== null ) {
-			$modules[] = 'skins.whale.ads';
+		if ( method_exists( $sk, 'getWhaleClientModules' ) ) {
+			$out->addModules( $sk->getWhaleClientModules() );
 		}
-
-		if ( ( $wgWhaleEnableLiveRC ?? true ) !== false ) {
-			$modules[] = 'skins.whale.liverc';
-		}
-
-		if ( $user->isAnon() ) {
-			$modules[] = 'skins.whale.loginjs';
-		}
-
-		if ( self::isClientFeatureEnabled(
-			$userOptionsLookup,
-			$user,
-			$wgWhaleEnableHeadingAnchors ?? true,
-			'whale-heading-anchors'
-		) ) {
-			$modules[] = 'skins.whale.headingAnchors';
-		}
-
-		if (
-			self::isClientFeatureEnabled(
-				$userOptionsLookup,
-				$user,
-				$wgWhaleEnableResponsiveTables ?? true,
-				'whale-responsive-tables'
-			) ||
-			self::isClientFeatureEnabled(
-				$userOptionsLookup,
-				$user,
-				$wgWhaleEnableSortableTables ?? true,
-				'whale-sortable-tables'
-			)
-		) {
-			$modules[] = 'skins.whale.tables';
-		}
-
-		if ( self::isClientFeatureEnabled(
-			$userOptionsLookup,
-			$user,
-			$wgWhaleEnableShortUrls ?? true,
-			'whale-short-url'
-		) ) {
-			$modules[] = 'skins.whale.shortUrl';
-		}
-
-		if ( ( $wgWhaleEnableAnonThemeToggle ?? true ) !== false ) {
-			$modules[] = 'skins.whale.themeToggle';
-		}
-
-		if ( self::isClientFeatureEnabled(
-			$userOptionsLookup,
-			$user,
-			$wgWhaleEnableImageLazyLoad ?? true,
-			'whale-lazy-images'
-		) ) {
-			$modules[] = 'skins.whale.lazyImages';
-		}
-
-		$out->addModules( array_values( array_unique( $modules ) ) );
 	}
 
 	/**
@@ -206,20 +139,6 @@ class WhaleHooks {
 				$bodyAttrs['class'] .= ' whale-content-skeleton-enabled whale-content-skeleton-loading';
 			}
 		}
-	}
-
-	private static function isClientFeatureEnabled(
-		object $userOptionsLookup,
-		object $user,
-		mixed $configValue,
-		string $optionName
-	): bool {
-		if ( $configValue === false ) {
-			return false;
-		}
-
-		$getOption = [ $userOptionsLookup, 'getOption' ];
-		return is_callable( $getOption ) && $getOption( $user, $optionName ) !== false;
 	}
 
 	private static function shouldRenderSectionNavigation( object $out ): bool {

@@ -133,6 +133,21 @@
 
 	const getContentToggle = (target) =>
 		whale.closest(target, '.whale-section-toggle, .whale-folding-toggle');
+	const isInteractiveHeadingTarget = (target) =>
+		Boolean(
+			whale.closest(
+				target,
+				'a, button, input, select, textarea, label, .mw-editsection, .whale-heading-anchor',
+			),
+		);
+	const getHeadingToggle = (target) => {
+		if (isInteractiveHeadingTarget(target)) {
+			return null;
+		}
+
+		const heading = whale.closest(target, '.whale-section-heading');
+		return heading?.querySelector?.('.whale-section-toggle') || null;
+	};
 
 	let lastDirectToggle = null;
 	let lastDirectToggleAt = 0;
@@ -402,6 +417,13 @@
 					return;
 				}
 				toggleCollapsibleContent(contentToggle);
+				return;
+			}
+
+			const headingToggle = getHeadingToggle(event.target);
+			if (headingToggle) {
+				event.preventDefault();
+				toggleCollapsibleContent(headingToggle);
 				return;
 			}
 
