@@ -201,6 +201,21 @@
 	let activeModalTrigger = null;
 	let modalTimer = null;
 
+	const reserveModalScrollbar = () => {
+		const scrollbarWidth = Math.max(
+			0,
+			window.innerWidth - document.documentElement.clientWidth,
+		);
+		document.body.style.setProperty(
+			'--whale-modal-scrollbar-offset',
+			scrollbarWidth > 0 ? `${scrollbarWidth}px` : '0',
+		);
+	};
+
+	const clearModalScrollbar = () => {
+		document.body.style.removeProperty('--whale-modal-scrollbar-offset');
+	};
+
 	const removeBackdrop = () => {
 		activeBackdrop?.remove();
 		activeBackdrop = null;
@@ -225,6 +240,7 @@
 			modal.style.display = 'none';
 			delete modal.dataset.whaleModalState;
 			document.body.classList.remove('whale-modal-open');
+			clearModalScrollbar();
 			removeBackdrop();
 			activeModal = null;
 			activeModalTrigger?.focus?.();
@@ -254,6 +270,7 @@
 		modal.dataset.whaleModalState = 'opening';
 		modal.style.display = 'block';
 		modal.removeAttribute('aria-hidden');
+		reserveModalScrollbar();
 		document.body.classList.add('whale-modal-open');
 		activeModal = modal;
 		activeModalTrigger = trigger;

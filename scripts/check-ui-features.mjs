@@ -110,6 +110,11 @@ assertIncludes(layout, 'folding?.classList.toggle', 'Folding block state');
 assertIncludes(layout, 'initContentSkeleton', 'Content skeleton state');
 assertIncludes(layout, 'handleDirectToggle', 'Mobile direct section toggle');
 assertIncludes(layout, 'getHeadingToggle', 'Heading click section toggle');
+assertIncludes(
+	layout,
+	'--whale-modal-scrollbar-offset',
+	'Modal scrollbar compensation',
+);
 
 const recovery = read('js/recovery.js');
 assertIncludes(
@@ -149,6 +154,11 @@ assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
 assertIncludes(styles, '.whale-content-no-sidebar', 'No-sidebar layout');
 assertIncludes(styles, 'scrollbar-gutter: stable', 'Stylesheet');
+assertIncludes(
+	styles,
+	'padding-right: var(--whale-modal-scrollbar-offset, 0)',
+	'Modal scrollbar compensation',
+);
 assertIncludes(
 	styles,
 	'body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn',
@@ -262,6 +272,18 @@ const rawLessCssFunction = styles
 if (rawLessCssFunction) {
 	throw new Error(
 		'CSS min/max/clamp functions in LESS should be escaped for MediaWiki less.php.',
+	);
+}
+const multiPositionGradientStop = styles
+	.split('\n')
+	.find((line) =>
+		/linear-gradient\([^;]*\b\d+(?:px|rem|em|%)\s+\d+(?:px|rem|em|%)\b/.test(
+			line,
+		),
+	);
+if (multiPositionGradientStop) {
+	throw new Error(
+		'LESS gradients should avoid multi-position color stops for MediaWiki less.php compatibility.',
 	);
 }
 assertIncludes(styles, '~"min(82vw, 22rem)"', 'Mobile TOC CSS min escape');

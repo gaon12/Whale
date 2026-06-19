@@ -1,6 +1,13 @@
 /* Login modal */
 .whale-modal-open {
 	overflow: hidden;
+	padding-right: var(--whale-modal-scrollbar-offset, 0);
+}
+
+body.whale-modal-open .whale-nav-wrapper.whale-navbar-fixed,
+body.whale-modal-open.Whale .whale-nav-wrapper.whale-navbar-fixed,
+body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
+	padding-right: var(--whale-modal-scrollbar-offset, 0);
 }
 
 .whale-modal {
