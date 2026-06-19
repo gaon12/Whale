@@ -517,8 +517,23 @@ class WhaleRenderer {
 			return $fallback;
 		}
 
-		$normalized = array_values( array_unique( array_map( 'intval', $namespaces ) ) );
+		$normalized = array_values( array_unique( $this->normalizeIntegerList( $namespaces ) ) );
 		return count( $normalized ) > 0 ? $normalized : $fallback;
+	}
+
+	/**
+	 * @param array<mixed> $items
+	 * @return array<int,int>
+	 */
+	private function normalizeIntegerList( array $items ): array {
+		$normalized = [];
+		foreach ( $items as $item ) {
+			if ( is_int( $item ) || is_float( $item ) || is_string( $item ) || is_bool( $item ) ) {
+				$normalized[] = (int)$item;
+			}
+		}
+
+		return $normalized;
 	}
 
 	/**
@@ -731,7 +746,7 @@ class WhaleRenderer {
 
 		$days = max( 7, min( 730, (int)( $wgWhaleContributionGraphDays ?? 365 ) ) );
 		$levels = is_array( $wgWhaleContributionGraphLevels ?? null )
-			? array_values( array_filter( array_map( 'intval', $wgWhaleContributionGraphLevels ), static function ( int $level ) {
+			? array_values( array_filter( $this->normalizeIntegerList( $wgWhaleContributionGraphLevels ), static function ( int $level ) {
 				return $level > 0;
 			} ) )
 			: [ 1, 3, 6, 10 ];
@@ -741,7 +756,7 @@ class WhaleRenderer {
 		}
 
 		$namespaces = is_array( $wgWhaleContributionGraphNamespaces ?? null )
-			? array_values( array_unique( array_map( 'intval', $wgWhaleContributionGraphNamespaces ) ) )
+			? array_values( array_unique( $this->normalizeIntegerList( $wgWhaleContributionGraphNamespaces ) ) )
 			: null;
 		$ttl = max( 60, (int)( $wgWhaleContributionGraphCacheTTL ?? 3600 ) );
 		$userName = $title->getText();
