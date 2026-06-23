@@ -1,7 +1,7 @@
 /* Right menu */
 .Whale .content-wrapper .whale-sidebar {
 	float: right;
-	width: 20rem;
+	width: 20.75rem;
 	position: relative;
 }
 
@@ -15,17 +15,17 @@
 }
 
 .Whale .content-wrapper .live-recent {
-	width: 20rem;
+	width: 20.75rem;
 	display: flex;
 	flex-direction: column;
-	gap: 0.75rem;
+	gap: 0.9rem;
 }
 
 .Whale .content-wrapper .live-recent .live-recent-feed {
 	background-color: #fff;
-	border: 1px solid #e1e8ed;
+	border: 1px solid var(--whale-border-color);
 	border-radius: var(--whale-radius);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+	box-shadow: var(--whale-shadow-sm);
 	overflow: hidden;
 	z-index: 1;
 }
@@ -34,8 +34,9 @@
 	display: flex;
 	align-items: center;
 	gap: 0.55rem;
-	min-height: 3rem;
-	padding: 0.55rem 0.75rem 0.35rem;
+	min-height: 3.15rem;
+	padding: 0.65rem 0.85rem 0.45rem;
+	background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
 }
 
 .Whale .content-wrapper .live-recent .live-recent-header > .whale-icon {
@@ -46,7 +47,7 @@
 .Whale .content-wrapper .live-recent .live-recent-title {
 	flex: 1 1 auto;
 	margin: 0;
-	color: #202326;
+	color: #202b36;
 	font-size: 1rem;
 	font-weight: 700;
 	line-height: 1.3;
@@ -96,7 +97,7 @@
 .Whale .content-wrapper .live-recent .live-recent-list {
 	list-style: none;
 	margin: 0;
-	padding: 0.2rem 0.75rem 0.75rem;
+	padding: 0.3rem 0.85rem 0.9rem;
 }
 
 .Whale .content-wrapper .live-recent.live-recent-fixed-height .live-recent-list {
@@ -121,10 +122,10 @@
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: baseline;
-	column-gap: 0.45rem;
+	column-gap: 0.55rem;
 	font-size: 0.8rem;
-	min-height: 1.5rem;
-	line-height: 1.5rem;
+	min-height: 1.62rem;
+	line-height: 1.62rem;
 	text-decoration: none;
 }
 

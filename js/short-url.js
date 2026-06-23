@@ -8,6 +8,18 @@
 		}, 1600);
 	};
 
+	const setStatus = (button, message) => {
+		const status = button
+			.closest('.whale-short-url-modal')
+			?.querySelector('[data-whale-short-url-status]');
+		if (!status) {
+			return;
+		}
+
+		status.textContent = message;
+		status.hidden = message === '';
+	};
+
 	whale.ready(() => {
 		document.addEventListener('click', async (event) => {
 			const button = whale.closest(event.target, '.whale-short-url-copy');
@@ -21,14 +33,20 @@
 				return;
 			}
 
+			setStatus(button, '');
 			input.select();
 			try {
 				if (await whale.copyText(input.value)) {
 					setButtonState(button, mw.msg('whale-short-url-copied'));
+					return;
 				}
 			} catch (error) {
 				console.error('Short URL copy failed: ', error);
 			}
+
+			setStatus(button, mw.msg('whale-short-url-copy-failed'));
+			input.focus();
+			input.select();
 		});
 	});
 })();

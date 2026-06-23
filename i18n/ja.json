@@ -115,6 +115,7 @@
 	"whale-short-url-description": "この短縮URLは現在のページの最新版へ移動します。",
 	"whale-short-url-copy": "コピー",
 	"whale-short-url-copied": "コピー済み",
+	"whale-short-url-copy-failed": "自動的にコピーできませんでした。URLを選択したので、手動でコピーしてください。",
 	"whale-short-url-disabled": "短縮URLは無効です。",
 	"whale-short-url-invalid": "この短縮URLは無効です。",
 	"whale-short-url-missing": "この短縮URLの対象ページが見つかりません。",

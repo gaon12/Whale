@@ -1,11 +1,13 @@
 /* Content */
 .Whale .content-wrapper {
-	margin-top: 4.25rem;
-	z-index: -1;
+	position: relative;
+	margin-top: 5.1rem;
+	padding: 0 1.1rem 1.4rem;
+	z-index: 0;
 }
 
 .Whale .content-wrapper .whale-content {
-	margin-right: 21rem;
+	margin-right: 22rem;
 	padding: 0;
 	padding-bottom: 1rem;
 }
@@ -16,10 +18,9 @@
 
 .Whale .content-wrapper .whale-content .whale-content-header {
 	border: 1px solid var(--whale-border-color);
-	border-radius: 0.35rem 0.35rem 0 0;
-	background:
-		linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(245, 248, 250, 0.95) 100%),
-		var(--whale-surface-muted-color);
+	border-radius: var(--whale-radius) var(--whale-radius) 0 0;
+	background: rgba(255, 255, 255, 0.96);
+	box-shadow: var(--whale-shadow-sm);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .whale-notice {
@@ -68,8 +69,8 @@
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools {
 	float: right;
-	padding-right: 1rem;
-	padding-top: 1rem;
+	padding-right: 1.25rem;
+	padding-top: 1.25rem;
 	max-width: 100%;
 	text-align: right;
 }
@@ -113,18 +114,22 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .title {
-	padding: 1rem;
+	padding: 1.35rem 1.45rem 1rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .contentSub {
-	margin-top: -0.5rem;
-	padding: 1rem;
+	margin-top: -0.35rem;
+	padding: 1.2rem 1.45rem;
 	padding-top: 0;
+	color: var(--whale-muted-text-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
-	color: #000;
-	font-weight: bold;
+	color: #17212b;
+	font-size: 2.15rem;
+	font-weight: 800;
+	letter-spacing: 0;
+	line-height: 1.18;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .header-ads {
@@ -133,14 +138,16 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main {
-	border-left: 1px solid var(--whale-border-color);
-	border-right: 1px solid var(--whale-border-color);
+	border: 1px solid var(--whale-border-color);
+	border-top: 0;
+	border-radius: 0 0 var(--whale-radius) var(--whale-radius);
 	background-color: var(--whale-surface-color);
 	color: var(--whale-text-color);
-	padding: 1rem;
+	padding: 1.55rem 1.65rem;
 	overflow: visible;
 	overflow-wrap: anywhere;
-	line-height: 1.6rem;
+	box-shadow: var(--whale-shadow-sm);
+	line-height: 1.76;
 }
 
 body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main {
@@ -177,11 +184,11 @@ body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whal
 .Whale .whale-not-found {
 	display: grid;
 	grid-template-columns: auto minmax(0, 1fr);
-	gap: 1.25rem;
+	gap: 1.5rem;
 	align-items: center;
 	max-width: 44rem;
 	margin: 2.5rem auto;
-	padding: 2rem;
+	padding: 2.25rem;
 	border: 1px solid #d8e0e7;
 	border-radius: var(--whale-radius);
 	background:
@@ -427,11 +434,11 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	align-items: center;
 	gap: 0.45rem;
 	width: 100%;
-	margin-top: 1.35rem;
-	margin-bottom: 0.8rem;
-	padding-bottom: 0.55rem;
-	border-bottom: 1px solid #cfd4d9;
-	box-shadow: inset 0 -1px 0 #cfd4d9;
+	margin-top: 1.8rem;
+	margin-bottom: 1rem;
+	padding: 0.6rem 0 0.65rem;
+	border-bottom: 1px solid var(--whale-border-color);
+	box-shadow: none;
 	color: #11181f;
 	cursor: pointer;
 	scroll-margin-top: 4.5rem;
@@ -439,7 +446,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading:hover {
-	background-color: rgba(65, 136, 241, 0.045);
+	background-color: rgba(65, 136, 241, 0.055);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-headline {
@@ -553,7 +560,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	--whale-folding-row-bg: #f1f3f5;
 	margin: 1rem auto;
 	border: 1px solid var(--whale-folding-border);
-	border-radius: 0;
+	border-radius: var(--whale-radius-sm);
 	background-color: var(--whale-folding-body-bg);
 	overflow: hidden;
 }

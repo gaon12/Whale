@@ -196,13 +196,13 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'border-bottom: 1px solid #cfd4d9',
+	'border-bottom: 1px solid var(--whale-border-color)',
 	'Section heading divider',
 );
 assertIncludes(
 	styles,
-	'box-shadow: inset 0 -1px 0 #cfd4d9',
-	'Section heading divider',
+	'box-shadow: none',
+	'Section heading should avoid double divider lines',
 );
 assertIncludes(styles, 'margin-bottom: 1.25rem', 'Collapsed section spacing');
 assertIncludes(
@@ -211,7 +211,13 @@ assertIncludes(
 	'Section toggle should read as a heading affordance',
 );
 assertIncludes(styles, 'cursor: pointer', 'Clickable section heading');
-if (/\.whale-section-toggle\s*\{[\s\S]*?border-radius:\s*999px;/.test(styles)) {
+const sectionToggleBlock = styles.match(
+	/\.whale-section-toggle\s*\{(?<block>[\s\S]*?)\n\}/,
+)?.groups?.block;
+if (!sectionToggleBlock) {
+	throw new Error('Section toggle block should exist.');
+}
+if (/border-radius:\s*999px;/.test(sectionToggleBlock)) {
 	throw new Error('Section toggles should not render as legacy round pills.');
 }
 assertIncludes(
