@@ -38,7 +38,7 @@ class WhaleHooks {
 	 * @param Skin $sk
 	 * @param array &$bodyAttrs
 	 */
-	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, &$bodyAttrs ) {
+	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, array &$bodyAttrs ): void {
 		global $wgWhaleEnableFloatingToc, $wgWhaleEnableReadingProgress, $wgWhaleEnableHeadingAnchors,
 			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,
 			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition, $wgWhaleEnableContentSkeleton;
@@ -183,9 +183,9 @@ class WhaleHooks {
 	 * Set up user preferences specific to the Whale skin.
 	 *
 	 * @param User $user user
-	 * @param Preferences &$preferences preferences
+	 * @param array<string,mixed> &$preferences preferences
 	 */
-	public static function onGetPreferences( $user, &$preferences ) {
+	public static function onGetPreferences( \User $user, array &$preferences ): void {
 		global $wgWhaleAdSetting, $wgWhaleAdGroup, $wgWhaleEnableUserContributionGraph,
 			$wgWhaleEnableShortUrls, $wgWhaleEnableHeadingAnchors, $wgWhaleEnableReadingProgress,
 			$wgWhaleEnableResponsiveTables, $wgWhaleEnableSortableTables, $wgWhaleEnableContentFontScale,

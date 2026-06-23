@@ -301,7 +301,7 @@ class WhaleRenderer {
 			];
 		}
 
-		if ( $companionTitle && $action !== 'edit' ) {
+		if ( $action !== 'edit' ) {
 			$isTalk = $title->isTalkPage() && $action !== 'history';
 			$buttons[] = [
 				'html' => $linkRenderer->makeKnownLink(
@@ -584,7 +584,8 @@ class WhaleRenderer {
 
 			$items = [];
 			foreach ( $links as $link ) {
-				$name = $link['name'] ?? '';
+				$rawName = $link['name'] ?? null;
+				$name = is_string( $rawName ) ? $rawName : '';
 				$items[] = [
 					'class' => 'footer-' . $categoryName . '-' . Sanitizer::escapeClass( $name ),
 					'html' => $link['html'] ?? '',
@@ -592,7 +593,7 @@ class WhaleRenderer {
 			}
 
 			$categories[] = [
-				'class' => 'footer-' . Sanitizer::escapeClass( $categoryName ),
+				'class' => 'footer-' . Sanitizer::escapeClass( $categoryName ?? '' ),
 				'items' => $items,
 			];
 		}
@@ -1474,7 +1475,11 @@ class WhaleRenderer {
 		return null;
 	}
 
-	private function getCachedContentText( Title $title ): string {
+	private function getCachedContentText( ?Title $title ): string {
+		if ( $title === null ) {
+			return '';
+		}
+
 		$services = MediaWikiServices::getInstance();
 		$cache = $services->getMainWANObjectCache();
 		$cacheKey = $cache->makeKey(

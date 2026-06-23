@@ -18,6 +18,10 @@ if ( !defined( 'NS_USER_TALK' ) ) {
 	define( 'NS_USER_TALK', 3 );
 }
 
+if ( !defined( 'NS_MEDIAWIKI' ) ) {
+	define( 'NS_MEDIAWIKI', 8 );
+}
+
 function wfLoadSkin( string $skin ): void {
 }
 
@@ -35,6 +39,10 @@ class Message {
 	}
 
 	public function parse(): string {
+		return '';
+	}
+
+	public function escaped(): string {
 		return '';
 	}
 
@@ -61,6 +69,18 @@ class WebRequest {
 
 	public function getText( string $key, string $default = '' ): string {
 		return $default;
+	}
+
+	public function getVal( string $name, ?string $default = null ): ?string {
+		return $default;
+	}
+
+	public function getCheck( string $name ): bool {
+		return false;
+	}
+
+	public function getHeader( string $name ): string|false {
+		return false;
 	}
 
 	public function response(): WebResponse {
@@ -155,6 +175,14 @@ class Skin {
 
 	public function msg( string $key, mixed ...$params ): Message {
 		return new Message();
+	}
+
+	public function getLanguage(): mixed {
+		return null;
+	}
+
+	public function getRelevantTitle(): MediaWiki\Title\Title {
+		return new MediaWiki\Title\Title();
 	}
 
 	public function getComponent( string $name ): SkinComponent {
@@ -262,6 +290,10 @@ class Sanitizer {
 	public static function decodeCharReferences( string $text ): string {
 		return $text;
 	}
+
+	public static function escapeClass( string $class ): string {
+		return $class;
+	}
 }
 
 class MWDebug {
@@ -277,6 +309,42 @@ class Description2 {
 }
 
 class EchoEvent {
+}
+
+class Title {
+	public static function newMainPage(): self {
+		return new self();
+	}
+
+	public static function newFromText( string $text, int $namespace = 0 ): ?self {
+		return new self();
+	}
+
+	public function getLocalURL( array $query = [] ): string {
+		return '';
+	}
+}
+
+class Html {
+	/**
+	 * @param array<string,mixed> $attrs
+	 */
+	public static function rawElement( string $element, array $attrs = [], string $contents = '' ): string {
+		return '';
+	}
+
+	/**
+	 * @param array<string,mixed> $attrs
+	 */
+	public static function element( string $element, array $attrs = [], string $contents = '' ): string {
+		return '';
+	}
+}
+
+class Linker {
+	public static function titleAttrib( string $name, string $options = '' ): string {
+		return '';
+	}
 }
 
 }
@@ -318,6 +386,10 @@ namespace MediaWiki {
 		public function getRestrictionStore(): RestrictionStore {
 			return new RestrictionStore();
 		}
+
+		public function getWatchlistManager(): WatchlistManager {
+			return new WatchlistManager();
+		}
 	}
 
 	class UserOptionsLookup {
@@ -328,7 +400,7 @@ namespace MediaWiki {
 
 	class UserGroupManager {
 		/**
-		 * @return string[]
+		 * @return array<int,string>
 		 */
 		public function getUserGroups( \User $user ): array {
 			return [];
@@ -339,13 +411,25 @@ namespace MediaWiki {
 		public function quickUserCan( string $action, \User $user, mixed $target ): bool {
 			return true;
 		}
+
+		public function userHasRight( \User $user, string $action ): bool {
+			return true;
+		}
+
+		/**
+		 * @return array<int,string>
+		 */
+		public function getUserPermissions( \User $user ): array {
+			return [];
+		}
 	}
 
 	class LinkRenderer {
 		/**
 		 * @param array<string,string> $attrs
+		 * @param array<string,string> $query
 		 */
-		public function makeKnownLink( mixed $target, string $text, array $attrs = [] ): string {
+		public function makeKnownLink( mixed $target, mixed $text = '', array $attrs = [], array $query = [] ): string {
 			return '';
 		}
 	}
@@ -432,6 +516,10 @@ namespace MediaWiki {
 		public function getRevisionRecord(): ?Revision\RevisionRecord {
 			return null;
 		}
+
+		public function getContent( int $audience = 0 ): ?Content\Content {
+			return null;
+		}
 	}
 
 	class RestrictionStore {
@@ -439,10 +527,21 @@ namespace MediaWiki {
 			return false;
 		}
 	}
+
+	class WatchlistManager {
+		public function isWatchedIgnoringRights( \User $user, Title\Title $title ): bool {
+			return false;
+		}
+	}
 }
 
 namespace MediaWiki\Output {
 	class OutputPage extends \OutputPage {
+		/**
+		 * @param string|string[] $modules
+		 */
+		public function addModuleStyles( string|array $modules ): void {
+		}
 	}
 }
 
@@ -492,6 +591,10 @@ namespace MediaWiki\Title {
 			return new self();
 		}
 
+		public static function newFromText( string $text, int $namespace = 0 ): ?self {
+			return new self();
+		}
+
 		public static function makeTitle( int $namespace, string $title ): self {
 			return new self();
 		}
@@ -500,7 +603,10 @@ namespace MediaWiki\Title {
 			return new self();
 		}
 
-		public function getLocalURL(): string {
+		/**
+		 * @param array<string,mixed> $query
+		 */
+		public function getLocalURL( array $query = [] ): string {
 			return '';
 		}
 
@@ -509,6 +615,14 @@ namespace MediaWiki\Title {
 		}
 
 		public function getPrefixedDBkey(): string {
+			return '';
+		}
+
+		public function getPrefixedText(): string {
+			return '';
+		}
+
+		public function getText(): string {
 			return '';
 		}
 
@@ -526,6 +640,22 @@ namespace MediaWiki\Title {
 
 		public function getLatestRevID(): int {
 			return 0;
+		}
+
+		public function getSubjectPage(): self {
+			return new self();
+		}
+
+		public function getTalkPage(): self {
+			return new self();
+		}
+
+		public function isTalkPage(): bool {
+			return false;
+		}
+
+		public function inNamespaces( int ...$namespaces ): bool {
+			return false;
 		}
 	}
 }
