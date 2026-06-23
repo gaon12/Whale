@@ -13,9 +13,9 @@ if (
 
 class SkinWhale extends SkinMustache {
 	// @codingStandardsIgnoreStart
-	public $skinname = 'whale';
-	public $stylename = 'Whale';
-	public $template = 'skin';
+	public string $skinname = 'whale';
+	public string $stylename = 'Whale';
+	public string $template = 'skin';
 	// @codingStandardsIgnoreEnd
 
 	private const DEFAULT_THEME_COLORS = [
@@ -481,12 +481,7 @@ class SkinWhale extends SkinMustache {
 			return false;
 		}
 
-		$request = $this->getRequest();
-		if ( !method_exists( $request, 'getVal' ) ) {
-			return true;
-		}
-
-		return $request->getVal( 'action', 'view' ) === 'view';
+		return $this->getRequest()->getVal( 'action', 'view' ) === 'view';
 	}
 
 	private function shouldRenderLiveRecent(): bool {
@@ -863,7 +858,7 @@ JS
 	 *
 	 * @param OutputPage $out OutputPage
 	 */
-	public function setupCss( OutputPage $out ) {
+	public function setupCss( OutputPage $out ): void {
 		$out->addModuleStyles( [ 'skins.whale.styles' ] );
 	}
 }
