@@ -283,6 +283,14 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	height: 3.5rem;
 }
 
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login button.none-outline {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon {
 	color: #fff;
 	font-size: 1.5rem;
@@ -296,8 +304,17 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	padding: 0;
 }
 
-.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .login-menu > a:after {
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .login-menu > a::after,
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .login-menu > button::after {
 	display: none;
+}
+
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .login-menu > button.whale-dropdown-toggle {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img {
