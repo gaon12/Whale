@@ -13,9 +13,12 @@ if (
 
 class SkinWhale extends SkinMustache {
 	// @codingStandardsIgnoreStart
-	public string $skinname = 'whale';
-	public string $stylename = 'Whale';
-	public string $template = 'skin';
+	/** @var string */
+	public $skinname = 'whale';
+	/** @var string */
+	public $stylename = 'Whale';
+	/** @var string */
+	public $template = 'skin';
 	// @codingStandardsIgnoreEnd
 
 	private const DEFAULT_THEME_COLORS = [
