@@ -10,7 +10,10 @@ parameters:
 		- SpecialWhaleShortUrl.php
 		- Whale.php
 		- WhaleAvatar.php
+		- WhaleArticleDecorator.php
+		- WhaleContributionGraph.php
 		- WhaleHooks.php
+		- WhaleNavbarParser.php
 		- WhaleRenderer.php
 		- WhaleShortUrl.php
 	excludePaths:
