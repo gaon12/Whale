@@ -85,10 +85,40 @@ parameters:
 			path: Whale.php
 
 		-
-			message: '#^Argument of an invalid type DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 3
-			path: WhaleHooks.php
+			message: '#^Access to an undefined property object\:\:\$day\.$#'
+			identifier: property.notFound
+			count: 1
+			path: WhaleContributionGraph.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$edits\.$#'
+			identifier: property.notFound
+			count: 1
+			path: WhaleContributionGraph.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: WhaleContributionGraph.php
+
+		-
+			message: '#^Method WhaleContributionGraph\:\:getCounts\(\) should return array\<string, int\> but returns array\<int\>\.$#'
+			identifier: return.type
+			count: 1
+			path: WhaleContributionGraph.php
+
+		-
+			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:select\(\) expects array\<string\>, array\<int\|string, array\<int, int\>\|int\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: WhaleContributionGraph.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: WhaleContributionGraph.php
 
 		-
 			message: '#^Binary operation "\." between '' whale\-font\-scale\-'' and mixed results in an error\.$#'
@@ -139,40 +169,16 @@ parameters:
 			path: WhaleHooks.php
 
 		-
-			message: '#^Cannot call method createTextNode\(\) on DOMDocument\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: WhaleHooks.php
-
-		-
-			message: '#^Cannot call method replaceChild\(\) on DOMNode\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: WhaleHooks.php
-
-		-
-			message: '#^Instanceof between DOMElement and DOMElement will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
-			path: WhaleHooks.php
-
-		-
 			message: '#^Method WhaleHooks\:\:onOutputPageBodyAttributes\(\) has parameter \$bodyAttrs with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: WhaleHooks.php
 
 		-
-			message: '#^Access to an undefined property object\:\:\$day\.$#'
-			identifier: property.notFound
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$edits\.$#'
-			identifier: property.notFound
-			count: 1
-			path: WhaleRenderer.php
+			path: WhaleNavbarParser.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$page_latest\.$#'
@@ -273,13 +279,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
-			count: 8
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Method WhaleRenderer\:\:getContributionCounts\(\) should return array\<string, int\> but returns array\<int\>\.$#'
-			identifier: return.type
-			count: 1
+			count: 7
 			path: WhaleRenderer.php
 
 		-
@@ -337,12 +337,6 @@ parameters:
 			path: WhaleRenderer.php
 
 		-
-			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:select\(\) expects array\<string\>, array\<int\|string, array\<int, int\>\|int\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: WhaleRenderer.php
-
-		-
 			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, array\<string, int\|string\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -351,17 +345,5 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$contents of static method MediaWiki\\Html\\Html\:\:element\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
 			count: 1
 			path: WhaleRenderer.php

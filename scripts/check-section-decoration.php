@@ -24,9 +24,9 @@ if ( !function_exists( 'wfMessage' ) ) {
 	}
 }
 
-require_once __DIR__ . '/../WhaleHooks.php';
+require_once __DIR__ . '/../WhaleArticleDecorator.php';
 
-$method = new ReflectionMethod( WhaleHooks::class, 'decorateArticleHtml' );
+$method = new ReflectionMethod( WhaleArticleDecorator::class, 'decorateArticleHtml' );
 $method->setAccessible( true );
 
 $html = implode( '', [
@@ -127,7 +127,7 @@ if ( strpos( $offOutput, 'whale-section-toggle' ) !== false ) {
 	exit( 1 );
 }
 
-$normalizeMethod = new ReflectionMethod( WhaleHooks::class, 'normalizeSectionMode' );
+$normalizeMethod = new ReflectionMethod( WhaleArticleDecorator::class, 'normalizeSectionMode' );
 $normalizeMethod->setAccessible( true );
 if ( $normalizeMethod->invoke( null, 'broken' ) !== 'all' ) {
 	fwrite( STDERR, "Invalid section mode should fall back to all sections.\n" );

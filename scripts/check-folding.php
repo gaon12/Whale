@@ -27,9 +27,9 @@ if ( !function_exists( 'wfMessage' ) ) {
 	}
 }
 
-require_once __DIR__ . '/../WhaleHooks.php';
+require_once __DIR__ . '/../WhaleArticleDecorator.php';
 
-$method = new ReflectionMethod( WhaleHooks::class, 'convertFoldingSyntax' );
+$method = new ReflectionMethod( WhaleArticleDecorator::class, 'convertFoldingSyntax' );
 $method->setAccessible( true );
 
 $input = "{{{#!folding 테스트 제목\n접힌 내용\n}}}";
