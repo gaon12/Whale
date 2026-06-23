@@ -19,16 +19,29 @@
 
 /* Responsive layout */
 @media screen and (max-width: 1023px) {
+	.Whale {
+		--whale-nav-height: 3.65rem;
+	}
+
 	.Whale .whale-nav-wrapper .whale-navbar {
 		flex-wrap: wrap;
-		padding: 0 0.5rem;
+		padding: 0 0.85rem;
+		row-gap: 0.25rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-brand {
+		max-width: 12.5rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu {
+		order: 8;
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form {
 		order: 40;
 		flex-basis: 100%;
 		margin-left: 0;
-		padding: 0.25rem 0 0.5rem;
+		padding: 0 0 0.65rem;
 	}
 
 	body.whale-mobile-user-tools-right.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login,
@@ -53,7 +66,9 @@
 	}
 
 	.Whale .content-wrapper {
-		margin-top: 7.05rem;
+		margin-top: 7.55rem;
+		padding-right: 0.75rem;
+		padding-left: 0.75rem;
 	}
 
 	.Whale .content-wrapper .whale-sidebar {
@@ -86,8 +101,8 @@
 	.Whale .content-wrapper .whale-content .whale-content-header .content-tools {
 		float: none;
 		text-align: right;
-		border-bottom: 1px solid #e1e8ed;
-		padding: 0.65rem 0.5rem 0.5rem;
+		border-bottom: 1px solid var(--whale-border-color);
+		padding: 0.75rem 0.75rem 0.55rem;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
@@ -95,12 +110,16 @@
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-header .title {
-		padding: 0.5rem;
+		padding: 0.85rem 0.9rem 0.6rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
+		font-size: 1.7rem;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-header .contentSub {
 		margin-top: -0.25rem;
-		padding: 0 0.5rem 0.5rem;
+		padding: 0 0.9rem 0.75rem;
 	}
 
 	.Whale .whale-short-url-card,
@@ -132,7 +151,7 @@
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-main {
-		padding: 0.5rem;
+		padding: 1rem;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-main .whale-contrib-graph {
@@ -185,6 +204,10 @@
 }
 
 @media screen and (max-width: 890px) {
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-input {
+		font-size: 0.9rem;
+	}
+
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-icon {
 		text-align: center;
 		margin: 0 0.25rem;
@@ -201,8 +224,34 @@
 }
 
 @media screen and (max-width: 520px) {
+	.Whale .whale-nav-wrapper .whale-navbar {
+		padding: 0 0.7rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-brand {
+		max-width: 9.25rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu {
+		margin-left: auto;
+	}
+
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
-		padding: 0.7rem 0.3rem;
+		padding: 0 0.38rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-icon {
+		width: 1.15rem;
+		height: 1.15rem;
+		margin: 0 0.18rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle {
+		margin-left: 0.35rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-notifications {
+		margin-left: 0.35rem;
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .view-logout {
@@ -228,11 +277,11 @@
 
 @media screen and (max-width: 397px) {
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-brand {
-		max-width: 7rem;
+		max-width: 7.5rem;
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-brand-logo {
-		max-height: 1.5rem;
+		max-height: 1.7rem;
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link::after {
@@ -240,7 +289,7 @@
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
-		padding: 0.7rem 0.2rem;
+		padding: 0 0.24rem;
 	}
 
 	.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login,

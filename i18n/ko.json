@@ -115,6 +115,7 @@
 	"whale-short-url-description": "이 단축 URL은 현재 문서의 최신판으로 이동합니다.",
 	"whale-short-url-copy": "복사",
 	"whale-short-url-copied": "복사됨",
+	"whale-short-url-copy-failed": "자동으로 복사하지 못했습니다. URL을 선택해 두었으니 직접 복사해 주세요.",
 	"whale-short-url-disabled": "단축 URL 기능이 꺼져 있습니다.",
 	"whale-short-url-invalid": "올바르지 않은 단축 URL입니다.",
 	"whale-short-url-missing": "이 단축 URL의 대상 문서를 찾을 수 없습니다.",

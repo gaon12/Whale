@@ -1,11 +1,19 @@
 /* Dark mode */
 body.whale-dark .Whale,
 body.whale-dark.Whale {
+	--whale-page-bg: #111820;
 	--whale-surface-color: #1f2023;
 	--whale-surface-muted-color: #25272a;
 	--whale-border-color: #555;
 	--whale-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
 	--whale-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+body.whale-dark .Whale,
+body.whale-dark.Whale {
+	background:
+		linear-gradient(180deg, #172331 0, var(--whale-page-bg) 14rem),
+		var(--whale-page-bg);
 }
 
 body.whale-dark,
@@ -239,16 +247,23 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc 
 
 body.whale-dark .Whale .whale-nav-wrapper,
 body.whale-dark.Whale .whale-nav-wrapper {
-	background-color: #1f2023;
-	border-bottom: 1px solid #555;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+	border-top-color: var(--whale-main-color);
+	border-bottom: 1px solid #394552;
+	background: rgba(31, 32, 35, 0.94);
+	box-shadow: 0 0.55rem 1.6rem rgba(0, 0, 0, 0.35);
+}
+
+body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link,
+body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
+	color: #e6ebf0;
 }
 
 body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus,
 body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus {
-	background-color: #2b333c;
+	background-color: rgba(65, 136, 241, 0.18);
+	color: #fff;
 }
 
 body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-search-input,
@@ -270,7 +285,7 @@ body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-search-input::plac
 
 body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn,
 body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
-	background-color: #1f2023;
+	background-color: #171b20;
 	border-color: #555;
 	color: #ddd;
 }
@@ -289,6 +304,23 @@ body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .log
 body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .none-outline,
 body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 	color: #ddd;
+}
+
+body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon,
+body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon {
+	color: #d8e0e8;
+}
+
+body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle,
+body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle {
+	border-color: rgba(153, 204, 255, 0.24);
+	background-color: rgba(153, 204, 255, 0.12);
+	color: #c8e4ff;
+}
+
+body.whale-dark .Whale .content-wrapper .live-recent .live-recent-header,
+body.whale-dark.Whale .content-wrapper .live-recent .live-recent-header {
+	background: linear-gradient(180deg, #24272b 0%, #1f2023 100%);
 }
 
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .toc,
@@ -673,16 +705,23 @@ body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main 
 
 	body.whale-auto-dark .Whale .whale-nav-wrapper,
 	body.whale-auto-dark.Whale .whale-nav-wrapper {
-		background-color: #1f2023;
-		border-bottom: 1px solid #555;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+		border-top-color: var(--whale-main-color);
+		border-bottom: 1px solid #394552;
+		background: rgba(31, 32, 35, 0.94);
+		box-shadow: 0 0.55rem 1.6rem rgba(0, 0, 0, 0.35);
+	}
+
+	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link,
+	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
+		color: #e6ebf0;
 	}
 
 	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus,
 	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus {
-		background-color: #2b333c;
+		background-color: rgba(65, 136, 241, 0.18);
+		color: #fff;
 	}
 
 	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-search-input,
@@ -704,7 +743,7 @@ body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main 
 
 	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn,
 	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
-		background-color: #1f2023;
+		background-color: #171b20;
 		border-color: #555;
 		color: #ddd;
 	}
@@ -723,6 +762,23 @@ body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main 
 	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .none-outline,
 	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 		color: #ddd;
+	}
+
+	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon,
+	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon {
+		color: #d8e0e8;
+	}
+
+	body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle,
+	body.whale-auto-dark.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle {
+		border-color: rgba(153, 204, 255, 0.24);
+		background-color: rgba(153, 204, 255, 0.12);
+		color: #c8e4ff;
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .live-recent .live-recent-header,
+	body.whale-auto-dark.Whale .content-wrapper .live-recent .live-recent-header {
+		background: linear-gradient(180deg, #24272b 0%, #1f2023 100%);
 	}
 
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .toc,
