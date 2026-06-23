@@ -115,6 +115,7 @@
 	"whale-short-url-description": "This short URL points to the latest version of the current page.",
 	"whale-short-url-copy": "Copy",
 	"whale-short-url-copied": "Copied",
+	"whale-short-url-copy-failed": "Could not copy automatically. The URL is selected so you can copy it manually.",
 	"whale-short-url-disabled": "Short URLs are disabled.",
 	"whale-short-url-invalid": "This short URL is invalid.",
 	"whale-short-url-missing": "The target page for this short URL could not be found.",

@@ -11,6 +11,14 @@
 	transition: transform 180ms ease;
 }
 
+#whale-bottombtn .whale-bottom-tools-toggle-label {
+	display: none;
+	margin-left: 0.45rem;
+	font-size: 0.95rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
 body.whale-scroll-buttons-vertical #whale-bottombtn {
 	flex-direction: column;
 }
@@ -39,6 +47,11 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 	text-align: center;
 	cursor: pointer;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+#whale-bottombtn .scroll-button:focus-visible {
+	outline: 3px solid rgba(65, 136, 241, 0.24);
+	outline-offset: 2px;
 }
 
 #whale-bottombtn button.scroll-button {
@@ -117,6 +130,86 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 @media screen and (min-width: 1280px) {
 	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn {
 		right: 10.55rem;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	#whale-bottombtn {
+		right: 0.85rem;
+		bottom: 0.85rem;
+		left: 0.85rem;
+		align-items: flex-end;
+		justify-content: flex-end;
+		gap: 0.55rem;
+		pointer-events: none;
+	}
+
+	body.whale-scroll-buttons-vertical #whale-bottombtn,
+	body.whale-scroll-buttons-horizontal #whale-bottombtn {
+		flex-direction: row;
+	}
+
+	body.whale-scroll-buttons-horizontal #whale-bottombtn {
+		right: 0.85rem;
+		bottom: 0.85rem;
+		left: 0.85rem;
+		background: transparent;
+		border-radius: 0;
+		overflow: visible;
+	}
+
+	#whale-bottombtn .whale-bottom-tools {
+		margin-right: auto;
+		pointer-events: auto;
+	}
+
+	#whale-bottombtn .scroll-button {
+		width: 2.9rem;
+		height: 2.9rem;
+		border-color: rgba(219, 229, 239, 0.95);
+		border-radius: 50%;
+		background-color: rgba(255, 255, 255, 0.94);
+		box-shadow: 0 0.55rem 1.45rem rgba(32, 43, 54, 0.16);
+		pointer-events: auto;
+		backdrop-filter: blur(10px);
+	}
+
+	body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
+		width: 2.9rem;
+		height: 2.9rem;
+		border: 1px solid rgba(219, 229, 239, 0.95);
+		border-radius: 50%;
+		background-color: rgba(255, 255, 255, 0.94);
+		color: #4f5b63;
+		box-shadow: 0 0.55rem 1.45rem rgba(32, 43, 54, 0.16);
+	}
+
+	body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-button {
+		border-left: 1px solid rgba(219, 229, 239, 0.95);
+	}
+
+	#whale-bottombtn .whale-tools-toggle {
+		width: auto;
+		min-width: 8.2rem;
+		padding: 0 1rem;
+		border-radius: 999px;
+		justify-content: flex-start;
+		color: #263646;
+	}
+
+	#whale-bottombtn .whale-bottom-tools-toggle-label {
+		display: inline;
+	}
+
+	#whale-bottombtn .whale-bottom-tools-menu {
+		right: auto;
+		left: 0;
+		min-width: ~"min(18rem, calc(100vw - 1.7rem))";
+	}
+
+	#whale-bottombtn .whale-bottom-tools-menu::after {
+		right: auto;
+		left: 1.2rem;
 	}
 }
 /* scroll button end */

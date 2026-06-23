@@ -7,19 +7,21 @@
 }
 
 .Whale .whale-nav-wrapper {
-	min-height: 3.5rem;
+	min-height: var(--whale-nav-height);
 	z-index: 1001;
-	background: linear-gradient(180deg, #24558f 0%, #1d477b 100%);
-	border-bottom: 1px solid #163a66;
-	box-shadow: 0 2px 0 rgba(255, 255, 255, 0.2) inset, 0 2px 8px rgba(15, 23, 42, 0.18);
+	border-top: 3px solid var(--whale-main-color);
+	border-bottom: 1px solid rgba(219, 229, 239, 0.92);
+	background: rgba(255, 255, 255, 0.94);
+	box-shadow: 0 0.45rem 1.4rem rgba(32, 43, 54, 0.08);
+	backdrop-filter: blur(12px);
 }
 
 .Whale .whale-nav-wrapper .whale-navbar {
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	min-height: 3.5rem;
-	padding: 0 1rem;
+	min-height: var(--whale-nav-height);
+	padding: 0 1.35rem;
 	border: 0;
 	border-radius: 0;
 }
@@ -28,9 +30,9 @@
 	display: inline-flex;
 	align-items: center;
 	flex: 0 1 auto;
-	height: 3.5rem;
+	height: var(--whale-nav-height);
 	width: auto;
-	max-width: 14rem;
+	max-width: 15rem;
 	padding: 0;
 	margin: 0;
 	overflow: visible;
@@ -41,7 +43,7 @@
 	width: auto;
 	height: auto;
 	max-width: 100%;
-	max-height: 2.15rem;
+	max-height: 2.35rem;
 	object-fit: contain;
 }
 
@@ -78,24 +80,24 @@
 	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;
-	height: 3.5rem;
-	color: #fff;
-	font-size: 1rem;
+	height: calc(var(--whale-nav-height) - 3px);
+	color: #263646;
+	font-size: 0.95rem;
 	font-weight: 700;
-	padding: 0 0.85rem;
+	padding: 0 0.95rem;
 	line-height: 1.4rem;
 	text-decoration: none;
-	border-radius: 0;
+	border-radius: var(--whale-radius-sm);
 	box-shadow: inset 0 -3px 0 transparent;
 	outline: 0;
-	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
-	transition: background-color 0.16s ease, box-shadow 0.16s ease;
+	transition: background-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:hover,
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus {
-	background-color: rgba(255, 255, 255, 0.13);
-	box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.78);
+	background-color: rgba(65, 136, 241, 0.1);
+	box-shadow: inset 0 -3px 0 var(--whale-main-color);
+	color: #0f4d9c;
 	text-decoration: none;
 }
 
@@ -114,7 +116,7 @@
 	order: 10;
 	flex: 0 0 auto;
 	margin-left: auto;
-	padding: 0.55rem 0;
+	padding: 0.65rem 0;
 	min-width: 0;
 }
 
@@ -138,24 +140,24 @@
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group {
 	display: inline-flex;
 	align-items: stretch;
-	height: 2.4rem;
+	height: 2.45rem;
 	min-width: 0;
 	overflow: hidden;
 	background-color: #fff;
-	border: 1px solid rgba(15, 23, 42, 0.18);
-	border-radius: 0.35rem;
-	box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.05);
+	border: 1px solid var(--whale-border-color);
+	border-radius: 999px;
+	box-shadow: var(--whale-shadow-sm);
 	vertical-align: middle;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-input {
 	box-sizing: border-box;
 	font-size: 0.8rem;
-	height: 2.4rem;
+	height: 2.45rem;
 	line-height: 1.5;
 	min-width: 0;
-	width: 12rem;
-	padding: 0.2rem 0.4rem;
+	width: 15rem;
+	padding: 0.2rem 0.85rem;
 	background: transparent;
 	border: 0;
 }
@@ -166,9 +168,8 @@
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group:focus-within {
-	border-color: #66afe9;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-		0 0 8px rgba(102, 175, 233, 0.6);
+	border-color: rgba(65, 136, 241, 0.72);
+	box-shadow: 0 0 0 3px rgba(65, 136, 241, 0.14);
 	transition: 0.3s;
 }
 
@@ -176,7 +177,7 @@
 	display: inline-flex;
 	align-items: stretch;
 	flex: 0 0 auto;
-	height: 2.4rem;
+	height: 2.45rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
@@ -186,9 +187,9 @@
 	border-radius: 0;
 	display: inline-flex;
 	justify-content: center;
-	height: 2.4rem;
-	min-width: 1.9rem;
-	color: #4f5b63;
+	height: 2.45rem;
+	min-width: 2.15rem;
+	color: #526272;
 	padding: 0;
 	line-height: 1;
 	position: relative;
@@ -215,16 +216,16 @@
 	height: 2.25rem;
 	margin-left: 0.55rem;
 	padding: 0;
-	border: 0;
+	border: 1px solid rgba(65, 136, 241, 0.2);
 	border-radius: 50%;
-	background-color: rgba(255, 255, 255, 0.14);
-	color: #fff;
+	background-color: rgba(65, 136, 241, 0.08);
+	color: var(--whale-main-color);
 	cursor: pointer;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:hover,
 .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:focus {
-	background-color: rgba(255, 255, 255, 0.24);
+	background-color: rgba(65, 136, 241, 0.14);
 	outline: 0;
 }
 
@@ -273,7 +274,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
-	height: 3.5rem;
+	height: var(--whale-nav-height);
 	padding-left: 0.55rem;
 }
 
@@ -281,11 +282,11 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 	display: inline-flex;
 	align-items: center;
-	height: 3.5rem;
+	height: var(--whale-nav-height);
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .whale-icon {
-	color: #fff;
+	color: #526272;
 	font-size: 1.5rem;
 	line-height: 1;
 }
@@ -307,14 +308,14 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	justify-content: center;
 	width: 2rem;
 	height: 2rem;
-	border-radius: 0.35rem;
+	border-radius: 50%;
 	margin: 0;
 	border: 1px solid #e1e8ed;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img-fallback {
-	background-color: rgba(255, 255, 255, 0.16);
-	color: #fff;
+	background-color: rgba(65, 136, 241, 0.1);
+	color: var(--whale-main-color);
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .profile-img-fallback .whale-icon {

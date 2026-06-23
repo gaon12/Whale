@@ -115,6 +115,7 @@
 	"whale-short-url-description": "此短链接会跳转到当前页面的最新版。",
 	"whale-short-url-copy": "复制",
 	"whale-short-url-copied": "已复制",
+	"whale-short-url-copy-failed": "无法自动复制。已选中 URL，你可以手动复制。",
 	"whale-short-url-disabled": "短链接功能已禁用。",
 	"whale-short-url-invalid": "此短链接无效。",
 	"whale-short-url-missing": "找不到此短链接对应的页面。",
