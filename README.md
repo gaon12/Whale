@@ -574,7 +574,7 @@ Advanced site-wide color variables are available through `$wgWhalePrimaryColor`,
 | Login modal | Shows a login dialog for anonymous users. |
 | Right sidebar | Shows live recent changes and recent discussions. |
 | Reading progress | Displays article reading progress at the top. |
-| Section numbering | Shows table-of-contents numbers in both content headings and the right-side section index. |
+| Section numbering | Renders section numbers on the server for content headings and reuses them in the right-side section index. |
 | Section folding | Adds a `>` toggle to section headings so readers can collapse or expand the section body and nested subsections. By default all sections receive a toggle; users can limit folding to `#`-marked headings or disable it. |
 | Folding blocks | Supports `{{{#!folding title ... }}}` folding blocks. |
 | Content skeleton | When `$wgWhaleEnableContentSkeleton` is enabled, users may opt in to article-body loading placeholders. Disabled by default. |
@@ -626,7 +626,7 @@ Section folding is separate from folding blocks. When `$wgWhaleEnableSectionColl
 | `marked` | Only headings written like `=# Section #=` start collapsed and receive folding treatment. |
 | `off` | Do not decorate section headings with folding controls. |
 
-Collapsed sections show a `>` indicator and muted heading text. The section body and nested lower-level sections are hidden with `hidden`, so they are removed from visual and keyboard navigation until expanded.
+Collapsed sections show a `>` indicator and muted heading text. The section body and nested lower-level sections are hidden with `hidden`, so they are removed from visual and keyboard navigation until expanded. Section numbers are inserted during server-side article decoration; the client script only fills them in when old cached markup is missing them.
 
 Mobile/tablet section index is controlled by `$wgWhaleEnableMobileFloatingToc` and the `whale-layout-mobile-toc` preference. Swipe left from the right screen edge or press the bottom table-of-contents button to open the panel; selecting a section or pressing the backdrop closes it.
 

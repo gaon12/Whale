@@ -79,6 +79,7 @@ for (const locale of ['en', 'ja', 'ko', 'zh-hans', 'zh-hant']) {
 }
 
 const indexButton = read('js/index-button.js');
+const articleDecorator = read('WhaleArticleDecorator.php');
 assertIncludes(indexButton, 'whale:toggleFloatingToc', 'Floating TOC script');
 assertIncludes(indexButton, 'MOBILE_SWIPE_DISTANCE_PX', 'Floating TOC script');
 assertIncludes(indexButton, 'MOBILE_EDGE_SWIPE_PX = 64', 'Floating TOC script');
@@ -92,6 +93,21 @@ assertIncludes(
 	'getFloatingTocItemsFromHeadings',
 	'Floating TOC script',
 );
+assertIncludes(
+	articleDecorator,
+	'decorateHeadingNumbers',
+	'Section numbers should be rendered server-side',
+);
+assertIncludes(
+	articleDecorator,
+	'whale-heading-number',
+	'Section numbers should be rendered server-side',
+);
+if (indexButton.includes('removeHeadingNumbers')) {
+	throw new Error(
+		'Floating TOC script should not recreate SSR heading numbers.',
+	);
+}
 if (indexButton.includes('whale-floating-toc-toolbar-hover')) {
 	throw new Error(
 		'Floating TOC script should not keep legacy toolbar hover state.',
