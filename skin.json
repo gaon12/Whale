@@ -48,7 +48,7 @@
 		"WhaleEnableBlurredCategories": true,
 		"WhaleEnableFloatingToc": true,
 		"WhaleEnableMobileFloatingToc": true,
-		"WhaleAvatarStyle": "identicon",
+		"WhaleAvatarStyle": "initial-face",
 		"WhaleAvatarOptions": {},
 		"WhaleTheme": null,
 		"WhalePrimaryColor": null,

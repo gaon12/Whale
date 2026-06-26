@@ -10,7 +10,7 @@ if ( is_file( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 class WhaleAvatar {
-	private const DEFAULT_STYLE = 'identicon';
+	private const DEFAULT_STYLE = 'initial-face';
 	private const DEFAULT_SIZE = 64;
 
 	/** @var array<string,Style> */

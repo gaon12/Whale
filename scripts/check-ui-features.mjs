@@ -36,8 +36,8 @@ if (skin.DefaultUserOptions['whale-layout-mobile-toc'] !== true) {
 	);
 }
 
-if (skin.config.WhaleAvatarStyle !== 'identicon') {
-	throw new Error('DiceBear avatar style should default to identicon.');
+if (skin.config.WhaleAvatarStyle !== 'initial-face') {
+	throw new Error('DiceBear avatar style should default to initial-face.');
 }
 
 if (skin.Hooks.BeforePageDisplay !== 'WhaleHooks::onBeforePageDisplay') {
