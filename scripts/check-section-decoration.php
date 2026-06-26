@@ -72,8 +72,24 @@ if ( !$parentHeading instanceof DOMElement ) {
 	exit( 1 );
 }
 
-if ( trim( $xpath->query( '//*[@id="parent"]' )->item( 0 )?->textContent ?? '' ) !== 'Parent' ) {
+if ( trim( preg_replace(
+	'/^\s*\d+(?:\.\d+)*\.?\s*/',
+	'',
+	$xpath->query( '//*[@id="parent"]' )->item( 0 )?->textContent ?? ''
+) ) !== 'Parent' ) {
 	fwrite( STDERR, "Marked section title should remove surrounding # markers.\n" );
+	exit( 1 );
+}
+
+$parentNumber = $xpath->query( '//*[@id="parent"]/*[contains(@class, "whale-heading-number")]' )->item( 0 );
+$childNumber = $xpath->query( '//*[@id="child"]/*[contains(@class, "whale-heading-number")]' )->item( 0 );
+if (
+	!$parentNumber instanceof DOMElement ||
+	trim( $parentNumber->textContent ) !== '1.' ||
+	!$childNumber instanceof DOMElement ||
+	trim( $childNumber->textContent ) !== '1.1'
+) {
+	fwrite( STDERR, "Section numbers should be rendered server-side.\n" );
 	exit( 1 );
 }
 

@@ -118,7 +118,14 @@ class WhaleArticleDecorator {
 		string $sectionMode,
 		string $foldingMode
 	): string {
-		if ( $sectionMode === self::SECTION_COLLAPSE_OFF && strpos( $html, 'whale-folding' ) === false ) {
+		if (
+			$html === '' ||
+			(
+				$sectionMode === self::SECTION_COLLAPSE_OFF &&
+				strpos( $html, 'whale-folding' ) === false &&
+				!preg_match( '/<h[1-6]\b/i', $html )
+			)
+		) {
 			return $html;
 		}
 
@@ -130,8 +137,48 @@ class WhaleArticleDecorator {
 				self::decorateSectionHeadings( $dom, $root, $sectionMode );
 			}
 
+			self::decorateHeadingNumbers( $dom, $root );
 			self::decorateFoldingBlocks( $dom, $root, $foldingMode );
 		} );
+	}
+
+	private static function decorateHeadingNumbers( DOMDocument $dom, DOMElement $root ): void {
+		$headings = self::getDecoratableHeadings( $root );
+		if ( count( $headings ) === 0 ) {
+			return;
+		}
+
+		$baseLevel = min( array_map( static function ( DOMElement $heading ): int {
+			return self::getHeadingLevel( $heading ) ?? 2;
+		}, $headings ) );
+		$counters = [];
+
+		foreach ( $headings as $heading ) {
+			$level = ( self::getHeadingLevel( $heading ) ?? $baseLevel ) - $baseLevel + 1;
+			$level = max( 1, min( 6, $level ) );
+			$counters[$level - 1] = ( $counters[$level - 1] ?? 0 ) + 1;
+			$counters = array_slice( $counters, 0, $level );
+			$number = self::formatHeadingNumber( implode( '.', array_map( 'strval', $counters ) ) );
+			$label = self::getHeadingLabelNode( $heading );
+
+			if ( self::firstElementByClass( $label, 'whale-heading-number' ) ) {
+				continue;
+			}
+
+			$numberNode = $dom->createElement( 'span', $number . ' ' );
+			$numberNode->setAttribute( 'class', 'whale-heading-number' );
+			$numberNode->setAttribute( 'aria-hidden', 'true' );
+			$label->insertBefore( $numberNode, $label->firstChild );
+		}
+	}
+
+	private static function formatHeadingNumber( string $number ): string {
+		$number = rtrim( trim( $number ), '.' );
+		if ( $number === '' ) {
+			return '';
+		}
+
+		return strpos( $number, '.' ) === false ? $number . '.' : $number;
 	}
 
 	private static function decorateSectionHeadings(
@@ -139,16 +186,7 @@ class WhaleArticleDecorator {
 		DOMElement $root,
 		string $sectionMode
 	): void {
-		$xpath = new DOMXPath( $dom );
-		$headings = [];
-		$headingsResult = $xpath->query( './/h1|.//h2|.//h3|.//h4|.//h5|.//h6', $root );
-		if ( $headingsResult !== false ) {
-			foreach ( $headingsResult as $heading ) {
-				if ( $heading instanceof DOMElement ) {
-					$headings[] = $heading;
-				}
-			}
-		}
+		$headings = self::getDecoratableHeadings( $root );
 
 		$counter = 0;
 		foreach ( $headings as $heading ) {
@@ -332,6 +370,35 @@ class WhaleArticleDecorator {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @return array<int,DOMElement>
+	 */
+	private static function getDecoratableHeadings( DOMElement $root ): array {
+		$document = $root->ownerDocument;
+		if ( !$document instanceof DOMDocument ) {
+			return [];
+		}
+
+		$xpath = new DOMXPath( $document );
+		$headings = [];
+		$headingsResult = $xpath->query( './/h1|.//h2|.//h3|.//h4|.//h5|.//h6', $root );
+		if ( $headingsResult === false ) {
+			return $headings;
+		}
+
+		foreach ( $headingsResult as $heading ) {
+			if (
+				$heading instanceof DOMElement &&
+				!self::isNavigationHeading( $heading ) &&
+				self::getHeadingLevel( $heading ) !== null
+			) {
+				$headings[] = $heading;
+			}
+		}
+
+		return $headings;
 	}
 
 	private static function getHeadingLevel( DOMElement $heading ): ?int {
