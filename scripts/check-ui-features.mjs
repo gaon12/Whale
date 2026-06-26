@@ -103,6 +103,16 @@ assertIncludes(
 	'whale-heading-number',
 	'Section numbers should be rendered server-side',
 );
+assertIncludes(
+	articleDecorator,
+	'decorateHeadingAnchors',
+	'Heading copy anchors should be rendered server-side',
+);
+assertIncludes(
+	articleDecorator,
+	'whale-heading-anchor',
+	'Heading copy anchors should be rendered server-side',
+);
 if (indexButton.includes('removeHeadingNumbers')) {
 	throw new Error(
 		'Floating TOC script should not recreate SSR heading numbers.',
@@ -355,6 +365,11 @@ if (shortUrlTemplate.includes('whale-short-url-code')) {
 
 const headingAnchors = read('js/heading-anchors.js');
 assertIncludes(headingAnchors, 'showCopyAlert', 'Heading anchor copy feedback');
+assertIncludes(
+	headingAnchors,
+	'bindHeadingAnchor',
+	'Heading anchor event binding',
+);
 assertIncludes(
 	headingAnchors,
 	"alert.setAttribute('role', 'status')",

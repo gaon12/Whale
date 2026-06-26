@@ -116,7 +116,8 @@ class WhaleArticleDecorator {
 	public static function decorateArticleHtml(
 		string $html,
 		string $sectionMode,
-		string $foldingMode
+		string $foldingMode,
+		bool $headingAnchorsEnabled = true
 	): string {
 		if (
 			$html === '' ||
@@ -131,15 +132,41 @@ class WhaleArticleDecorator {
 
 		return self::withHtmlFragment( $html, function ( DOMDocument $dom, DOMElement $root ) use (
 			$sectionMode,
-			$foldingMode
+			$foldingMode,
+			$headingAnchorsEnabled
 		) {
 			if ( $sectionMode !== self::SECTION_COLLAPSE_OFF ) {
 				self::decorateSectionHeadings( $dom, $root, $sectionMode );
 			}
 
 			self::decorateHeadingNumbers( $dom, $root );
+			if ( $headingAnchorsEnabled ) {
+				self::decorateHeadingAnchors( $dom, $root );
+			}
 			self::decorateFoldingBlocks( $dom, $root, $foldingMode );
 		} );
+	}
+
+	private static function decorateHeadingAnchors( DOMDocument $dom, DOMElement $root ): void {
+		foreach ( self::getDecoratableHeadings( $root ) as $heading ) {
+			$id = $heading->getAttribute( 'id' );
+			$label = self::getHeadingLabelNode( $heading );
+			if ( $id === '' ) {
+				$id = $label->getAttribute( 'id' );
+			}
+
+			if ( $id === '' || self::firstElementByClass( $heading, 'whale-heading-anchor' ) ) {
+				continue;
+			}
+
+			$button = $dom->createElement( 'button', '#' );
+			$button->setAttribute( 'type', 'button' );
+			$button->setAttribute( 'class', 'whale-heading-anchor' );
+			$button->setAttribute( 'aria-label', wfMessage( 'whale-heading-link-copy' )->text() );
+			$button->setAttribute( 'title', wfMessage( 'whale-heading-link-copy' )->text() );
+			$button->setAttribute( 'data-heading', self::getHeadingText( $label ) );
+			$heading->appendChild( $button );
+		}
 	}
 
 	private static function decorateHeadingNumbers( DOMDocument $dom, DOMElement $root ): void {
@@ -429,6 +456,25 @@ class WhaleArticleDecorator {
 		}
 
 		return $heading;
+	}
+
+	private static function getHeadingText( DOMElement $heading ): string {
+		$clone = $heading->cloneNode( true );
+		if ( !$clone instanceof DOMElement ) {
+			return trim( $heading->textContent );
+		}
+
+		foreach ( [ 'whale-heading-anchor', 'whale-heading-number', 'mw-editsection' ] as $class ) {
+			while ( true ) {
+				$node = self::firstElementByClass( $clone, $class );
+				if ( !$node || !$node->parentNode ) {
+					break;
+				}
+				$node->parentNode->removeChild( $node );
+			}
+		}
+
+		return trim( preg_replace( '/\s+/', ' ', $clone->textContent ) ?? $clone->textContent );
 	}
 
 	private static function isHeadingBoundary( DOMElement $element, int $currentLevel ): bool {

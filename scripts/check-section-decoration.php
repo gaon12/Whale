@@ -93,6 +93,16 @@ if (
 	exit( 1 );
 }
 
+$parentAnchor = $xpath->query( './/button[contains(@class, "whale-heading-anchor")]', $parentHeading )->item( 0 );
+if (
+	!$parentAnchor instanceof DOMElement ||
+	$parentAnchor->getAttribute( 'type' ) !== 'button' ||
+	$parentAnchor->getAttribute( 'aria-label' ) === ''
+) {
+	fwrite( STDERR, "Heading copy anchors should be rendered server-side.\n" );
+	exit( 1 );
+}
+
 $parentToggle = $xpath->query( './/button[contains(@class, "whale-section-toggle")]', $parentHeading )->item( 0 );
 if ( !$parentToggle instanceof DOMElement ) {
 	fwrite( STDERR, "Parent section toggle was not added.\n" );
