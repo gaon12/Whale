@@ -81,7 +81,8 @@
 		"WhaleEnableAnonThemeToggle": true,
 		"WhaleEnableImageLazyLoad": true,
 		"WhaleEnableContentSkeleton": false,
-		"WhaleMobileUserToolsPosition": "right"
+		"WhaleMobileUserToolsPosition": "right",
+		"WhaleNavbarParentLinks": false
 	},
 	"AvailableRights": [
 		"blockads-header",

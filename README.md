@@ -704,6 +704,14 @@ Supported fields:
 
 At least one of `icon` or `text` must be present.
 
+Top-level navbar items that have `children` render as menu toggles by default,
+even when a `link` is configured. To let parent items navigate to their own
+links instead, add this to `LocalSettings.php`:
+
+```php
+$wgWhaleNavbarParentLinks = true;
+```
+
 ### 10. Live Recent Sidebar
 
 Live recent changes are enabled by default. To disable them:

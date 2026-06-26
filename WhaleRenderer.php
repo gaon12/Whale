@@ -899,12 +899,15 @@ class WhaleRenderer {
 	private function buildPortalChildItem( array $item, array $children = [] ): array {
 		$classes = array_merge( $item['classes'] ?? [], [ 'whale-dropdown-item' ] );
 		$hasChildren = count( $children ) > 0;
+		$wrapperClasses = [ 'whale-dropdown-child' ];
 		if ( $hasChildren ) {
 			$classes[] = 'whale-dropdown-toggle';
 			$classes[] = 'whale-dropdown-toggle-sub';
+			$wrapperClasses[] = 'whale-dropdown-subitem';
 		}
 
 		return [
+			'classes' => implode( ' ', array_map( [ Sanitizer::class, 'escapeClass' ], $wrapperClasses ) ),
 			'html-link' => $this->buildPortalLink( $item, $classes, $hasChildren, true ),
 			'has-children' => $hasChildren,
 			'children' => $children,
@@ -916,19 +919,30 @@ class WhaleRenderer {
 	 * @param array<int,string> $classes
 	 */
 	private function buildPortalLink( array $item, array $classes, bool $hasChildren, bool $isChild = false ): string {
+		global $wgWhaleNavbarParentLinks;
+
+		$useParentLink = !$isChild && $hasChildren && !empty( $wgWhaleNavbarParentLinks );
+		$isToggleButton = $hasChildren && !$useParentLink;
 		$attrs = [
 			'class' => implode( ' ', array_map( [ Sanitizer::class, 'escapeClass' ], $classes ) ),
-			'href' => $item['href'] ?? '#',
 			'title' => $item['title'] ?? '',
 		];
+		if ( !$isToggleButton ) {
+			$attrs['href'] = $item['href'] ?? '#';
+		}
 		if ( !empty( $item['access'] ) ) {
 			$attrs['accesskey'] = $item['access'];
 		}
 		if ( $hasChildren ) {
-			$attrs['data-whale-toggle'] = $isChild ? '' : 'dropdown';
-			$attrs['role'] = 'button';
+			if ( !$useParentLink ) {
+				$attrs['data-whale-toggle'] = $isChild ? 'submenu' : 'dropdown';
+				$attrs['role'] = 'button';
+				$attrs['aria-expanded'] = 'false';
+			}
 			$attrs['aria-haspopup'] = 'true';
-			$attrs['aria-expanded'] = 'false';
+		}
+		if ( $isToggleButton ) {
+			$attrs['type'] = 'button';
 		}
 
 		$html = '';
@@ -939,7 +953,7 @@ class WhaleRenderer {
 			$html .= Html::element( 'span', [ 'class' => $isChild ? '' : 'hide-title' ], $item['text'] );
 		}
 
-		return Html::rawElement( 'a', $attrs, $html );
+		return Html::rawElement( $isToggleButton ? 'button' : 'a', $attrs, $html );
 	}
 
 	/**

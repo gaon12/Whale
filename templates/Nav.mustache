@@ -10,14 +10,18 @@
 				{{#has-children}}
 					<div class="whale-dropdown-menu" role="menu">
 						{{#children}}
-							{{{ html-link }}}
-							{{#has-children}}
-								<div class="whale-dropdown-menu whale-dropdown-submenu" role="menu">
-									{{#children}}
-										{{{ html-link }}}
-									{{/children}}
-								</div>
-							{{/has-children}}
+							<div class="{{classes}}">
+								{{{ html-link }}}
+								{{#has-children}}
+									<div class="whale-dropdown-menu whale-dropdown-submenu" role="menu">
+										{{#children}}
+											<div class="{{classes}}">
+												{{{ html-link }}}
+											</div>
+										{{/children}}
+									</div>
+								{{/has-children}}
+							</div>
 						{{/children}}
 					</div>
 				{{/has-children}}
