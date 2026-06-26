@@ -10,23 +10,27 @@
 	left: 0;
 	z-index: 1000;
 	display: none;
-	min-width: 10rem;
-	padding: 0.5rem 0;
-	margin: 0.125rem 0 0;
-	font-size: 0.95rem;
+	min-width: 13rem;
+	padding: 0.72rem 0;
+	margin: 0.35rem 0 0;
+	font-size: 0.96rem;
 	color: #373a3c;
 	text-align: left;
 	list-style: none;
-	background-color: #fff;
+	background-color: #fefefe;
 	background-clip: padding-box;
 	border: 1px solid #e1e8ed;
-	border-radius: var(--whale-radius-sm);
+	border-radius: 1.05rem;
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
 .whale-dropdown-menu.is-open,
 .whale-dropdown.is-open > .whale-dropdown-menu,
-.whale-btn-group.is-open > .whale-dropdown-menu {
+.whale-btn-group.is-open > .whale-dropdown-menu,
+.whale-dropdown:hover > .whale-dropdown-menu,
+.whale-dropdown:focus-within > .whale-dropdown-menu,
+.whale-dropdown-subitem:hover > .whale-dropdown-submenu,
+.whale-dropdown-subitem:focus-within > .whale-dropdown-submenu {
 	display: block;
 }
 
@@ -36,9 +40,12 @@
 }
 
 .whale-dropdown-item {
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
 	width: 100%;
-	padding: 0.25rem 1.5rem;
+	min-height: 2.35rem;
+	padding: 0.35rem 1.05rem;
 	clear: both;
 	color: #373a3c;
 	font-weight: 400;
@@ -46,14 +53,15 @@
 	white-space: nowrap;
 	background: transparent;
 	border: 0;
+	text-decoration: none;
 }
 
 .whale-dropdown-item:hover,
 .whale-dropdown-item:focus {
-	background-color: var(--whale-second-color);
-	color: #fff;
+	background-color: #f2f7ff;
+	color: var(--whale-main-color);
 	text-decoration: none;
-	transition: 0.3s;
+	transition: background-color 0.16s ease, color 0.16s ease;
 }
 
 .whale-dropdown-divider {
@@ -76,16 +84,20 @@
 }
 
 .whale-dropdown-toggle-sub::after {
-	float: right;
-	margin-top: 0.5em;
+	margin-left: auto;
+	margin-top: 0;
 	transform: rotate(-90deg);
+}
+
+.whale-dropdown-child {
+	position: relative;
 }
 
 .whale-dropdown-submenu {
 	top: 0;
 	left: 100%;
-	margin-top: -0.5rem;
-	margin-left: 0;
+	margin-top: -0.72rem;
+	margin-left: 0.45rem;
 }
 
 #whale-bottombtn .scroll-button .whale-icon {

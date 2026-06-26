@@ -33,6 +33,7 @@ if ( !class_exists( 'SkinWhale' ) ) {
 }
 
 require_once __DIR__ . '/../WhaleRenderer.php';
+require_once __DIR__ . '/../WhaleNavbarParser.php';
 
 $wgArticlePath = '/wiki/$1';
 
@@ -41,7 +42,7 @@ class TestNavbarRenderer extends WhaleRenderer {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public function parseForTest( string $text ): array {
-		return $this->parseNavbarContent( $text );
+		return ( new WhaleNavbarParser( new SkinWhale() ) )->parse( $text );
 	}
 }
 
