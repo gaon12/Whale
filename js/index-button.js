@@ -141,15 +141,7 @@
 		return linkItems.length > 0 ? linkItems : getFloatingTocItemsFromHeadings();
 	};
 
-	const removeHeadingNumbers = () => {
-		document.querySelectorAll(SECTION_NUMBER_SELECTOR).forEach((number) => {
-			number.remove();
-		});
-	};
-
 	const syncHeadingNumbers = (links) => {
-		removeHeadingNumbers();
-
 		links.forEach(({ target, number }) => {
 			if (!number || !target) {
 				return;
@@ -305,7 +297,6 @@
 		bindMobileGestures();
 
 		if (!desktopEnabled && !mobileEnabled) {
-			removeHeadingNumbers();
 			removeFloatingToc();
 			return;
 		}
