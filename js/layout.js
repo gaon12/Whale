@@ -15,6 +15,11 @@
 			menu.classList.remove('is-open');
 			menu.style.display = '';
 		});
+		owner
+			.querySelectorAll('.whale-dropdown-toggle-sub[aria-expanded="true"]')
+			.forEach((toggle) => {
+				toggle.setAttribute('aria-expanded', 'false');
+			});
 	};
 
 	const closeAllDropdowns = (except) => {
@@ -377,9 +382,12 @@
 				const submenu = submenuToggle.nextElementSibling;
 				if (submenu?.classList.contains('whale-dropdown-menu')) {
 					submenu.classList.toggle('is-open');
-					submenu.style.display = submenu.classList.contains('is-open')
-						? 'block'
-						: '';
+					const isOpen = submenu.classList.contains('is-open');
+					submenu.style.display = isOpen ? 'block' : '';
+					submenuToggle.setAttribute(
+						'aria-expanded',
+						isOpen ? 'true' : 'false',
+					);
 				}
 				return;
 			}
@@ -451,6 +459,10 @@
 					.forEach((submenu) => {
 						submenu.classList.remove('is-open');
 						submenu.style.display = '';
+						submenu.previousElementSibling?.setAttribute(
+							'aria-expanded',
+							'false',
+						);
 					});
 			}
 		});

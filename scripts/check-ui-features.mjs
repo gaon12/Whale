@@ -367,25 +367,32 @@ assertIncludes(
 	'Navbar notification placement',
 );
 assertIncludes(styles, 'order: 29', 'Navbar notification placement');
-assertIncludes(styles, 'height: 3.5rem', 'Navbar link height clamp');
+assertIncludes(styles, 'height: 2.55rem', 'Navbar link height clamp');
 assertIncludes(
 	styles,
 	'box-shadow: inset 0 -3px 0 transparent',
 	'Navbar tab focus',
 );
-assertIncludes(styles, 'font-weight: 700', 'Navbar menu weight');
+assertIncludes(styles, 'font-weight: 600', 'Navbar menu weight');
 assertIncludes(styles, '.whale-icon-random', 'Navbar random icon sizing');
+assertIncludes(styles, 'border-radius: 1.05rem', 'Daol-like dropdown radius');
 
 const rendererPhp = read('WhaleRenderer.php');
+const navbarParserPhp = read('WhaleNavbarParser.php');
 assertIncludes(rendererPhp, 'img/whale_footer_img.png', 'Footer badge image');
 assertIncludes(rendererPhp, 'whale-footer-brand-img', 'Footer badge image');
 assertIncludes(rendererPhp, "'width' => '78'", 'Footer badge image');
 assertIncludes(rendererPhp, "'height' => '31'", 'Footer badge image');
-assertIncludes(rendererPhp, 'parseSimpleNavbar', 'Simple navbar parser');
+assertIncludes(navbarParserPhp, 'parseSimpleNavbar', 'Simple navbar parser');
 assertIncludes(
 	rendererPhp,
 	"'has-notifications'",
 	'Navbar notification placement',
+);
+assertIncludes(
+	rendererPhp,
+	'whale-dropdown-subitem',
+	'Navbar third-level menus should be scoped to their parent row',
 );
 assertIncludes(
 	rendererPhp,
@@ -396,6 +403,16 @@ assertIncludes(
 	rendererPhp,
 	'WhaleAvatar::createDataUri',
 	'Login avatar rendering',
+);
+assertIncludes(
+	rendererPhp,
+	'wgWhaleNavbarParentLinks',
+	'Navbar parent link toggle config',
+);
+assertIncludes(
+	rendererPhp,
+	"Html::rawElement( $isToggleButton ? 'button' : 'a'",
+	'Navbar parent items with children should render as inert toggles by default',
 );
 assertIncludes(rendererPhp, 'profile-img-fallback', 'Login avatar fallback');
 const removedAvatarRenderers = [
@@ -543,3 +560,8 @@ assertIncludes(
 const readme = read('README.md');
 assertIncludes(readme, 'children:', 'Simple navbar docs');
 assertIncludes(readme, '- text: Beginner guide', 'Simple navbar docs');
+assertIncludes(
+	readme,
+	'$wgWhaleNavbarParentLinks = true;',
+	'Navbar parent link docs',
+);

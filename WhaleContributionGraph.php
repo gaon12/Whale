@@ -11,6 +11,7 @@ class WhaleContributionGraph {
 
 	/**
 	 * @param array<string,int> $counts
+	 * @param int $days
 	 * @param array<int,int> $levels
 	 * @return array{weeks:array<int,array<string,mixed>>,legend:array<int,array<string,string>>}
 	 */
@@ -62,6 +63,7 @@ class WhaleContributionGraph {
 	}
 
 	/**
+	 * @param int $count
 	 * @param array<int,int> $levels
 	 */
 	private function getContributionLevel( int $count, array $levels ): int {
@@ -76,7 +78,10 @@ class WhaleContributionGraph {
 	}
 
 	/**
+	 * @param string $userName
+	 * @param int $days
 	 * @param array<int,int>|null $namespaces
+	 * @param int $ttl
 	 * @return array<string,int>
 	 */
 	public function getCounts( string $userName, int $days, ?array $namespaces, int $ttl ): array {

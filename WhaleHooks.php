@@ -564,9 +564,6 @@ class WhaleHooks {
 		return WhaleArticleDecorator::decorateCategoryHtml( $html, $enableBlur );
 	}
 
-
-	
-
 	private static function getAnonDarkMode( Skin $sk ): ?string {
 		$mode = $sk->getRequest()->getCookie( 'whale-dark-mode' );
 		return in_array( $mode, [ 'dark', 'light' ], true ) ? $mode : null;

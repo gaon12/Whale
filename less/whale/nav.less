@@ -7,7 +7,7 @@
 }
 
 .Whale .whale-nav-wrapper {
-	min-height: 3.5rem;
+	min-height: 3.35rem;
 	z-index: 1001;
 	background-color: var(--whale-main-color);
 	border-bottom: 1px solid var(--whale-second-color);
@@ -18,7 +18,7 @@
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	min-height: 3.5rem;
+	min-height: 3.35rem;
 	padding: 0 1rem;
 	border: 0;
 	border-radius: 0;
@@ -28,7 +28,7 @@
 	display: inline-flex;
 	align-items: center;
 	flex: 0 1 auto;
-	height: 3.5rem;
+	height: 3.35rem;
 	width: auto;
 	max-width: 14rem;
 	padding: 0;
@@ -75,17 +75,20 @@
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link {
+	appearance: none;
 	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;
-	height: 3.5rem;
+	height: 2.55rem;
 	color: #fff;
-	font-size: 1rem;
-	font-weight: 700;
-	padding: 0 0.85rem;
+	font-size: 1.03rem;
+	font-weight: 600;
+	padding: 0 0.68rem;
 	line-height: 1.4rem;
 	text-decoration: none;
-	border-radius: 0;
+	border: 0;
+	border-radius: 0.65rem;
+	background: transparent;
 	box-shadow: inset 0 -3px 0 transparent;
 	outline: 0;
 	transition: background-color 0.16s ease, box-shadow 0.16s ease;
@@ -99,9 +102,7 @@
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-dropdown-menu {
-	margin-top: 0;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+	margin-top: 0.38rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-dropdown-toggle::after {
@@ -113,7 +114,7 @@
 	order: 10;
 	flex: 0 0 auto;
 	margin-left: auto;
-	padding: 0.55rem 0;
+	padding: 0.45rem 0;
 	min-width: 0;
 }
 
@@ -123,7 +124,7 @@
 	align-items: center;
 	flex: 0 0 auto;
 	gap: 0.2rem;
-	min-height: 3.5rem;
+	min-height: 3.35rem;
 	margin: 0 0.1rem 0 0.55rem;
 	padding: 0;
 	list-style: none;
@@ -137,24 +138,24 @@
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group {
 	display: inline-flex;
 	align-items: stretch;
-	height: 2.4rem;
+	height: 2.55rem;
 	min-width: 0;
 	overflow: hidden;
 	background-color: #fff;
-	border: 1px solid rgba(15, 23, 42, 0.18);
-	border-radius: 0.35rem;
-	box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.05);
+	border: 0;
+	border-radius: 1.05rem;
+	box-shadow: none;
 	vertical-align: middle;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-input {
 	box-sizing: border-box;
 	font-size: 0.8rem;
-	height: 2.4rem;
+	height: 2.55rem;
 	line-height: 1.5;
 	min-width: 0;
-	width: 12rem;
-	padding: 0.2rem 0.4rem;
+	width: 17.35rem;
+	padding: 0.2rem 0.85rem;
 	background: transparent;
 	border: 0;
 }
@@ -166,8 +167,7 @@
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group:focus-within {
 	border-color: #66afe9;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-		0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.28);
 	transition: 0.3s;
 }
 
@@ -175,7 +175,7 @@
 	display: inline-flex;
 	align-items: stretch;
 	flex: 0 0 auto;
-	height: 2.4rem;
+	height: 2.55rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
@@ -185,8 +185,8 @@
 	border-radius: 0;
 	display: inline-flex;
 	justify-content: center;
-	height: 2.4rem;
-	min-width: 1.9rem;
+	height: 2.55rem;
+	min-width: 2.05rem;
 	color: #4f5b63;
 	padding: 0;
 	line-height: 1;
@@ -272,7 +272,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
-	height: 3.5rem;
+	height: 3.35rem;
 	padding-left: 0.55rem;
 }
 
@@ -280,7 +280,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 	display: inline-flex;
 	align-items: center;
-	height: 3.5rem;
+	height: 3.35rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login button.none-outline {
@@ -323,7 +323,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	justify-content: center;
 	width: 2rem;
 	height: 2rem;
-	border-radius: 0.35rem;
+	border-radius: 50%;
 	margin: 0;
 	border: 1px solid #e1e8ed;
 }
