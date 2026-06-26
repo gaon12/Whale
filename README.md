@@ -626,7 +626,7 @@ Section folding is separate from folding blocks. When `$wgWhaleEnableSectionColl
 | `marked` | Only headings written like `=# Section #=` start collapsed and receive folding treatment. |
 | `off` | Do not decorate section headings with folding controls. |
 
-Collapsed sections show a `>` indicator and muted heading text. The section body and nested lower-level sections are hidden with `hidden`, so they are removed from visual and keyboard navigation until expanded. Section numbers are inserted during server-side article decoration; the client script only fills them in when old cached markup is missing them.
+Collapsed sections show a `>` indicator and muted heading text. The section body and nested lower-level sections are hidden with `hidden`, so they are removed from visual and keyboard navigation until expanded. Section numbers and heading copy buttons are inserted during server-side article decoration; the client scripts only bind behavior or fill in old cached markup when needed.
 
 Mobile/tablet section index is controlled by `$wgWhaleEnableMobileFloatingToc` and the `whale-layout-mobile-toc` preference. Swipe left from the right screen edge or press the bottom table-of-contents button to open the panel; selecting a section or pressing the backdrop closes it.
 
