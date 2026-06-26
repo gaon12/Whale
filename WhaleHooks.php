@@ -524,7 +524,7 @@ class WhaleHooks {
 	 * @return bool
 	 */
 	public static function onOutputPageBeforeHTML( $out, &$text ) {
-		global $wgWhaleEnableSectionCollapse, $wgWhaleEnableFoldingBlocks;
+		global $wgWhaleEnableSectionCollapse, $wgWhaleEnableFoldingBlocks, $wgWhaleEnableHeadingAnchors;
 
 		$skin = method_exists( $out, 'getSkin' ) ? $out->getSkin() : null;
 		if ( !$skin || $skin->getSkinName() !== 'whale' ) {
@@ -543,11 +543,14 @@ class WhaleHooks {
 		$foldingMode = ( $wgWhaleEnableFoldingBlocks ?? true ) === false
 			? WhaleArticleDecorator::FOLDING_MODE_OFF
 			: $userOptionsLookup->getOption( $user, 'whale-content-folding' );
+		$headingAnchorsEnabled = ( $wgWhaleEnableHeadingAnchors ?? true ) !== false &&
+			$userOptionsLookup->getOption( $user, 'whale-heading-anchors' ) !== false;
 
 		$text = WhaleArticleDecorator::decorateArticleHtml(
 			$text,
 			WhaleArticleDecorator::normalizeSectionMode( $sectionMode ),
-			is_string( $foldingMode ) ? $foldingMode : WhaleArticleDecorator::FOLDING_MODE_DEFAULT
+			is_string( $foldingMode ) ? $foldingMode : WhaleArticleDecorator::FOLDING_MODE_DEFAULT,
+			$headingAnchorsEnabled
 		);
 
 		return true;

@@ -32,24 +32,16 @@
 			return;
 		}
 
-		content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
-			const id =
-				heading.id ||
-				heading.querySelector('.mw-headline[id]')?.getAttribute('id');
-
-			if (!id || heading.querySelector('.whale-heading-anchor')) {
+		const bindHeadingAnchor = (button, id) => {
+			if (button.dataset.whaleHeadingAnchorBound === '1') {
 				return;
 			}
 
-			const button = document.createElement('button');
-			button.type = 'button';
-			button.className = 'whale-heading-anchor';
-			button.setAttribute('aria-label', mw.msg('whale-heading-link-copy'));
-			button.title = mw.msg('whale-heading-link-copy');
-			button.textContent = '#';
+			button.dataset.whaleHeadingAnchorBound = '1';
 			button.addEventListener('click', async () => {
-				const url = `${location.origin}${location.pathname}${location.search}#${encodeURIComponent(id)}`;
-				history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+				const encodedId = encodeURIComponent(id);
+				const url = `${location.origin}${location.pathname}${location.search}#${encodedId}`;
+				history.replaceState(null, '', `#${encodedId}`);
 				try {
 					if (await whale.copyText(url)) {
 						button.title = mw.msg('whale-heading-link-copied');
@@ -59,10 +51,34 @@
 					console.error('Heading link copy failed: ', error);
 				}
 			});
+		};
+
+		content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+			const id =
+				heading.id ||
+				heading.querySelector('.mw-headline[id]')?.getAttribute('id');
+
+			if (!id) {
+				return;
+			}
 
 			const label = heading.querySelector('.mw-headline') || heading;
-			button.dataset.heading = getHeadingText(label);
-			heading.append(button);
+			let button = heading.querySelector('.whale-heading-anchor');
+			if (!button) {
+				button = document.createElement('button');
+				button.type = 'button';
+				button.className = 'whale-heading-anchor';
+				button.setAttribute('aria-label', mw.msg('whale-heading-link-copy'));
+				button.title = mw.msg('whale-heading-link-copy');
+				button.textContent = '#';
+				button.dataset.heading = getHeadingText(label);
+				heading.append(button);
+			}
+
+			if (!button.dataset.heading) {
+				button.dataset.heading = getHeadingText(label);
+			}
+			bindHeadingAnchor(button, id);
 		});
 	};
 
