@@ -1,7 +1,7 @@
 /* Content */
 .Whale .content-wrapper {
 	position: relative;
-	margin-top: 4.4rem;
+	margin-top: 4.15rem;
 	z-index: 0;
 }
 
@@ -77,13 +77,20 @@
 	display: inline-flex;
 	flex-wrap: wrap;
 	justify-content: flex-end;
+	gap: 0.35rem;
 	max-width: 100%;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn,
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn-group {
+	margin-left: 0;
+	border-radius: var(--whale-radius-sm);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
 	font-size: 0.9rem;
 	padding: 0.5rem 0.85rem;
-	border-radius: 0;
+	border-radius: var(--whale-radius-sm);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle {
@@ -124,8 +131,10 @@
 
 .Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
 	color: #000;
-	font-weight: bold;
-	font-size: 2rem;
+	font-weight: 750;
+	font-size: 1.85rem;
+	letter-spacing: -0.025em;
+	line-height: 1.25;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .header-ads {
@@ -141,7 +150,7 @@
 	padding: 1rem;
 	overflow: visible;
 	overflow-wrap: anywhere;
-	line-height: 1.6rem;
+	line-height: 1.65;
 }
 
 body.whale-content-skeleton-loading .Whale .content-wrapper .whale-content .whale-content-main {
