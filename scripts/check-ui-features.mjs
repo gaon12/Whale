@@ -36,8 +36,8 @@ if (skin.DefaultUserOptions['whale-layout-mobile-toc'] !== true) {
 	);
 }
 
-if (skin.config.WhaleAvatarStyle !== 'initial-face') {
-	throw new Error('DiceBear avatar style should default to initial-face.');
+if (skin.config.WhaleAvatarStyle !== 'identicon') {
+	throw new Error('DiceBear avatar style should default to identicon.');
 }
 
 if (skin.Hooks.BeforePageDisplay !== 'WhaleHooks::onBeforePageDisplay') {
@@ -184,6 +184,7 @@ assertIncludes(
 
 const styles = readLessWithImports('less/default.less');
 const wikiStyles = read('less/wiki.less');
+const tableStyles = read('less/wiki-table.less');
 const mediaWikiStyles = read('less/only-mw.less');
 assertIncludes(styles, 'color-scheme: light dark', 'Stylesheet');
 assertIncludes(styles, 'body.whale-dark,', 'Stylesheet');
@@ -209,6 +210,11 @@ assertIncludes(
 	styles,
 	'body.whale-floating-toc-hover .whale-floating-toc a',
 	'Desktop floating TOC hover labels',
+);
+assertIncludes(
+	styles,
+	'body.whale-floating-toc-hover .whale-floating-toc a.is-active',
+	'Desktop floating TOC active label should wait for hover',
 );
 assertIncludes(
 	styles,
@@ -392,6 +398,9 @@ assertIncludes(searchTemplate, 'aria-label="{{search-label}}"', 'Search form');
 
 const navTemplate = read('templates/Nav.mustache');
 assertIncludes(navTemplate, 'width="258" height="64"', 'Navbar logo');
+assertIncludes(styles, 'height: 2.25rem', 'Navbar logo auto upscale');
+assertIncludes(styles, 'min-width: 2.25rem', 'Navbar logo auto upscale');
+assertIncludes(styles, 'margin: 0 1rem 0 0', 'Navbar brand spacing');
 assertIncludes(
 	navTemplate,
 	'whale-navbar-notifications',
@@ -443,6 +452,34 @@ assertIncludes(
 	'background-color: var(--whale-code-background)',
 	'Article code treatment',
 );
+assertIncludes(styles, '--whale-table-background', 'Table color tokens');
+assertIncludes(styles, '--whale-table-header-background', 'Table color tokens');
+assertIncludes(styles, '--whale-table-border-color', 'Table color tokens');
+assertIncludes(
+	tableStyles,
+	'background: var(--whale-table-background)',
+	'Table light/dark surface token',
+);
+assertIncludes(
+	tableStyles,
+	'background-color: var(--whale-table-header-background)',
+	'Table header surface token',
+);
+assertIncludes(
+	tableStyles,
+	'border: 1px solid var(--whale-table-border-color)',
+	'Table border token',
+);
+assertIncludes(
+	styles,
+	'body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
+	'Dark table cell override',
+);
+assertIncludes(
+	styles,
+	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
+	'Auto dark table cell override',
+);
 assertIncludes(
 	styles,
 	'--whale-radius: 0.45rem',
@@ -492,6 +529,12 @@ assertIncludes(
 	rendererPhp,
 	'whale-dropdown-subitem',
 	'Navbar third-level menus should be scoped to their parent row',
+);
+assertIncludes(styles, '.whale-dropdown-menu::before', 'Dropdown hover bridge');
+assertIncludes(
+	styles,
+	'.whale-dropdown-submenu::before',
+	'Dropdown submenu hover bridge',
 );
 assertIncludes(
 	rendererPhp,
@@ -566,6 +609,11 @@ if (skinPhp.includes(removedAdsenseLoader)) {
 }
 
 const avatarPhp = read('WhaleAvatar.php');
+assertIncludes(
+	avatarPhp,
+	"private const DEFAULT_STYLE = 'identicon'",
+	'DiceBear PHP avatar default',
+);
 assertIncludes(
 	avatarPhp,
 	"getInstallPath( 'dicebear/styles' )",
