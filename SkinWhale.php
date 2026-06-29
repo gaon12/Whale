@@ -374,8 +374,8 @@ class SkinWhale extends SkinMustache {
 				? MWDebug::getHTMLDebugLog()
 				: '';
 		$scriptsHtml = $data['html-scripts'] ?? '';
-		if ( is_string( $scriptsHtml ) ) {
-			$data['html-scripts'] = $this->disableRocketLoaderForScripts( $scriptsHtml );
+		if ( is_string( $scriptsHtml ) || ( is_object( $scriptsHtml ) && method_exists( $scriptsHtml, '__toString' ) ) ) {
+			$data['html-scripts'] = $this->disableRocketLoaderForScripts( (string)$scriptsHtml );
 		}
 		$data['html-whale-rocket-loader-recovery'] = $this->renderRocketLoaderRecoveryScript();
 		return $data;
