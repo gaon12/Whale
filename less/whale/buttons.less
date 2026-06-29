@@ -1,13 +1,15 @@
 /* Button */
 
 .whale-btn {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	box-shadow: none;
-	border-radius: var(--whale-radius);
-	border: 1px solid transparent;
+	border-radius: var(--whale-radius-sm);
+	border: 1px solid var(--whale-border-strong-color);
 	cursor: pointer;
 	font-size: 0.95rem;
-	font-weight: 400;
+	font-weight: 500;
 	line-height: 1.5;
 	padding: 0.35rem 0.75rem;
 	text-align: center;
@@ -19,12 +21,15 @@
 .whale-btn:hover,
 .whale-btn:focus {
 	text-decoration: none;
-	transition: 0.3s;
+	transition:
+		background-color 0.16s ease,
+		border-color 0.16s ease,
+		color 0.16s ease;
 }
 
-.whale-btn:active,
-.whale-btn:focus {
-	outline: 0;
+.whale-btn:focus-visible {
+	outline: 2px solid rgba(63, 127, 196, 0.35);
+	outline-offset: 2px;
 }
 
 .whale-btn.disabled,
@@ -59,17 +64,17 @@ fieldset:disabled .whale-btn {
 }
 
 .whale-btn-secondary {
-	background-color: #fff;
-	border-color: #ccc;
-	color: #4f5b63;
+	background-color: var(--whale-surface-color);
+	border-color: var(--whale-border-strong-color);
+	color: #3d4852;
 }
 
 .whale-btn-secondary:hover,
 .whale-btn-secondary:focus,
 .whale-btn-secondary:active {
-	background-color: #e6e6e6;
-	border-color: #adadad;
-	color: #373a3c;
+	background-color: var(--whale-hover-color);
+	border-color: #aeb8c1;
+	color: #252a30;
 }
 
 .whale-btn-success {

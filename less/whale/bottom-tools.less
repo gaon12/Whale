@@ -21,7 +21,7 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 	flex-direction: row;
 	gap: 0;
 	background: var(--whale-main-color);
-	border-radius: 5px 5px 0 0;
+	border-radius: var(--whale-radius) var(--whale-radius) 0 0;
 	overflow: hidden;
 }
 
@@ -33,12 +33,12 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 	width: 2.75rem;
 	height: 2.75rem;
 	background-color: #fff;
-	border: 1px solid #d7dee5;
-	border-radius: 0.45rem;
+	border: 1px solid var(--whale-border-strong-color);
+	border-radius: var(--whale-radius);
 	color: #4f5b63;
 	text-align: center;
 	cursor: pointer;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+	box-shadow: none;
 }
 
 #whale-bottombtn button.scroll-button {
