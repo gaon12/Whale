@@ -92,7 +92,7 @@ class WhaleRenderer {
 			'aria-hidden' => 'true',
 		], $this->renderIcon( 'user' ) );
 		if ( class_exists( WhaleAvatar::class ) ) {
-			$avatarStyle = is_string( $wgWhaleAvatarStyle ?? null ) ? $wgWhaleAvatarStyle : 'initial-face';
+			$avatarStyle = is_string( $wgWhaleAvatarStyle ?? null ) ? $wgWhaleAvatarStyle : 'identicon';
 			$avatarSrc = WhaleAvatar::createDataUri(
 				WhaleAvatar::getSeedForUser( $user ),
 				$avatarStyle,
