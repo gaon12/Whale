@@ -24,6 +24,15 @@
 	box-shadow: var(--whale-shadow-md);
 }
 
+.whale-dropdown-menu::before {
+	position: absolute;
+	right: -0.45rem;
+	bottom: 100%;
+	left: -0.45rem;
+	height: 0.45rem;
+	content: "";
+}
+
 .whale-dropdown-menu.is-open,
 .whale-dropdown.is-open > .whale-dropdown-menu,
 .whale-btn-group.is-open > .whale-dropdown-menu,
@@ -98,6 +107,15 @@
 	left: 100%;
 	margin-top: -0.72rem;
 	margin-left: 0.45rem;
+}
+
+.whale-dropdown-submenu::before {
+	top: -0.15rem;
+	right: 100%;
+	bottom: -0.15rem;
+	left: auto;
+	width: 0.45rem;
+	height: auto;
 }
 
 #whale-bottombtn .scroll-button .whale-icon {
