@@ -55,6 +55,17 @@
 		/-text\/javascript$/.test(script.getAttribute('type') || '') &&
 		script.hasAttribute('data-cf-settings');
 
+	const isActiveResourceLoaderScript = (script) =>
+		!isRocketScript(script) &&
+		Boolean(script.src) &&
+		/\/load\.php\?/.test(script.src) &&
+		/[?&]only=scripts/.test(script.src);
+
+	const hasActiveResourceLoaderScript = () =>
+		Array.from(document.querySelectorAll('script')).some(
+			isActiveResourceLoaderScript,
+		);
+
 	const isResourceLoaderScript = (script) => {
 		if (script.dataset.whaleRecovery === 'true' || !isRocketScript(script)) {
 			return false;
@@ -103,6 +114,7 @@
 		if (
 			isWhaleReady() ||
 			hasResourceLoaderStarted() ||
+			hasActiveResourceLoaderScript() ||
 			document.documentElement.dataset.whaleResourceLoaderRecovery ===
 				'attempted'
 		) {
