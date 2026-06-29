@@ -75,7 +75,7 @@ wfLoadSkin( 'Whale' );
 $wgDefaultSkin = 'whale';
 ```
 
-로그인 메뉴의 프로필 아이콘은 DiceBear PHP 라이브러리로 서버에서 SVG를 생성합니다. 브라우저 JavaScript나 DiceBear HTTP API를 호출하지 않습니다. 기본 스타일은 `initial-face`이며, `LocalSettings.php`에서 스타일과 옵션을 바꿀 수 있습니다. 스타일 이름은 `pixel-art-neutral`처럼 kebab-case로 쓰거나 DiceBear 문서의 `pixelArtNeutral`처럼 camelCase로 쓸 수 있습니다.
+로그인 메뉴의 프로필 아이콘은 DiceBear PHP 라이브러리로 서버에서 SVG를 생성합니다. 브라우저 JavaScript나 DiceBear HTTP API를 호출하지 않습니다. 기본 스타일은 `identicon`이며, `LocalSettings.php`에서 스타일과 옵션을 바꿀 수 있습니다. 스타일 이름은 `pixel-art-neutral`처럼 kebab-case로 쓰거나 DiceBear 문서의 `pixelArtNeutral`처럼 camelCase로 쓸 수 있습니다.
 
 ```php
 $wgWhaleAvatarStyle = 'pixel-art-neutral';
@@ -410,7 +410,7 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 | `$wgWhaleOgLogo` | OpenGraph에 사용할 로고 이미지 | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgXAccount` | Twitter/X 카드에 넣을 계정 | `'gaonwiki'` | 설정 안 함 |
 | `$wgWhaleNaverVerification` | 네이버 사이트 인증 코드 | `'abcdef...'` | 설정 안 함 |
-| `$wgWhaleAvatarStyle` | 로그인 메뉴 DiceBear 프로필 아이콘 스타일 | `'bottts'` | `'initial-face'` |
+| `$wgWhaleAvatarStyle` | 로그인 메뉴 DiceBear 프로필 아이콘 스타일 | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | DiceBear PHP 라이브러리에 전달할 프로필 아이콘 옵션 | `[ 'borderRadius' => 12 ]` | `[]` |
 | `$wgWhaleEnableLiveRC` | 오른쪽 최근 변경 위젯 사용 | `true` | `true` |
 | `$wgWhaleEnableSectionCollapse` | 문단 접기/펼치기 사용 | `true` | `true` |
@@ -515,7 +515,7 @@ Users can now choose Whale in their preferences. To make Whale the default skin 
 $wgDefaultSkin = 'whale';
 ```
 
-The login menu profile icon is generated on the server with the DiceBear PHP library. It does not use browser-side JavaScript and does not call the DiceBear HTTP API. The default style is `initial-face`, and administrators can customize the style and options from `LocalSettings.php`. Style names may use kebab-case such as `pixel-art-neutral` or DiceBear-style camelCase such as `pixelArtNeutral`.
+The login menu profile icon is generated on the server with the DiceBear PHP library. It does not use browser-side JavaScript and does not call the DiceBear HTTP API. The default style is `identicon`, and administrators can customize the style and options from `LocalSettings.php`. Style names may use kebab-case such as `pixel-art-neutral` or DiceBear-style camelCase such as `pixelArtNeutral`.
 
 ```php
 $wgWhaleAvatarStyle = 'pixel-art-neutral';
@@ -850,7 +850,7 @@ The beta deploy workflow runs on `main` pushes when the repository variable `WHA
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgXAccount` | Twitter/X card account | `'gaonwiki'` | unset |
 | `$wgWhaleNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
-| `$wgWhaleAvatarStyle` | DiceBear profile icon style for the login menu | `'bottts'` | `'initial-face'` |
+| `$wgWhaleAvatarStyle` | DiceBear profile icon style for the login menu | `'bottts'` | `'identicon'` |
 | `$wgWhaleAvatarOptions` | Profile icon options passed to the DiceBear PHP library | `[ 'borderRadius' => 12 ]` | `[]` |
 | `$wgWhaleEnableLiveRC` | Enable right-sidebar recent changes | `true` | `true` |
 | `$wgWhaleEnableSectionCollapse` | Enable section folding | `true` | `true` |

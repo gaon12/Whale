@@ -8,7 +8,7 @@
 
 require_once __DIR__ . '/../WhaleAvatar.php';
 
-$avatar = WhaleAvatar::createDataUri( 'whale-test-user', 'initial-face' );
+$avatar = WhaleAvatar::createDataUri( 'whale-test-user', 'identicon' );
 if ( !is_string( $avatar ) || !str_starts_with( $avatar, 'data:image/svg+xml;charset=utf-8,' ) ) {
 	fwrite( STDERR, "DiceBear avatar was not rendered as an SVG data URI.\n" );
 	exit( 1 );
@@ -19,7 +19,7 @@ if ( !str_contains( rawurldecode( $avatar ), '<svg' ) ) {
 	exit( 1 );
 }
 
-$customAvatar = WhaleAvatar::createDataUri( 'whale-test-user', 'initial-face', [
+$customAvatar = WhaleAvatar::createDataUri( 'whale-test-user', 'identicon', [
 	'backgroundColor' => [ 'f8fafc' ],
 	'borderRadius' => 12,
 	'size' => 32,
