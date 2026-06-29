@@ -3,12 +3,12 @@
 	display: inline-block;
 	min-width: 10.75rem;
 	max-width: 100%;
-	padding: 0.85rem 1rem 1rem;
-	border: 1px solid #cfd4d9;
-	border-radius: 0;
-	background-color: #fff;
-	font-size: 0.95rem;
-	line-height: 1.55;
+	padding: 0.8rem 0.9rem 0.9rem;
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius);
+	background-color: var(--whale-surface-muted-color);
+	font-size: 0.9rem;
+	line-height: 1.6;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle {
@@ -17,8 +17,9 @@
 	justify-content: space-between;
 	gap: 1rem;
 	margin-bottom: 0.45rem;
-	padding: 0;
+	padding: 0 0 0.55rem;
 	border: 0;
+	border-bottom: 1px solid var(--whale-border-color);
 	background-color: transparent;
 }
 
@@ -26,7 +27,7 @@
 	display: inline-block;
 	margin: 0;
 	border: none;
-	color: #11181f;
+	color: var(--whale-text-color);
 	font-size: 1.05rem;
 	font-weight: 700;
 	line-height: 1.25;
@@ -74,7 +75,7 @@
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc ul,
 .Whale .content-wrapper .whale-content .whale-content-main .toc li {
-	background-color: #fff;
+	background-color: transparent;
 	list-style-type: none;
 	list-style-image: none;
 }
@@ -92,7 +93,7 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc li {
-	margin: 0.08rem 0;
+	margin: 0.12rem 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc a {
@@ -106,7 +107,7 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
-	color: #11181f;
+	color: var(--whale-text-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc a:hover,
@@ -129,12 +130,36 @@
 .Whale .content-wrapper .whale-content .whale-content-main h5,
 .Whale .content-wrapper .whale-content .whale-content-main h6,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading {
-	margin-top: 1rem;
+	margin-top: 1.5rem;
 	border-bottom: 1px solid var(--whale-border-color);
-	margin-bottom: 0.6rem;
-	padding-bottom: 0.6rem;
+	margin-bottom: 0.75rem;
+	padding-bottom: 0.5rem;
 	overflow-wrap: break-word;
 	overflow: hidden;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main h2,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading2 {
+	font-size: 1.5rem;
+	letter-spacing: -0.018em;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main h3,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading3 {
+	font-size: 1.3rem;
+	letter-spacing: -0.012em;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main h4,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading4 {
+	font-size: 1.15rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main h5,
+.Whale .content-wrapper .whale-content .whale-content-main h6,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading5,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading6 {
+	font-size: 1rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading h1,
@@ -174,8 +199,76 @@
 /* Title End */
 
 /* Content */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-parser-output {
+	color: var(--whale-text-color);
+	font-size: 0.96rem;
+	line-height: 1.72;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .mw-parser-output > p {
+	margin-bottom: 0.9rem;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main ul {
-	margin: 0.5rem 0 0.5rem 1.6rem;
+	margin: 0.55rem 0 0.85rem 1.6rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main li {
+	margin: 0.16rem 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main li::marker {
+	color: var(--whale-content-muted-color);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main blockquote {
+	margin: 1rem 0;
+	padding: 0.75rem 1rem;
+	border-left: 3px solid var(--whale-main-color);
+	background-color: var(--whale-surface-muted-color);
+	color: var(--whale-content-muted-color);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main blockquote > :last-child {
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main code,
+.Whale .content-wrapper .whale-content .whale-content-main kbd,
+.Whale .content-wrapper .whale-content .whale-content-main samp {
+	padding: 0.12em 0.32em;
+	border: 1px solid var(--whale-border-color);
+	border-radius: 0.2rem;
+	background-color: var(--whale-code-background);
+	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+	font-size: 0.9em;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main pre {
+	margin: 1rem 0;
+	padding: 0.9rem 1rem;
+	overflow: auto;
+	border-color: var(--whale-border-color);
+	border-radius: var(--whale-radius);
+	background-color: var(--whale-code-background);
+	line-height: 1.55;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main pre code {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-size: inherit;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .hatnote,
+.Whale .content-wrapper .whale-content .whale-content-main .dablink {
+	margin-bottom: 0.85rem;
+	padding: 0.6rem 0.8rem;
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius-sm);
+	background-color: var(--whale-surface-muted-color);
+	color: var(--whale-content-muted-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toccolours {
@@ -277,6 +370,10 @@ html .suggestions-result-current {
 
 .Whale .content-wrapper .whale-content .whale-content-main .thumbinner {
 	margin: auto;
+	padding: 0.35rem;
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius);
+	background-color: var(--whale-surface-muted-color);
 }
 /* Thumbnail End */
 
@@ -310,12 +407,15 @@ html .suggestions-result-current {
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .thumb .thumbcaption {
-	padding-top: 0.4rem;
-	text-align: center;
+	padding: 0.45rem 0.25rem 0.1rem;
+	color: var(--whale-content-muted-color);
+	font-size: 0.85rem;
+	line-height: 1.45;
+	text-align: left;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .thumb img {
-	border: 1px solid var(--whale-border-color);
+	border: 0;
 	box-shadow: none;
 }
 

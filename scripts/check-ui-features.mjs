@@ -253,7 +253,7 @@ assertIncludes(
 );
 assertIncludes(
 	mediaWikiStyles,
-	'border: 1px solid #cfd4d9',
+	'border: 1px solid var(--whale-border-color)',
 	'Article TOC compact document box',
 );
 assertIncludes(
@@ -416,6 +416,22 @@ assertIncludes(
 	mediaWikiStyles,
 	'border: 1px solid var(--whale-border-color)',
 	'MediaWiki thumbnail treatment',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'.whale-content-main .mw-parser-output',
+	'Article reading typography',
+);
+assertIncludes(mediaWikiStyles, 'line-height: 1.72', 'Article reading rhythm');
+assertIncludes(
+	mediaWikiStyles,
+	'.whale-content-main blockquote',
+	'Article quotation treatment',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'background-color: var(--whale-code-background)',
+	'Article code treatment',
 );
 assertIncludes(
 	styles,
