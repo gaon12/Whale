@@ -171,6 +171,16 @@ if (skinPhp.includes("addMeta( 'viewport'")) {
 if (skinPhp.includes('maximum-scale=1')) {
 	throw new Error('Viewport meta should not disable user zoom.');
 }
+assertIncludes(
+	skinPhp,
+	'disableRocketLoaderForScripts( $scriptsHtml )',
+	'Rocket Loader bypass for MediaWiki scripts',
+);
+assertIncludes(
+	skinPhp,
+	`'<script data-cfasync="false"'`,
+	'Rocket Loader bypass attribute',
+);
 
 const styles = readLessWithImports('less/default.less');
 const wikiStyles = read('less/wiki.less');
