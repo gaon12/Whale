@@ -5,6 +5,9 @@ body.whale-dark.Whale {
 	--whale-surface-muted-color: #25272a;
 	--whale-content-muted-color: #a9b1b9;
 	--whale-code-background: #17191c;
+	--whale-table-background: #1f2023;
+	--whale-table-header-background: #25272a;
+	--whale-table-border-color: #555;
 	--whale-border-color: #555;
 	--whale-border-strong-color: #687078;
 	--whale-hover-color: #2b333c;
@@ -21,6 +24,7 @@ body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
 body.whale-dark table.mw_metadata th,
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox th,
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox td,
 body.whale-dark #preferences fieldset:not(.prefsection),
 body.whale-dark #preferences div.mw-prefs-buttons,
 body.whale-dark .navbox,
@@ -158,6 +162,32 @@ body.whale-dark .Whale .content-wrapper .live-recent .live-recent-progress {
 
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading {
 	border-color: #555;
+}
+
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox {
+	background-color: var(--whale-table-background);
+	color: var(--whale-dark-text-color);
+}
+
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > th,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > th {
+	background-color: var(--whale-table-header-background);
+	border-color: var(--whale-table-border-color);
+	color: var(--whale-dark-text-color);
+}
+
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > td,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > td {
+	background-color: var(--whale-table-background);
+	border-color: var(--whale-table-border-color);
+	color: var(--whale-dark-text-color);
 }
 
 body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle {
@@ -443,11 +473,14 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 @media (prefers-color-scheme: dark) {
 	body.whale-auto-dark .Whale,
 	body.whale-auto-dark.Whale {
-		--whale-surface-color: #1f2023;
-		--whale-surface-muted-color: #25272a;
-		--whale-content-muted-color: #a9b1b9;
-		--whale-code-background: #17191c;
-		--whale-border-color: #555;
+	--whale-surface-color: #1f2023;
+	--whale-surface-muted-color: #25272a;
+	--whale-content-muted-color: #a9b1b9;
+	--whale-code-background: #17191c;
+	--whale-table-background: #1f2023;
+	--whale-table-header-background: #25272a;
+	--whale-table-border-color: #555;
+	--whale-border-color: #555;
 		--whale-border-strong-color: #687078;
 		--whale-hover-color: #2b333c;
 		--whale-shadow-sm: none;
@@ -463,6 +496,7 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
 	body.whale-auto-dark table.mw_metadata th,
 	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox th,
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox td,
 	body.whale-auto-dark #preferences fieldset:not(.prefsection),
 	body.whale-auto-dark #preferences div.mw-prefs-buttons,
 	body.whale-auto-dark .navbox,
@@ -602,7 +636,33 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 		border-color: #555;
 	}
 
-body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle {
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox {
+		background-color: var(--whale-table-background);
+		color: var(--whale-dark-text-color);
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > th,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > th,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > th {
+		background-color: var(--whale-table-header-background);
+		border-color: var(--whale-table-border-color);
+		color: var(--whale-dark-text-color);
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > td,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main table.infobox tr > td {
+		background-color: var(--whale-table-background);
+		border-color: var(--whale-table-border-color);
+		color: var(--whale-dark-text-color);
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main .whale-section-toggle {
 		background-color: transparent;
 		color: #cfd6dd;
 	}
