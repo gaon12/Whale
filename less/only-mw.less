@@ -130,7 +130,7 @@
 .Whale .content-wrapper .whale-content .whale-content-main h6,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading {
 	margin-top: 1rem;
-	border-bottom: 1px dashed #e1e8ed;
+	border-bottom: 1px solid var(--whale-border-color);
 	margin-bottom: 0.6rem;
 	padding-bottom: 0.6rem;
 	overflow-wrap: break-word;
@@ -163,13 +163,13 @@
 	margin-top: 1.35rem;
 	margin-bottom: 0.8rem;
 	padding-bottom: 0.55rem;
-	border-bottom: 1px solid #cfd4d9;
-	box-shadow: inset 0 -1px 0 #cfd4d9;
+	border-bottom: 1px solid var(--whale-border-color);
+	box-shadow: none;
 	overflow: visible;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-headline-number {
-	color: #4188f1;
+	color: var(--whale-main-color);
 }
 /* Title End */
 
@@ -179,9 +179,9 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toccolours {
-	background-color: #f5f8fa;
-	border-color: #e1e8ed;
-	border-radius: 0.35rem;
+	background-color: var(--whale-surface-muted-color);
+	border-color: var(--whale-border-color);
+	border-radius: var(--whale-radius);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-editsection {
@@ -190,12 +190,12 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks {
-	border: 1px solid #e1e8ed;
-	padding: 0.4rem;
-	padding-left: 1rem;
-	box-shadow: 0.15rem 0.15rem 0 0 #cfdae2;
+	border: 1px solid var(--whale-border-color);
+	padding: 0.6rem 0.8rem;
+	box-shadow: none;
 	margin-bottom: 0.8rem;
-	border-radius: 0.35rem;
+	border-radius: var(--whale-radius);
+	background-color: var(--whale-surface-muted-color);
 	display: inline-block;
 	width: 100%;
 }
@@ -315,7 +315,8 @@ html .suggestions-result-current {
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .thumb img {
-	box-shadow: 0.25rem 0.25rem 0 0 #e1e8ed;
+	border: 1px solid var(--whale-border-color);
+	box-shadow: none;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-lazy-image-shell {
