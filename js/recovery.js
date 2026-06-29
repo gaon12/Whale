@@ -4,6 +4,7 @@
 	const DEFAULT_LIMIT = 10;
 
 	const isWhaleReady = () => Boolean(window.whale?.ready);
+	const hasResourceLoaderStarted = () => Boolean(window.mw?.loader);
 
 	const ensureLocalStorage = () => {
 		const isStorageUsable = () => {
@@ -55,12 +56,8 @@
 		script.hasAttribute('data-cf-settings');
 
 	const isResourceLoaderScript = (script) => {
-		if (script.dataset.whaleRecovery === 'true') {
+		if (script.dataset.whaleRecovery === 'true' || !isRocketScript(script)) {
 			return false;
-		}
-
-		if (isRocketScript(script)) {
-			return true;
 		}
 
 		if (script.src) {
@@ -103,16 +100,28 @@
 		});
 
 	const replayResourceLoader = () => {
-		if (isWhaleReady()) {
+		if (
+			isWhaleReady() ||
+			hasResourceLoaderStarted() ||
+			document.documentElement.dataset.whaleResourceLoaderRecovery ===
+				'attempted'
+		) {
 			return;
 		}
 
+		const scripts = Array.from(document.querySelectorAll('script')).filter(
+			isResourceLoaderScript,
+		);
+		if (scripts.length === 0) {
+			return;
+		}
+
+		document.documentElement.dataset.whaleResourceLoaderRecovery = 'attempted';
 		ensureLocalStorage();
-		Array.prototype.reduce.call(
-			document.querySelectorAll('script'),
+		scripts.reduce(
 			(chain, script) =>
 				chain.then(() => {
-					if (!isResourceLoaderScript(script)) {
+					if (hasResourceLoaderStarted()) {
 						return null;
 					}
 
