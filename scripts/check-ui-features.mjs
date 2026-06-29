@@ -173,8 +173,13 @@ if (skinPhp.includes('maximum-scale=1')) {
 }
 assertIncludes(
 	skinPhp,
-	'disableRocketLoaderForScripts( $scriptsHtml )',
+	'disableRocketLoaderForScripts( (string)$scriptsHtml )',
 	'Rocket Loader bypass for MediaWiki scripts',
+);
+assertIncludes(
+	skinPhp,
+	"method_exists( $scriptsHtml, '__toString' )",
+	'Rocket Loader bypass for MediaWiki script fragments',
 );
 assertIncludes(
 	skinPhp,
