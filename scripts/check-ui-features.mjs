@@ -401,12 +401,43 @@ assertIncludes(styles, 'order: 29', 'Navbar notification placement');
 assertIncludes(styles, 'height: 2.55rem', 'Navbar link height clamp');
 assertIncludes(
 	styles,
-	'box-shadow: inset 0 -3px 0 transparent',
-	'Navbar tab focus',
+	'border-radius: var(--whale-radius-sm)',
+	'Navbar restrained corner radius',
 );
 assertIncludes(styles, 'font-weight: 600', 'Navbar menu weight');
 assertIncludes(styles, '.whale-icon-random', 'Navbar random icon sizing');
-assertIncludes(styles, 'border-radius: 1.05rem', 'Daol-like dropdown radius');
+assertIncludes(
+	styles,
+	'--whale-radius: 0.45rem',
+	'Shared surface corner radius',
+);
+assertIncludes(
+	styles,
+	'--whale-radius-sm: 0.3rem',
+	'Shared control corner radius',
+);
+assertIncludes(styles, '--whale-shadow-sm: none', 'Flat surface treatment');
+assertIncludes(
+	styles,
+	'box-shadow: var(--whale-shadow-md)',
+	'Floating layer elevation',
+);
+const navbarLinkBlock = styles.match(
+	/\.whale-navbar-link\s*\{(?<block>[\s\S]*?)\n\}/,
+)?.groups?.block;
+if (!navbarLinkBlock) {
+	throw new Error('Navbar link block should exist.');
+}
+if (/box-shadow:/.test(navbarLinkBlock)) {
+	throw new Error('Navbar links should not use decorative bottom shadows.');
+}
+const scrollButtonBlock = styles.match(
+	/#whale-bottombtn \.scroll-button\s*\{(?<block>[\s\S]*?)\n\}/,
+)?.groups?.block;
+if (!scrollButtonBlock) {
+	throw new Error('Scroll button block should exist.');
+}
+assertIncludes(scrollButtonBlock, 'box-shadow: none', 'Flat scroll buttons');
 
 const rendererPhp = read('WhaleRenderer.php');
 const navbarParserPhp = read('WhaleNavbarParser.php');

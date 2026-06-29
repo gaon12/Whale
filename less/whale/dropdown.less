@@ -11,17 +11,17 @@
 	z-index: 1000;
 	display: none;
 	min-width: 13rem;
-	padding: 0.72rem 0;
+	padding: 0.35rem 0;
 	margin: 0.35rem 0 0;
 	font-size: 0.96rem;
 	color: #373a3c;
 	text-align: left;
 	list-style: none;
-	background-color: #fefefe;
+	background-color: var(--whale-surface-color);
 	background-clip: padding-box;
-	border: 1px solid #e1e8ed;
-	border-radius: 1.05rem;
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius);
+	box-shadow: var(--whale-shadow-md);
 }
 
 .whale-dropdown-menu.is-open,
@@ -45,7 +45,7 @@
 	gap: 0.65rem;
 	width: 100%;
 	min-height: 2.35rem;
-	padding: 0.35rem 1.05rem;
+	padding: 0.35rem 0.8rem;
 	clear: both;
 	color: #373a3c;
 	font-weight: 400;
@@ -58,7 +58,7 @@
 
 .whale-dropdown-item:hover,
 .whale-dropdown-item:focus {
-	background-color: #f2f7ff;
+	background-color: var(--whale-hover-color);
 	color: var(--whale-main-color);
 	text-decoration: none;
 	transition: background-color 0.16s ease, color 0.16s ease;
