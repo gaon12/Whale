@@ -285,8 +285,8 @@ assertIncludes(
 );
 assertIncludes(
 	mediaWikiStyles,
-	'box-shadow: inset 0 -1px 0 #cfd4d9',
-	'MediaWiki heading rule should preserve section divider',
+	'box-shadow: none',
+	'MediaWiki heading rule should avoid decorative double dividers',
 );
 assertIncludes(
 	styles,
@@ -406,6 +406,17 @@ assertIncludes(
 );
 assertIncludes(styles, 'font-weight: 600', 'Navbar menu weight');
 assertIncludes(styles, '.whale-icon-random', 'Navbar random icon sizing');
+assertIncludes(styles, 'width: 2.4rem', 'Mobile navbar icon target sizing');
+assertIncludes(
+	mediaWikiStyles,
+	'background-color: var(--whale-surface-muted-color)',
+	'MediaWiki utility surfaces',
+);
+assertIncludes(
+	mediaWikiStyles,
+	'border: 1px solid var(--whale-border-color)',
+	'MediaWiki thumbnail treatment',
+);
 assertIncludes(
 	styles,
 	'--whale-radius: 0.45rem',
@@ -477,6 +488,13 @@ assertIncludes(
 	'Navbar parent items with children should render as inert toggles by default',
 );
 assertIncludes(rendererPhp, 'profile-img-fallback', 'Login avatar fallback');
+assertIncludes(rendererPhp, "'cog' => 'settings'", 'Lucide settings alias');
+assertIncludes(rendererPhp, "'random' => 'shuffle'", 'Lucide shuffle alias');
+assertIncludes(rendererPhp, "'data-lucide'", 'Lucide icon identity');
+assertIncludes(rendererPhp, "'viewBox' => '0 0 24 24'", 'Lucide view box');
+if (rendererPhp.includes('$solidIcons')) {
+	throw new Error('Navbar icons should not mix solid icon geometry.');
+}
 const removedAvatarRenderers = [
 	['w', 'Avatar'].join(''),
 	['Grav', 'atar'].join(''),
