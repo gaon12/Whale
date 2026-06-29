@@ -373,8 +373,20 @@ class SkinWhale extends SkinMustache {
 			( $GLOBALS['wgShowDebug'] ?? false ) && class_exists( MWDebug::class )
 				? MWDebug::getHTMLDebugLog()
 				: '';
+		$scriptsHtml = $data['html-scripts'] ?? '';
+		if ( is_string( $scriptsHtml ) ) {
+			$data['html-scripts'] = $this->disableRocketLoaderForScripts( $scriptsHtml );
+		}
 		$data['html-whale-rocket-loader-recovery'] = $this->renderRocketLoaderRecoveryScript();
 		return $data;
+	}
+
+	private function disableRocketLoaderForScripts( string $html ): string {
+		return preg_replace(
+			'/<script\b(?![^>]*\bdata-cfasync\s*=)/i',
+			'<script data-cfasync="false"',
+			$html
+		) ?? $html;
 	}
 
 	private function getVisibleSiteNoticeHtml( mixed $siteNoticeHtml ): string {
