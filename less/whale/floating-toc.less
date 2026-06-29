@@ -99,12 +99,18 @@ body.whale-floating-toc-hover .whale-floating-toc a,
 }
 
 .whale-floating-toc a:hover,
-.whale-floating-toc a:focus,
-.whale-floating-toc a.is-active {
+.whale-floating-toc a:focus {
 	background-color: var(--whale-main-color);
 	border-color: var(--whale-main-color);
 	color: #fff;
 	text-decoration: none;
+}
+
+body.whale-floating-toc-hover .whale-floating-toc a.is-active,
+.whale-floating-toc:focus-within a.is-active {
+	background-color: var(--whale-main-color);
+	border-color: var(--whale-main-color);
+	color: #fff;
 }
 
 .whale-floating-toc.is-mobile {
