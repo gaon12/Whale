@@ -71,6 +71,20 @@ const inertScript = {
 	src: '',
 	text: 'RLCONF={};',
 };
+const activeStartup = runRecovery({
+	loaderStarted: false,
+	scripts: [activeScript, inertScript],
+});
+if (
+	activeStartup.appended.length !== 0 ||
+	activeStartup.documentElement.dataset.whaleResourceLoaderRecovery ===
+		'attempted'
+) {
+	throw new Error(
+		'Recovery must not race an active ResourceLoader startup script.',
+	);
+}
+
 const stalled = runRecovery({
 	loaderStarted: false,
 	scripts: [inertScript],
