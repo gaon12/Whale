@@ -96,8 +96,22 @@
 		replacement.remove();
 	};
 
-	const replayExternalScript = (script) =>
-		new Promise((resolve) => {
+	const replayExternalScript = async (script) => {
+		try {
+			const response = await fetch(script.src, { credentials: 'same-origin' });
+			if (response.ok) {
+				const replacement = document.createElement('script');
+				replacement.text = await response.text();
+				if (isRocketScript(script)) {
+					script.remove();
+				}
+				document.head.append(replacement);
+				replacement.remove();
+				return;
+			}
+		} catch {}
+
+		return new Promise((resolve) => {
 			const replacement = document.createElement('script');
 			replacement.src = script.src;
 			replacement.async = false;
@@ -108,6 +122,7 @@
 			}
 			document.head.append(replacement);
 		});
+	};
 
 	const replayResourceLoader = () => {
 		if (
