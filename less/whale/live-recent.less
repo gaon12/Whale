@@ -25,7 +25,6 @@
 	background-color: #fff;
 	border: 1px solid var(--whale-border-color);
 	border-radius: var(--whale-radius);
-	box-shadow: var(--whale-shadow-sm);
 	overflow: hidden;
 	z-index: 1;
 }
@@ -35,7 +34,9 @@
 	align-items: center;
 	gap: 0.55rem;
 	min-height: 3rem;
-	padding: 0.55rem 0.75rem 0.35rem;
+	padding: 0.55rem 0.75rem;
+	border-bottom: 1px solid var(--whale-border-color);
+	background-color: var(--whale-surface-muted-color);
 }
 
 .Whale .content-wrapper .live-recent .live-recent-header > .whale-icon {
@@ -60,12 +61,12 @@
 	height: 1.7rem;
 	margin-left: auto;
 	color: #5d666d;
-	border-radius: 50%;
+	border-radius: var(--whale-radius-sm);
 }
 
 .Whale .content-wrapper .live-recent .live-recent-more:hover,
 .Whale .content-wrapper .live-recent .live-recent-more:focus {
-	background-color: #eef2f5;
+	background-color: var(--whale-hover-color);
 	color: #202326;
 	text-decoration: none;
 }
