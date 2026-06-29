@@ -64,7 +64,7 @@ let inertRemoved = false;
 const inertScript = {
 	dataset: {},
 	getAttribute: (name) => (name === 'type' ? 'abc-text/javascript' : ''),
-	hasAttribute: (name) => name === 'data-cf-settings',
+	hasAttribute: () => false,
 	remove: () => {
 		inertRemoved = true;
 	},

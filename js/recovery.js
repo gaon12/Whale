@@ -52,8 +52,7 @@
 	};
 
 	const isRocketScript = (script) =>
-		/-text\/javascript$/.test(script.getAttribute('type') || '') &&
-		script.hasAttribute('data-cf-settings');
+		/-text\/javascript$/.test(script.getAttribute('type') || '');
 
 	const isActiveResourceLoaderScript = (script) =>
 		!isRocketScript(script) &&
