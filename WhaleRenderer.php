@@ -134,8 +134,8 @@ class WhaleRenderer {
 				isset( $personalTools['notifications-notice'] )
 			) {
 				$notiCount =
-					( $personalTools['notifications-alert']['links'][0]['data']['counter-num'] ?? 0 ) +
-					( $personalTools['notifications-notice']['links'][0]['data']['counter-num'] ?? 0 );
+					self::getFirstLinkCounter( $personalTools['notifications-alert'] ) +
+					self::getFirstLinkCounter( $personalTools['notifications-notice'] );
 			}
 			$links[] = [
 				'html' => $linkRenderer->makeKnownLink(
@@ -195,7 +195,8 @@ class WhaleRenderer {
 			),
 		];
 
-		$logoutHref = $personalTools['logout']['links'][0]['href'] ?? '';
+		$logoutHrefValue = self::getFirstLinkField( $personalTools['logout'] ?? null, 'href' );
+		$logoutHref = is_string( $logoutHrefValue ) ? $logoutHrefValue : '';
 		$logoutTitle = Linker::titleAttrib( 'pt-logout', 'withaccess' );
 
 		$data += [
@@ -372,7 +373,7 @@ class WhaleRenderer {
 		];
 		$dropdownItems[] = [
 			'html' => $linkRenderer->makeKnownLink(
-				SpecialPage::getTitleFor( 'Whatlinkshere', $title ),
+				SpecialPage::getTitleFor( 'Whatlinkshere', $title->getPrefixedDBkey() ),
 				$skin->msg( 'whatlinkshere' )->plain(),
 				[
 					'class' => 'whale-dropdown-item',
@@ -396,7 +397,7 @@ class WhaleRenderer {
 		if ( $permissionManager->quickUserCan( 'move', $user, $title ) && $title->exists() ) {
 			$dropdownItems[] = [
 				'html' => $linkRenderer->makeKnownLink(
-					SpecialPage::getTitleFor( 'Movepage', $title ),
+					SpecialPage::getTitleFor( 'Movepage', $title->getPrefixedDBkey() ),
 					$skin->msg( 'move' )->plain(),
 					[
 						'class' => 'whale-dropdown-item',
@@ -470,7 +471,8 @@ class WhaleRenderer {
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$fixedHeight = ( $wgWhaleLiveRecentFixedHeight ?? true ) !== false &&
 			$userOptionsLookup->getOption( $skin->getUser(), 'whale-live-recent-fixed-height' ) !== false;
-		$refreshInterval = max( 10, (int)( $wgWhaleLiveRCRefreshInterval ?? 60 ) );
+		$refreshRaw = $wgWhaleLiveRCRefreshInterval ?? 60;
+		$refreshInterval = max( 10, is_numeric( $refreshRaw ) ? (int)$refreshRaw : 60 );
 		$isMobile = $mode === 'mobile';
 		$articleNamespaces = $this->normalizeRecentChangeNamespaces(
 			$wgWhaleLiveRCArticleNamespaces ?? null,
@@ -498,13 +500,15 @@ class WhaleRenderer {
 			);
 		}
 
+		$maxRecent = is_numeric( $wgWhaleMaxRecent ?? null ) ? (int)$wgWhaleMaxRecent : 10;
+
 		return [
 			'has-live-recent' => true,
 			'classes' => 'live-recent' . ( $fixedHeight ? ' live-recent-fixed-height' : '' ),
 			'mode' => $mode,
-			'limit' => (int)$wgWhaleMaxRecent,
+			'limit' => $maxRecent,
 			'refresh-ms' => $refreshInterval * 1000,
-			'style' => '--whale-live-recent-limit: ' . (int)$wgWhaleMaxRecent .
+			'style' => '--whale-live-recent-limit: ' . $maxRecent .
 				'; --whale-live-recent-refresh: ' . $refreshInterval . 's;',
 			'feeds' => $feeds,
 		];
@@ -573,8 +577,8 @@ class WhaleRenderer {
 		$categories = [];
 
 		foreach ( $footerData as $category => $categoryData ) {
-			$links = $categoryData['array-items'] ?? [];
-			if ( !$links ) {
+			$links = is_array( $categoryData ) ? ( $categoryData['array-items'] ?? [] ) : [];
+			if ( !is_array( $links ) || !$links ) {
 				continue;
 			}
 			$categoryName = preg_replace( '/^data-/', '', $category );
@@ -584,11 +588,15 @@ class WhaleRenderer {
 
 			$items = [];
 			foreach ( $links as $link ) {
+				if ( !is_array( $link ) ) {
+					continue;
+				}
 				$rawName = $link['name'] ?? null;
 				$name = is_string( $rawName ) ? $rawName : '';
+				$rawHtml = $link['html'] ?? '';
 				$items[] = [
 					'class' => 'footer-' . $categoryName . '-' . Sanitizer::escapeClass( $name ),
-					'html' => $link['html'] ?? '',
+					'html' => is_string( $rawHtml ) ? $rawHtml : '',
 				];
 			}
 
@@ -748,7 +756,8 @@ class WhaleRenderer {
 			return [ 'has-user-contribution-graph' => false ];
 		}
 
-		$days = max( 7, min( 730, (int)( $wgWhaleContributionGraphDays ?? 365 ) ) );
+		$daysRaw = $wgWhaleContributionGraphDays ?? 365;
+		$days = max( 7, min( 730, is_numeric( $daysRaw ) ? (int)$daysRaw : 365 ) );
 		$levels = is_array( $wgWhaleContributionGraphLevels ?? null )
 			? array_values( array_filter( $this->normalizeIntegerList( $wgWhaleContributionGraphLevels ), static function ( int $level ) {
 				return $level > 0;
@@ -762,7 +771,8 @@ class WhaleRenderer {
 		$namespaces = is_array( $wgWhaleContributionGraphNamespaces ?? null )
 			? array_values( array_unique( $this->normalizeIntegerList( $wgWhaleContributionGraphNamespaces ) ) )
 			: null;
-		$ttl = max( 60, (int)( $wgWhaleContributionGraphCacheTTL ?? 3600 ) );
+		$ttlRaw = $wgWhaleContributionGraphCacheTTL ?? 3600;
+		$ttl = max( 60, is_numeric( $ttlRaw ) ? (int)$ttlRaw : 3600 );
 		$userName = $title->getText();
 		$graph = new WhaleContributionGraph( $this->skin );
 		$counts = $graph->getCounts( $userName, $days, $namespaces, $ttl );
@@ -845,13 +855,13 @@ class WhaleRenderer {
 			}
 
 			$children = [];
-			foreach ( $content['children'] ?? [] as $child ) {
+			foreach ( self::normalizePortalItemList( $content['children'] ?? null ) as $child ) {
 				if ( !$this->canShowPortalItem( $child, $userGroups, $userRights ) ) {
 					continue;
 				}
 
 				$subItems = [];
-				foreach ( $child['children'] ?? [] as $sub ) {
+				foreach ( self::normalizePortalItemList( $child['children'] ?? null ) as $sub ) {
 					if ( $this->canShowPortalItem( $sub, $userGroups, $userRights ) ) {
 						$subItems[] = $this->buildPortalChildItem( $sub );
 					}
@@ -860,8 +870,14 @@ class WhaleRenderer {
 				$children[] = $this->buildPortalChildItem( $child, $subItems );
 			}
 
-			$classes = array_merge( [ 'whale-dropdown', 'whale-navbar-item' ], $content['wrapperClasses'] ?? [] );
-			$linkClasses = array_merge( $content['classes'] ?? [], [ 'whale-navbar-link' ] );
+			$classes = array_merge(
+				[ 'whale-dropdown', 'whale-navbar-item' ],
+				self::normalizeClassList( $content['wrapperClasses'] ?? null )
+			);
+			$linkClasses = array_merge(
+				self::normalizeClassList( $content['classes'] ?? null ),
+				[ 'whale-navbar-link' ]
+			);
 			$hasChildren = count( $children ) > 0;
 			if ( $hasChildren ) {
 				$linkClasses[] = 'whale-dropdown-toggle';
@@ -897,7 +913,7 @@ class WhaleRenderer {
 	 * @return array<string,mixed>
 	 */
 	private function buildPortalChildItem( array $item, array $children = [] ): array {
-		$classes = array_merge( $item['classes'] ?? [], [ 'whale-dropdown-item' ] );
+		$classes = array_merge( self::normalizeClassList( $item['classes'] ?? null ), [ 'whale-dropdown-item' ] );
 		$hasChildren = count( $children ) > 0;
 		$wrapperClasses = [ 'whale-dropdown-child' ];
 		if ( $hasChildren ) {
@@ -946,14 +962,94 @@ class WhaleRenderer {
 		}
 
 		$html = '';
-		if ( isset( $item['icon'] ) ) {
-			$html .= $this->renderIcon( $item['icon'] );
+		$icon = $item['icon'] ?? null;
+		if ( is_string( $icon ) ) {
+			$html .= $this->renderIcon( $icon );
 		}
-		if ( isset( $item['text'] ) && $item['text'] !== '' ) {
-			$html .= Html::element( 'span', [ 'class' => $isChild ? '' : 'hide-title' ], $item['text'] );
+		$text = $item['text'] ?? null;
+		if ( is_string( $text ) && $text !== '' ) {
+			$html .= Html::element( 'span', [ 'class' => $isChild ? '' : 'hide-title' ], $text );
 		}
 
 		return Html::rawElement( $isToggleButton ? 'button' : 'a', $attrs, $html );
+	}
+
+	/**
+	 * Normalize a parsed navbar 'children' value into a list of items with
+	 * string keys, dropping anything that is not an array.
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function normalizePortalItemList( mixed $value ): array {
+		if ( !is_array( $value ) ) {
+			return [];
+		}
+
+		$items = [];
+		foreach ( $value as $entry ) {
+			if ( !is_array( $entry ) ) {
+				continue;
+			}
+			$item = [];
+			foreach ( $entry as $key => $entryValue ) {
+				$item[(string)$key] = $entryValue;
+			}
+			$items[] = $item;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Normalize a parsed navbar class list into non-empty strings.
+	 *
+	 * @return array<int,string>
+	 */
+	private static function normalizeClassList( mixed $classes ): array {
+		if ( !is_array( $classes ) ) {
+			return [];
+		}
+
+		$list = [];
+		foreach ( $classes as $class ) {
+			if ( is_string( $class ) && $class !== '' ) {
+				$list[] = $class;
+			}
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Safely read a field from the first link of a structured personal tool.
+	 */
+	private static function getFirstLinkField( mixed $tool, string $field ): mixed {
+		if ( !is_array( $tool ) ) {
+			return null;
+		}
+		$links = $tool['links'] ?? null;
+		if ( !is_array( $links ) ) {
+			return null;
+		}
+		$first = $links[0] ?? null;
+		if ( !is_array( $first ) ) {
+			return null;
+		}
+
+		return $first[$field] ?? null;
+	}
+
+	/**
+	 * Read the Echo notification counter from a structured personal tool.
+	 */
+	private static function getFirstLinkCounter( mixed $tool ): int {
+		$data = self::getFirstLinkField( $tool, 'data' );
+		if ( !is_array( $data ) ) {
+			return 0;
+		}
+		$counter = $data['counter-num'] ?? null;
+
+		return is_numeric( $counter ) ? (int)$counter : 0;
 	}
 
 	/**
@@ -965,7 +1061,7 @@ class WhaleRenderer {
 		foreach ( [ 'notifications-alert', 'notifications-notice' ] as $key ) {
 			if (
 				isset( $personalTools[$key] ) &&
-				( $personalTools[$key]['links'][0]['data']['counter-num'] ?? 0 )
+				self::getFirstLinkCounter( $personalTools[$key] ) > 0
 			) {
 				$items[] = [ 'html' => $this->skin->makeWhaleListItem( $key, $personalTools[$key] ) ];
 			}
@@ -1007,16 +1103,16 @@ class WhaleRenderer {
 			],
 			__METHOD__
 		);
-		if ( $row && (int)$row->page_latest > 0 ) {
-			return (int)$row->page_latest;
+		if ( $row ) {
+			$latest = $row->page_latest ?? null;
+			if ( is_numeric( $latest ) && (int)$latest > 0 ) {
+				return (int)$latest;
+			}
 		}
 
 		$wikiPage = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
-		if ( method_exists( $wikiPage, 'getLatest' ) ) {
-			return (int)$wikiPage->getLatest();
-		}
 
-		return method_exists( $title, 'getLatestRevID' ) ? (int)$title->getLatestRevID() : 0;
+		return $wikiPage->getLatest();
 	}
 
 	private function renderIcon( ?string $icon ): string {
