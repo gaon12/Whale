@@ -481,18 +481,31 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 	color: #fff;
 }
 
+/* namu-style dark canvas: soft near-black page behind the sheet, and
+   the article body shares the sheet surface with its header/footer
+   instead of dropping to pure black between them. */
+body.whale-dark,
+body.whale-dark.Whale {
+	background-color: #17181a;
+}
+
+body.whale-dark .Whale .content-wrapper .whale-content .whale-content-main,
+body.whale-dark.Whale .content-wrapper .whale-content .whale-content-main {
+	background-color: var(--whale-surface-color);
+}
+
 @media (prefers-color-scheme: dark) {
 	body.whale-auto-dark .Whale,
 	body.whale-auto-dark.Whale {
-	--whale-surface-color: #1f2023;
-	--whale-surface-muted-color: #25272a;
-	--whale-text-color: #ddd;
-	--whale-content-muted-color: #a9b1b9;
-	--whale-code-background: #17191c;
-	--whale-table-background: #1f2023;
-	--whale-table-header-background: #25272a;
-	--whale-table-border-color: #555;
-	--whale-border-color: #555;
+		--whale-surface-color: #1f2023;
+		--whale-surface-muted-color: #25272a;
+		--whale-text-color: #ddd;
+		--whale-content-muted-color: #a9b1b9;
+		--whale-code-background: #17191c;
+		--whale-table-background: #1f2023;
+		--whale-table-header-background: #25272a;
+		--whale-table-border-color: #555;
+		--whale-border-color: #555;
 		--whale-border-strong-color: #687078;
 		--whale-hover-color: #2b333c;
 		--whale-shadow-sm: none;
@@ -962,6 +975,17 @@ body.whale-dark.Whale #whale-bottombtn .scroll-button:hover {
 		background-color: var(--whale-main-color);
 		border-color: var(--whale-main-color);
 		color: #fff;
+	}
+
+	/* namu-style dark canvas; see the whale-dark rules above. */
+	body.whale-auto-dark,
+	body.whale-auto-dark.Whale {
+		background-color: #17181a;
+	}
+
+	body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main,
+	body.whale-auto-dark.Whale .content-wrapper .whale-content .whale-content-main {
+		background-color: var(--whale-surface-color);
 	}
 }
 /* Dark mode End */
