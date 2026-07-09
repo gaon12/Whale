@@ -145,8 +145,15 @@ class SkinWhale extends SkinMustache {
 				( $title ? $title->getPrefixedText() : '' )
 		);
 
-		/* OpenGraph logo image ($wgWhaleOgLogo, falling back to $wgLogo) */
-		if ( $ogLogo !== '' ) {
+		/*
+		 * OpenGraph logo image ($wgWhaleOgLogo, falling back to $wgLogo).
+		 * Skip when an OpenGraph extension already emits og:image so the
+		 * page does not carry duplicate tags.
+		 */
+		$hasOpenGraphExtension = class_exists( 'OpenGraphMeta' ) ||
+			class_exists( 'MediaWiki\\Extension\\OpenGraphMeta\\Hooks' ) ||
+			class_exists( 'MediaWiki\\Extension\\WikiSEO\\WikiSEO' );
+		if ( $ogLogo !== '' && !$hasOpenGraphExtension ) {
 			$out->addMeta( 'og:image', $ogLogo );
 		}
 
