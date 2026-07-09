@@ -176,12 +176,12 @@ ol,
 
 pre {
 	display: block;
-	color: #333;
+	color: var(--whale-text-color, #252a30);
 	word-break: break-all;
 	word-wrap: break-word;
-	background-color: #f5f8fa;
-	border: 1px solid #e1e8ed;
-	border-radius: 0.35rem;
+	background-color: var(--whale-code-background, #f3f5f7);
+	border: 1px solid var(--whale-border-color, #d9dee3);
+	border-radius: var(--whale-radius-sm, 0.2rem);
 	padding: 0.8rem;
 }
 
@@ -243,12 +243,12 @@ input[type="search"] {
 
 textarea {
 	width: 100%;
-	border: 1px solid #e1e8ed;
+	border: 1px solid var(--whale-border-color, #d9dee3);
 	padding: 0.5rem;
 }
 
 hr {
-	border-top: 1px solid #e1e8ed;
+	border-top: 1px solid var(--whale-border-color, #d9dee3);
 }
 
 label {
