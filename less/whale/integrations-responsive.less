@@ -283,8 +283,10 @@
 	}
 }
 
+/* All small modals (login, short URL, external link) share the same
+   narrow-screen sizing; the fixed 28rem width overflows otherwise. */
 @media screen and (max-width: 34rem) {
-	.Whale .whale-login-modal .whale-modal-sm {
+	.Whale .whale-modal-sm {
 		width: calc(100% - 2rem);
 		max-width: 28rem;
 		margin: 1rem auto;
@@ -292,7 +294,7 @@
 }
 
 @media screen and (max-width: 22rem) {
-	.Whale .whale-login-modal .whale-modal-sm {
+	.Whale .whale-modal-sm {
 		width: 100%;
 		margin: 0.75rem 0;
 	}
