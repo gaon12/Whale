@@ -88,9 +88,9 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 .Whale .whale-login-modal .whale-modal-title {
 	margin: 0;
 	padding: 0;
-	color: #2c333a;
+	color: var(--whale-text-color, #252a30);
 	font-size: 1.55rem;
-	font-weight: 800;
+	font-weight: 700;
 	line-height: 1.25;
 	text-align: center;
 }
@@ -242,15 +242,20 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 
 .Whale .whale-login-modal .whale-modal-content {
 	overflow: hidden;
-	border: 1px solid rgba(30, 62, 100, 0.18);
+	border: 1px solid var(--whale-border-color, #d9dee3);
 	border-radius: var(--whale-radius);
 	box-shadow: var(--whale-shadow-md);
 }
 
+/* Accent bar follows the active palette instead of fixed blues. */
 .Whale .whale-login-modal .whale-modal-content::before {
 	display: block;
 	height: 4px;
-	background: linear-gradient(90deg, #1d477b, var(--whale-main-color), #61a5ff);
+	background: linear-gradient(
+		90deg,
+		var(--whale-second-color, #2f69a8),
+		var(--whale-main-color, #3f7fc4)
+	);
 	content: "";
 }
 
@@ -287,10 +292,10 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	width: 100%;
 	box-sizing: border-box;
 	height: 2.7rem;
-	border: 1px solid #b9c7d8;
-	border-radius: 0.28rem;
-	background-color: #f8fbff;
-	color: #11181f;
+	border: 1px solid var(--whale-border-strong-color, #c5ccd3);
+	border-radius: var(--whale-radius-sm, 0.3rem);
+	background-color: var(--whale-surface-muted-color, #f5f7f9);
+	color: var(--whale-text-color, #252a30);
 	font-size: 1rem;
 	line-height: 1.5;
 	padding: 0.45rem 0.7rem;
@@ -315,7 +320,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 .Whale .whale-login-modal .whale-login-checkbox {
 	vertical-align: middle;
 	margin-bottom: 0.85rem;
-	color: #4f5b63;
+	color: var(--whale-content-muted-color, #626c76);
 }
 
 .Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] {
@@ -340,41 +345,53 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 }
 
 .Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label::before {
-	-webkit-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	-moz-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	-o-transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	transition: border-color 0.16s ease, background-color 0.16s ease,
+		box-shadow 0.16s ease;
 	content: "";
 	cursor: pointer;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	position: absolute;
 	left: 0;
 	width: 2rem;
 	height: 2rem;
-	border: 1px solid #8c98a4;
-	border-radius: 0.25rem;
+	border: 1px solid var(--whale-border-strong-color, #8c98a4);
+	border-radius: var(--whale-radius-sm, 0.25rem);
 	background-color: #fff;
 	line-height: 2rem;
 	top: 50%;
 	margin-top: -1rem;
 }
 
-.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label:hover::before {
+/* Checkmark drawn with borders so it can use the palette color. */
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label::after {
+	content: "";
+	box-sizing: border-box;
+	position: absolute;
+	top: 50%;
+	left: 0.72rem;
+	width: 0.55rem;
+	height: 1rem;
+	margin-top: -0.62rem;
+	border-right: 3px solid var(--whale-main-color, #3f7fc4);
+	border-bottom: 3px solid var(--whale-main-color, #3f7fc4);
+	transform: rotate(45deg) scale(0);
+	transition: transform 0.15s ease;
+	pointer-events: none;
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label:hover::before,
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"]:focus-visible + label::before {
 	border-color: var(--whale-main-color);
 	box-shadow: 0 0 0 3px rgba(65, 136, 241, 0.14);
 }
 
 .Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"]:checked + label::before {
 	border-color: var(--whale-main-color);
-	background-color: #e8f1ff;
-	background-image:
-		linear-gradient(transparent, transparent),
-		url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M4%2012l5%205L20%205%22%20stroke%3D%22%2300B78C%22%20stroke-width%3D%223%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E%0A);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 1.35rem 1.35rem;
+	background-color: var(--whale-hover-color, #e8f1ff);
+}
+
+.Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"]:checked + label::after {
+	transform: rotate(45deg) scale(1);
 }
 
 .Whale .whale-login-modal .whale-btn {
@@ -410,7 +427,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	border: 1px solid var(--whale-border-color, #d9dee3);
 	border-radius: var(--whale-radius-sm);
 	background-color: var(--whale-surface-muted-color, #f5f7f9);
-	color: #285f9f;
+	color: var(--whale-main-color, #3f7fc4);
 	font-size: 0.9rem;
 	line-height: 1.35;
 	text-align: center;
@@ -419,9 +436,9 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 
 .Whale .whale-login-modal .whale-login-links a:hover,
 .Whale .whale-login-modal .whale-login-links a:focus {
-	border-color: #b9c7d8;
-	background-color: #edf4ff;
-	color: #164b87;
+	border-color: var(--whale-border-strong-color, #c5ccd3);
+	background-color: var(--whale-hover-color, #edf3f9);
+	color: var(--whale-second-color, #2f69a8);
 	text-decoration: none;
 }
 
