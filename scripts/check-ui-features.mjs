@@ -487,12 +487,12 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'--whale-radius: 0.45rem',
+	'--whale-radius: 0.3rem',
 	'Shared surface corner radius',
 );
 assertIncludes(
 	styles,
-	'--whale-radius-sm: 0.3rem',
+	'--whale-radius-sm: 0.2rem',
 	'Shared control corner radius',
 );
 assertIncludes(styles, '--whale-shadow-sm: none', 'Flat surface treatment');
