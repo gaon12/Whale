@@ -115,9 +115,11 @@ class SkinWhale extends SkinMustache {
 		$secondColor = $themeColors['light']['secondary'];
 		$darkMainColor = $themeColors['dark']['primary'];
 		$darkSecondColor = $themeColors['dark']['secondary'];
-		$ogLogo = isset( $GLOBALS['wgWhaleOgLogo'] ) ? $GLOBALS['wgWhaleOgLogo'] : $wgLogo;
-		if ( !preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $ogLogo ) ) {
-			$ogLogo = $GLOBALS['wgServer'] . $GLOBALS['wgLogo'];
+		$ogLogo = $GLOBALS['wgWhaleOgLogo'] ?? $wgLogo;
+		if ( !is_string( $ogLogo ) || !preg_match( '/^((?:(?:http(?:s)?)?:)?\/\/(?:.{4,}))$/i', $ogLogo ) ) {
+			$server = $GLOBALS['wgServer'] ?? '';
+			$logoPath = $GLOBALS['wgLogo'] ?? '';
+			$ogLogo = ( is_string( $server ) ? $server : '' ) . ( is_string( $logoPath ) ? $logoPath : '' );
 		}
 
 		$skin = $this->getSkin();
@@ -132,14 +134,24 @@ class SkinWhale extends SkinMustache {
 			// so output this here only if none of the aforementioned SEO
 			// extensions aren't installed
 			$out->addMeta( 'description', strip_tags(
-				preg_replace( '/<table[^>]*>([\s\S]*?)<\/table[^>]*>/', '', $out->mBodytext ),
+				preg_replace( '/<table[^>]*>([\s\S]*?)<\/table[^>]*>/', '', $out->mBodytext ) ?? '',
 				'<br>'
 			) );
 		}
-		$out->addMeta( 'keywords', $wgSitename . ',' . $skin->getTitle() );
+		$title = $skin->getTitle();
+		$out->addMeta(
+			'keywords',
+			( is_string( $wgSitename ) ? $wgSitename : '' ) . ',' .
+				( $title ? $title->getPrefixedText() : '' )
+		);
+
+		/* OpenGraph logo image ($wgWhaleOgLogo, falling back to $wgLogo) */
+		if ( $ogLogo !== '' ) {
+			$out->addMeta( 'og:image', $ogLogo );
+		}
 
 		/* Naver webmaster verification */
-		if ( isset( $wgWhaleNaverVerification ) ) {
+		if ( is_string( $wgWhaleNaverVerification ) && $wgWhaleNaverVerification !== '' ) {
 			$out->addMeta( 'naver-site-verification', $wgWhaleNaverVerification );
 		}
 
@@ -159,7 +171,7 @@ class SkinWhale extends SkinMustache {
 
 		/* Twitter card */
 		$out->addMeta( 'twitter:card', 'summary' );
-		if ( isset( $wgXAccount ) ) {
+		if ( is_string( $wgXAccount ) && $wgXAccount !== '' ) {
 			$out->addMeta( 'twitter:site', "@$wgXAccount" );
 			$out->addMeta( 'twitter:creator', "@$wgXAccount" );
 		}
