@@ -30,7 +30,7 @@ class WhaleHooks {
 	 * @since 1.17.0
 	 * @param OutputPage $out
 	 * @param Skin $sk
-	 * @param array &$bodyAttrs
+	 * @param array<string,mixed> &$bodyAttrs
 	 */
 	public static function onOutputPageBodyAttributes( OutputPage $out, Skin $sk, array &$bodyAttrs ): void {
 		global $wgWhaleEnableFloatingToc, $wgWhaleEnableReadingProgress, $wgWhaleEnableHeadingAnchors,
@@ -38,7 +38,8 @@ class WhaleHooks {
 			$wgWhaleEnableMobileFloatingToc, $wgWhaleMobileUserToolsPosition, $wgWhaleEnableContentSkeleton;
 
 		if ( $sk->getSkinName() === 'whale' ) {
-			$bodyAttrs['class'] .= ' Whale width-size';
+			$existingClass = $bodyAttrs['class'] ?? '';
+			$bodyAttrs['class'] = ( is_string( $existingClass ) ? $existingClass : '' ) . ' Whale width-size';
 			$userOptionsLookup = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsLookup();
 			$darkMode = $userOptionsLookup->getOption( $sk->getUser(), 'whale-dark' );
 			if ( $sk->getUser()->isAnon() ) {
@@ -123,7 +124,7 @@ class WhaleHooks {
 					self::FONT_SCALE_SMALL,
 					self::FONT_SCALE_LARGE,
 					self::FONT_SCALE_XLARGE
-				] ) ) {
+				], true ) ) {
 					$fontScale = self::FONT_SCALE_NORMAL;
 				}
 				$bodyAttrs['class'] .= ' whale-font-scale-' . $fontScale;
@@ -410,12 +411,13 @@ class WhaleHooks {
 			];
 		}
 
+		$adSetting = is_array( $wgWhaleAdSetting ?? null ) ? $wgWhaleAdSetting : [];
 		if (
-			isset( $wgWhaleAdSetting['client'] ) && $wgWhaleAdSetting['client'] &&
+			isset( $adSetting['client'] ) && $adSetting['client'] &&
 			isset( $wgWhaleAdGroup ) && $wgWhaleAdGroup == 'differ'
 		) {
 			if (
-				isset( $wgWhaleAdSetting['belowarticle'] ) && $wgWhaleAdSetting['belowarticle'] &&
+				isset( $adSetting['belowarticle'] ) && $adSetting['belowarticle'] &&
 				$permissionManager->userHasRight( $user, 'blockads-belowarticle' )
 			) {
 				$preferences['whale-ads-belowarticle'] = [
@@ -426,7 +428,7 @@ class WhaleHooks {
 			}
 
 			if (
-				isset( $wgWhaleAdSetting['header'] ) && $wgWhaleAdSetting['header'] &&
+				isset( $adSetting['header'] ) && $adSetting['header'] &&
 				$permissionManager->userHasRight( $user, 'blockads-header' )
 			) {
 				$preferences['whale-ads-header'] = [
@@ -437,7 +439,7 @@ class WhaleHooks {
 			}
 
 			if (
-				isset( $wgWhaleAdSetting['right'] ) && $wgWhaleAdSetting['right'] &&
+				isset( $adSetting['right'] ) && $adSetting['right'] &&
 				$permissionManager->userHasRight( $user, 'blockads-right' )
 			) {
 				$preferences['whale-ads-right'] = [
@@ -448,7 +450,7 @@ class WhaleHooks {
 			}
 
 			if (
-				isset( $wgWhaleAdSetting['bottom'] ) && $wgWhaleAdSetting['bottom'] &&
+				isset( $adSetting['bottom'] ) && $adSetting['bottom'] &&
 				$permissionManager->userHasRight( $user, 'blockads-bottom' )
 			) {
 				$preferences['whale-ads-bottom'] = [
@@ -526,7 +528,7 @@ class WhaleHooks {
 	public static function onOutputPageBeforeHTML( $out, &$text ) {
 		global $wgWhaleEnableSectionCollapse, $wgWhaleEnableFoldingBlocks, $wgWhaleEnableHeadingAnchors;
 
-		$skin = method_exists( $out, 'getSkin' ) ? $out->getSkin() : null;
+		$skin = $out->getSkin();
 		if ( !$skin || $skin->getSkinName() !== 'whale' ) {
 			return true;
 		}
