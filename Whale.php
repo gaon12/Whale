@@ -1,6 +1,9 @@
 <?php // @codingStandardsIgnoreLine
 if ( function_exists( 'wfLoadSkin' ) ) {
 	wfLoadSkin( 'Whale' );
+	if ( !isset( $wgMessagesDirs ) || !is_array( $wgMessagesDirs ) ) {
+		$wgMessagesDirs = [];
+	}
 	$wgMessagesDirs['Whale'] = __DIR__ . '/i18n';
 	return true;
 

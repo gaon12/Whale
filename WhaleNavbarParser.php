@@ -202,7 +202,8 @@ class WhaleNavbarParser {
 		}
 
 		$encoded = str_replace( '%3A', ':', urlencode( $link ) );
-		return str_replace( '$1', $encoded, $wgArticlePath );
+		$articlePath = is_string( $wgArticlePath ) ? $wgArticlePath : '/index.php?title=$1';
+		return str_replace( '$1', $encoded, $articlePath );
 	}
 
 	private function isSafeExternalNavbarHref( string $link ): bool {

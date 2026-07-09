@@ -1,84 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property object\:\:\$page_namespace\.$#'
-			identifier: property.notFound
-			count: 1
-			path: SpecialWhaleShortUrl.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$page_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: SpecialWhaleShortUrl.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 2
-			path: SpecialWhaleShortUrl.php
-
-		-
-			message: '#^Method SpecialWhaleShortUrl\:\:execute\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: SpecialWhaleShortUrl.php
-
-		-
-			message: '#^Parameter \#2 \$title of static method MediaWiki\\Title\\Title\:\:makeTitleSafe\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: SpecialWhaleShortUrl.php
-
-		-
-			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, array\<string, int\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: SpecialWhaleShortUrl.php
-
-		-
-			message: '#^Cannot access offset ''Whale'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: Whale.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$day\.$#'
-			identifier: property.notFound
-			count: 1
-			path: WhaleContributionGraph.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$edits\.$#'
-			identifier: property.notFound
-			count: 1
-			path: WhaleContributionGraph.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: WhaleContributionGraph.php
-
-		-
-			message: '#^Method WhaleContributionGraph\:\:getCounts\(\) should return array\<string, int\> but returns array\<int\>\.$#'
-			identifier: return.type
-			count: 1
-			path: WhaleContributionGraph.php
-
-		-
-			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:select\(\) expects array\<string\>, array\<int\|string, array\<int, int\>\|int\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: WhaleContributionGraph.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: WhaleContributionGraph.php
-
-		-
 			message: '#^Binary operation "\." between '' whale\-font\-scale\-'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
@@ -133,18 +55,6 @@ parameters:
 			path: WhaleHooks.php
 
 		-
-			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: WhaleNavbarParser.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$page_latest\.$#'
-			identifier: property.notFound
-			count: 2
-			path: WhaleRenderer.php
-
-		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 3
@@ -152,12 +62,6 @@ parameters:
 
 		-
 			message: '#^Binary operation "\+" between mixed and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Binary operation "\." between ''Whale\-Navbar/'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
 			path: WhaleRenderer.php
@@ -223,18 +127,6 @@ parameters:
 			path: WhaleRenderer.php
 
 		-
-			message: '#^Cannot call method formatNum\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Cannot call method getCode\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: WhaleRenderer.php
-
-		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 7
@@ -265,12 +157,6 @@ parameters:
 			path: WhaleRenderer.php
 
 		-
-			message: '#^Parameter \#1 \$tables of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: WhaleRenderer.php
-
-		-
 			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 2
@@ -290,12 +176,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: WhaleRenderer.php
-
-		-
-			message: '#^Parameter \#3 \$conds of method MediaWiki\\Database\:\:selectRow\(\) expects array\<string\>, array\<string, int\|string\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: WhaleRenderer.php
