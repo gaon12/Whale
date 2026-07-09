@@ -78,7 +78,7 @@
 .Whale .content-wrapper .live-recent .live-recent-progress {
 	height: 2px;
 	overflow: hidden;
-	background-color: #eef2f5;
+	background-color: var(--whale-surface-muted-color, #f5f7f9);
 }
 
 .Whale .content-wrapper .live-recent .live-recent-progress-bar {
@@ -123,22 +123,32 @@
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: baseline;
 	column-gap: 0.45rem;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	min-height: 1.5rem;
 	line-height: 1.5rem;
+	margin: 0 -0.4rem;
+	padding: 0 0.4rem;
+	border-radius: var(--whale-radius-sm, 0.3rem);
+	text-decoration: none;
+	transition: background-color 0.16s ease;
+}
+
+.Whale .content-wrapper .live-recent .recent-item:hover,
+.Whale .content-wrapper .live-recent .recent-item:focus {
+	background-color: var(--whale-hover-color, #edf3f9);
 	text-decoration: none;
 }
 
 .Whale .content-wrapper .live-recent .recent-item-title {
 	overflow: hidden;
-	color: #06c;
+	color: #0066d9;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .Whale .content-wrapper .live-recent .recent-item-time {
-	color: #202326;
-	font-size: 0.72rem;
+	color: var(--whale-content-muted-color, #626c76);
+	font-size: 0.75rem;
 	white-space: nowrap;
 }
 
