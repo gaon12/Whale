@@ -72,10 +72,11 @@ input[type="submit"] {
 	display: none !important;
 }
 
-input:hover,
-button:hover,
-select:hover {
-	transition: 0.3s;
+input,
+button,
+select {
+	transition: background-color 0.16s ease, border-color 0.16s ease,
+		color 0.16s ease, box-shadow 0.16s ease;
 }
 
 body {
@@ -295,3 +296,16 @@ strike {
 	margin: 0 auto;
 }
 /* Content width, alian center End */
+
+/* Respect the user's reduced-motion preference: collapse every
+   animation and transition to a near-instant state change. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
