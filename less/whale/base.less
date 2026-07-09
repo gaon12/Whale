@@ -115,6 +115,19 @@ input[type="password"] {
 	font-family: sans-serif;
 }
 
+/* Unitless line-height so multi-line headings never inherit the fixed
+   rem line-height of surrounding body text (which is smaller than the
+   heading font size and makes wrapped heading lines overlap). */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.mw-heading {
+	line-height: 1.3;
+}
+
 .mw-heading1,
 h1 {
 	font-size: 2rem;
@@ -122,27 +135,27 @@ h1 {
 
 .mw-heading2,
 h2 {
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 }
 
 .mw-heading3,
 h3 {
-	font-size: 1.6rem;
+	font-size: 1.45rem;
 }
 
 .mw-heading4,
 h4 {
-	font-size: 1.5rem;
+	font-size: 1.25rem;
 }
 
 .mw-heading5,
 h5 {
-	font-size: 1.3rem;
+	font-size: 1.1rem;
 }
 
 .mw-heading6,
 h6 {
-	font-size: 1.1rem;
+	font-size: 1rem;
 }
 
 ol,
