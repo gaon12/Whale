@@ -209,7 +209,12 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	opacity: 0.75;
 	outline: 0;
 	text-decoration: none;
-	transition: 0.3s;
+}
+
+.whale-modal-close:focus-visible {
+	outline: 2px solid var(--whale-main-color, #4188f1);
+	outline-offset: 2px;
+	opacity: 1;
 }
 
 .whale-modal-body {
