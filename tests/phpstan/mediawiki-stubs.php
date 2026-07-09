@@ -57,6 +57,16 @@ class Config {
 	}
 }
 
+class Language {
+	public function getCode(): string {
+		return '';
+	}
+
+	public function formatNum( mixed $number ): string {
+		return '';
+	}
+}
+
 class WebResponse {
 	public function header( string $header, bool $replace = true, int $statusCode = 0 ): void {
 	}
@@ -177,8 +187,8 @@ class Skin {
 		return new Message();
 	}
 
-	public function getLanguage(): mixed {
-		return null;
+	public function getLanguage(): Language {
+		return new Language();
 	}
 
 	public function getRelevantTitle(): MediaWiki\Title\Title {
@@ -442,17 +452,17 @@ namespace MediaWiki {
 
 	class Database {
 		/**
-		 * @param array<string,mixed>|string[] $tables
-		 * @param array<string,mixed>|string[] $fields
-		 * @param array<string,mixed>|string[] $conds
+		 * @param string|array<int|string,mixed> $tables
+		 * @param string|array<int|string,mixed> $fields
+		 * @param string|array<int|string,mixed> $conds
 		 * @param array<string,mixed> $options
 		 * @param array<string,mixed> $joinConds
-		 * @return iterable<object>
+		 * @return iterable<int,\stdClass>
 		 */
 		public function select(
-			array $tables,
-			array $fields,
-			array $conds,
+			string|array $tables,
+			string|array $fields,
+			string|array $conds,
 			string $caller = '',
 			array $options = [],
 			array $joinConds = []
@@ -461,20 +471,20 @@ namespace MediaWiki {
 		}
 
 		/**
-		 * @param array<string,mixed>|string[] $tables
-		 * @param array<string,mixed>|string[] $fields
-		 * @param array<string,mixed>|string[] $conds
+		 * @param string|array<int|string,mixed> $tables
+		 * @param string|array<int|string,mixed> $fields
+		 * @param string|array<int|string,mixed> $conds
 		 * @param array<string,mixed> $options
 		 * @param array<string,mixed> $joinConds
 		 */
 		public function selectRow(
-			array $tables,
-			array $fields,
-			array $conds,
+			string|array $tables,
+			string|array $fields,
+			string|array $conds,
 			string $caller = '',
 			array $options = [],
 			array $joinConds = []
-		): ?object {
+		): ?\stdClass {
 			return null;
 		}
 
