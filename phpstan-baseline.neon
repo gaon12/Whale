@@ -1,48 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Binary operation "\." between mixed and '','' results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: SkinWhale.php
-
-		-
-			message: '#^Binary operation "\." between mixed and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: SkinWhale.php
-
-		-
-			message: '#^Binary operation "\." between non\-falsy\-string and MediaWiki\\Title\\Title\|null results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: SkinWhale.php
-
-		-
-			message: '#^Parameter \#1 \$string of function strip_tags expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: SkinWhale.php
-
-		-
-			message: '#^Parameter \#2 \$subject of function preg_match expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: SkinWhale.php
-
-		-
-			message: '#^Parameter \#2 \$value of method OutputPage\:\:addMeta\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: SkinWhale.php
-
-		-
-			message: '#^Part \$wgXAccount \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
-			path: SkinWhale.php
-
-		-
 			message: '#^Access to an undefined property object\:\:\$page_namespace\.$#'
 			identifier: property.notFound
 			count: 1
