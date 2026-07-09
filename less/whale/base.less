@@ -171,8 +171,23 @@ pre {
 	padding: 0.8rem;
 }
 
-a:focus {
-	outline: 2px solid var(--whale-main-color);
+a:focus-visible {
+	outline: 2px solid var(--whale-main-color, #4188f1);
+	outline-offset: 2px;
+}
+
+/* Keyboard focus indicator for button-like controls. Text inputs and
+   selects show focus through their border/box-shadow rules instead, so
+   they are excluded here to avoid double rings. */
+button:focus-visible,
+input[type="button"]:focus-visible,
+input[type="submit"]:focus-visible,
+input[type="reset"]:focus-visible,
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+	outline: 2px solid var(--whale-main-color, #4188f1);
 	outline-offset: 2px;
 }
 

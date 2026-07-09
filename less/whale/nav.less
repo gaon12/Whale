@@ -375,4 +375,15 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	position: relative;
 	min-width: 158px;
 }
+
+/* Keyboard focus on the colored navbar needs a light ring; the theme
+   colored ring from base.less would blend into the background. */
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-menu .whale-navbar-item .whale-navbar-link:focus-visible,
+.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn:focus-visible,
+.Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle:focus-visible,
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login button.none-outline:focus-visible,
+.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .login-menu > button.whale-dropdown-toggle:focus-visible {
+	outline: 2px solid rgba(255, 255, 255, 0.85);
+	outline-offset: 2px;
+}
 /* Nav End */

@@ -517,8 +517,9 @@ html input.oo-ui-inputWidget-input[type="search"] {
 
 select:focus,
 input:not([type="button"]):not([type="checkbox"]):not([type="submit"]):focus {
-	border-color: #66afe9;
+	border-color: var(--whale-main-color, #66afe9);
 	outline: 0;
+	box-shadow: 0 0 0 3px rgba(65, 136, 241, 0.18);
 }
 
 input[type="button"],
