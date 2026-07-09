@@ -133,7 +133,12 @@ class WhaleContributionGraph {
 					);
 					$counts = [];
 					foreach ( $rows as $row ) {
-						$counts[$row->day] = (int)$row->edits;
+						$day = $row->day ?? null;
+						$edits = $row->edits ?? null;
+						if ( !is_string( $day ) || !is_numeric( $edits ) ) {
+							continue;
+						}
+						$counts[$day] = (int)$edits;
 					}
 
 					return $counts;

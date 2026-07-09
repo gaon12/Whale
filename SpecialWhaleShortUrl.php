@@ -20,7 +20,7 @@ class SpecialWhaleShortUrl extends SpecialPage {
 	/**
 	 * @param string|null $subPage Encoded revision identifier
 	 */
-	public function execute( $subPage ) {
+	public function execute( $subPage ): void {
 		$this->setHeaders();
 		$out = $this->getOutput();
 		$config = $this->getConfig();
@@ -75,11 +75,17 @@ class SpecialWhaleShortUrl extends SpecialPage {
 			return null;
 		}
 
-		return Title::makeTitleSafe( (int)$row->page_namespace, $row->page_title );
+		$namespace = $row->page_namespace ?? null;
+		$titleText = $row->page_title ?? null;
+		if ( !is_numeric( $namespace ) || !is_string( $titleText ) ) {
+			return null;
+		}
+
+		return Title::makeTitleSafe( (int)$namespace, $titleText );
 	}
 
 	private function getRedirectStatus( mixed $status ): int {
-		$status = (int)$status;
+		$status = is_numeric( $status ) ? (int)$status : 302;
 
 		return in_array( $status, self::ALLOWED_REDIRECT_STATUSES, true ) ? $status : 302;
 	}
