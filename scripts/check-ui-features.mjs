@@ -269,7 +269,7 @@ if (/border-radius:\s*999px;/.test(sectionToggleBlock)) {
 }
 assertIncludes(
 	mediaWikiStyles,
-	'min-width: 10.75rem',
+	'min-width: 18rem',
 	'Article TOC compact document box',
 );
 assertIncludes(
@@ -422,7 +422,7 @@ assertIncludes(
 	'Navbar notification placement',
 );
 assertIncludes(styles, 'order: 29', 'Navbar notification placement');
-assertIncludes(styles, 'height: 2.55rem', 'Navbar link height clamp');
+assertIncludes(styles, 'height: 2.45rem', 'Navbar link height clamp');
 assertIncludes(
 	styles,
 	'border-radius: var(--whale-radius-sm)',
@@ -446,7 +446,7 @@ assertIncludes(
 	'.whale-content-main .mw-parser-output',
 	'Article reading typography',
 );
-assertIncludes(mediaWikiStyles, 'line-height: 1.72', 'Article reading rhythm');
+assertIncludes(mediaWikiStyles, 'line-height: 1.65', 'Article reading rhythm');
 assertIncludes(
 	mediaWikiStyles,
 	'.whale-content-main blockquote',
@@ -487,13 +487,26 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'--whale-radius: 0.3rem',
+	'--whale-radius: 0.4rem',
 	'Shared surface corner radius',
 );
 assertIncludes(
 	styles,
-	'--whale-radius-sm: 0.2rem',
+	'--whale-radius-sm: 0.25rem',
 	'Shared control corner radius',
+);
+assertIncludes(styles, '--whale-layout-width: 1440px', 'Desktop layout width');
+assertIncludes(styles, '--whale-sidebar-width: 20rem', 'Sidebar width token');
+assertIncludes(styles, '--whale-layout-gap: 1rem', 'Desktop layout gap');
+assertIncludes(
+	styles,
+	'max-width: var(--whale-layout-width)',
+	'Centered desktop frame width',
+);
+assertIncludes(
+	styles,
+	'background-image: linear-gradient(',
+	'Navbar restrained theme gradient',
 );
 assertIncludes(styles, '--whale-shadow-sm: none', 'Flat surface treatment');
 assertIncludes(
