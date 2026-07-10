@@ -25,6 +25,10 @@ class SkinWhale extends SkinMustache {
 		'light' => [ 'primary' => '#7568E8', 'secondary' => '#5F57CF' ],
 		'dark' => [ 'primary' => '#7568E8', 'secondary' => '#5F57CF' ],
 	];
+	private const LEGACY_DEFAULT_THEME_COLORS = [
+		'primary' => '#00BCD4',
+		'secondary' => '#FFA500',
+	];
 
 	private const THEME_PALETTES = [
 		'han-river-blue' => [
@@ -841,6 +845,14 @@ JS
 		$configSecondary = $userThemeSlug === null
 			? $this->normalizeOptionalCssColor( $GLOBALS['wgWhaleSecondColor'] ?? null )
 			: null;
+		$usesLegacyDefaultPalette = $primary === null && $secondary === null &&
+			$configPrimary === self::LEGACY_DEFAULT_THEME_COLORS['primary'] &&
+			$configSecondary === self::LEGACY_DEFAULT_THEME_COLORS['secondary'];
+
+		if ( $usesLegacyDefaultPalette ) {
+			$configPrimary = null;
+			$configSecondary = null;
+		}
 
 		if ( $primary === null && ( !$hasTheme || $configPrimary !== self::DEFAULT_THEME_COLORS['light']['primary'] ) ) {
 			$primary = $configPrimary;
