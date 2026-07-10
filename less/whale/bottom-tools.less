@@ -16,13 +16,11 @@ body.whale-scroll-buttons-vertical #whale-bottombtn {
 }
 
 body.whale-scroll-buttons-horizontal #whale-bottombtn {
-	right: 0;
-	bottom: 0;
+	right: 0.9rem;
+	bottom: 1rem;
 	flex-direction: row;
-	gap: 0;
-	background: var(--whale-main-color);
-	border-radius: var(--whale-radius) var(--whale-radius) 0 0;
-	overflow: hidden;
+	gap: 0.45rem;
+	background: transparent;
 }
 
 #whale-bottombtn .scroll-button {
@@ -53,17 +51,16 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn {
 }
 
 body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
-	width: 40px;
-	height: 40px;
-	background: transparent;
-	border: 0;
-	border-radius: 0;
-	box-shadow: none;
-	color: #fff;
+	width: 2.75rem;
+	height: 2.75rem;
+	background-color: #fff;
+	border: 1px solid var(--whale-border-strong-color);
+	border-radius: var(--whale-radius);
+	color: #4f5b63;
 }
 
 body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-button {
-	border-left: 1px solid rgba(255, 255, 255, 0.75);
+	border-left: 1px solid var(--whale-border-strong-color);
 }
 
 #whale-bottombtn .whale-bottom-tools {
@@ -124,7 +121,7 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 	}
 
 	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn {
-		right: 13.6rem;
+		right: 1.5rem;
 	}
 }
 
