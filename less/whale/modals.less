@@ -227,7 +227,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 }
 
 .whale-modal-close:focus-visible {
-	outline: 2px solid var(--whale-main-color, #00a69c);
+	outline: 2px solid var(--whale-main-color, #7568e8);
 	outline-offset: 2px;
 }
 
@@ -247,16 +247,9 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	box-shadow: var(--whale-shadow-md);
 }
 
-/* Accent bar follows the active palette instead of fixed blues. */
 .Whale .whale-login-modal .whale-modal-content::before {
-	display: block;
-	height: 4px;
-	background: linear-gradient(
-		90deg,
-		var(--whale-second-color, #28b472),
-		var(--whale-main-color, #00a69c)
-	);
-	content: "";
+	display: none;
+	content: none;
 }
 
 .Whale .whale-login-modal .whale-modal-body {
@@ -266,21 +259,21 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 
 .Whale .whale-login-modal .whale-alert {
 	border: 1px solid transparent;
-	border-radius: 0.25rem;
+	border-radius: var(--whale-radius-sm);
 	padding: 0.8rem;
 	margin-bottom: 0.8rem;
 }
 
 .Whale .whale-login-modal .whale-alert-danger {
-	background-color: #f2dede;
-	border-color: #ebcccc;
-	color: #a94442;
+	background-color: #fff1f2;
+	border-color: #fecdd3;
+	color: #9f1239;
 }
 
 .Whale .whale-login-modal .whale-alert-warning {
-	background-color: #fcf8e3;
-	border-color: #faf2cc;
-	color: #8a6d3b;
+	background-color: #fffbeb;
+	border-color: #fde68a;
+	color: #92400e;
 }
 
 .Whale .whale-login-modal .whale-alert-hidden {
@@ -306,7 +299,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	background-color: #fff;
 	border-color: var(--whale-main-color);
 	outline: 0;
-	box-shadow: 0 0 0 3px rgba(65, 136, 241, 0.18);
+	box-shadow: 0 0 0 3px rgba(117, 104, 232, 0.18);
 	transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
 }
 
@@ -372,8 +365,8 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	width: 0.55rem;
 	height: 1rem;
 	margin-top: -0.62rem;
-	border-right: 3px solid var(--whale-main-color, #00a69c);
-	border-bottom: 3px solid var(--whale-main-color, #00a69c);
+	border-right: 3px solid var(--whale-main-color, #7568e8);
+	border-bottom: 3px solid var(--whale-main-color, #7568e8);
 	transform: rotate(45deg) scale(0);
 	transition: transform 0.15s ease;
 	pointer-events: none;
@@ -382,7 +375,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 .Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"] + label:hover::before,
 .Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"]:focus-visible + label::before {
 	border-color: var(--whale-main-color);
-	box-shadow: 0 0 0 3px rgba(65, 136, 241, 0.14);
+	box-shadow: 0 0 0 3px rgba(117, 104, 232, 0.14);
 }
 
 .Whale .whale-login-modal .whale-login-checkbox:not(#noop) input[type="checkbox"]:checked + label::before {
@@ -427,7 +420,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	border: 1px solid var(--whale-border-color, #d9dee3);
 	border-radius: var(--whale-radius-sm);
 	background-color: var(--whale-surface-muted-color, #f5f7f9);
-	color: var(--whale-main-color, #00a69c);
+	color: var(--whale-main-color, #7568e8);
 	font-size: 0.9rem;
 	line-height: 1.35;
 	text-align: center;
@@ -438,7 +431,7 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 .Whale .whale-login-modal .whale-login-links a:focus {
 	border-color: var(--whale-border-strong-color, #c5ccd3);
 	background-color: var(--whale-hover-color, #edf3f9);
-	color: var(--whale-second-color, #28b472);
+	color: var(--whale-second-color, #5f57cf);
 	text-decoration: none;
 }
 
