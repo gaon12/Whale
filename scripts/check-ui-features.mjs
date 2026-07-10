@@ -22,6 +22,11 @@ const assertIncludes = (source, needle, label) => {
 		throw new Error(`${label} should include ${needle}`);
 	}
 };
+const assertNotIncludes = (source, needle, label) => {
+	if (source.includes(needle)) {
+		throw new Error(`${label} should not include ${needle}`);
+	}
+};
 
 const skin = JSON.parse(read('skin.json'));
 if (skin.config.WhaleEnableMobileFloatingToc !== true) {
@@ -208,7 +213,7 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'right: 13.6rem',
+	'right: 1.5rem',
 	'Fixed desktop scroll toolbar position',
 );
 assertIncludes(
@@ -422,7 +427,7 @@ assertIncludes(
 	'Navbar notification placement',
 );
 assertIncludes(styles, 'order: 29', 'Navbar notification placement');
-assertIncludes(styles, 'height: 40px', 'Navbar link height clamp');
+assertIncludes(styles, 'height: 36px', 'Navbar link height clamp');
 assertIncludes(
 	styles,
 	'border-radius: var(--whale-radius-sm)',
@@ -485,27 +490,23 @@ assertIncludes(
 	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
 	'Auto dark table cell override',
 );
-assertIncludes(styles, '--whale-radius: 5px', 'Shared surface corner radius');
+assertIncludes(styles, '--whale-radius: 12px', 'Shared surface corner radius');
 assertIncludes(
 	styles,
-	'--whale-radius-sm: 3px',
+	'--whale-radius-sm: 8px',
 	'Shared control corner radius',
 );
-assertIncludes(styles, '--whale-layout-width: 1368px', 'Desktop layout width');
-assertIncludes(styles, '--whale-sidebar-width: 320px', 'Sidebar width token');
+assertIncludes(styles, '--whale-layout-width: 1424px', 'Desktop layout width');
+assertIncludes(styles, '--whale-sidebar-width: 300px', 'Sidebar width token');
 assertIncludes(styles, '--whale-layout-gap: 16px', 'Desktop layout gap');
 assertIncludes(
 	styles,
 	'max-width: var(--whale-layout-width)',
 	'Centered desktop frame width',
 );
-assertIncludes(
-	styles,
-	'background-image: linear-gradient(',
-	'Navbar restrained theme gradient',
-);
-assertIncludes(styles, 'background-color: #f5f5f5', 'Espejo canvas color');
-assertIncludes(styles, '--whale-border-color: #ccc', 'Espejo shell border');
+assertNotIncludes(styles, 'gradient(', 'Gradient-free Central treatment');
+assertIncludes(styles, 'background-color: #f6f6f8', 'Central canvas color');
+assertIncludes(styles, '--whale-border-color: #dedfe3', 'Central card border');
 assertIncludes(styles, '--whale-shadow-sm: none', 'Flat surface treatment');
 assertIncludes(
 	styles,
