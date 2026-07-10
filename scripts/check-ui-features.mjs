@@ -208,7 +208,7 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'right: 10.55rem',
+	'right: 13.6rem',
 	'Fixed desktop scroll toolbar position',
 );
 assertIncludes(
@@ -422,7 +422,7 @@ assertIncludes(
 	'Navbar notification placement',
 );
 assertIncludes(styles, 'order: 29', 'Navbar notification placement');
-assertIncludes(styles, 'height: 2.45rem', 'Navbar link height clamp');
+assertIncludes(styles, 'height: 40px', 'Navbar link height clamp');
 assertIncludes(
 	styles,
 	'border-radius: var(--whale-radius-sm)',
@@ -485,19 +485,15 @@ assertIncludes(
 	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
 	'Auto dark table cell override',
 );
+assertIncludes(styles, '--whale-radius: 5px', 'Shared surface corner radius');
 assertIncludes(
 	styles,
-	'--whale-radius: 0.4rem',
-	'Shared surface corner radius',
-);
-assertIncludes(
-	styles,
-	'--whale-radius-sm: 0.25rem',
+	'--whale-radius-sm: 3px',
 	'Shared control corner radius',
 );
-assertIncludes(styles, '--whale-layout-width: 1440px', 'Desktop layout width');
-assertIncludes(styles, '--whale-sidebar-width: 20rem', 'Sidebar width token');
-assertIncludes(styles, '--whale-layout-gap: 1rem', 'Desktop layout gap');
+assertIncludes(styles, '--whale-layout-width: 1368px', 'Desktop layout width');
+assertIncludes(styles, '--whale-sidebar-width: 320px', 'Sidebar width token');
+assertIncludes(styles, '--whale-layout-gap: 16px', 'Desktop layout gap');
 assertIncludes(
 	styles,
 	'max-width: var(--whale-layout-width)',
@@ -508,6 +504,8 @@ assertIncludes(
 	'background-image: linear-gradient(',
 	'Navbar restrained theme gradient',
 );
+assertIncludes(styles, 'background-color: #f5f5f5', 'Espejo canvas color');
+assertIncludes(styles, '--whale-border-color: #ccc', 'Espejo shell border');
 assertIncludes(styles, '--whale-shadow-sm: none', 'Flat surface treatment');
 assertIncludes(
 	styles,
@@ -669,6 +667,17 @@ assertIncludes(
 	skinTemplate,
 	'{{#has-whale-section-tools}}',
 	'Special-page section tool suppression',
+);
+assertIncludes(
+	skinTemplate,
+	'whale-sidebar-notice',
+	'Desktop site notice card placement',
+);
+assertIncludes(rendererPhp, 'tools-watch', 'Visible article watch control');
+assertIncludes(
+	read('templates/ContentTools.mustache'),
+	'whale-dropdown-item tools-share',
+	'Share action should live in the overflow menu',
 );
 
 const hooksPhp = read('WhaleHooks.php');
