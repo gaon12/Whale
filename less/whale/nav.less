@@ -7,10 +7,15 @@
 }
 
 .Whale .whale-nav-wrapper {
-	min-height: 3.35rem;
+	min-height: 3.2rem;
 	z-index: 1001;
 	background-color: var(--whale-main-color);
-	border-bottom: 1px solid var(--whale-second-color);
+	background-image: linear-gradient(
+		110deg,
+		var(--whale-second-color),
+		var(--whale-main-color)
+	);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.14);
 	box-shadow: none;
 }
 
@@ -18,7 +23,7 @@
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	min-height: 3.35rem;
+	min-height: 3.2rem;
 	padding: 0 1rem;
 	border: 0;
 	border-radius: 0;
@@ -28,7 +33,7 @@
 	display: inline-flex;
 	align-items: center;
 	flex: 0 1 auto;
-	height: 3.35rem;
+	height: 3.2rem;
 	width: auto;
 	max-width: 14rem;
 	padding: 0;
@@ -80,9 +85,9 @@
 	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;
-	height: 2.55rem;
+	height: 2.45rem;
 	color: #fff;
-	font-size: 1.03rem;
+	font-size: 1rem;
 	font-weight: 600;
 	padding: 0 0.68rem;
 	line-height: 1.4rem;
@@ -123,7 +128,7 @@
 	align-items: center;
 	flex: 0 0 auto;
 	gap: 0.2rem;
-	min-height: 3.35rem;
+	min-height: 3.2rem;
 	margin: 0 0.1rem 0 0.55rem;
 	padding: 0;
 	list-style: none;
@@ -137,12 +142,12 @@
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group {
 	display: inline-flex;
 	align-items: stretch;
-	height: 2.55rem;
+	height: 2.45rem;
 	min-width: 0;
 	overflow: hidden;
 	background-color: #fff;
 	border: 1px solid rgba(255, 255, 255, 0.48);
-	border-radius: var(--whale-radius);
+	border-radius: 0.55rem;
 	box-shadow: none;
 	vertical-align: middle;
 	transition: box-shadow 0.16s ease;
@@ -151,10 +156,10 @@
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-input {
 	box-sizing: border-box;
 	font-size: 0.9rem;
-	height: 2.55rem;
+	height: 2.45rem;
 	line-height: 1.5;
 	min-width: 0;
-	width: 17.35rem;
+	width: 18rem;
 	padding: 0.2rem 0.85rem;
 	background: transparent;
 	border: 0;
@@ -173,7 +178,7 @@
 	display: inline-flex;
 	align-items: stretch;
 	flex: 0 0 auto;
-	height: 2.55rem;
+	height: 2.45rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
@@ -183,7 +188,7 @@
 	border-radius: 0;
 	display: inline-flex;
 	justify-content: center;
-	height: 2.55rem;
+	height: 2.45rem;
 	min-width: 2.05rem;
 	color: #4f5b63;
 	padding: 0;
@@ -270,7 +275,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
-	height: 3.35rem;
+	height: 3.2rem;
 	padding-left: 0.55rem;
 }
 
@@ -278,7 +283,7 @@ body.whale-dark.Whale .whale-theme-toggle-when-dark {
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login .logout-btn {
 	display: inline-flex;
 	align-items: center;
-	height: 3.35rem;
+	height: 3.2rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-login button.none-outline {
