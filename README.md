@@ -405,8 +405,8 @@ beta 배포 workflow는 저장소 변수 `WHALE_ENABLE_DEPLOY`가 `true`일 때 
 | `$wgWhaleTheme` | 사이트 기본 테마 팔레트 | `'han-river-blue'` | `null` |
 | `$wgWhalePrimaryColor` | 고급 사이트 전체 주 색상 override | `'#336699'` | `null` |
 | `$wgWhaleSecondaryColor` | 고급 사이트 전체 보조 색상 override | `'#003366'` | `null` |
-| `$wgWhaleMainColor` | 사이트 전체 주 색상 | `'#4188F1'` | `'#4188F1'` |
-| `$wgWhaleSecondColor` | 사이트 전체 보조 색상 | `'#2774DC'` | `null` |
+| `$wgWhaleMainColor` | 사이트 전체 주 색상 | `'#00A69C'` | `'#00A69C'` |
+| `$wgWhaleSecondColor` | 사이트 전체 보조 색상 | `'#28B472'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph에 사용할 로고 이미지 | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgXAccount` | Twitter/X 카드에 넣을 계정 | `'gaonwiki'` | 설정 안 함 |
 | `$wgWhaleNaverVerification` | 네이버 사이트 인증 코드 | `'abcdef...'` | 설정 안 함 |
@@ -845,8 +845,8 @@ The beta deploy workflow runs on `main` pushes when the repository variable `WHA
 | `$wgWhaleTheme` | Default site theme palette | `'han-river-blue'` | `null` |
 | `$wgWhalePrimaryColor` | Advanced site-wide primary override | `'#336699'` | `null` |
 | `$wgWhaleSecondaryColor` | Advanced site-wide secondary override | `'#003366'` | `null` |
-| `$wgWhaleMainColor` | Site-wide primary color | `'#4188F1'` | `'#4188F1'` |
-| `$wgWhaleSecondColor` | Site-wide secondary color | `'#2774DC'` | `null` |
+| `$wgWhaleMainColor` | Site-wide primary color | `'#00A69C'` | `'#00A69C'` |
+| `$wgWhaleSecondColor` | Site-wide secondary color | `'#28B472'` | `null` |
 | `$wgWhaleOgLogo` | OpenGraph image logo | `'https://example.org/logo.png'` | `$wgLogo` |
 | `$wgXAccount` | Twitter/X card account | `'gaonwiki'` | unset |
 | `$wgWhaleNaverVerification` | Naver site verification token | `'abcdef...'` | unset |
