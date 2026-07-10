@@ -118,9 +118,17 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button + .scroll-b
 	white-space: nowrap;
 }
 
-@media screen and (min-width: 1280px) {
-	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn {
-		right: 10.55rem;
+@media screen and (min-width: 1024px) {
+	#whale-bottombtn .whale-bottom-tools {
+		display: none;
 	}
+
+	body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn {
+		right: 13.6rem;
+	}
+}
+
+body.page-Main_Page #whale-scrolltoc {
+	display: none;
 }
 /* scroll button end */
