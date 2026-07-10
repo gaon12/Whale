@@ -1,5 +1,5 @@
-/* Espejo-derived primary color #00a69c */
-/* Espejo shell border #ccc */
+/* Central-derived primary color #7568e8 */
+/* Quiet card border #dedfe3 */
 
 /* Icons */
 .whale-icon {
@@ -83,7 +83,7 @@ body {
 	margin: 0;
 	font-size: 0.95rem;
 	line-height: 1.55;
-	background-color: #f5f5f5;
+	background-color: #f6f6f8;
 }
 
 body,
@@ -186,7 +186,7 @@ pre {
 }
 
 a:focus-visible {
-	outline: 2px solid var(--whale-main-color, #00a69c);
+	outline: 2px solid var(--whale-main-color, #7568e8);
 	outline-offset: 2px;
 }
 
@@ -201,7 +201,7 @@ input[type="checkbox"]:focus-visible,
 input[type="radio"]:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-	outline: 2px solid var(--whale-main-color, #00a69c);
+	outline: 2px solid var(--whale-main-color, #7568e8);
 	outline-offset: 2px;
 }
 
@@ -265,43 +265,35 @@ strike {
 
 /* Background Color */
 .Whale {
-	--whale-layout-width: 1368px;
-	--whale-sidebar-width: 320px;
+	--whale-layout-width: 1424px;
+	--whale-sidebar-width: 300px;
 	--whale-layout-gap: 16px;
-	--whale-main-color: #00a69c;
-	--whale-second-color: #28b472;
+	--whale-main-color: #7568e8;
+	--whale-second-color: #5f57cf;
 	--whale-text-color: #252a30;
 	--whale-content-muted-color: #626c76;
 	--whale-dark-text-color: #f1f3f5;
 	--whale-surface-color: #fff;
-	--whale-surface-muted-color: #f5f5f5;
+	--whale-surface-muted-color: #f4f4f7;
+	--whale-accent-soft-color: #f1efff;
 	--whale-code-background: #f3f5f7;
 	--whale-table-background: #fff;
-	--whale-table-header-background: #f5f8fa;
-	--whale-table-border-color: #ddd;
-	--whale-border-color: #ccc;
-	--whale-border-strong-color: #b8b8b8;
-	--whale-hover-color: #eef6f5;
+	--whale-table-header-background: #f4f4f7;
+	--whale-table-border-color: #dedfe3;
+	--whale-border-color: #dedfe3;
+	--whale-border-strong-color: #c9cbd1;
+	--whale-hover-color: #f1efff;
 	--whale-shadow-sm: none;
-	--whale-shadow-md: 0 8px 24px rgba(28, 39, 49, 0.14);
-	--whale-radius: 5px;
-	--whale-radius-sm: 3px;
-	background-color: #f5f5f5;
+	--whale-shadow-md: 0 12px 32px rgba(35, 32, 72, 0.14);
+	--whale-radius: 12px;
+	--whale-radius-sm: 8px;
+	background-color: #f6f6f8;
 	color: var(--whale-text-color);
 	color-scheme: light;
 }
 
 .Whale .whale-reading-progress {
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 1003;
-	height: 6px;
-	pointer-events: none;
-	background-color: var(--whale-main-color);
-	transform: scaleX(0);
-	transform-origin: left center;
+	display: none;
 }
 /* Background Color End */
 
