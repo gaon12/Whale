@@ -5,14 +5,14 @@
 		{{#buttons}}
 			{{{ html }}}
 		{{/buttons}}
-		{{#show-share}}
-			<button type="button" class="whale-btn whale-btn-secondary tools-btn tools-share">
-				{{{ html-share-icon }}}
-				{{share-label}}
-			</button>
-		{{/show-share}}
 		<button type="button" class="whale-btn whale-btn-secondary tools-btn whale-dropdown-toggle" data-whale-toggle="dropdown" aria-label="{{more-label}}" aria-expanded="false"></button>
 		<div class="whale-dropdown-menu whale-dropdown-menu-right" role="menu">
+			{{#show-share}}
+				<button type="button" class="whale-dropdown-item tools-share">
+					{{{ html-share-icon }}}
+					{{share-label}}
+				</button>
+			{{/show-share}}
 			{{#dropdown-items}}
 				{{#is-divider}}<div class="whale-dropdown-divider"></div>{{/is-divider}}
 				{{{ html }}}
