@@ -479,6 +479,11 @@ assertIncludes(
 );
 assertIncludes(
 	mediaWikiStyles,
+	'[style*="border-left"]',
+	'Main-page inline band neutralization',
+);
+assertIncludes(
+	mediaWikiStyles,
 	'background-color: var(--whale-code-background)',
 	'Article code treatment',
 );
