@@ -94,8 +94,8 @@ h4,
 h5,
 h6,
 .mw-heading {
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-		"Malgun Gothic", sans-serif;
+	font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system,
+		BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
 	margin: 0;
 }
 
@@ -107,8 +107,8 @@ h5,
 h6,
 b,
 .mw-heading {
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-		"Malgun Gothic", sans-serif;
+	font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system,
+		BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
 }
 
 input[type="password"] {
@@ -265,6 +265,9 @@ strike {
 
 /* Background Color */
 .Whale {
+	--whale-layout-width: 1440px;
+	--whale-sidebar-width: 20rem;
+	--whale-layout-gap: 1rem;
 	--whale-main-color: #3f7fc4;
 	--whale-second-color: #2f69a8;
 	--whale-text-color: #252a30;
@@ -281,8 +284,8 @@ strike {
 	--whale-hover-color: #edf3f9;
 	--whale-shadow-sm: none;
 	--whale-shadow-md: 0 8px 24px rgba(28, 39, 49, 0.14);
-	--whale-radius: 0.3rem;
-	--whale-radius-sm: 0.2rem;
+	--whale-radius: 0.4rem;
+	--whale-radius-sm: 0.25rem;
 	background-color: #f3f5f7;
 	color: var(--whale-text-color);
 	color-scheme: light;
@@ -305,7 +308,7 @@ strike {
 /* Content width, alian center */
 .Whale .whale-nav-wrapper .whale-navbar,
 .Whale .content-wrapper {
-	max-width: 1280px;
+	max-width: var(--whale-layout-width);
 	margin: 0 auto;
 }
 /* Content width, alian center End */
