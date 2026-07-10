@@ -22,8 +22,8 @@ class SkinWhale extends SkinMustache {
 	// @codingStandardsIgnoreEnd
 
 	private const DEFAULT_THEME_COLORS = [
-		'light' => [ 'primary' => '#00A69C', 'secondary' => '#28B472' ],
-		'dark' => [ 'primary' => '#00A69C', 'secondary' => '#28B472' ],
+		'light' => [ 'primary' => '#7568E8', 'secondary' => '#5F57CF' ],
+		'dark' => [ 'primary' => '#7568E8', 'secondary' => '#5F57CF' ],
 	];
 
 	private const THEME_PALETTES = [
