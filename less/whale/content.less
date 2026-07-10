@@ -1,7 +1,7 @@
 /* Content */
 .Whale .content-wrapper {
 	position: relative;
-	margin-top: 4rem;
+	margin-top: 72px;
 	z-index: 0;
 }
 
@@ -37,6 +37,12 @@
 	white-space: normal;
 }
 
+@media screen and (min-width: 1024px) {
+	.Whale .content-wrapper .whale-content .whale-content-header-with-sidebar .whale-notice {
+		display: none;
+	}
+}
+
 .Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close {
 	appearance: none;
 	background: transparent;
@@ -68,10 +74,46 @@
 	line-height: 1.8rem;
 }
 
+.Whale .content-wrapper .whale-sidebar-notice {
+	position: relative;
+	margin-bottom: var(--whale-layout-gap);
+	padding: 14px 38px 14px 16px;
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius);
+	background-color: var(--whale-surface-color);
+	color: var(--whale-text-color);
+	font-size: 0.9rem;
+	line-height: 1.45;
+	overflow-wrap: anywhere;
+}
+
+.Whale .content-wrapper .whale-sidebar-notice > :last-child {
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-sidebar-notice .whale-notice-close {
+	appearance: none;
+	position: absolute;
+	top: 10px;
+	right: 12px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 1.25rem;
+	line-height: 1;
+	opacity: 0.55;
+}
+
+.Whale .content-wrapper .whale-sidebar-notice .whale-notice-close:hover,
+.Whale .content-wrapper .whale-sidebar-notice .whale-notice-close:focus {
+	opacity: 1;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools {
 	float: right;
-	padding-right: 1rem;
-	padding-top: 1rem;
+	padding-right: 24px;
+	padding-top: 18px;
 	max-width: 100%;
 	text-align: right;
 }
@@ -80,14 +122,19 @@
 	display: inline-flex;
 	flex-wrap: wrap;
 	justify-content: flex-end;
-	gap: 0.35rem;
+	gap: 0;
 	max-width: 100%;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn,
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn-group {
+	margin-left: -1px;
+	border-radius: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn:first-child {
 	margin-left: 0;
-	border-radius: var(--whale-radius-sm);
+	border-radius: var(--whale-radius-sm) 0 0 var(--whale-radius-sm);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
@@ -102,6 +149,20 @@
 	justify-content: center;
 	width: 2.25rem;
 	padding: 0.4rem 0;
+	border-radius: 0 var(--whale-radius-sm) var(--whale-radius-sm) 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-watch {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-watch .whale-icon {
+	margin: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle::after {
@@ -118,7 +179,7 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus-visible {
-	outline: 2px solid var(--whale-main-color, #4188f1);
+	outline: 2px solid var(--whale-main-color, #00a69c);
 	outline-offset: 2px;
 }
 
@@ -127,19 +188,25 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .title {
-	padding: 1.2rem 1rem 1rem;
+	padding: 22px 24px 8px;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .contentSub {
-	margin-top: -0.5rem;
-	padding: 1rem;
-	padding-top: 0;
+	margin: 0;
+	padding: 0 24px 16px;
+	color: var(--whale-content-muted-color);
+	font-size: 0.85rem;
+	line-height: 1.4;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-header .contentSub:empty {
+	display: none;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
 	color: #000;
 	font-weight: 700;
-	font-size: 2rem;
+	font-size: 2.2rem;
 	letter-spacing: -0.025em;
 	line-height: 1.25;
 }
@@ -154,7 +221,7 @@
 	border-right: 1px solid var(--whale-border-color);
 	background-color: var(--whale-surface-color);
 	color: var(--whale-text-color);
-	padding: 1.1rem;
+	padding: 24px;
 	overflow: visible;
 	overflow-wrap: anywhere;
 	font-size: 1rem;

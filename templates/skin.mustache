@@ -8,6 +8,14 @@
 		{{#has-whale-sidebar}}
 			<aside>
 				<div class="whale-sidebar">
+					{{#has-whale-site-notice}}
+						<div class="whale-sidebar-notice" role="alert">
+							<button type="button" class="whale-notice-close" data-whale-dismiss="notice" aria-label="{{whale-close-label}}">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							{{{ html-whale-site-notice }}}
+						</div>
+					{{/has-whale-site-notice}}
 					<div class="live-recent-wrapper">
 						{{>LiveRecent}}
 					</div>
@@ -16,7 +24,7 @@
 			</aside>
 		{{/has-whale-sidebar}}
 		<div class="whale-content{{^has-whale-sidebar}} whale-content-no-sidebar{{/has-whale-sidebar}}">
-			<div class="whale-content-header">
+			<div class="whale-content-header{{#has-whale-sidebar}} whale-content-header-with-sidebar{{/has-whale-sidebar}}">
 				{{#has-whale-site-notice}}
 					<div class="whale-notice" role="alert">
 						<button type="button" class="whale-notice-close" data-whale-dismiss="notice" aria-label="{{whale-close-label}}">
