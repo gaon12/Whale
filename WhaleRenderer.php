@@ -271,6 +271,25 @@ class WhaleRenderer {
 		$watched = $watchlistManager->isWatchedIgnoringRights( $user, $skin->getRelevantTitle() ) ? 'unwatch' : 'watch';
 		$companionTitle = $title->isTalkPage() ? $title->getSubjectPage() : $title->getTalkPage();
 		$buttons = [];
+		if ( $action === 'view' ) {
+			$buttons[] = [
+				'html' => $linkRenderer->makeKnownLink(
+					$title,
+					new HtmlArmor( $this->renderIcon( 'star' ) . Html::element(
+						'span',
+						[ 'class' => 'whale-sr-only' ],
+						$skin->msg( $watched )->text()
+					) ),
+					[
+						'class' => 'whale-btn whale-btn-secondary tools-btn tools-watch',
+						'id' => 'ca-' . $watched,
+						'title' => Linker::titleAttrib( 'ca-' . $watched, 'withaccess' ),
+						'accesskey' => Linker::accesskey( 'ca-' . $watched ),
+					],
+					[ 'action' => $watched ]
+				),
+			];
+		}
 
 		if ( $action !== 'edit' ) {
 			$buttons[] = [
@@ -357,18 +376,6 @@ class WhaleRenderer {
 					'accesskey' => 'p',
 				],
 				[ 'action' => 'purge' ]
-			),
-		];
-		$dropdownItems[] = [
-			'html' => $linkRenderer->makeKnownLink(
-				$title,
-				$skin->msg( $watched )->plain(),
-				[
-					'class' => 'whale-dropdown-item',
-					'title' => Linker::titleAttrib( 'ca-' . $watched, 'withaccess' ),
-					'accesskey' => Linker::accesskey( 'ca-' . $watched ),
-				],
-				[ 'action' => $watched ]
 			),
 		];
 		$dropdownItems[] = [
