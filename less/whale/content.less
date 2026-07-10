@@ -1,12 +1,15 @@
 /* Content */
 .Whale .content-wrapper {
 	position: relative;
-	margin-top: 4.15rem;
+	margin-top: 4rem;
 	z-index: 0;
 }
 
 .Whale .content-wrapper .whale-content {
-	margin-right: 21rem;
+	min-width: 0;
+	margin-right: calc(
+		var(--whale-sidebar-width) + var(--whale-layout-gap)
+	);
 	padding: 0;
 	padding-bottom: 1rem;
 }
@@ -135,8 +138,8 @@
 
 .Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
 	color: #000;
-	font-weight: 750;
-	font-size: 1.85rem;
+	font-weight: 700;
+	font-size: 2rem;
 	letter-spacing: -0.025em;
 	line-height: 1.25;
 }
@@ -151,7 +154,7 @@
 	border-right: 1px solid var(--whale-border-color);
 	background-color: var(--whale-surface-color);
 	color: var(--whale-text-color);
-	padding: 1rem;
+	padding: 1.1rem;
 	overflow: visible;
 	overflow-wrap: anywhere;
 	font-size: 1rem;
@@ -463,10 +466,15 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection {
+	flex: 0 0 auto;
+	max-width: 45%;
 	margin-left: auto;
+	overflow: hidden;
 	font-size: 0.82rem;
 	font-weight: 700;
 	line-height: 1;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	cursor: default;
 }
 
