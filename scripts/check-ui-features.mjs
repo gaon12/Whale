@@ -167,6 +167,26 @@ assertIncludes(
 const skinPhp = read('SkinWhale.php');
 assertIncludes(
 	skinPhp,
+	'LEGACY_DEFAULT_THEME_COLORS',
+	'Legacy default palette migration',
+);
+assertIncludes(
+	skinPhp,
+	"'primary' => '#00BCD4'",
+	'Legacy primary palette migration',
+);
+assertIncludes(
+	skinPhp,
+	"'secondary' => '#FFA500'",
+	'Legacy secondary palette migration',
+);
+assertIncludes(
+	skinPhp,
+	'$usesLegacyDefaultPalette',
+	'Legacy palette detection',
+);
+assertIncludes(
+	skinPhp,
 	"addMeta( 'color-scheme', 'light dark' )",
 	'Color scheme meta',
 );
