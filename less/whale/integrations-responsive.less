@@ -95,8 +95,14 @@
 		padding: 0 0 0.5rem;
 	}
 
+	/* Below desktop width the page runs edge to edge: the notice, document and
+	   recent-changes panel span the screen without side gutters, side borders
+	   or rounded corners, separated only by the canvas between them. */
 	.Whale .content-wrapper > .whale-site-notice-bar {
-		margin: 0 0.5rem 0.75rem;
+		margin: 0 0 0.5rem;
+		border-right: 0;
+		border-left: 0;
+		border-radius: 0;
 	}
 
 	.Whale .content-wrapper .whale-sidebar-column {
@@ -114,11 +120,14 @@
 
 	.Whale .content-wrapper .mobile-live-recent-wrapper .live-recent {
 		width: 100%;
+		border-right: 0;
+		border-left: 0;
+		border-radius: 0;
 	}
 
 	.Whale .content-wrapper .whale-content {
 		margin: 0;
-		border-radius: var(--whale-radius);
+		border-radius: 0;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-header {
@@ -278,23 +287,8 @@
 }
 
 @media screen and (max-width: 520px) {
-	.Whale .content-wrapper {
-		padding: 0 0.5rem 0.5rem;
-	}
-
-	.Whale .content-wrapper .whale-content {
-		border-right: 1px solid var(--whale-border-color);
-		border-left: 1px solid var(--whale-border-color);
-		border-radius: var(--whale-radius);
-	}
-
 	.Whale .content-wrapper .mobile-live-recent-wrapper {
 		padding: 0 0 0.5rem;
-	}
-
-	.Whale .content-wrapper > .whale-site-notice-bar {
-		margin-right: 0;
-		margin-left: 0;
 	}
 
 	.Whale .content-wrapper .whale-content .whale-content-main .toc {
