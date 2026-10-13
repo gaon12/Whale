@@ -105,6 +105,8 @@
 	"whale-floating-toc": "Section index",
 	"whale-reading-progress": "Reading progress",
 	"whale-live-recent-no-data": "No items to show",
+	"whale-live-recent-error": "Unable to refresh recent changes.",
+	"whale-live-recent-retry": "Retry",
 	"whale-scroll-up": "Scroll to top",
 	"whale-scroll-down": "Scroll to bottom",
 	"whale-scroll-toc": "Scroll to table of contents",

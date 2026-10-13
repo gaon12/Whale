@@ -1,5 +1,7 @@
 (() => {
 	const DEFAULT_REFRESH_INTERVAL = 60 * 1000;
+	const MIN_REFRESH_INTERVAL = 10 * 1000;
+	const MAX_RETRY_INTERVAL = 5 * 60 * 1000;
 	const RELATIVE_TIME_INTERVAL = 30 * 1000;
 	const SKELETON_ROW_LIMIT = 3;
 	const feedCache = new Map();
@@ -146,7 +148,8 @@
 
 		feed.list.setAttribute('aria-busy', 'false');
 		feed.loaded = true;
-		restartProgress(feed);
+		feed.failures = 0;
+		feed.status.hidden = true;
 	};
 
 	const showSkeletonRows = (feed) => {
@@ -159,19 +162,21 @@
 		);
 	};
 
-	const showNoDataRows = (feed) => {
-		feed.list.classList.add('live-recent-list-no-data');
+	const showError = (feed) => {
+		// Keep the last successful result visible during a failed refresh.
+		if (!feed.loaded) {
+			feed.list.replaceChildren();
+		}
 		feed.list.setAttribute('aria-busy', 'false');
-		feed.list.replaceChildren(createNoDataRow());
-		feed.loaded = true;
-		restartProgress(feed);
+		feed.failures++;
+		feed.status.hidden = false;
 	};
 
-	const refreshFeed = async (
+	const fetchFeed = async (
 		feed,
 		{ force = false, showLoading = false } = {},
 	) => {
-		const cached = feedCache.get(feed.namespaces);
+		const cached = feedCache.get(feed.cacheKey);
 
 		if (
 			cached &&
@@ -201,34 +206,36 @@
 				rcnamespace: feed.namespaces,
 				rctoponly: true,
 			};
-			let data;
-
-			try {
-				data = await api.get(params);
-			} catch (error) {
-				if (params.rctoponly !== true) {
-					throw error;
-				}
-
-				const { rctoponly: _rctoponly, ...compatParams } = params;
-				data = await api.get(compatParams);
-			}
+			const data = await api.get(params);
 
 			if (currentRequestId !== feed.requestId) {
 				return;
 			}
 
-			const changes = data.query?.recentchanges ?? [];
-			feedCache.set(feed.namespaces, {
+			const changes = data.query?.recentchanges;
+			if (!Array.isArray(changes)) {
+				throw new Error('Invalid recent changes response.');
+			}
+			feedCache.set(feed.cacheKey, {
 				changes,
 				fetchedAt: Date.now(),
 			});
 			renderFeed(feed, changes);
 		} catch {
 			if (currentRequestId === feed.requestId) {
-				showNoDataRows(feed);
+				showError(feed);
 			}
 		}
+	};
+	const refreshFeed = (feed, options) => {
+		if (!feed.pendingRequest) {
+			feed.retry.disabled = true;
+			feed.pendingRequest = fetchFeed(feed, options).finally(() => {
+				feed.pendingRequest = null;
+				feed.retry.disabled = false;
+			});
+		}
+		return feed.pendingRequest;
 	};
 
 	const updateRelativeTimes = (root) => {
@@ -242,24 +249,35 @@
 	const isRootVisible = (root) => root.offsetParent !== null;
 
 	const createFeed = (root, element) => {
+		const status = document.createElement('div');
+		const text = document.createElement('span');
+		const retry = document.createElement('button');
+		status.className = 'live-recent-status';
+		status.setAttribute('role', 'status');
+		status.hidden = true;
+		text.textContent = mw.message('whale-live-recent-error').text();
+		retry.type = 'button';
+		retry.textContent = mw.message('whale-live-recent-retry').text();
+		status.append(text, retry);
+		element.append(status);
 		const feed = {
 			element,
 			list: element.querySelector('.live-recent-list'),
 			limit: Number(root.dataset.limit) || 10,
 			namespaces: element.dataset.namespaces,
 			progressBar: element.querySelector('.live-recent-progress-bar'),
-			refreshInterval:
+			refreshInterval: Math.max(
+				MIN_REFRESH_INTERVAL,
 				Number(root.dataset.refreshInterval) || DEFAULT_REFRESH_INTERVAL,
+			),
 			loaded: false,
 			requestId: 0,
+			pendingRequest: null,
+			failures: 0,
+			status,
+			retry,
 		};
-
-		feed.progressBar?.addEventListener('animationend', () => {
-			if (isRootVisible(root)) {
-				refreshFeed(feed, { force: true });
-			}
-		});
-
+		feed.cacheKey = `${feed.namespaces}|${feed.limit}`;
 		return feed;
 	};
 
@@ -273,9 +291,53 @@
 		}
 
 		let relativeTimeInterval = null;
+		let refreshTimer = null;
+		let refreshGeneration = 0;
 		let running = false;
 		const tabs = [...root.querySelectorAll('[role="tab"]')];
 		let activeFeed = feeds.find((feed) => !feed.element.hidden) ?? feeds[0];
+		const cancelRefresh = () => {
+			refreshGeneration++;
+			window.clearTimeout(refreshTimer);
+			refreshTimer = null;
+			feeds.forEach(stopProgress);
+		};
+		const refreshActive = async (options = {}) => {
+			cancelRefresh();
+			const generation = refreshGeneration;
+			const feed = activeFeed;
+			await refreshFeed(feed, options);
+			if (
+				!running ||
+				generation !== refreshGeneration ||
+				activeFeed !== feed ||
+				document.hidden ||
+				!isRootVisible(root)
+			) {
+				return;
+			}
+			const delay = Math.min(
+				Math.max(MAX_RETRY_INTERVAL, feed.refreshInterval),
+				feed.refreshInterval * 2 ** Math.min(feed.failures, 5),
+			);
+			feed.progressBar?.style.setProperty(
+				'--whale-live-recent-refresh',
+				`${delay}ms`,
+			);
+			restartProgress(feed);
+			// CSS is presentation only: reduced motion must never trigger requests.
+			refreshTimer = window.setTimeout(
+				() => refreshActive({ force: true }),
+				delay,
+			);
+		};
+		feeds.forEach((feed) => {
+			feed.retry.addEventListener('click', () => {
+				if (running && activeFeed === feed) {
+					refreshActive({ force: true });
+				}
+			});
+		});
 
 		const selectFeed = (nextFeed, focusTab = false) => {
 			activeFeed = nextFeed;
@@ -295,8 +357,8 @@
 				}
 			});
 
-			if (running && !nextFeed.loaded) {
-				refreshFeed(nextFeed, { showLoading: true });
+			if (running) {
+				refreshActive({ showLoading: true });
 			}
 		};
 
@@ -337,15 +399,13 @@
 			}
 
 			running = false;
+			cancelRefresh();
 			window.clearInterval(relativeTimeInterval);
 			relativeTimeInterval = null;
-			feeds.forEach((feed) => {
-				stopProgress(feed);
-			});
 		};
 
 		const start = () => {
-			if (!isRootVisible(root)) {
+			if (document.hidden || !isRootVisible(root)) {
 				stop();
 				return;
 			}
@@ -359,7 +419,7 @@
 				updateRelativeTimes(root);
 			}, RELATIVE_TIME_INTERVAL);
 
-			refreshFeed(activeFeed, { showLoading: true });
+			refreshActive({ showLoading: true });
 		};
 
 		return { start, stop };
