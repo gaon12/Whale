@@ -942,11 +942,7 @@ assertIncludes(
 	'background-color: var(--whale-code-background)',
 	'Article code treatment',
 );
-assertIncludes(
-	styles,
-	'--whale-canvas-color: #f5f5f5',
-	'Liberty page canvas token',
-);
+assertIncludes(styles, '--whale-canvas-color: #f8f8f9', 'Page canvas token');
 assertIncludes(styles, '--whale-surface-color: #fff', 'Document surface token');
 assertIncludes(
 	styles,
@@ -1012,7 +1008,11 @@ assertIncludes(
 	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
 	'Auto dark table cell override',
 );
-assertIncludes(styles, '--whale-radius: 6px', 'Document surface corner radius');
+assertIncludes(
+	styles,
+	'--whale-radius: 12px',
+	'Document surface corner radius',
+);
 assertIncludes(
 	styles,
 	'--whale-radius-sm: 0.3rem',

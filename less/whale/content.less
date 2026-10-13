@@ -131,7 +131,7 @@
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: 1.25rem;
-	padding: 1.5rem 1.5rem 0;
+	padding: 1.25rem 1.25rem 0;
 }
 
 .Whale .content-wrapper .whale-content > .whale-content-header > .whale-notice + .whale-content-heading {
@@ -260,8 +260,8 @@
 
 .Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
 	color: var(--whale-text-color);
-	font-weight: 700;
-	font-size: 2.25rem;
+	font-weight: var(--whale-heading-weight);
+	font-size: 2.0625rem;
 	letter-spacing: normal;
 	line-height: 1;
 }
@@ -275,7 +275,7 @@
 	border: 0;
 	background-color: transparent;
 	color: var(--whale-text-color);
-	padding: 1.5rem;
+	padding: 1.25rem;
 	overflow: visible;
 	/* Break Korean between words (eojeol), not between syllables. Unbreakable
 	   strings such as URLs still wrap through overflow-wrap. */
@@ -388,7 +388,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	/* The number already ends with a space ("1. "), so only a hairline is added. */
 	margin-right: 0.1rem;
 	color: var(--whale-main-color);
-	font-weight: 700;
+	font-weight: var(--whale-heading-weight);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main p a,
@@ -566,7 +566,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	border-bottom: 1px solid var(--whale-heading-border-color, var(--whale-border-color));
 	box-shadow: none;
 	color: var(--whale-text-color);
-	font-weight: 700;
+	font-weight: var(--whale-heading-weight);
 	line-height: 1.5;
 	cursor: default;
 	scroll-margin-top: 4.5rem;
