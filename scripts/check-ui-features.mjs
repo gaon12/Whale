@@ -1015,7 +1015,7 @@ assertIncludes(
 assertIncludes(styles, '--whale-radius: 6px', 'Document surface corner radius');
 assertIncludes(
 	styles,
-	'--whale-radius-sm: 4px',
+	'--whale-radius-sm: 0.3rem',
 	'Shared control corner radius',
 );
 // Desktop proportions are measured in chrome.spec.mjs.

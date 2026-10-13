@@ -263,7 +263,10 @@
 	line-height: inherit;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main .mw-parser-output > p {
+/* 16px between paragraphs, including paragraphs inside collapsible
+   section bodies (which are not direct children of .mw-parser-output). */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-parser-output > p,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-body > p {
 	margin-bottom: 1rem;
 }
 
