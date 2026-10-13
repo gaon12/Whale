@@ -147,6 +147,10 @@ class TestDocument {
 const document = new TestDocument();
 const readyCallbacks = [];
 const modal = new TestElement('div', { id: 'whale-external-link-modal' });
+modal.setAttribute(
+	'data-whale-trusted-origins',
+	JSON.stringify(['https://trusted.example', 'invalid-url']),
+);
 const urlBox = new TestElement('div');
 urlBox.setAttribute('data-whale-external-url', '');
 const continueLink = new TestElement('a');
@@ -201,6 +205,18 @@ const internalLink = createLink('/wiki/Internal');
 if (document.dispatchClick(internalLink)) {
 	throw new Error('Internal links should not be intercepted.');
 }
+
+if (document.dispatchClick(createLink('https://trusted.example/source'))) {
+	throw new Error('Trusted origins should keep normal navigation.');
+}
+if (
+	!document.dispatchClick(
+		createLink('https://trusted.example.attacker.test/source'),
+	)
+) {
+	throw new Error('Trust must match a full origin, not a host-name prefix.');
+}
+document.openEvents.length = 0;
 
 const javascriptLink = createLink('javascript:alert(1)');
 if (document.dispatchClick(javascriptLink)) {

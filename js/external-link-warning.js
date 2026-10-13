@@ -1,6 +1,7 @@
 (() => {
 	let pendingUrl = '';
 	let decodedVisible = false;
+	let trustedOrigins = new Set();
 
 	const getModal = () => document.getElementById('whale-external-link-modal');
 	const getUrlBox = () =>
@@ -55,7 +56,7 @@
 				return false;
 			}
 
-			return url.origin !== location.origin;
+			return url.origin !== location.origin && !trustedOrigins.has(url.origin);
 		} catch {
 			return false;
 		}
@@ -83,6 +84,31 @@
 	};
 
 	whale.ready(() => {
+		const modal = getModal();
+		if (!modal) {
+			return;
+		}
+		try {
+			const origins = JSON.parse(
+				modal.getAttribute('data-whale-trusted-origins') || '[]',
+			);
+			if (Array.isArray(origins)) {
+				trustedOrigins = new Set(
+					origins.flatMap((origin) => {
+						try {
+							const url = new URL(origin);
+							return ['http:', 'https:'].includes(url.protocol)
+								? [url.origin]
+								: [];
+						} catch {
+							return [];
+						}
+					}),
+				);
+			}
+		} catch {
+			trustedOrigins = new Set();
+		}
 		document.addEventListener('click', (event) => {
 			const toggle = whale.closest(
 				event.target,

@@ -696,10 +696,16 @@ class WhaleRenderer {
 	 * @return array<string,string|bool>
 	 */
 	public function getExternalLinkWarningData(): array {
+		if ( ( $GLOBALS['wgWhaleEnableExternalLinkWarning'] ?? false ) !== true ) {
+			return [];
+		}
 		$skin = $this->skin;
+		$trusted = $GLOBALS['wgWhaleExternalLinkTrustedOrigins'] ?? [];
+		$trusted = is_array( $trusted ) ? array_values( array_filter( $trusted, 'is_string' ) ) : [];
 
 		return [
 			'enabled' => true,
+			'trusted-origins' => json_encode( $trusted ) ?: '[]',
 			'title' => $skin->msg( 'whale-external-link-title' )->text(),
 			'description' => $skin->msg( 'whale-external-link-description' )->text(),
 			'cancel-label' => $skin->msg( 'cancel' )->text(),
