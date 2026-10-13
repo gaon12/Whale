@@ -17,6 +17,7 @@
 			"@test:sections",
 			"@test:avatar",
 			"@test:navbar",
+			"@test:renderers",
 			"@test:theme-contrast"
 		],
 		"test:folding": [
@@ -33,6 +34,9 @@
 		],
 		"test:navbar": [
 			"php scripts/check-navbar.php"
+		],
+		"test:renderers": [
+			"php scripts/check-renderer-behavior.php"
 		],
 		"test:theme-contrast": [
 			"php scripts/check-theme-contrast.php"

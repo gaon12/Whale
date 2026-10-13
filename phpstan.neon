@@ -13,6 +13,9 @@ parameters:
 		- WhaleHooks.php
 		- WhaleNavbarParser.php
 		- WhaleRenderer.php
+		- WhaleAccountRenderer.php
+		- WhalePersonalTools.php
+		- WhaleIcon.php
 		- WhaleShortUrl.php
 	excludePaths:
 		analyseAndScan:
