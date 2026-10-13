@@ -893,8 +893,8 @@ const navbarLinkBlock = getRuleBlock(
 );
 assertIncludes(
 	navbarLinkBlock,
-	'height: var(--whale-nav-height)',
-	'Liberty navbar link height',
+	'height: 2.5rem',
+	'Rounded navbar link hit area',
 );
 assertIncludes(navbarLinkBlock, 'color: #fff', 'Liberty navbar link contrast');
 assertIncludes(navbarLinkBlock, 'font-weight: 500', 'Navbar menu weight');

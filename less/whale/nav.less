@@ -81,7 +81,7 @@
 	display: flex;
 	align-items: center;
 	flex: 0 0 auto;
-	gap: 0;
+	gap: 0.5rem;
 	padding-left: 0;
 	margin: 0;
 	list-style: none;
@@ -110,15 +110,16 @@
 	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;
-	height: var(--whale-nav-height);
+	/* 40px rounded hit areas centred in the 56px bar. */
+	height: 2.5rem;
 	color: #fff;
-	font-size: 1rem;
+	font-size: 1.05rem;
 	font-weight: 500;
-	padding: 0.7rem 0.8rem;
-	line-height: 1.4rem;
+	padding: 0 0.75rem;
+	line-height: 1.5;
 	text-decoration: none;
 	border: 0;
-	border-radius: 0;
+	border-radius: var(--whale-radius-sm);
 	background: transparent;
 	outline: 0;
 	transition: background-color 0.16s ease, color 0.16s ease;
@@ -168,11 +169,12 @@
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group {
 	display: inline-flex;
 	align-items: stretch;
-	height: var(--whale-control-height);
+	/* A borderless 40px white field that holds its icon buttons. */
+	height: 2.5rem;
 	min-width: 0;
 	overflow: hidden;
 	background-color: #fff;
-	border: 1px solid #ccc;
+	border: 0;
 	border-radius: var(--whale-radius-sm);
 	box-shadow: none;
 	vertical-align: middle;
@@ -181,12 +183,12 @@
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-input {
 	box-sizing: border-box;
-	font-size: 0.8rem;
-	height: var(--whale-control-height);
+	font-size: 0.9375rem;
+	height: 2.5rem;
 	line-height: 1.5;
 	min-width: 0;
-	width: 10.8rem;
-	padding: 0.2rem 0.4rem;
+	width: 13rem;
+	padding: 0 0.25rem 0 0.75rem;
 	background: transparent;
 	border: 0;
 }
@@ -196,58 +198,41 @@
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-group:focus-within {
-	border-color: var(--whale-main-color);
-	box-shadow: var(--whale-focus-ring);
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55);
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-actions {
 	display: inline-flex;
 	align-items: stretch;
 	flex: 0 0 auto;
-	height: var(--whale-control-height);
+	height: 2.5rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn {
 	align-items: center;
 	border: 0;
-	border-left: 1px solid var(--whale-border-color);
 	border-radius: 0;
 	display: inline-flex;
 	justify-content: center;
-	height: var(--whale-control-height);
-	min-width: var(--whale-control-height);
-	color: var(--whale-content-muted-color);
+	height: 2.5rem;
+	min-width: 2.25rem;
+	color: #444;
 	padding: 0;
 	line-height: 1;
 	position: relative;
-	background-color: #fff;
+	background-color: transparent;
 }
 
-.Whale .whale-nav-wrapper .whale-navbar .whale-search-form #searchGoButton:hover,
-.Whale .whale-nav-wrapper .whale-navbar .whale-search-form #searchGoButton:focus {
-	background-color: var(--whale-hover-color);
-	border-color: var(--whale-border-strong-color);
-	color: var(--whale-main-color);
-	outline: 0;
-}
-
-.Whale .whale-nav-wrapper .whale-navbar .whale-search-form #mw-searchButton {
-	min-width: var(--whale-control-height);
-	background-color: var(--whale-main-color);
-	border-left-color: var(--whale-main-color);
-	color: var(--whale-main-contrast-color);
-}
-
-.Whale .whale-nav-wrapper .whale-navbar .whale-search-form #mw-searchButton:hover,
-.Whale .whale-nav-wrapper .whale-navbar .whale-search-form #mw-searchButton:focus {
-	background-color: var(--whale-second-color);
-	border-left-color: var(--whale-second-color);
-	color: var(--whale-second-contrast-color);
+.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn:hover,
+.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn:focus {
+	background-color: rgba(0, 0, 0, 0.06);
+	color: #000;
 	outline: 0;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn .whale-icon {
-	width: 0.9rem;
+	width: 1.05rem;
+	height: 1.05rem;
 }
 
 .Whale .whale-nav-wrapper .whale-navbar .whale-theme-toggle {
