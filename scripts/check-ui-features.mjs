@@ -1031,7 +1031,7 @@ assertIncludes(
 );
 assertIncludes(
 	styles,
-	'--whale-reading-leading: 1.6',
+	'--whale-reading-leading: 1.5',
 	'Readable article leading',
 );
 assertIncludes(styles, '--whale-link-color: #0275d8', 'Light link color token');
