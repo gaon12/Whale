@@ -348,8 +348,13 @@ assertIncludes(
 assertIncludes(liveRecentStyles, '[hidden]', 'Inactive live recent tab panel');
 assertIncludes(
 	read('templates/LiveRecent.mustache'),
-	'role="tablist"',
-	'Accessible live recent tabs',
+	'class="live-recent-stack"',
+	'Sidebar feeds render as separate cards',
+);
+assertIncludes(
+	read('templates/LiveRecent.mustache'),
+	'aria-labelledby="{{tab-id}}"',
+	'Each sidebar feed card is labelled by its heading',
 );
 assertNotIncludes(
 	read('WhaleRenderer.php').slice(

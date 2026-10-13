@@ -6,6 +6,8 @@
 /* Sidebar card: one rounded white box whose header row names
    the feed (18px, weight 500) above a plain 15px list. With two feeds the
    header names become tabs; the inactive one is simply muted. */
+/* Each feed is its own card, stacked with the page gap between them. */
+.Whale .content-wrapper .live-recent-stack { display: flex; flex-direction: column; gap: var(--whale-layout-gap); }
 .Whale .content-wrapper .live-recent {
 	width: 100%; overflow: hidden; border: 1px solid var(--whale-border-color); border-radius: var(--whale-radius);
 	background-color: var(--whale-surface-color);
@@ -32,7 +34,7 @@
 .Whale .content-wrapper .live-recent .live-recent-header > .whale-icon { flex: 0 0 auto; width: 1.125rem; height: 1.125rem; color: var(--whale-content-muted-color); }
 .Whale .content-wrapper .live-recent .live-recent-title {
 	flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; color: inherit;
-	font-size: 1.125rem; font-weight: 500; line-height: 1.4; letter-spacing: 0;
+	font-size: 1.125rem; font-weight: var(--whale-heading-weight); line-height: 1.4; letter-spacing: 0;
 }
 .Whale .content-wrapper .live-recent .live-recent-header > .live-recent-more { flex: 0 0 auto; }
 .Whale .content-wrapper .live-recent .live-recent-progress { position: absolute; top: 0; right: 0; left: 0; height: 2px; overflow: hidden; }
