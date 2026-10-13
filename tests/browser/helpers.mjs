@@ -1,11 +1,53 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import less from 'less';
+import Mustache from 'mustache';
 
-export const skinStyles = async () => {
-	const filename = resolve('less/default.less');
-	return (await less.render(await readFile(filename, 'utf8'), { filename }))
-		.css;
+let compiledStyles;
+export const skinStyles = () => {
+	compiledStyles ??= (async () => {
+		const manifest = JSON.parse(await readFile('skin.json', 'utf8'));
+		const styles = manifest.ResourceModules['skins.whale.styles'].styles;
+		const output = await Promise.all(
+			Object.entries(styles)
+				.filter(([, options]) => options.media !== 'print')
+				.map(async ([path]) => {
+					const filename = resolve(path);
+					return (
+						await less.render(await readFile(filename, 'utf8'), { filename })
+					).css;
+				}),
+		);
+		return output.join('\n');
+	})();
+	return compiledStyles;
+};
+
+export const renderSkin = async (data) => {
+	const names = [
+		'skin',
+		'Nav',
+		'ContentTools',
+		'LiveRecent',
+		'LiveRecentMobile',
+		'Footer',
+		'UserContributionGraph',
+		'LoginModal',
+		'ShortUrlModal',
+		'ExternalLinkModal',
+		'ReferenceModal',
+		'LoginMenu',
+		'SearchBox',
+	];
+	const templates = Object.fromEntries(
+		await Promise.all(
+			names.map(async (name) => [
+				name,
+				await readFile(`templates/${name}.mustache`, 'utf8'),
+			]),
+		),
+	);
+	return Mustache.render(templates.skin, data, templates);
 };
 
 export const runtime = async (page) => {

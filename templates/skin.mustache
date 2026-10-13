@@ -5,23 +5,22 @@
 </header>
 <section>
 	<div class="content-wrapper{{^has-whale-sidebar}} whale-content-wrapper-no-sidebar{{/has-whale-sidebar}}">
+		{{#has-whale-site-notice}}
+			<div class="whale-notice whale-site-notice-bar" role="status">
+				<button type="button" class="whale-notice-close" data-whale-dismiss="notice" aria-label="{{whale-close-label}}"><span aria-hidden="true">&times;</span></button>
+				{{{ html-whale-site-notice }}}
+			</div>
+		{{/has-whale-site-notice}}
 		<div class="whale-content{{^has-whale-sidebar}} whale-content-no-sidebar{{/has-whale-sidebar}}">
 			<div class="whale-content-header{{#has-whale-sidebar}} whale-content-header-with-sidebar{{/has-whale-sidebar}}">
-				{{#has-whale-site-notice}}
-					<div class="whale-notice" role="alert">
-						<button type="button" class="whale-notice-close" data-whale-dismiss="notice" aria-label="{{whale-close-label}}">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						{{{ html-whale-site-notice }}}
-					</div>
-				{{/has-whale-site-notice}}
 				{{{ html-whale-header-ad }}}
-				{{>ContentTools}}
-				<div class="title">
-					<h1>{{{ html-title }}}</h1>
-				</div>
-				<div class="contentSub" {{{ html-user-language-attributes }}}>
-					{{{ html-subtitle }}}
+				<div class="whale-content-heading">
+					<div class="whale-content-title-group">
+						<div class="title"><h1 id="firstHeading" class="firstHeading mw-first-heading">{{{ html-title }}}</h1></div>
+						{{#html-whale-last-modified}}<div class="whale-document-metadata">{{{ html-whale-last-modified }}}</div>{{/html-whale-last-modified}}
+						{{#html-subtitle}}<div class="contentSub" {{{ html-user-language-attributes }}}>{{{ html-subtitle }}}</div>{{/html-subtitle}}
+					</div>
+					{{>ContentTools}}
 				</div>
 			</div>
 			<div class="whale-content-main" id="content">
