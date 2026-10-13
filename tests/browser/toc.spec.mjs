@@ -55,28 +55,46 @@ for (const native of [false, true]) {
 	}
 }
 
-test('desktop labels remain visible and scroll inside the sidebar', async ({
+test('desktop markers follow exact document positions beside the scrollbar', async ({
 	page,
 }) => {
 	await setupToc(page);
-	await expect(
-		page.locator('.whale-sidebar .whale-floating-toc'),
-	).toBeVisible();
-	await expect(page.locator('.whale-floating-toc a').first()).toBeVisible();
-	const layout = await page
-		.locator('.whale-floating-toc ol')
-		.evaluate((list) => ({
-			scrollable: list.scrollHeight > list.clientHeight,
-			labelOpacity: getComputedStyle(list.querySelector('a')).opacity,
-			whiteSpace: getComputedStyle(list.querySelector('a')).whiteSpace,
-		}));
-	expect(layout).toEqual({
-		scrollable: true,
-		labelOpacity: '1',
-		whiteSpace: 'normal',
+	await expect(page.locator('body > .whale-floating-toc')).toHaveCount(1);
+	await expect(page.locator('.whale-sidebar .whale-floating-toc')).toHaveCount(
+		0,
+	);
+	const positions = await page.evaluate(() => {
+		const documentHeight = document.documentElement.scrollHeight;
+		return [...document.querySelectorAll('.whale-floating-toc li')].map(
+			(item, index) => {
+				const heading = document.getElementById(`section_${index + 1}`);
+				return {
+					actual: Number.parseFloat(item.style.top),
+					expected:
+						((heading.getBoundingClientRect().top + scrollY) / documentHeight) *
+						100,
+				};
+			},
+		);
 	});
-	await page.locator('.whale-floating-toc a').last().click();
-	await expect(page.locator('#section_317')).toBeInViewport();
+	for (const item of positions)
+		expect(item.actual).toBeCloseTo(item.expected, 3);
+	const marker = await page
+		.locator('.whale-floating-toc li')
+		.nth(100)
+		.boundingBox();
+	await page.mouse.move(
+		marker.x + marker.width / 2,
+		marker.y + marker.height / 2,
+	);
+	await expect(
+		page.locator('.whale-floating-toc li').nth(100).locator('a'),
+	).toHaveCSS('opacity', '1');
+	await page.mouse.click(
+		marker.x + marker.width / 2,
+		marker.y + marker.height / 2,
+	);
+	await expect(page.locator('#section_101')).toBeInViewport();
 });
 
 test('mobile drawer keeps keyboard focus inside and returns it on Escape', async ({
@@ -100,12 +118,10 @@ test('mobile drawer keeps keyboard focus inside and returns it on Escape', async
 	);
 });
 
-test('pages without a sidebar retain an inline navigation list', async ({
+test('pages without a sidebar retain document-position navigation', async ({
 	page,
 }) => {
 	await setupToc(page, { sidebar: false, count: 24 });
-	await expect(
-		page.locator('#mw-content-text > .whale-floating-toc.is-inline'),
-	).toBeVisible();
+	await expect(page.locator('body > .whale-floating-toc')).toBeVisible();
 	await expect(page.locator('.whale-floating-toc a')).toHaveCount(24);
 });

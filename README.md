@@ -909,9 +909,9 @@ Other languages can fall back through MediaWiki's normal language fallback chain
 
 Whale uses a document-first layout: the page title and core revision metadata
 share a header with article actions, followed by 16px reading text with 1.7
-line spacing. Desktop section navigation is a visible, scrollable hierarchy
-in the sidebar; mobile navigation includes all sections in a keyboard-accessible
-drawer. The recent-change timer is independent of CSS animations and retains
+line spacing. Desktop section navigation places every marker beside the scrollbar at its
+actual document-relative position, with labels on hover or keyboard focus.
+Mobile navigation includes all sections in a keyboard-accessible drawer. The recent-change timer is independent of CSS animations and retains
 its last successful result when refreshing fails.
 
 New homepage templates should use the explicit component classes in

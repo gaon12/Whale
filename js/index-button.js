@@ -362,6 +362,11 @@
 				setMobileTocOpen(false);
 				whale.scrollToTarget(target);
 			});
+			item.addEventListener('click', (event) => {
+				if (event.target === item && shouldRenderDesktop) {
+					whale.scrollToTarget(target);
+				}
+			});
 			item.append(anchor);
 			list.append(item);
 		});
@@ -386,14 +391,7 @@
 			document.body.append(backdrop);
 			document.body.append(toc);
 		} else {
-			const sidebar = document.querySelector('.whale-sidebar');
-			const content = document.querySelector('.whale-content-main');
-			if (sidebar) {
-				sidebar.append(toc);
-			} else if (content) {
-				toc.classList.add('is-inline');
-				content.insertBefore(toc, content.firstChild);
-			}
+			document.body.append(toc);
 		}
 		document
 			.getElementById('whale-scrolltoc')
@@ -401,10 +399,57 @@
 
 		const anchors = [...toc.querySelectorAll('a')];
 		const items = [...toc.querySelectorAll('li')];
+		let hoveredIndex = -1;
+		const clearHovered = () => {
+			if (hoveredIndex >= 0) {
+				items[hoveredIndex].classList.remove('is-hovered');
+			}
+			hoveredIndex = -1;
+		};
+		const selectNearestMarker = (event) => {
+			const frame = toc.getBoundingClientRect();
+			const ratio = (event.clientY - frame.top) / Math.max(1, frame.height);
+			let nearest = 0;
+			let distance = Infinity;
+			links.forEach((item, index) => {
+				const nextDistance = Math.abs(item.positionRatio - ratio);
+				if (nextDistance < distance) {
+					nearest = index;
+					distance = nextDistance;
+				}
+			});
+			if (nearest !== hoveredIndex) {
+				clearHovered();
+				items[nearest].classList.add('is-hovered');
+				hoveredIndex = nearest;
+			}
+			return nearest;
+		};
+		if (shouldRenderDesktop) {
+			toc.addEventListener('pointermove', (event) => {
+				if (!event.target.closest?.('a')) {
+					selectNearestMarker(event);
+				}
+			});
+			toc.addEventListener('pointerleave', clearHovered);
+			toc.addEventListener('focusin', clearHovered);
+			toc.addEventListener('click', (event) => {
+				if (!event.target.closest?.('a')) {
+					whale.scrollToTarget(links[selectNearestMarker(event)].target);
+				}
+			});
+		}
 
 		const updatePositions = () => {
-			links.forEach((item) => {
+			const documentHeight = Math.max(1, document.documentElement.scrollHeight);
+			links.forEach((item, index) => {
 				item.scrollY = getTargetScrollY(item.target);
+				if (shouldRenderDesktop) {
+					const top = item.target.getBoundingClientRect().top + window.scrollY;
+					// Use actual document coordinates: never spread or truncate markers.
+					item.positionRatio = Math.max(0, Math.min(1, top / documentHeight));
+					items[index].style.top = `${item.positionRatio * 100}%`;
+				}
 			});
 		};
 
