@@ -156,6 +156,8 @@ Whale이 제공하는 기능은 다음과 같습니다.
 
 접기 블록은 제목 헤더, 별도 토글 바, 본문 영역으로 나뉘어 출력됩니다. 기본 구조는 아래처럼 렌더링됩니다.
 
+접기 문법은 스킨 사이에서 공유하는 파서 캐시에는 펼쳐진 본문으로 저장됩니다. 버튼과 접힘 상태는 Whale 화면에서만 추가하므로 다른 스킨에서도 내용을 읽을 수 있습니다. `<nowiki>`, `<pre>`, `<source>`, `<syntaxhighlight>`, `<math>` 및 HTML 주석 안의 예제는 변환하지 않습니다.
+
 ```html
 <div class="whale-folding">
 	<div class="whale-folding-header">
@@ -593,6 +595,8 @@ Short URLs appear in the footer/tools UI as a copyable modal for the latest revi
 ### 7. Styling Folding Blocks
 
 Folding blocks render as a title header, a separate toggle bar, and a body area.
+
+Shared parser caches store readable, expanded folding content. Whale alone adds the toggle and collapsed state when displaying it; other skins can still read the body. Examples inside `<nowiki>`, `<pre>`, `<source>`, `<syntaxhighlight>`, `<math>`, and HTML comments remain literal.
 
 ```html
 <div class="whale-folding">
