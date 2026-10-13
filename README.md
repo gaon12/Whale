@@ -152,6 +152,8 @@ Whale이 제공하는 기능은 다음과 같습니다.
 | 광고 슬롯 | 헤더, 오른쪽, 문서 아래, 하단 광고 위치를 설정할 수 있습니다. |
 | 다국어 메시지 | 한국어, 영어, 일본어, 중국어 간체, 중국어 번체 메시지를 관리합니다. |
 
+외부 링크는 기본적으로 바로 이동합니다. 확인 창이 필요한 사이트는 `LocalSettings.php`에서 `$wgWhaleEnableExternalLinkWarning = true;`로 활성화하고, `$wgWhaleExternalLinkTrustedOrigins = [ 'https://www.example.org' ];`처럼 신뢰하는 origin을 지정하면 해당 사이트는 확인 창 없이 이동합니다.
+
 ### 7. 접기 블록 꾸미기
 
 접기 블록은 제목 헤더, 별도 토글 바, 본문 영역으로 나뉘어 출력됩니다. 기본 구조는 아래처럼 렌더링됩니다.
@@ -591,6 +593,8 @@ Advanced site-wide color variables are available through `$wgWhalePrimaryColor`,
 | Localization | Maintains Korean, English, Japanese, Simplified Chinese, and Traditional Chinese messages. |
 
 Short URLs appear in the footer/tools UI as a copyable modal for the latest revision of the current page. The public `/s/{code}` URL requires a web-server rewrite from `/s/{code}` to `Special:WhaleShortUrl/{code}`. See `docs/rewrite/apache-whale-short-url.htaccess` and `docs/rewrite/nginx-whale-short-url.conf`.
+
+External links navigate directly by default. Sites that need a confirmation dialog can enable `$wgWhaleEnableExternalLinkWarning = true;` in `LocalSettings.php` and set `$wgWhaleExternalLinkTrustedOrigins = [ 'https://www.example.org' ];` to exempt trusted origins from confirmation.
 
 ### 7. Styling Folding Blocks
 
