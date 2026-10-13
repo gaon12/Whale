@@ -19,7 +19,11 @@
 
 /* Responsive layout */
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
-	body.Whale { --whale-sidebar-width: 260px; }
+	body.Whale { --whale-sidebar-width: 240px; }
+	/* Keep both sidebar feed tabs on one row in the narrower card. */
+	.Whale .content-wrapper .live-recent-tabs { gap: 0 0.75rem; padding-right: 1rem; padding-left: 1rem; }
+	.Whale .content-wrapper .live-recent-tab { gap: 0.35rem; font-size: 1rem; }
+	.Whale .content-wrapper .live-recent .recent-item { padding-right: 1rem; padding-left: 1rem; }
 	.Whale .whale-nav-wrapper .whale-navbar {
 		padding-right: 0.75rem;
 		padding-left: 0.75rem;

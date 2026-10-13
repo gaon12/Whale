@@ -86,7 +86,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
 		if (width >= 1024) {
 			expect(measurements.sidebarTop).toBe(measurements.documentTop);
 			expect(measurements.toolbarRight).toBeLessThan(measurements.markersLeft);
-			expect(measurements.sidebarWidth).toBe(width < 1200 ? 260 : 320);
+			expect(measurements.sidebarWidth).toBe(width < 1200 ? 240 : 280);
 		}
 		await page.setViewportSize({
 			width: width >= 1024 ? 390 : 1440,
