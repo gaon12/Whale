@@ -377,7 +377,8 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-heading-number {
-	margin-right: 0.4rem;
+	/* The number already ends with a space ("1. "), so only a hairline is added. */
+	margin-right: 0.1rem;
 	color: var(--whale-main-color);
 	font-weight: 700;
 }
@@ -579,17 +580,30 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	color: var(--whale-link-color);
 }
 
+/* The edit links come before the hover-only "#" copy button in the markup.
+   Ordering them last keeps them flush with the divider's right end instead
+   of leaving a gap the size of the invisible button. */
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection {
+	order: 1;
 	flex: 0 0 auto;
 	max-width: 45%;
 	margin-left: auto;
 	overflow: hidden;
-	font-size: 0.82rem;
+	color: var(--whale-content-muted-color);
+	font-size: 0.8125rem;
 	font-weight: 400;
-	line-height: 1;
+	letter-spacing: 0;
+	line-height: 1.4;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	cursor: default;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection-bracket,
+.Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection-divider {
+	margin: 0;
+	color: var(--whale-content-muted-color);
+	font-size: inherit;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection a {
