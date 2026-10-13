@@ -85,7 +85,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
 		expect(measurements.categoryCenterDifference).toBeLessThan(1);
 		await expect(page.locator('#mw-hidden-catlinks')).toBeHidden();
 		expect(measurements.fontSize).toBe('15px');
-		expect(measurements.lineHeight).toBeCloseTo(24);
+		expect(measurements.lineHeight).toBeCloseTo(22.5);
 		expect(
 			measurements.labels.every(
 				(label) => label.width >= 110 && label.height < 80,

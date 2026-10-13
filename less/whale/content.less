@@ -260,8 +260,8 @@
 	color: var(--whale-text-color);
 	font-weight: 700;
 	font-size: 2.25rem;
-	letter-spacing: -0.025em;
-	line-height: 1.25;
+	letter-spacing: normal;
+	line-height: 1;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .header-ads {
@@ -832,6 +832,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 .Whale .whale-document-metadata {
 	margin-top: 0.5rem;
 	color: var(--whale-content-muted-color);
-	font-size: 0.8125rem;
+	color: ~"color-mix(in srgb, var(--whale-text-color) 75%, transparent)";
+	font-size: 0.9rem;
 	line-height: 1.5;
 }
