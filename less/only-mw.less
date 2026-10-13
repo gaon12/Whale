@@ -171,28 +171,47 @@
 	border-bottom: 1px solid var(--whale-border-color);
 }
 
+/* Heading scale, relative to the article text so the reader's
+   font-size preference scales headings too: 27/24/21/18/15px at 15px. */
+.Whale .content-wrapper .whale-content .whale-content-main h1,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading1 {
+	font-size: 2em;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main h2,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading2 {
-	font-size: 1.65rem;
-	letter-spacing: -0.018em;
+	font-size: 1.8em;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main h3,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading3 {
-	font-size: 1.4rem;
-	letter-spacing: -0.012em;
+	font-size: 1.6em;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main h4,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading4 {
-	font-size: 1.2rem;
+	font-size: 1.4em;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main h5,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading5 {
+	font-size: 1.2em;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main h6,
-.Whale .content-wrapper .whale-content .whale-content-main .mw-heading5,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading6 {
-	font-size: 1.05rem;
+	font-size: 1em;
+}
+
+/* MediaWiki 1.43+ wraps headings in .mw-heading; the wrapper carries the
+   size, so the inner heading must not multiply it again. */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading > h1,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading > h2,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading > h3,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading > h4,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading > h5,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-heading > h6 {
+	font-size: inherit;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading h1,
@@ -218,9 +237,9 @@
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading h6.whale-section-heading {
 	display: flex;
 	width: 100%;
-	margin-top: 1.35rem;
-	margin-bottom: 0.8rem;
-	padding-bottom: 0.55rem;
+	margin-top: 1.2em;
+	margin-bottom: 0.8em;
+	padding-bottom: 5px;
 	border-bottom: 1px solid var(--whale-border-color);
 	box-shadow: none;
 	overflow: visible;
