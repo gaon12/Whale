@@ -56,7 +56,11 @@
 	};
 
 	const prepareImages = (root = document) => {
-		root.querySelectorAll?.('#mw-content-text img, img').forEach((image) => {
+		const images = [
+			...(root.matches?.('img') ? [root] : []),
+			...(root.querySelectorAll?.('img') || []),
+		];
+		images.forEach((image) => {
 			if (!image.closest('#mw-content-text')) {
 				return;
 			}
