@@ -39,6 +39,7 @@ test.describe('MediaWiki integration', () => {
 								'mediawiki.api',
 								'skins.whale.layoutjs',
 								'skins.whale.liverc',
+								'skins.whale.headingAnchors',
 							].map((name) => [name, window.mw?.loader.getState(name)]),
 						),
 					),
@@ -48,8 +49,12 @@ test.describe('MediaWiki integration', () => {
 				'mediawiki.api': 'ready',
 				'skins.whale.layoutjs': 'ready',
 				'skins.whale.liverc': 'ready',
+				'skins.whale.headingAnchors': 'ready',
 			});
 		await expect(page.locator('.whale-home-section')).toHaveCount(4);
+		await expect(page.locator('.whale-home .whale-heading-anchor')).toHaveCount(
+			0,
+		);
 		await expect(page.locator('.whale-home-title')).toHaveText(
 			'가온 위키에 오신 것을 환영합니다',
 		);

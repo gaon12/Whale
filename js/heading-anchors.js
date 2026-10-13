@@ -54,6 +54,9 @@
 		};
 
 		content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+			if (heading.closest('.whale-home')) {
+				return;
+			}
 			const id =
 				heading.id ||
 				heading.querySelector('.mw-headline[id]')?.getAttribute('id');
