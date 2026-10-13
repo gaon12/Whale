@@ -1,11 +1,14 @@
 /* Readable section navigation: document-position markers on desktop and a mobile drawer. */
+/* Desktop: a narrow hot zone beside the scrollbar. Each dot sits at its
+   section's real document position; approaching the dots opens a panel that
+   lists every section with the current one highlighted. */
 .whale-floating-toc {
 	position: fixed;
 	top: 0;
-	right: 1.125rem;
+	right: 0;
 	bottom: 0;
 	z-index: 999;
-	width: 1.25rem;
+	width: 2.75rem;
 	margin: 0;
 	border: 0;
 	background: transparent;
@@ -23,61 +26,78 @@
 	font-weight: 650;
 }
 .whale-floating-toc:not(.is-mobile) .whale-floating-toc-header { display: none; }
-.whale-floating-toc ol {
-	position: relative;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-.whale-floating-toc li {
+.whale-floating-toc-rail {
 	position: absolute;
-	right: 0;
+	top: 0;
+	right: 1.125rem;
+	bottom: 0;
 	width: 1.25rem;
-	height: 0.75rem;
-	margin: 0;
-	transform: translateY(-50%);
 	pointer-events: none;
 }
-.whale-floating-toc li::after {
+.whale-floating-toc-marker {
 	position: absolute;
-	top: 50%;
 	right: 0.3rem;
 	width: 0.375rem;
 	height: 0.375rem;
 	border-radius: 50%;
 	background: var(--whale-content-muted-color);
-	content: "";
 	transform: translateY(-50%);
-	pointer-events: none;
+	transition: background-color 0.12s ease, transform 0.12s ease;
 }
-.whale-floating-toc li.is-active::after { background: var(--whale-main-color); }
-.whale-floating-toc a {
+.whale-floating-toc-marker.is-active { background: var(--whale-main-color); transform: translateY(-50%) scale(1.35); }
+.whale-floating-toc-marker.is-hovered { background: var(--whale-text-color); transform: translateY(-50%) scale(1.35); }
+.whale-floating-toc-panel {
 	position: absolute;
 	top: 50%;
-	right: 1rem;
+	right: 100%;
 	width: max-content;
-	max-width: ~"min(24rem, 70vw)";
-	padding: 0.4rem 0.65rem;
+	min-width: 12rem;
+	max-width: ~"min(22rem, 60vw)";
+	max-height: ~"calc(100vh - var(--whale-nav-height) - 4rem)";
+	margin: 0;
+	padding: 0.5rem 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
 	border: 1px solid var(--whale-border-color);
-	border-radius: var(--whale-radius-sm);
+	border-radius: var(--whale-radius);
 	background: var(--whale-surface-color);
-	color: var(--whale-text-color);
-	font-size: 0.85rem;
-	line-height: 1.45;
-	text-align: start;
-	text-decoration: none;
-	overflow-wrap: anywhere;
-	white-space: normal;
+	box-shadow: var(--whale-shadow-md);
+	list-style: none;
 	opacity: 0;
+	visibility: hidden;
 	transform: translateY(-50%);
+	transition: opacity 0.12s ease, visibility 0s linear 0.12s;
 	pointer-events: none;
 }
-.whale-floating-toc li.is-hovered a,
-.whale-floating-toc li:focus-within a { opacity: 1; pointer-events: auto; }
-.whale-floating-toc a:hover,
-.whale-floating-toc a:focus-visible,
-.whale-floating-toc a.is-active { color: var(--whale-link-color); }
+.whale-floating-toc.is-expanded .whale-floating-toc-panel {
+	opacity: 1;
+	visibility: visible;
+	transition: opacity 0.12s ease;
+	pointer-events: auto;
+}
+.whale-floating-toc-panel li { margin: 0; }
+.whale-floating-toc-panel a {
+	display: block;
+	padding: 0.25rem 1rem;
+	color: var(--whale-text-color);
+	font-size: 0.875rem;
+	line-height: 1.45;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+}
+.whale-floating-toc-panel .whale-floating-toc-level-2 a { padding-inline-start: 1.75rem; }
+.whale-floating-toc-panel .whale-floating-toc-level-3 a { padding-inline-start: 2.5rem; }
+.whale-floating-toc-panel .whale-floating-toc-level-4 a,
+.whale-floating-toc-panel .whale-floating-toc-level-5 a,
+.whale-floating-toc-panel .whale-floating-toc-level-6 a { padding-inline-start: 3.25rem; }
+.whale-floating-toc-panel li.is-hovered a,
+.whale-floating-toc-panel a:hover,
+.whale-floating-toc-panel a:focus-visible { background: var(--whale-surface-muted-color); color: var(--whale-link-color); }
+.whale-floating-toc-panel a.is-active { background: var(--whale-hover-color); color: var(--whale-link-color); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) {
+	.whale-floating-toc-marker,
+	.whale-floating-toc-panel { transition: none; }
+}
 .whale-floating-toc.is-mobile {
 	position: fixed;
 	inset: 0 0 0 auto;
@@ -94,6 +114,9 @@
 	transition: transform 180ms ease;
 }
 .whale-floating-toc.is-mobile ol {
+	position: relative;
+	margin: 0;
+	list-style: none;
 	flex: 1;
 	height: auto;
 	overflow-y: auto;
@@ -109,7 +132,10 @@
 .whale-floating-toc.is-mobile .whale-floating-toc-level-4,
 .whale-floating-toc.is-mobile .whale-floating-toc-level-5,
 .whale-floating-toc.is-mobile .whale-floating-toc-level-6 { margin-inline-start: 2rem; }
-.whale-floating-toc.is-mobile a { position: static; display: block; width: auto; max-width: none; opacity: 1; transform: none; pointer-events: auto; min-height: 2.75rem; padding: 0.65rem 0.5rem; font-size: 0.95rem; }
+.whale-floating-toc.is-mobile a { position: static; display: block; width: auto; max-width: none; opacity: 1; transform: none; pointer-events: auto; min-height: 2.75rem; padding: 0.65rem 0.5rem; border-radius: var(--whale-radius-sm); color: var(--whale-text-color); font-size: 0.95rem; line-height: 1.45; text-decoration: none; overflow-wrap: anywhere; }
+.whale-floating-toc.is-mobile a:hover,
+.whale-floating-toc.is-mobile a:focus-visible,
+.whale-floating-toc.is-mobile a.is-active { color: var(--whale-link-color); }
 .whale-floating-toc-close {
 	min-height: 2.75rem;
 	padding: 0.4rem 0.6rem;
