@@ -68,49 +68,33 @@ class WhaleArticleDecorator {
 	}
 
 	public static function convertFoldingSyntax( string $text ): string {
-		$lines = preg_split( "/(\r\n|\n|\r)/", $text );
-		if ( $lines === false ) {
-			return $text;
+		return WhaleFoldingParser::convert( $text );
+	}
+
+	/** Also make older cached folding markup readable in other skins. */
+	public static function makeFoldingBlocksReadable( string $html ): string {
+		if ( !str_contains( $html, 'whale-folding' ) ) {
+			return $html;
 		}
-
-		$output = [];
-		$stackDepth = 0;
-
-		foreach ( $lines as $line ) {
-			if ( preg_match( '/^\{\{\{#!folding(?:[ \t]+(.*))?$/u', $line, $matches ) ) {
-				$title = trim( $matches[1] ?? '' );
-				if ( $title === '' ) {
-					$title = wfMessage( 'whale-folding-default-title' )->text();
+		return self::withHtmlFragment( $html, static function ( DOMDocument $dom, DOMElement $root ) {
+			$xpath = new DOMXPath( $dom );
+			$nodes = $xpath->query( './/*[contains(concat(" ", normalize-space(@class), " "), " whale-folding-body ")]', $root );
+			if ( $nodes !== false ) {
+				foreach ( $nodes as $node ) {
+					if ( $node instanceof DOMElement ) {
+						$node->removeAttribute( 'hidden' );
+					}
 				}
-
-				$output[] = '<div class="whale-folding is-collapsed">';
-				$output[] = '<div class="whale-folding-header">' .
-					'<span class="whale-folding-title">' .
-					htmlspecialchars( $title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) .
-					'</span></div>';
-				$output[] = '<button type="button" class="whale-folding-toggle" aria-expanded="false">' .
-					htmlspecialchars( wfMessage( 'whale-folding-toggle-label' )->text(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) .
-					'</button>';
-				$output[] = '<div class="whale-folding-body" hidden="">';
-				$stackDepth++;
-				continue;
 			}
-
-			if ( $stackDepth > 0 && trim( $line ) === '}}}' ) {
-				$output[] = '</div></div>';
-				$stackDepth--;
-				continue;
+			$toggles = $xpath->query( './/*[contains(concat(" ", normalize-space(@class), " "), " whale-folding-toggle ")]', $root );
+			if ( $toggles !== false ) {
+				foreach ( $toggles as $toggle ) {
+					if ( $toggle instanceof DOMElement ) {
+						$toggle->parentNode?->removeChild( $toggle );
+					}
+				}
 			}
-
-			$output[] = $line;
-		}
-
-		while ( $stackDepth > 0 ) {
-			$output[] = '</div></div>';
-			$stackDepth--;
-		}
-
-		return implode( "\n", $output );
+		} );
 	}
 
 	public static function decorateArticleHtml(
@@ -281,8 +265,13 @@ class WhaleArticleDecorator {
 
 			$toggle = self::firstElementByClass( $folding, 'whale-folding-toggle' );
 			$body = self::firstElementByClass( $folding, 'whale-folding-body' );
-			if ( !$toggle || !$body ) {
+			if ( !$body ) {
 				continue;
+			}
+			if ( !$toggle ) {
+				$toggle = $dom->createElement( 'button', wfMessage( 'whale-folding-toggle-label' )->text() );
+				$toggle->setAttribute( 'class', 'whale-folding-toggle' );
+				$body->parentNode?->insertBefore( $toggle, $body );
 			}
 
 			$counter++;
@@ -316,6 +305,10 @@ class WhaleArticleDecorator {
 				self::removeClass( $folding, 'is-collapsed' );
 				$body->removeAttribute( 'hidden' );
 				$toggle->setAttribute( 'aria-expanded', 'true' );
+			} else {
+				self::addClass( $folding, 'is-collapsed' );
+				$body->setAttribute( 'hidden', '' );
+				$toggle->setAttribute( 'aria-expanded', 'false' );
 			}
 
 			if ( $foldingMode === self::FOLDING_MODE_OFF ) {

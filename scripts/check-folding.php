@@ -27,6 +27,7 @@ if ( !function_exists( 'wfMessage' ) ) {
 	}
 }
 
+require_once __DIR__ . '/../WhaleFoldingParser.php';
 require_once __DIR__ . '/../WhaleArticleDecorator.php';
 
 $method = new ReflectionMethod( WhaleArticleDecorator::class, 'convertFoldingSyntax' );
@@ -39,10 +40,9 @@ $escapedInput = "{{{#!folding <script>alert(1)</script>\n내용\n}}}";
 $escapedOutput = $method->invoke( null, $escapedInput );
 
 $expectedSnippets = [
-	'<div class="whale-folding is-collapsed">',
+	'<div class="whale-folding">',
 	'<div class="whale-folding-header"><span class="whale-folding-title">테스트 제목</span></div>',
-	'<button type="button" class="whale-folding-toggle" aria-expanded="false">펼치기 · 접기</button>',
-	'<div class="whale-folding-body" hidden="">',
+	'<div class="whale-folding-body">',
 	'접힌 내용',
 	'</div></div>',
 ];
@@ -52,6 +52,42 @@ foreach ( $expectedSnippets as $snippet ) {
 		fwrite( STDERR, "Missing folding output snippet: $snippet\n" );
 		exit( 1 );
 	}
+}
+
+if ( str_contains( $output, 'hidden=' ) || str_contains( $output, '<button' ) ) {
+	throw new RuntimeException( 'Shared parser output must stay readable without Whale scripts.' );
+}
+
+foreach ( [ 'nowiki', 'pre', 'source', 'syntaxhighlight', 'math' ] as $tag ) {
+	$literal = "<$tag>\r\n{{{#!folding Example\r\nbody\r\n}}}\r\n</$tag>";
+	if ( WhaleFoldingParser::convert( $literal ) !== $literal ) {
+		throw new RuntimeException( "Folding syntax inside $tag must remain literal." );
+	}
+	$mixed = "{{{#!folding Real\n" . $literal . "\n}}}";
+	$converted = WhaleFoldingParser::convert( $mixed );
+	if ( substr_count( $converted, 'class="whale-folding"' ) !== 1 || !str_contains( $converted, $literal ) ) {
+		throw new RuntimeException( 'Literal blocks must not open or close surrounding folding blocks.' );
+	}
+}
+$comment = "<!--\n{{{#!folding Example\nbody\n}}}\n-->";
+if ( WhaleFoldingParser::convert( $comment ) !== $comment ) {
+	throw new RuntimeException( 'Folding examples in comments must remain unchanged.' );
+}
+foreach ( [ 'default' => false, 'open' => true, 'off' => true ] as $mode => $expanded ) {
+	$decorated = WhaleArticleDecorator::decorateArticleHtml( $output, 'off', $mode );
+	if ( !str_contains( $decorated, 'aria-expanded="' . ( $expanded ? 'true' : 'false' ) . '"' ) ||
+		str_contains( $decorated, 'hidden=' ) === $expanded
+	) {
+		throw new RuntimeException( "Whale decoration must honor the $mode folding preference." );
+	}
+}
+$legacy = '<div class="whale-folding is-collapsed"><button class="whale-folding-toggle">Toggle</button>' .
+	'<div class="whale-folding-body" hidden="">Cached content</div></div>';
+$readable = WhaleArticleDecorator::makeFoldingBlocksReadable( $legacy );
+if ( str_contains( $readable, 'hidden=' ) || str_contains( $readable, '<button' ) ||
+	!str_contains( $readable, 'Cached content' )
+) {
+	throw new RuntimeException( 'Other skins must be able to read older cached folding content.' );
 }
 
 if ( str_contains( $escapedOutput, '<script>' ) ) {

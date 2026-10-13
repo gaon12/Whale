@@ -513,7 +513,9 @@ class WhaleHooks {
 			return true;
 		}
 
-		$text = WhaleArticleDecorator::convertFoldingSyntax( $text );
+		// Parser output is shared by all skins. Only Whale's output decorator
+		// adds interactive controls and hidden state to this readable markup.
+		$text = WhaleFoldingParser::convert( $text );
 
 		return true;
 	}
@@ -530,6 +532,7 @@ class WhaleHooks {
 
 		$skin = $out->getSkin();
 		if ( !$skin || $skin->getSkinName() !== 'whale' ) {
+			$text = WhaleArticleDecorator::makeFoldingBlocksReadable( $text );
 			return true;
 		}
 
