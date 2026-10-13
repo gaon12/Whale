@@ -433,6 +433,44 @@
 	margin-top: 0;
 }
 
+/* Page history and contribution lists: one compact run of rows. MediaWiki
+   splits them into a list per day with an (often empty) day header between,
+   which otherwise opens a paragraph-sized gap every few rows. */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-index-pager-list-header:empty {
+	display: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ul.mw-contributions-list {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main #pagehistory li {
+	margin: 0;
+	padding: 0.1rem 0.35rem;
+	border-radius: var(--whale-radius-sm);
+}
+
+/* Rows picked for comparison get a quiet tint instead of a dashed outline. */
+.Whale .content-wrapper .whale-content .whale-content-main #pagehistory li.selected {
+	outline: 0;
+	background-color: var(--whale-surface-muted-color);
+}
+
+/* A collapsible filter fieldset already draws its own box; drop the framed
+   OOUI panel around it so the form is not boxed twice. */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-htmlform-ooui-wrapper.oo-ui-panelLayout-framed:has(> form > fieldset.mw-collapsibleFieldsetLayout) {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+/* A collapsed filter fieldset shows only its legend row. */
+.Whale .content-wrapper .whale-content .whale-content-main fieldset.mw-collapsibleFieldsetLayout.mw-collapsed {
+	padding-bottom: 0;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main fieldset {
 	border: 1px solid var(--whale-border-color);
 	padding: 1rem;
