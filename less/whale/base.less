@@ -265,8 +265,8 @@ strike {
 
 /* Background Color */
 .Whale {
-	--whale-layout-width: 1440px;
-	--whale-sidebar-width: 280px;
+	--whale-layout-width: 1400px;
+	--whale-sidebar-width: 320px;
 	--whale-layout-gap: 16px;
 	--whale-nav-height: 3.5rem;
 	--whale-mobile-nav-height: calc(var(--whale-nav-height) + var(--whale-control-height) + 1rem + 1px);
@@ -335,12 +335,21 @@ html[dir="rtl"] .Whale .whale-reading-progress,
 /* Background Color End */
 
 /* Content width, alian center */
+/* The navbar row and the page share one centred container: 16px of inner
+   padding on each side, at most 1400px wide (1280px for 1200-1399px
+   viewports, full width below that). At 1440px this yields a 1032px sheet
+   beside the 320px sidebar. */
 .Whale .whale-nav-wrapper .whale-navbar,
 .Whale .content-wrapper {
+	width: 100%;
 	max-width: var(--whale-layout-width);
-	/* 16px gutters on each side until the layout reaches its maximum width. */
-	width: calc(100% - 2rem);
 	margin: 0 auto;
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+	.Whale {
+		--whale-layout-width: 1280px;
+	}
 }
 /* Content width, alian center End */
 
