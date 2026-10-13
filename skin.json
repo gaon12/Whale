@@ -179,7 +179,11 @@
 		},
 		"skins.whale.themeToggle": {
 			"scripts": "js/theme-toggle.js",
-			"messages": ["whale-theme-toggle-light", "whale-theme-toggle-dark"],
+			"messages": [
+				"whale-theme-toggle-light",
+				"whale-theme-toggle-dark",
+				"whale-theme-save-failed"
+			],
 			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
 		},
 		"skins.whale.lazyImages": {

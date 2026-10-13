@@ -109,6 +109,7 @@
 	"whale-scroll-toc": "목차로 이동",
 	"whale-pref-mobile-user-tools-right": "모바일에서 로그인/프로필 버튼을 오른쪽에 고정",
 	"whale-theme-toggle-dark": "어두운 모드로 전환",
+	"whale-theme-save-failed": "테마 설정을 저장하지 못했습니다. 다시 시도해 주세요.",
 	"whale-theme-toggle-light": "밝은 모드로 전환",
 	"whale-heading-link-copy": "이 문단 링크 복사",
 	"whale-heading-link-copied": "문단 링크를 복사했습니다",

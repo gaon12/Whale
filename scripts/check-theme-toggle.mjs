@@ -18,6 +18,10 @@ class TestClassList {
 	has(className) {
 		return this.classes.has(className);
 	}
+
+	contains(className) {
+		return this.has(className);
+	}
 }
 
 class TestMeta {

@@ -54,6 +54,9 @@ class WhaleHooks {
 			} elseif ( $darkMode === null ) {
 				$bodyAttrs['class'] .= ' whale-auto-dark';
 			}
+			$bodyAttrs['data-whale-theme-mode'] = in_array( $darkMode, [ 'dark', 'light' ], true )
+				? $darkMode : 'auto';
+			$bodyAttrs['data-whale-theme-storage'] = $sk->getUser()->isAnon() ? 'browser' : 'user';
 
 			if ( $userOptionsLookup->getOption( $sk->getUser(), 'whale-content-reduce-motion' ) ) {
 				$bodyAttrs['class'] .= ' whale-reduce-motion';
