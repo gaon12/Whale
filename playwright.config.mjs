@@ -9,6 +9,8 @@ export default defineConfig({
 	reporter: 'list',
 	use: {
 		browserName: 'chromium',
+		trace: 'retain-on-failure',
+		screenshot: 'only-on-failure',
 		launchOptions: { channel: process.env.WHALE_BROWSER_CHANNEL || undefined },
 		viewport: { width: 1440, height: 1000 },
 	},
