@@ -332,31 +332,41 @@
 	clear: both;
 	display: block;
 	width: auto;
-	margin: 1.5rem 0 0;
-	padding: 0.75rem 0.9rem;
+	margin: 0 0 1.25rem;
+	padding: 0.5rem 0.75rem;
 	border: 1px solid var(--whale-border-color);
-	border-inline-start: 3px solid var(--whale-main-color);
 	border-radius: var(--whale-radius-sm);
-	background-color: var(--whale-surface-muted-color);
+	background-color: transparent;
 	color: var(--whale-content-muted-color);
 	font-size: 0.9rem;
 	line-height: 1.5;
 	box-shadow: none;
 }
 
+.Whale .content-wrapper .whale-content .whale-content-main .catlinks > .mw-normal-catlinks,
+.Whale .content-wrapper .whale-content .whale-content-main .catlinks > .mw-hidden-catlinks:not(.mw-hidden-cats-hidden) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem 0.5rem;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul {
 	padding: 0;
-	margin-inline-start: 0.5rem;
+	margin: 0;
 	list-style: none;
-	display: inline;
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul > li {
 	margin: 0;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 	padding: 0 0.5em;
 	border-inline-start: 1px solid var(--whale-border-strong-color);
-	line-height: 1.25em;
+	line-height: inherit;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul > li:first-child {
