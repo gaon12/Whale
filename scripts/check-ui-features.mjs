@@ -546,8 +546,8 @@ assertIncludes(
 );
 assertIncludes(
 	mediaWikiStyles,
-	'min-width: 18rem',
-	'Article TOC compact document box',
+	'min-width: 12rem',
+	'Article TOC content-width document box',
 );
 assertIncludes(
 	mediaWikiStyles,

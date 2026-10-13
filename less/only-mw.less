@@ -1,16 +1,19 @@
 /* ToC */
+/* The TOC is a plain bordered box that is only as wide as its
+   entries, with an unboxed "목차" title and 20px of inner padding. */
 .Whale .content-wrapper .whale-content .whale-content-main .toc {
-	display: block;
-	width: ~"min(100%, 32rem)";
-	min-width: 18rem;
+	display: table;
+	width: auto;
+	min-width: 12rem;
 	max-width: 100%;
-	padding: 0;
+	margin: 0.5rem 0 1rem;
+	padding: 1rem 1.25rem;
 	overflow: hidden;
 	border: 1px solid var(--whale-border-color);
-	border-radius: var(--whale-radius-sm);
+	border-radius: 0;
 	background-color: var(--whale-surface-elevated-color);
 	box-shadow: none;
-	font-size: 0.95rem;
+	font-size: var(--whale-reading-size);
 	line-height: 1.5;
 }
 
@@ -18,13 +21,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 1rem;
-	min-height: 2.75rem;
-	margin: 0;
-	padding: 0.55rem 0.65rem 0.55rem 0.85rem;
+	gap: 2rem;
+	margin: 0 0 0.75rem;
+	padding: 0;
 	border: 0;
-	border-bottom: 1px solid var(--whale-border-color);
-	background-color: var(--whale-surface-muted-color);
+	background-color: transparent;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctitle h2 {
@@ -32,9 +33,9 @@
 	margin: 0;
 	border: none;
 	color: var(--whale-text-color);
-	font-size: 1.1rem;
-	font-weight: 700;
-	line-height: 1.25;
+	font-size: 1.2em;
+	font-weight: 400;
+	line-height: 1.5;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctogglespan {
@@ -97,24 +98,24 @@
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc > ul {
 	margin: 0;
-	padding: 0.6rem 0.65rem 0.7rem;
+	padding: 0;
 	border: 0;
 	border-radius: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc ul ul {
-	margin: 0 0 0 1.15rem !important;
+	margin: 0 0 0 1.25rem !important;
 	padding: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc li {
-	margin: 0.08rem 0;
+	margin: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc a {
 	display: block;
-	padding: 0.2rem 0.35rem;
-	border-radius: 4px;
+	padding: 0;
+	border-radius: 0;
 	color: var(--whale-link-color);
 	text-decoration: none;
 	transition: background-color 0.14s ease, color 0.14s ease;
@@ -125,13 +126,18 @@
 	font-variant-numeric: tabular-nums;
 }
 
+/* TOC numbers are written "1." and "2.1.", matching section headings. */
+.Whale .content-wrapper .whale-content .whale-content-main .toc .tocnumber::after {
+	content: ".";
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main .toc .toctext {
 	color: var(--whale-text-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .toc a:hover,
 .Whale .content-wrapper .whale-content .whale-content-main .toc a:focus {
-	background-color: var(--whale-hover-color);
+	background-color: transparent;
 	color: var(--whale-link-hover-color);
 	outline: 0;
 	text-decoration: none;
