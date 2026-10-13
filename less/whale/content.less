@@ -172,32 +172,35 @@
 	border-radius: var(--whale-radius-sm) 0 0 var(--whale-radius-sm);
 }
 
+/* Document tools: one row of identical white 36px buttons with
+   softened labels. "Edit" is not singled out with a filled color. */
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn {
-	font-size: 0.9rem;
-	min-height: var(--whale-control-height-sm);
-	padding: 0.4rem 0.8rem;
+	min-height: 2.25rem;
+	padding: 0.25rem 0.75rem;
+	border-color: var(--whale-border-color);
 	background-color: var(--whale-control-background);
+	color: var(--whale-content-muted-color);
+	color: ~"color-mix(in srgb, var(--whale-text-color) 75%, transparent)";
+	font-size: 0.9375rem;
+	font-weight: 400;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-edit {
-	background-color: var(--whale-main-color);
-	border-color: var(--whale-main-color);
-	color: var(--whale-main-contrast-color);
+/* The overflow menu toggle stands apart from the joined group, the way a
+   "⋮" button does; the last joined button gets the group's right corners. */
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-dropdown-toggle {
+	margin-left: 0.5rem;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-edit:hover,
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-edit:focus,
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-edit:active {
-	background-color: var(--whale-second-color);
-	border-color: var(--whale-second-color);
-	color: var(--whale-second-contrast-color);
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .tools-btn:nth-last-child(3) {
+	border-top-right-radius: var(--whale-radius-sm);
+	border-bottom-right-radius: var(--whale-radius-sm);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-dropdown-toggle {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: var(--whale-control-height-sm);
+	width: 2.25rem;
 	padding: 0.3rem 0;
 	border-radius: var(--whale-radius-sm);
 }
@@ -206,7 +209,7 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: var(--whale-control-height-sm);
+	width: 2.25rem;
 	padding-right: 0;
 	padding-left: 0;
 }
@@ -219,13 +222,13 @@
 	margin-left: 0;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:not(.tools-edit):hover,
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:not(.tools-edit):focus,
-.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:not(.tools-edit):active {
-	background-color: var(--whale-hover-color);
-	color: var(--whale-main-color);
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:hover,
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus,
+.Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:active {
+	background-color: var(--whale-surface-muted-color);
+	color: var(--whale-text-color);
 	outline: 0;
-	border-color: #69b1ff;
+	border-color: var(--whale-border-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools .tools-btn:focus-visible {
