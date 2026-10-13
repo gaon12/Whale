@@ -6,6 +6,8 @@
 	},
 	"skinname-whale": "Whale",
 	"whale-desc": "面向 Whale 的響應式 MediaWiki 外觀",
+	"whale-close": "關閉",
+	"whale-last-modified": "最後修改時間：$1",
 	"whale-dark-default": "跟隨系統設定",
 	"whale-dark-dark": "一律使用深色模式",
 	"whale-dark-light": "一律使用淺色模式",

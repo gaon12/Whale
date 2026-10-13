@@ -499,7 +499,7 @@ class WhaleRenderer {
 		return [
 			'categories' => $categories,
 			'icon-blocks' => $iconBlocks,
-			'html-last-modified' => $lastModifiedHtml,
+			'html-last-modified' => $this->skin->getWhaleRevisionMetadata() ?: $lastModifiedHtml,
 		];
 	}
 
@@ -535,7 +535,7 @@ class WhaleRenderer {
 			'modal-title' => $skin->msg( 'whale-short-url-title' )->text(),
 			'description' => $skin->msg( 'whale-short-url-description' )->text(),
 			'copy-label' => $skin->msg( 'whale-short-url-copy' )->text(),
-			'close-label' => $skin->msg( 'close' )->text(),
+			'close-label' => $skin->msg( 'whale-close' )->text(),
 		];
 	}
 
@@ -559,7 +559,7 @@ class WhaleRenderer {
 			'continue-label' => $skin->msg( 'whale-external-link-continue' )->text(),
 			'show-decoded-label' => $skin->msg( 'whale-external-link-show-decoded' )->text(),
 			'show-original-label' => $skin->msg( 'whale-external-link-show-original' )->text(),
-			'close-label' => $skin->msg( 'close' )->text(),
+			'close-label' => $skin->msg( 'whale-close' )->text(),
 		];
 	}
 
@@ -572,7 +572,7 @@ class WhaleRenderer {
 		return [
 			'title' => $skin->msg( 'whale-reference-title' )->text(),
 			'jump-label' => $skin->msg( 'whale-reference-jump' )->text(),
-			'close-label' => $skin->msg( 'close' )->text(),
+			'close-label' => $skin->msg( 'whale-close' )->text(),
 			'html-icon' => $this->renderIcon( 'file' ),
 		];
 	}

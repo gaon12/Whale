@@ -6,6 +6,8 @@
 	},
 	"skinname-whale": "Whale",
 	"whale-desc": "Responsive MediaWiki skin for Whale",
+	"whale-close": "Close",
+	"whale-last-modified": "Last modified: $1",
 	"whale-dark-default": "Follow system setting",
 	"whale-dark-dark": "Always use dark mode",
 	"whale-dark-light": "Always use light mode",
