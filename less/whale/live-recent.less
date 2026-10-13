@@ -98,6 +98,18 @@
 @keyframes whale-live-recent-progress { to { transform: scaleX(0); } }
 @media (prefers-reduced-motion: reduce) {
 	.Whale .content-wrapper .live-recent .recent-item-placeholder-title,
-	.Whale .content-wrapper .live-recent .recent-item-placeholder-time { animation: none; }
+	.Whale .content-wrapper .live-recent .recent-item-placeholder-time,
+	.Whale .content-wrapper .live-recent .live-recent-progress-bar { animation: none; }
+}
+.Whale .live-recent-status {
+	display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+	padding: 0.65rem; border-top: 1px solid var(--whale-border-color);
+	color: var(--whale-content-muted-color); font-size: 0.8rem; line-height: 1.5;
+}
+.Whale .live-recent-status[hidden] { display: none; }
+.Whale .live-recent-status button {
+	flex-shrink: 0; min-height: 2rem; padding: 0.25rem 0.4rem;
+	border: 1px solid var(--whale-border-color); border-radius: var(--whale-radius-sm);
+	background: var(--whale-surface-color); color: var(--whale-link-color); font: inherit;
 }
 .Whale .content-wrapper .whale-sidebar .right-ads { width: var(--whale-sidebar-width); margin-top: 1rem; }

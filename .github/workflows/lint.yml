@@ -47,6 +47,12 @@ jobs:
       - name: Check JavaScript syntax
         run: npm test
 
+      - name: Install browser for integration tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Test rendered browser behavior
+        run: npm run test:browser
+
   php:
     name: PHPCS and PHPStan (PHP ${{ matrix.php }})
     runs-on: ubuntu-24.04

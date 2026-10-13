@@ -194,7 +194,12 @@
 		},
 		"skins.whale.liverc": {
 			"scripts": "js/live-recent.js",
-			"messages": ["whale-feed-new", "whale-live-recent-no-data"],
+			"messages": [
+				"whale-feed-new",
+				"whale-live-recent-no-data",
+				"whale-live-recent-error",
+				"whale-live-recent-retry"
+			],
 			"dependencies": ["mediawiki.util", "skins.whale.common"]
 		},
 		"skins.whale.loginjs": {

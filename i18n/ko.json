@@ -105,6 +105,8 @@
 	"whale-floating-toc": "문단 목차",
 	"whale-reading-progress": "읽기 진행률",
 	"whale-live-recent-no-data": "표시할 내용이 없습니다",
+	"whale-live-recent-error": "최근 변경을 불러오지 못했습니다.",
+	"whale-live-recent-retry": "다시 시도",
 	"whale-scroll-up": "맨 위로 이동",
 	"whale-scroll-down": "맨 아래로 이동",
 	"whale-scroll-toc": "목차로 이동",

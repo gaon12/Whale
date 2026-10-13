@@ -105,6 +105,8 @@
 	"whale-floating-toc": "章节目录",
 	"whale-reading-progress": "阅读进度",
 	"whale-live-recent-no-data": "没有可显示的内容",
+	"whale-live-recent-error": "无法加载最近更改。",
+	"whale-live-recent-retry": "重试",
 	"whale-scroll-up": "回到顶部",
 	"whale-scroll-down": "前往底部",
 	"whale-scroll-toc": "前往目录",

@@ -105,6 +105,8 @@
 	"whale-floating-toc": "節目次",
 	"whale-reading-progress": "読書進行状況",
 	"whale-live-recent-no-data": "表示する項目はありません",
+	"whale-live-recent-error": "最近の更新を読み込めませんでした。",
+	"whale-live-recent-retry": "再試行",
 	"whale-scroll-up": "先頭へ移動",
 	"whale-scroll-down": "末尾へ移動",
 	"whale-scroll-toc": "目次へ移動",
