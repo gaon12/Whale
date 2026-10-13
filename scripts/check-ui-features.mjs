@@ -1021,7 +1021,7 @@ assertIncludes(
 // Desktop proportions are measured in chrome.spec.mjs.
 assertIncludes(
 	styles,
-	'--whale-nav-height: 3.5rem',
+	'--whale-nav-height: 3.25rem',
 	'Liberty navigation height',
 );
 assertIncludes(
@@ -1041,7 +1041,18 @@ assertIncludes(
 	'max-width: var(--whale-layout-width)',
 	'Centered desktop frame width',
 );
-assertNotIncludes(styles, 'gradient(', 'Gradient-free interface treatment');
+// The navbar is the only surface allowed a gradient (main -> second theme color).
+const gradientCount = styles.split('gradient(').length - 1;
+if (gradientCount !== 1) {
+	throw new Error(
+		`Only the navbar may use a gradient; found ${gradientCount} gradient declarations.`,
+	);
+}
+assertIncludes(
+	getRuleBlock(styles, '.Whale .whale-nav-wrapper', 'Navbar surface'),
+	'linear-gradient(135deg, var(--whale-main-color), var(--whale-second-color))',
+	'Navbar theme gradient',
+);
 assertIncludes(
 	styles,
 	'background-color: var(--whale-canvas-color)',

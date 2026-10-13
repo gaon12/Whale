@@ -10,7 +10,8 @@
 	min-height: var(--whale-nav-height);
 	z-index: 1001;
 	background-color: var(--whale-main-color);
-	background-image: none;
+	/* A diagonal blend from the theme's main to its second color. */
+	background-image: linear-gradient(135deg, var(--whale-main-color), var(--whale-second-color));
 	border-bottom: 0;
 	box-shadow: none;
 }
@@ -119,7 +120,7 @@
 	line-height: 1.5;
 	text-decoration: none;
 	border: 0;
-	border-radius: var(--whale-radius-sm);
+	border-radius: var(--whale-radius-control);
 	background: transparent;
 	outline: 0;
 	transition: background-color 0.16s ease, color 0.16s ease;
@@ -175,7 +176,7 @@
 	overflow: hidden;
 	background-color: #fff;
 	border: 0;
-	border-radius: var(--whale-radius-sm);
+	border-radius: var(--whale-radius-control);
 	box-shadow: none;
 	vertical-align: middle;
 	transition: border-color 0.16s ease, box-shadow 0.16s ease;
