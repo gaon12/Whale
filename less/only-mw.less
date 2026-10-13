@@ -347,7 +347,15 @@
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
-	gap: 0.25rem 0.5rem;
+	/* No gap: the ": " after the label is a bare text node, and a flex gap
+	   would detach it from the label ("분류 :"). The list adds its own space. */
+	gap: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .catlinks > div > a:first-child {
+	flex: 0 0 auto;
+	color: var(--whale-text-color);
+	font-weight: 600;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul {
@@ -356,6 +364,7 @@
 	list-style: none;
 	min-width: 0;
 	flex: 1;
+	margin-inline-start: 0.5rem;
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
