@@ -426,6 +426,43 @@
 .Whale .content-wrapper .whale-content .whale-content-main dd {
 	margin-inline: 1.6em 0;
 }
+
+/* Footnotes read as "[1] text". With a single back-reference, the "↑" link
+   itself is redrawn as the bracketed number, so the number is what jumps
+   back to the citation. Notes cited more than once keep their "↑ a b"
+   links, and the number is printed before them. */
+.Whale .content-wrapper .whale-content .whale-content-main ol.references {
+	margin: 0.5rem 0 1rem;
+	padding: 0;
+	list-style: none;
+	font-size: inherit;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ol.references > li {
+	margin: 0.35rem 0;
+	line-height: 1.75;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ol.references .mw-cite-backlink > a:only-child {
+	font-size: 0;
+	text-decoration: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ol.references .mw-cite-backlink > a:only-child::after {
+	content: "[" counter(list-item) "]";
+	font-size: var(--whale-reading-size);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ol.references .mw-cite-backlink > a:only-child:hover::after,
+.Whale .content-wrapper .whale-content .whale-content-main ol.references .mw-cite-backlink > a:only-child:focus::after {
+	text-decoration: underline;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ol.references > li:not(:has(> .mw-cite-backlink > a:only-child))::before {
+	margin-inline-end: 0.25em;
+	color: var(--whale-link-color);
+	content: "[" counter(list-item) "]";
+}
 /* Content */
 
 /* Special Pages */
