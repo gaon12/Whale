@@ -109,6 +109,7 @@
 	"whale-scroll-toc": "前往目錄",
 	"whale-pref-mobile-user-tools-right": "行動版將登入/個人按鈕固定在右側",
 	"whale-theme-toggle-dark": "切換到深色模式",
+	"whale-theme-save-failed": "無法儲存主題設定。請再試一次。",
 	"whale-theme-toggle-light": "切換到淺色模式",
 	"whale-heading-link-copy": "複製此標題連結",
 	"whale-heading-link-copied": "標題連結已複製",

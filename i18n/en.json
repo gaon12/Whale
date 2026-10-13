@@ -109,6 +109,7 @@
 	"whale-scroll-toc": "Scroll to table of contents",
 	"whale-pref-mobile-user-tools-right": "Keep login and profile buttons on the right on mobile",
 	"whale-theme-toggle-dark": "Switch to dark mode",
+	"whale-theme-save-failed": "Could not save your theme preference. Please try again.",
 	"whale-theme-toggle-light": "Switch to light mode",
 	"whale-heading-link-copy": "Copy link to this heading",
 	"whale-heading-link-copied": "Heading link copied",

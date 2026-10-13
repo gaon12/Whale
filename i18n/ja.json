@@ -109,6 +109,7 @@
 	"whale-scroll-toc": "目次へ移動",
 	"whale-pref-mobile-user-tools-right": "モバイルでログイン/プロフィール按钮を右側に固定",
 	"whale-theme-toggle-dark": "ダークモードに切り替え",
+	"whale-theme-save-failed": "テーマ設定を保存できませんでした。もう一度お試しください。",
 	"whale-theme-toggle-light": "ライトモードに切り替え",
 	"whale-heading-link-copy": "この見出しへのリンクをコピー",
 	"whale-heading-link-copied": "見出しリンクをコピーしました",

@@ -13,6 +13,7 @@ const tests = [
 	'check-short-url-copy.mjs',
 	'check-toc-utils.mjs',
 	'check-theme-toggle.mjs',
+	'check-theme-preferences.mjs',
 	'check-runtime-contracts.mjs',
 	'check-login-security.mjs',
 	'check-recovery.mjs',

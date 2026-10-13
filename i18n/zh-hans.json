@@ -109,6 +109,7 @@
 	"whale-scroll-toc": "前往目录",
 	"whale-pref-mobile-user-tools-right": "移动端将登录/个人按钮固定在右侧",
 	"whale-theme-toggle-dark": "切换到深色模式",
+	"whale-theme-save-failed": "无法保存主题设置。请重试。",
 	"whale-theme-toggle-light": "切换到浅色模式",
 	"whale-heading-link-copy": "复制此标题链接",
 	"whale-heading-link-copied": "标题链接已复制",
