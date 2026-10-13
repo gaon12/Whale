@@ -384,3 +384,91 @@
 		margin: 0.75rem 0;
 	}
 }
+
+/* Phone and tablet header and document, measured against the target at
+   390px: a 48px colored bar, a full-width 40px white search strip under it,
+   12px page padding, a 32px title, right-aligned joined document tools and
+   a single-line category row. Kept last so it wins over earlier rules. */
+@media screen and (max-width: 1023px) {
+	.Whale .whale-nav-wrapper .whale-navbar {
+		min-height: 3rem;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form {
+		flex-basis: calc(100% + 1.5rem);
+		max-width: none;
+		margin: 0 -0.75rem;
+		padding: 0;
+		border-bottom: 1px solid var(--whale-border-color);
+		background-color: var(--whale-surface-color);
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-search-group {
+		height: 2.5rem;
+		border: 0;
+		border-radius: 0;
+		background-color: transparent;
+	}
+
+	.Whale .whale-nav-wrapper .whale-navbar .whale-search-group:focus-within {
+		box-shadow: inset 0 -2px 0 var(--whale-main-color);
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-title-group {
+		padding: 0.75rem 0.75rem 0.5rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
+		font-size: 2rem;
+		line-height: 1;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools {
+		padding: 0 0.75rem 0.25rem;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group {
+		justify-content: flex-end;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn {
+		margin-left: -1px;
+		border-radius: 0;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-btn:first-child {
+		margin-left: 0;
+		border-radius: var(--whale-radius-sm) 0 0 var(--whale-radius-sm);
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .tools-btn:nth-last-child(3) {
+		border-radius: 0 var(--whale-radius-sm) var(--whale-radius-sm) 0;
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-header .content-tools .whale-btn-group > .whale-dropdown-toggle {
+		margin-left: 0.5rem;
+		border-radius: var(--whale-radius-sm);
+	}
+
+	.Whale .content-wrapper .whale-content .whale-content-main {
+		padding: 0.75rem;
+	}
+
+	/* Categories stay on one line; extra entries scroll sideways. The html
+	   prefix outranks the wrapping rule in only-mw.less, which loads later. */
+	html .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		scrollbar-width: none;
+		white-space: nowrap;
+	}
+
+	html .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul::-webkit-scrollbar {
+		display: none;
+	}
+
+	html .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul > li {
+		flex: 0 0 auto;
+		overflow-wrap: normal;
+	}
+}
