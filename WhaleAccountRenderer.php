@@ -218,7 +218,7 @@ class WhaleAccountRenderer {
 				$skin->msg( 'whale-login-alter' )->plain(),
 				[ 'class' => 'whale-login-help' ]
 			),
-			'close-label' => $skin->msg( 'close' )->text(),
+			'close-label' => $skin->msg( 'whale-close' )->text(),
 		];
 	}
 

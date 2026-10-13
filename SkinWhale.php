@@ -404,7 +404,7 @@ class SkinWhale extends SkinMustache {
 		$data['html-whale-scroll-toc-icon'] = $renderer->getIcon( 'list' );
 		$data['html-whale-tools-icon'] = $renderer->getIcon( 'wrench' );
 		$data['whale-tools-label'] = $this->msg( 'whale-tools' )->text();
-		$data['whale-close-label'] = $this->msg( 'close' )->text();
+		$data['whale-close-label'] = $this->msg( 'whale-close' )->text();
 		$data['whale-scroll-up-label'] = $this->msg( 'whale-scroll-up' )->text();
 		$data['whale-scroll-down-label'] = $this->msg( 'whale-scroll-down' )->text();
 		$data['whale-scroll-toc-label'] = $this->msg( 'whale-scroll-toc' )->text();
@@ -818,6 +818,15 @@ JS
 			return is_array( $links ) ? WhaleCompatibility::normalizeLegacyFooter( $links ) : [];
 		}
 		return $this->getComponent( 'footer' )->getTemplateData();
+	}
+
+	public function getWhaleRevisionMetadata(): string {
+		$timestamp = $this->getOutput()->getRevisionTimestamp();
+		if ( !is_string( $timestamp ) || $timestamp === '' ) {
+			return '';
+		}
+		$formatted = $this->getLanguage()->userTimeAndDate( $timestamp, $this->getUser() );
+		return $this->msg( 'whale-last-modified', $formatted )->escaped();
 	}
 
 	/**

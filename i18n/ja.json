@@ -6,6 +6,8 @@
 	},
 	"skinname-whale": "Whale",
 	"whale-desc": "Whale向けレスポンシブMediaWikiスキン",
+	"whale-close": "閉じる",
+	"whale-last-modified": "最終更新: $1",
 	"whale-dark-default": "システム設定に従う",
 	"whale-dark-dark": "常にダークモードを使用",
 	"whale-dark-light": "常にライトモードを使用",

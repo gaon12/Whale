@@ -58,6 +58,9 @@ class Config {
 }
 
 class Language {
+	public function userTimeAndDate( string $timestamp, User $user ): string {
+		return '';
+	}
 	public function getCode(): string {
 		return '';
 	}
@@ -125,6 +128,9 @@ class User {
 }
 
 class OutputPage {
+	public function getRevisionTimestamp(): ?string {
+		return null;
+	}
 	public string $mBodytext = '';
 
 	public function addMeta( string $name, string $value ): void {
