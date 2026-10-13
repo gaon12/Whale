@@ -94,7 +94,6 @@ jobs:
       matrix:
         mediawiki: ['1.39', '1.43']
     env:
-      WHALE_MEDIAWIKI_FIXTURE: ${{ runner.temp }}/whale-mediawiki
       WHALE_MEDIAWIKI_BASE_URL: http://127.0.0.1:8080
     steps:
       - uses: actions/checkout@v4
@@ -114,7 +113,10 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
       - name: Install an isolated real MediaWiki wiki
-        run: bash scripts/install-mediawiki-fixture.sh '${{ matrix.mediawiki }}'
+        run: |
+          export WHALE_MEDIAWIKI_FIXTURE="$RUNNER_TEMP/whale-mediawiki"
+          echo "WHALE_MEDIAWIKI_FIXTURE=$WHALE_MEDIAWIKI_FIXTURE" >> "$GITHUB_ENV"
+          bash scripts/install-mediawiki-fixture.sh '${{ matrix.mediawiki }}'
       - name: Exercise rendering, ResourceLoader, parsing and authenticated settings
         run: |
           php -S 127.0.0.1:8080 -t "$WHALE_MEDIAWIKI_FIXTURE" > "$RUNNER_TEMP/mediawiki-server.log" 2>&1 &
