@@ -4,13 +4,16 @@
 	const MOBILE_SWIPE_DISTANCE_PX = 48;
 	const MOBILE_SWIPE_MAX_VERTICAL_PX = 42;
 	const SECTION_NUMBER_SELECTOR = '.whale-heading-number';
-	// Keep the expanded desktop panel open briefly after the pointer leaves so
-	// moving between the dot rail and the panel never flickers it closed.
+	// Keep the desktop section labels shown briefly after the pointer leaves so
+	// moving between the dots and the labels never flickers them away.
 	const DESKTOP_PANEL_CLOSE_DELAY_MS = 220;
 	// How close to the right edge of the page the pointer must come for the
-	// section panel to open. Proximity is watched at the document level, so the
+	// section labels to appear. Proximity is watched at the document level, so the
 	// TOC never sits over page content and never swallows clicks.
 	const DESKTOP_EDGE_PROXIMITY_PX = 28;
+	// Minimum vertical distance between two visible section labels beside the
+	// scrollbar; closer labels are hidden so they never overlap.
+	const DESKTOP_LABEL_SPACING_PX = 24;
 	const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 	let activeScrollUpdate = null;
 	let edgePointerMove = null;
@@ -384,8 +387,9 @@
 		});
 
 		// Desktop: decorative dots at each section's real document position. The
-		// ordered list above is the accessible navigation and becomes the panel
-		// that lists every section when the pointer approaches the rail.
+		// ordered list above stays the accessible navigation; on desktop each item
+		// is placed at its dot's height so the section names appear right beside
+		// the dots when the pointer approaches the scrollbar.
 		const markers = [];
 		if (shouldRenderDesktop) {
 			const rail = document.createElement('div');
@@ -397,7 +401,7 @@
 				rail.append(marker);
 				markers.push(marker);
 			});
-			list.className = 'whale-floating-toc-panel';
+			list.className = 'whale-floating-toc-labels';
 			toc.append(heading, rail, list);
 		} else {
 			toc.append(heading, list);
@@ -433,25 +437,39 @@
 		let previousActive = -1;
 		let closeTimer = null;
 
-		// Scroll the panel (not the page) so an entry sits inside its viewport.
-		const revealInPanel = (index, centre) => {
-			const item = items[index];
-			const panelHeight = list.clientHeight;
-			if (!item || !panelHeight || typeof item.offsetTop !== 'number') {
+		// Hide labels that would overlap a label above them. The current section
+		// and the one nearest the pointer always keep their label, and their
+		// neighbours make room for them.
+		const updateCrowding = () => {
+			if (!shouldRenderDesktop) {
 				return;
 			}
-			const top = item.offsetTop;
-			const bottom = top + item.offsetHeight;
-			if (centre) {
-				list.scrollTop = Math.max(
-					0,
-					top - (panelHeight - item.offsetHeight) / 2,
-				);
-			} else if (top < list.scrollTop) {
-				list.scrollTop = top;
-			} else if (bottom > list.scrollTop + panelHeight) {
-				list.scrollTop = bottom - panelHeight;
+			const height = toc.getBoundingClientRect().height;
+			if (!height) {
+				return;
 			}
+			const pinned = [previousActive, hoveredIndex].filter(
+				(index) => index >= 0,
+			);
+			const pinnedTops = pinned.map(
+				(index) => (links[index].positionRatio || 0) * height,
+			);
+			let lastTop = -Infinity;
+			links.forEach((item, index) => {
+				const top = (item.positionRatio || 0) * height;
+				const isPinned = pinned.includes(index);
+				const crowded =
+					!isPinned &&
+					(top - lastTop < DESKTOP_LABEL_SPACING_PX ||
+						pinnedTops.some(
+							(pinnedTop) =>
+								Math.abs(pinnedTop - top) < DESKTOP_LABEL_SPACING_PX,
+						));
+				items[index].classList.toggle('is-crowded', crowded);
+				if (!crowded) {
+					lastTop = top;
+				}
+			});
 		};
 		const clearHovered = () => {
 			if (hoveredIndex >= 0) {
@@ -468,7 +486,7 @@
 			}
 			toc.classList.toggle('is-expanded', expanded);
 			if (expanded) {
-				revealInPanel(previousActive, true);
+				updateCrowding();
 			} else {
 				clearHovered();
 			}
@@ -498,11 +516,11 @@
 				items[nearest].classList.add('is-hovered');
 				markers[nearest]?.classList.add('is-hovered');
 				hoveredIndex = nearest;
-				revealInPanel(nearest, false);
+				updateCrowding();
 			}
 			return nearest;
 		};
-		const isInPanel = (event) => Boolean(event.target.closest?.('ol'));
+		const isOnLabel = (event) => Boolean(event.target.closest?.('a'));
 		const isNearEdge = (event) => {
 			const pageWidth = document.documentElement.clientWidth;
 			return (
@@ -519,7 +537,7 @@
 				const inToc = toc.contains(event.target);
 				if (isNearEdge(event) || inToc) {
 					setExpanded(true);
-					if (!isInPanel(event)) {
+					if (!isOnLabel(event)) {
 						selectNearestMarker(event);
 					}
 				} else if (toc.classList.contains('is-expanded')) {
@@ -532,7 +550,7 @@
 			toc.addEventListener('focusin', () => setExpanded(true));
 			toc.addEventListener('focusout', scheduleCollapse);
 			toc.addEventListener('click', (event) => {
-				if (!isInPanel(event)) {
+				if (!isOnLabel(event)) {
 					whale.scrollToTarget(links[selectNearestMarker(event)].target);
 				}
 			});
@@ -547,8 +565,10 @@
 					// Use actual document coordinates: never spread or truncate markers.
 					item.positionRatio = Math.max(0, Math.min(1, top / documentHeight));
 					markers[index].style.top = `${item.positionRatio * 100}%`;
+					items[index].style.top = `${item.positionRatio * 100}%`;
 				}
 			});
+			updateCrowding();
 		};
 
 		const updateActive = whale.rafThrottle(() => {
@@ -575,9 +595,7 @@
 			items[activeIndex].classList.add('is-active');
 			markers[activeIndex]?.classList.add('is-active');
 			previousActive = activeIndex;
-			if (toc.classList.contains('is-expanded') && hoveredIndex < 0) {
-				revealInPanel(activeIndex, false);
-			}
+			updateCrowding();
 		});
 
 		updatePositions();

@@ -87,13 +87,23 @@ test('desktop markers follow exact document positions beside the scrollbar', asy
 		marker.x + marker.width / 2,
 		marker.y + marker.height / 2,
 	);
-	// Approaching the rail opens the full list, not just the nearest label.
+	// Approaching the scrollbar shows section names beside their dots: the
+	// hovered section's name is visible, exactly one is marked current, and
+	// labels that would overlap are hidden in this 317-section document.
 	await expect(page.locator('.whale-floating-toc')).toHaveClass(/is-expanded/);
-	const panel = page.locator('.whale-floating-toc-panel');
-	await expect(panel).toBeVisible();
-	await expect(panel.locator('a')).toHaveCount(317);
-	await expect(panel.locator('li').nth(100)).toHaveClass(/is-hovered/);
-	await expect(panel.locator('a.is-active')).toHaveCount(1);
+	const labels = page.locator('.whale-floating-toc-labels li');
+	await expect(labels.nth(100)).toHaveClass(/is-hovered/);
+	await expect(labels.nth(100).locator('a')).toHaveCSS('opacity', '1');
+	await expect(
+		page.locator('.whale-floating-toc-labels a.is-active'),
+	).toHaveCount(1);
+	expect(
+		await page.locator('.whale-floating-toc-labels li.is-crowded').count(),
+	).toBeGreaterThan(0);
+	const labelBox = await labels.nth(100).locator('a').boundingBox();
+	expect(
+		Math.abs(labelBox.y + labelBox.height / 2 - (marker.y + marker.height / 2)),
+	).toBeLessThan(2);
 	await page.mouse.click(
 		marker.x + marker.width / 2,
 		marker.y + marker.height / 2,

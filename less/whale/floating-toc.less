@@ -1,8 +1,8 @@
 /* Readable section navigation: document-position markers on desktop and a mobile drawer. */
 /* Desktop: dots in the page gutter beside the scrollbar, each at its
-   section's real document position. Approaching the edge opens a panel that
-   lists every section with the current one highlighted. The frame itself
-   never takes input, so it cannot cover page controls near the edge. */
+   section's real document position. Approaching the edge shows each
+   section's name right beside its dot, with the current one highlighted.
+   The frame itself never takes input, so it cannot cover page controls. */
 .whale-floating-toc {
 	position: fixed;
 	top: 0;
@@ -55,57 +55,64 @@
 }
 .whale-floating-toc-marker.is-active { background: var(--whale-main-color); transform: translateY(-50%) scale(1.35); }
 .whale-floating-toc-marker.is-hovered { background: var(--whale-text-color); transform: translateY(-50%) scale(1.35); }
-.whale-floating-toc-panel {
+/* Section names beside the dots: each label sits at its dot's height, to the
+   left of the rail. They appear when the pointer comes near the scrollbar
+   (.is-expanded); labels too close to the one above are hidden
+   (.is-crowded), except the current and the hovered section. */
+/* While the names are shown they sit above the floating page keys. */
+.whale-floating-toc.is-expanded { z-index: 1001; }
+.whale-floating-toc-labels {
 	position: absolute;
-	top: 50%;
+	top: 0;
 	right: 100%;
-	width: max-content;
-	min-width: 12rem;
-	max-width: ~"min(22rem, 60vw)";
-	max-height: ~"calc(100vh - var(--whale-nav-height) - 4rem)";
+	bottom: 0;
+	width: 0;
 	margin: 0;
-	padding: 0.5rem 0;
-	overflow-y: auto;
-	overscroll-behavior: contain;
-	border: 1px solid var(--whale-border-color);
-	border-radius: var(--whale-radius);
-	background: var(--whale-surface-color);
-	box-shadow: var(--whale-shadow-md);
+	padding: 0;
 	list-style: none;
+	pointer-events: none;
+}
+.whale-floating-toc-labels li {
+	position: absolute;
+	right: 0.25rem;
+	margin: 0;
+	transform: translateY(-50%);
+}
+.whale-floating-toc-labels a {
+	display: block;
+	max-width: ~"min(18rem, 40vw)";
+	padding: 0.1rem 0.55rem;
+	overflow: hidden;
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius-sm);
+	background: var(--whale-surface-color);
+	box-shadow: var(--whale-shadow-sm);
+	color: var(--whale-text-color);
+	font-size: 0.8125rem;
+	line-height: 1.5;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	opacity: 0;
 	visibility: hidden;
-	transform: translateY(-50%);
 	transition: opacity 0.12s ease, visibility 0s linear 0.12s;
 	pointer-events: none;
 }
-.whale-floating-toc.is-expanded .whale-floating-toc-panel {
+.whale-floating-toc.is-expanded .whale-floating-toc-labels li:not(.is-crowded) a,
+.whale-floating-toc.is-expanded .whale-floating-toc-labels li.is-hovered a,
+.whale-floating-toc-labels a:focus-visible {
 	opacity: 1;
 	visibility: visible;
 	transition: opacity 0.12s ease;
 	pointer-events: auto;
 }
-.whale-floating-toc-panel li { margin: 0; }
-.whale-floating-toc-panel a {
-	display: block;
-	padding: 0.25rem 1rem;
-	color: var(--whale-text-color);
-	font-size: 0.875rem;
-	line-height: 1.45;
-	text-decoration: none;
-	overflow-wrap: anywhere;
-}
-.whale-floating-toc-panel .whale-floating-toc-level-2 a { padding-inline-start: 1.75rem; }
-.whale-floating-toc-panel .whale-floating-toc-level-3 a { padding-inline-start: 2.5rem; }
-.whale-floating-toc-panel .whale-floating-toc-level-4 a,
-.whale-floating-toc-panel .whale-floating-toc-level-5 a,
-.whale-floating-toc-panel .whale-floating-toc-level-6 a { padding-inline-start: 3.25rem; }
-.whale-floating-toc-panel li.is-hovered a,
-.whale-floating-toc-panel a:hover,
-.whale-floating-toc-panel a:focus-visible { background: var(--whale-surface-muted-color); color: var(--whale-link-color); }
-.whale-floating-toc-panel a.is-active { background: var(--whale-hover-color); color: var(--whale-link-color); font-weight: 600; }
+.whale-floating-toc-labels li.is-hovered a,
+.whale-floating-toc-labels a:hover,
+.whale-floating-toc-labels a:focus-visible { border-color: var(--whale-border-strong-color); color: var(--whale-link-color); }
+.whale-floating-toc-labels a.is-active { border-color: var(--whale-main-color); color: var(--whale-link-color); font-weight: 650; }
 @media (prefers-reduced-motion: reduce) {
 	.whale-floating-toc-marker,
-	.whale-floating-toc-panel { transition: none; }
+	.whale-floating-toc-labels a { transition: none; }
 }
 .whale-floating-toc.is-mobile {
 	position: fixed;
