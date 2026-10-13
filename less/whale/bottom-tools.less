@@ -171,44 +171,62 @@ body.page-Main_Page #whale-scrolltoc {
 	display: none;
 }
 
-/* Keep mobile controls in a single bottom strip, out of the reading column. */
+/* On phones and tablets the controls float at the lower right as a column of
+   40px keys at 40% opacity, so they stay out of the way while reading and
+   become fully opaque when touched or focused. */
 @media screen and (max-width: 1023px) {
-	html {
-		scroll-padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));
-	}
-
-	body.Whale:not(.whale-bottom-tools-hidden) {
-		padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));
-	}
-
 	body.whale-scroll-buttons-vertical #whale-bottombtn,
 	body.whale-scroll-buttons-horizontal #whale-bottombtn {
-		right: 0;
-		bottom: 0;
-		left: 0;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-		gap: 0.75rem;
-		min-height: 3.75rem;
-		padding: 0.25rem 0.5rem calc(0.25rem + env(safe-area-inset-bottom, 0px));
+		right: 0.75rem;
+		bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+		left: auto;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.5rem;
+		padding: 0;
 		border: 0;
-		border-top: 1px solid var(--whale-border-color);
 		border-radius: 0;
-		box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+		background: transparent;
+		box-shadow: none;
+		opacity: 0.4;
+		transition: opacity 0.16s ease;
 	}
 
-	#whale-bottombtn .scroll-button {
-		width: 3rem;
-		height: 3rem;
+	#whale-bottombtn:hover,
+	#whale-bottombtn:focus-within,
+	#whale-bottombtn:has(.whale-bottom-tools.is-open) {
+		opacity: 1;
+	}
+
+	#whale-bottombtn .scroll-button,
+	body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 1px solid var(--whale-border-color);
+		border-radius: var(--whale-radius);
+		background-color: var(--whale-surface-color);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+		color: var(--whale-text-color);
+	}
+
+	#whale-bottombtn #whale-scrollup {
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+	#whale-bottombtn #whale-scrolldown {
+		margin-top: ~"calc(-0.5rem - 1px)";
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
 	}
 
 	#whale-bottombtn .whale-bottom-tools-menu {
 		position: fixed;
-		right: 0.5rem;
-		bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px) + 0.35rem);
-		left: 0.5rem;
-		min-width: 0;
+		right: 3.75rem;
+		bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+		left: auto;
+		min-width: 13rem;
+		max-width: calc(100vw - 4.5rem);
 	}
 }
 /* scroll button end */
