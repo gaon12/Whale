@@ -433,6 +433,7 @@ class WhaleRenderer {
 	public function getFooterData(): array {
 		$footerData = $this->skin->getWhaleFooterData();
 		$categories = [];
+		$lastModifiedHtml = '';
 
 		foreach ( $footerData as $category => $categoryData ) {
 			$links = is_array( $categoryData ) ? ( $categoryData['array-items'] ?? [] ) : [];
@@ -452,6 +453,10 @@ class WhaleRenderer {
 				$rawName = $link['name'] ?? null;
 				$name = is_string( $rawName ) ? $rawName : '';
 				$rawHtml = $link['html'] ?? '';
+				if ( $name === 'lastmod' ) {
+					$lastModifiedHtml = is_string( $rawHtml ) ? $rawHtml : '';
+					continue;
+				}
 				$items[] = [
 					'class' => 'footer-' . $categoryName . '-' . Sanitizer::escapeClass( $name ),
 					'html' => is_string( $rawHtml ) ? $rawHtml : '',
@@ -494,6 +499,7 @@ class WhaleRenderer {
 		return [
 			'categories' => $categories,
 			'icon-blocks' => $iconBlocks,
+			'html-last-modified' => $lastModifiedHtml,
 		];
 	}
 

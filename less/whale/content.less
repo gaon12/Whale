@@ -28,24 +28,26 @@
 	display: flow-root;
 	border: 1px solid var(--whale-border-color);
 	border-radius: var(--whale-radius) var(--whale-radius) 0 0;
-	background-color: var(--whale-surface-muted-color);
+	background-color: var(--whale-surface-color);
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .whale-notice {
+.Whale .whale-site-notice-bar {
 	background-color: var(--whale-notice-background-color);
 	border: 1px solid #bce8f1;
 	border-radius: var(--whale-radius-sm);
 	color: var(--whale-notice-text-color);
-	margin: 1rem;
+	margin: 0;
+	grid-column-start: 1;
+	grid-column-end: -1;
 	position: relative;
-	padding: 0.8rem 2.75rem 0.8rem 1rem;
+	padding: 0.55rem 2.75rem 0.55rem 1rem;
 	font-size: 0.95rem;
 	line-height: 1.55;
 	overflow-wrap: anywhere;
 	white-space: normal;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close {
+.Whale .whale-site-notice-bar .whale-notice-close {
 	appearance: none;
 	background: transparent;
 	border: 0;
@@ -67,17 +69,17 @@
 	line-height: 1;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close:hover,
-.Whale .content-wrapper .whale-content .whale-content-header .whale-notice .whale-notice-close:focus {
+.Whale .whale-site-notice-bar .whale-notice-close:hover,
+.Whale .whale-site-notice-bar .whale-notice-close:focus {
 	background-color: rgba(11, 103, 209, 0.12);
 	opacity: 1;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .whale-notice > :last-child {
+.Whale .whale-site-notice-bar > :last-child {
 	margin-bottom: 0;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-header .whale-notice ul {
+.Whale .whale-site-notice-bar ul {
 	margin: 0.25rem 0 0.25rem 1.25rem;
 	list-style-image: none;
 	list-style-type: disc;
@@ -138,8 +140,8 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .content-tools {
-	float: right;
-	padding: 1rem 1rem 0 0;
+	float: none;
+	padding: 0;
 	max-width: 100%;
 	text-align: right;
 }
@@ -232,12 +234,12 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .title {
-	padding: 1rem;
+	padding: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .contentSub {
-	margin-top: -0.5rem;
-	padding: 0 1rem 1rem;
+	margin-top: 0.5rem;
+	padding: 0;
 	color: var(--whale-content-muted-color);
 	font-size: 0.95rem;
 	line-height: 1.5;
@@ -248,7 +250,7 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-header .title > h1 {
-	color: #000;
+	color: var(--whale-text-color);
 	font-weight: 700;
 	font-size: 2rem;
 	letter-spacing: -0.025em;
@@ -265,9 +267,9 @@
 	border-left: 1px solid var(--whale-border-color);
 	background-color: var(--whale-surface-color);
 	color: var(--whale-text-color);
-	padding: 1rem;
+	padding: 1.75rem;
 	overflow: visible;
-	overflow-wrap: anywhere;
+	overflow-wrap: break-word;
 	font-size: var(--whale-reading-size);
 	line-height: var(--whale-reading-leading);
 }
@@ -800,3 +802,10 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	filter: blur(0);
 }
 /* Content End */
+
+.Whale .whale-document-metadata {
+	margin-top: 0.5rem;
+	color: var(--whale-content-muted-color);
+	font-size: 0.8125rem;
+	line-height: 1.5;
+}

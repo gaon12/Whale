@@ -444,7 +444,7 @@ assertIncludes(
 );
 assertIncludes(styles, '.whale-floating-toc.is-mobile', 'Stylesheet');
 const rootHtmlBlock = getRuleBlock(styles, 'html', 'Root viewport styles');
-assertIncludes(rootHtmlBlock, 'font-size: 15px', 'Liberty root font size');
+assertIncludes(rootHtmlBlock, 'font-size: 16px', 'Liberty root font size');
 assertIncludes(
 	rootHtmlBlock,
 	'scrollbar-gutter: stable',
@@ -1044,10 +1044,10 @@ assertIncludes(
 );
 const noticeBlock = getRuleBlock(
 	contentStyles,
-	'.Whale .content-wrapper .whale-content .whale-content-header .whale-notice',
+	'.Whale .whale-site-notice-bar',
 	'Article notice',
 );
-assertIncludes(noticeBlock, 'margin: 1rem', 'Liberty notice spacing');
+assertIncludes(noticeBlock, 'margin: 0', 'Liberty notice spacing');
 assertIncludes(
 	noticeBlock,
 	'border-radius: var(--whale-radius-sm)',
@@ -1085,36 +1085,32 @@ assertIncludes(
 	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
 	'Auto dark table cell override',
 );
+assertIncludes(styles, '--whale-radius: 3px', 'Liberty surface corner radius');
 assertIncludes(
 	styles,
-	'--whale-radius: 0.35rem',
-	'Liberty surface corner radius',
-);
-assertIncludes(
-	styles,
-	'--whale-radius-sm: 0.35rem',
+	'--whale-radius-sm: 3px',
 	'Shared control corner radius',
 );
 assertIncludes(
 	styles,
-	'--whale-layout-width: 1200px',
+	'--whale-layout-width: 1320px',
 	'Liberty desktop layout width',
 );
 assertIncludes(
 	styles,
-	'--whale-sidebar-width: 240px',
+	'--whale-sidebar-width: 260px',
 	'Liberty sidebar width token',
 );
-assertIncludes(styles, '--whale-layout-gap: 16px', 'Desktop layout gap');
+assertIncludes(styles, '--whale-layout-gap: 24px', 'Desktop layout gap');
 assertIncludes(
 	styles,
-	'--whale-nav-height: 2.8rem',
+	'--whale-nav-height: 3.5rem',
 	'Liberty navigation height',
 );
 assertIncludes(styles, '--whale-reading-size: 1rem', 'Readable article size');
 assertIncludes(
 	styles,
-	'--whale-reading-leading: 1.6',
+	'--whale-reading-leading: 1.7',
 	'Readable article leading',
 );
 assertIncludes(styles, '--whale-link-color: #0275d8', 'Light link color token');
@@ -1421,16 +1417,7 @@ assertIncludes(
 	'z-index: 999',
 	'Floating table of contents stack order',
 );
-assertIncludes(
-	contentStyles,
-	'float: right',
-	'Liberty article tools alignment',
-);
-assertNotIncludes(
-	skinTemplate,
-	'whale-content-heading',
-	'Removed redesign heading wrapper',
-);
+// Document title, metadata and tools order are verified through the real template in Playwright.
 assertNotIncludes(styles, 'min-height: 204px', 'Legacy article header height');
 assertIncludes(skinTemplate, '{{>ReferenceModal}}', 'Reference modal partial');
 assertIncludes(

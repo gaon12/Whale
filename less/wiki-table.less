@@ -26,12 +26,13 @@
 	margin: 0.8rem 0;
 	padding: 0;
 	overflow: hidden;
-	box-shadow: 0 1px 2px rgba(25, 43, 54, 0.06);
+	box-shadow: none;
 	color: var(--whale-text-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox {
 	float: right;
+	max-width: 100%;
 	margin-left: 0.8rem;
 	margin-bottom: 2rem;
 }
@@ -260,4 +261,23 @@
 .Whale .content-wrapper .whale-content .whale-content-main table.subbox tr:last-child > th:nth-child( 1 ),
 .Whale .content-wrapper .whale-content .whale-content-main table.subbox tr:last-child > td:nth-child( 1 ) {
 	border-radius: 0;
+}
+
+/* Infobox labels must remain words even when legacy templates request width:1%. */
+.Whale .content-wrapper .whale-content .whale-content-main table.infobox th[scope="row"] {
+	width: 7.5em !important;
+	min-width: 7.5em;
+	overflow-wrap: normal;
+	word-break: keep-all;
+	font-weight: 600;
+}
+.Whale .content-wrapper .whale-content .whale-content-main table.infobox td {
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+@media screen and (max-width: 520px) {
+	html .Whale .content-wrapper .whale-content .whale-content-main table.infobox {
+		width: 100% !important;
+	}
 }

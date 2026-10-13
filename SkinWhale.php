@@ -387,6 +387,7 @@ class SkinWhale extends SkinMustache {
 			$this->getWhaleAdData( 'right' ) !== [];
 		$shortUrlData = $renderer->getShortUrlData();
 		$footerData = $renderer->getFooterData();
+		$data['html-whale-last-modified'] = $footerData['html-last-modified'] ?? '';
 		$footerData['short-url'] = $shortUrlData;
 		$footerData['has-short-url'] = !empty( $shortUrlData['has-short-url'] );
 		$footerData['short-url-button-label'] = $shortUrlData['button-label'] ?? '';
