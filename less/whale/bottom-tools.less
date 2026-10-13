@@ -114,4 +114,45 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
 body.page-Main_Page #whale-scrolltoc {
 	display: none;
 }
+
+/* Keep mobile controls in a single bottom strip, out of the reading column. */
+@media screen and (max-width: 1023px) {
+	html {
+		scroll-padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));
+	}
+
+	body.Whale:not(.whale-bottom-tools-hidden) {
+		padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));
+	}
+
+	body.whale-scroll-buttons-vertical #whale-bottombtn,
+	body.whale-scroll-buttons-horizontal #whale-bottombtn {
+		right: 0;
+		bottom: 0;
+		left: 0;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		min-height: 3.75rem;
+		padding: 0.25rem 0.5rem calc(0.25rem + env(safe-area-inset-bottom, 0px));
+		border: 0;
+		border-top: 1px solid var(--whale-border-color);
+		border-radius: 0;
+		box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+	}
+
+	#whale-bottombtn .scroll-button {
+		width: 3rem;
+		height: 3rem;
+	}
+
+	#whale-bottombtn .whale-bottom-tools-menu {
+		position: fixed;
+		right: 0.5rem;
+		bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px) + 0.35rem);
+		left: 0.5rem;
+		min-width: 0;
+	}
+}
 /* scroll button end */

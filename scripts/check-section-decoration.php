@@ -159,3 +159,15 @@ if ( $normalizeMethod->invoke( null, 'broken' ) !== 'all' ) {
 	fwrite( STDERR, "Invalid section mode should fall back to all sections.\n" );
 	exit( 1 );
 }
+
+$panels = '<div style="background: #ffffff;"><div><span style="color: #2c3e50;">Title</span>' .
+	'<span style="color: #7f8c8d;">Subtitle</span></div></div><div style="background: #ff0000;">Warning</div>';
+$themed = WhaleArticleDecorator::decorateArticleHtml( $panels, 'off', 'default', false, true );
+foreach ( [ 'whale-themed-surface', 'whale-themed-title', 'whale-themed-muted' ] as $class ) {
+	if ( !str_contains( $themed, $class ) ) {
+		throw new RuntimeException( "Legacy main-page panels must receive $class regardless of nesting." );
+	}
+}
+if ( substr_count( $themed, 'whale-themed-surface' ) !== 1 ) {
+	throw new RuntimeException( 'Theming must preserve semantic colored panels.' );
+}
