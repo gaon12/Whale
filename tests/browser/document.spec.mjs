@@ -9,6 +9,7 @@ export const documentFixture = async (page, width = 1440) => {
 		'html-whale-site-notice': '자주자주 공지를 확인하세요!',
 		'whale-close-label': '닫기',
 		'html-title': '라이믹스',
+		'html-categories': `<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="#categories">분류</a>:<ul><li><a href="#cms">콘텐츠 관리 시스템</a></li><li><a href="#software">오픈 소스 소프트웨어</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">숨은 분류<ul><li><a href="#hidden">숨김</a></li></ul></div></div>`,
 		'html-whale-last-modified': '최근 수정 시각: 2026년 8월 21일',
 		'data-whale-content-tools': {
 			'has-content-tools': true,
@@ -44,9 +45,27 @@ for (const width of [320, 390, 768, 1024, 1440]) {
 				.querySelector('.whale-document-metadata')
 				.getBoundingClientRect();
 			const content = document.querySelector('.whale-content-main');
+			const categories = document.getElementById('catlinks');
+			const categoryStyle = getComputedStyle(categories);
+			const links = [...document.querySelectorAll('#mw-normal-catlinks a')];
+			const centerDifferences = links.slice(1).map((link) => {
+				const rect = link.getBoundingClientRect();
+				const item = link.parentElement.getBoundingClientRect();
+				return Math.abs(
+					rect.top + rect.height / 2 - (item.top + item.height / 2),
+				);
+			});
 			const labels = [...document.querySelectorAll('.infobox th[scope="row"]')];
 			return {
 				metadataBelowTitle: metadata.top >= title.bottom,
+				categoriesBeforeArticle:
+					categories.getBoundingClientRect().bottom <=
+					document.getElementById('whale-article').getBoundingClientRect().top,
+				categoryBorders: ['Top', 'Right', 'Bottom', 'Left'].map((side) => [
+					categoryStyle[`border${side}Width`],
+					categoryStyle[`border${side}Color`],
+				]),
+				categoryCenterDifference: Math.max(...centerDifferences),
 				fontSize: getComputedStyle(content).fontSize,
 				lineHeight: Number.parseFloat(getComputedStyle(content).lineHeight),
 				labels: labels.map((label) => ({
@@ -58,6 +77,13 @@ for (const width of [320, 390, 768, 1024, 1440]) {
 			};
 		});
 		expect(measurements.metadataBelowTitle).toBe(true);
+		expect(measurements.categoriesBeforeArticle).toBe(true);
+		expect(
+			new Set(measurements.categoryBorders.map((border) => border.join(':')))
+				.size,
+		).toBe(1);
+		expect(measurements.categoryCenterDifference).toBeLessThan(1);
+		await expect(page.locator('#mw-hidden-catlinks')).toBeHidden();
 		expect(measurements.fontSize).toBe('16px');
 		expect(measurements.lineHeight).toBeCloseTo(27.2);
 		expect(
