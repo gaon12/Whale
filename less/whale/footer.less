@@ -1,21 +1,23 @@
 /* Footer */
+/* License badges on top, then the license and site links, all aligned to
+   the right edge of the sheet in body ink. */
 .Whale .content-wrapper .whale-footer {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 1rem 1.5rem;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+	justify-content: flex-start;
+	gap: 0.75rem;
 	border: 0;
 	border-top: 1px solid var(--whale-border-color);
 	/* The footer closes the document sheet on the same white surface, set
 	   apart only by the rule above it. */
 	border-radius: 0 0 var(--whale-radius) var(--whale-radius);
 	background-color: transparent;
-	color: var(--whale-content-muted-color);
-	font-size: 0.875rem;
-	line-height: 1.6;
-	padding: 1.25rem 1.5rem 1.5rem;
-	text-align: left;
+	color: var(--whale-text-color);
+	font-size: 0.9rem;
+	line-height: 1.5;
+	padding: 1.5rem;
+	text-align: right;
 }
 
 .Whale .content-wrapper .whale-footer ul {
@@ -24,6 +26,7 @@
 	margin: 0;
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: flex-end;
 	gap: 0.2rem 0.75rem;
 	width: auto;
 }
@@ -35,7 +38,7 @@
 	margin: -0.1rem -0.35rem;
 	padding: 0.1rem 0.35rem;
 	border-radius: var(--whale-radius-sm);
-	color: var(--whale-content-muted-color);
+	color: var(--whale-link-color);
 	text-decoration: none;
 	transition: background-color 0.16s ease, color 0.16s ease;
 }
@@ -48,7 +51,8 @@
 }
 
 .Whale .content-wrapper .whale-footer .whale-footer-links {
-	flex: 1 1 32rem;
+	flex: 0 1 auto;
+	max-width: 100%;
 }
 
 .Whale .content-wrapper .whale-footer .whale-footer-links > ul + ul {
@@ -59,7 +63,7 @@
 	display: inline-flex;
 	float: none;
 	margin: 0;
-	text-align: left;
+	text-align: right;
 }
 
 .Whale .content-wrapper .whale-footer .footer-icons {
