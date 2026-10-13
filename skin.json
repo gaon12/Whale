@@ -217,6 +217,9 @@
 	"AutoloadClasses": {
 		"SkinWhale": "SkinWhale.php",
 		"WhaleRenderer": "WhaleRenderer.php",
+		"WhaleAccountRenderer": "WhaleAccountRenderer.php",
+		"WhalePersonalTools": "WhalePersonalTools.php",
+		"WhaleIcon": "WhaleIcon.php",
 		"WhaleNavbarParser": "WhaleNavbarParser.php",
 		"WhaleContributionGraph": "WhaleContributionGraph.php",
 		"WhaleArticleDecorator": "WhaleArticleDecorator.php",

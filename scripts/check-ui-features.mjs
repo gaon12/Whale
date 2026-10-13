@@ -1243,7 +1243,10 @@ assertIncludes(
 	'Editor secondary action surface',
 );
 
-const rendererPhp = read('WhaleRenderer.php');
+const rendererPhp =
+	read('WhaleRenderer.php') +
+	read('WhaleAccountRenderer.php') +
+	read('WhaleIcon.php');
 const navbarParserPhp = read('WhaleNavbarParser.php');
 assertIncludes(rendererPhp, 'img/whale_footer_img.png', 'Footer badge image');
 assertIncludes(rendererPhp, 'whale-footer-brand-img', 'Footer badge image');
