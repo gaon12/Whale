@@ -272,6 +272,9 @@
 	color: var(--whale-text-color);
 	padding: 1.5rem;
 	overflow: visible;
+	/* Break Korean between words (eojeol), not between syllables. Unbreakable
+	   strings such as URLs still wrap through overflow-wrap. */
+	word-break: keep-all;
 	overflow-wrap: break-word;
 	font-size: var(--whale-reading-size);
 	line-height: var(--whale-reading-leading);
