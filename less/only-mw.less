@@ -566,6 +566,93 @@
 /* Special Pages End */
 
 /* Search results */
+/* Results read as a list of documents: a bold title per result, the
+   snippet, then muted metadata, separated by thin rules. Matched words are
+   solid chips in the ink color so they stand out in either theme. */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-search-results-container {
+	float: none;
+	width: auto;
+	max-width: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ul.mw-search-results {
+	max-width: none;
+	margin: 0.5rem 0 1rem;
+	padding: 0;
+	list-style: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main ul.mw-search-results > li.mw-search-result {
+	margin: 0;
+	padding: 0.85rem 0;
+	border-bottom: 1px solid var(--whale-border-color);
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .mw-search-result-heading {
+	margin-bottom: 0.25rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .mw-search-result-data {
+	margin-top: 0.2rem;
+	color: var(--whale-content-muted-color);
+	font-size: 0.8125rem;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .searchresult .searchmatch,
+.Whale .content-wrapper .whale-content .whale-content-main .mw-search-result-heading .searchmatch {
+	padding: 0 0.2em;
+	border-radius: 3px;
+	background-color: var(--whale-text-color);
+	color: var(--whale-surface-color);
+	font-weight: 500;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .mw-search-result-heading .searchmatch {
+	background-color: transparent;
+	color: inherit;
+	font-weight: inherit;
+}
+
+/* Search profile switcher as plain tabs instead of a grey box. */
+.Whale .content-wrapper .whale-content .whale-content-main .mw-search-profile-tabs {
+	margin: 0.75rem 0;
+	padding: 0;
+	border: 0;
+	border-bottom: 1px solid var(--whale-border-color);
+	background: transparent;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .search-types ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .search-types li {
+	margin: 0;
+	padding: 0;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .search-types a {
+	display: inline-block;
+	padding: 0.45rem 0;
+	border-bottom: 2px solid transparent;
+	color: var(--whale-content-muted-color);
+	text-decoration: none;
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .search-types .current a {
+	border-bottom-color: var(--whale-main-color);
+	color: var(--whale-text-color);
+	font-weight: 600;
+}
+
 html .suggestions-results {
 	border-color: var(--whale-border-color);
 	padding: 0.5rem;
