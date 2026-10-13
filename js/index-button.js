@@ -7,8 +7,13 @@
 	// Keep the expanded desktop panel open briefly after the pointer leaves so
 	// moving between the dot rail and the panel never flickers it closed.
 	const DESKTOP_PANEL_CLOSE_DELAY_MS = 220;
+	// How close to the right edge of the page the pointer must come for the
+	// section panel to open. Proximity is watched at the document level, so the
+	// TOC never sits over page content and never swallows clicks.
+	const DESKTOP_EDGE_PROXIMITY_PX = 28;
 	const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 	let activeScrollUpdate = null;
+	let edgePointerMove = null;
 	let contentObserver = null;
 	let mobileGestureStart = null;
 	let mobileGesturesBound = false;
@@ -177,6 +182,10 @@
 		if (activeScrollUpdate) {
 			window.removeEventListener('scroll', activeScrollUpdate);
 			activeScrollUpdate = null;
+		}
+		if (edgePointerMove) {
+			document.removeEventListener?.('pointermove', edgePointerMove);
+			edgePointerMove = null;
 		}
 	};
 
@@ -494,15 +503,32 @@
 			return nearest;
 		};
 		const isInPanel = (event) => Boolean(event.target.closest?.('ol'));
+		const isNearEdge = (event) => {
+			const pageWidth = document.documentElement.clientWidth;
+			return (
+				typeof pageWidth === 'number' &&
+				pageWidth > 0 &&
+				event.clientX >= pageWidth - DESKTOP_EDGE_PROXIMITY_PX
+			);
+		};
 		if (shouldRenderDesktop) {
-			toc.addEventListener('pointerenter', () => setExpanded(true));
-			toc.addEventListener('pointermove', (event) => {
-				setExpanded(true);
-				if (!isInPanel(event)) {
-					selectNearestMarker(event);
+			edgePointerMove = (event) => {
+				if (event.pointerType === 'touch') {
+					return;
 				}
+				const inToc = toc.contains(event.target);
+				if (isNearEdge(event) || inToc) {
+					setExpanded(true);
+					if (!isInPanel(event)) {
+						selectNearestMarker(event);
+					}
+				} else if (toc.classList.contains('is-expanded')) {
+					scheduleCollapse();
+				}
+			};
+			document.addEventListener('pointermove', edgePointerMove, {
+				passive: true,
 			});
-			toc.addEventListener('pointerleave', scheduleCollapse);
 			toc.addEventListener('focusin', () => setExpanded(true));
 			toc.addEventListener('focusout', scheduleCollapse);
 			toc.addEventListener('click', (event) => {
