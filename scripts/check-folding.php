@@ -29,6 +29,20 @@ if ( !function_exists( 'wfMessage' ) ) {
 
 require_once __DIR__ . '/../WhaleFoldingParser.php';
 require_once __DIR__ . '/../WhaleArticleDecorator.php';
+require_once __DIR__ . '/../WhaleHooks.php';
+
+$manifest = json_decode( file_get_contents( __DIR__ . '/../skin.json' ), true, 512, JSON_THROW_ON_ERROR );
+if ( ( $manifest['Hooks']['ParserBeforeInternalParse'] ?? null ) !== 'WhaleHooks::onParserBeforeInternalParse' ||
+	isset( $manifest['Hooks']['ParserBeforePreprocess'] )
+) {
+	throw new RuntimeException( 'Folding must be registered on the article parsing hook, not preprocess-only expansion.' );
+}
+$wgWhaleEnableFoldingBlocks = true;
+$hookText = "{{{#!folding Hook\nReadable\n}}}";
+WhaleHooks::onParserBeforeInternalParse( null, $hookText, null );
+if ( !str_contains( $hookText, 'class="whale-folding"' ) ) {
+	throw new RuntimeException( 'The registered article parsing hook must convert folding syntax.' );
+}
 
 $method = new ReflectionMethod( WhaleArticleDecorator::class, 'convertFoldingSyntax' );
 $method->setAccessible( true );

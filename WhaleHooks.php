@@ -512,7 +512,7 @@ class WhaleHooks {
 	 * @param StripState $stripState Strip state
 	 * @return bool
 	 */
-	public static function onParserBeforePreprocess( $parser, &$text, $stripState ) {
+	public static function onParserBeforeInternalParse( $parser, &$text, $stripState ) {
 		global $wgWhaleEnableFoldingBlocks;
 
 		if ( $wgWhaleEnableFoldingBlocks === false || strpos( $text, '{{{#!folding' ) === false ) {

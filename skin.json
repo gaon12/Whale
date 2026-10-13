@@ -250,7 +250,7 @@
 		"GetPreferences": "WhaleHooks::onGetPreferences",
 		"OutputPageBodyAttributes": "WhaleHooks::onOutputPageBodyAttributes",
 		"OutputPageBeforeHTML": "WhaleHooks::onOutputPageBeforeHTML",
-		"ParserBeforePreprocess": "WhaleHooks::onParserBeforePreprocess"
+		"ParserBeforeInternalParse": "WhaleHooks::onParserBeforeInternalParse"
 	},
 	"manifest_version": 1
 }
