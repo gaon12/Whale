@@ -257,9 +257,8 @@
 .Whale .content-wrapper .whale-content .whale-content-main blockquote {
 	margin: 1rem 0;
 	padding: 0.75rem 1rem;
-	border: 0;
-	border-left: 4px solid var(--whale-main-color);
-	border-radius: 0 var(--whale-radius-sm) var(--whale-radius-sm) 0;
+	border: 1px solid var(--whale-border-color);
+	border-radius: var(--whale-radius-sm);
 	background-color: var(--whale-surface-muted-color);
 	color: var(--whale-text-color);
 }
@@ -346,7 +345,7 @@
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks > .mw-normal-catlinks,
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks > .mw-hidden-catlinks:not(.mw-hidden-cats-hidden) {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	align-items: center;
 	gap: 0.25rem 0.5rem;
 }
@@ -355,6 +354,8 @@
 	padding: 0;
 	margin: 0;
 	list-style: none;
+	min-width: 0;
+	flex: 1;
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -367,6 +368,8 @@
 	padding: 0 0.5em;
 	border-inline-start: 1px solid var(--whale-border-strong-color);
 	line-height: inherit;
+	max-width: 100%;
+	overflow-wrap: anywhere;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .catlinks ul > li:first-child {
@@ -413,10 +416,9 @@
 	margin: 1rem 0;
 	padding: 0.8rem 1rem;
 	border: 1px solid var(--whale-border-color);
-	border-left: 4px solid var(--whale-main-color);
 	border-radius: var(--whale-radius-sm);
 	background-color: var(--whale-surface-elevated-color);
-	box-shadow: 0 1px 2px rgba(25, 43, 54, 0.06);
+	box-shadow: none;
 	color: var(--whale-text-color);
 	font-size: 0.95rem;
 	line-height: 1.55;
@@ -425,17 +427,17 @@
 .Whale .content-wrapper .whale-content .whale-content-main .mw-message-box-error,
 .Whale .content-wrapper .whale-content .whale-content-main .errorbox,
 .Whale .content-wrapper .whale-content .whale-content-main .permissions-errors {
-	border-left-color: var(--whale-danger-color);
+	border-color: var(--whale-danger-color);
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-message-box-warning,
 .Whale .content-wrapper .whale-content .whale-content-main .warningbox {
-	border-left-color: #b7791f;
+	border-color: #b7791f;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-message-box-success,
 .Whale .content-wrapper .whale-content .whale-content-main .successbox {
-	border-left-color: #2f855a;
+	border-color: #2f855a;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .mw-message-box > :last-child,

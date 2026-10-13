@@ -1,6 +1,6 @@
-/* Liberty-style recent changes sidebar using native tab semantics. */
+/* Wiki navigation: readable links in a compact, flat sidebar. */
 .Whale .content-wrapper .whale-sidebar-column { grid-column: 2; min-width: 0; }
-.Whale .content-wrapper .whale-sidebar { position: sticky; top: ~"calc(var(--whale-nav-height) + 0.53rem)"; width: 100%; }
+.Whale .content-wrapper .whale-sidebar { position: sticky; top: ~"calc(var(--whale-nav-clearance, var(--whale-nav-height)) + 1rem)"; width: 100%; }
 .Whale .content-wrapper .live-recent-wrapper { z-index: 1; }
 .Whale .content-wrapper .mobile-live-recent-wrapper { display: none; margin-top: 0.75rem; }
 .Whale .content-wrapper .live-recent { width: 100%; }
@@ -28,19 +28,19 @@
 .Whale .content-wrapper .live-recent .live-recent-progress-bar.is-running {
 	animation: whale-live-recent-progress var(--whale-live-recent-refresh, 60s) linear forwards;
 }
-.Whale .content-wrapper .live-recent .live-recent-list { margin: 0; padding: 0; list-style: none; }
-.Whale .content-wrapper .live-recent.live-recent-fixed-height .live-recent-list { min-height: calc(var(--whale-live-recent-limit, 10) * 2.15rem); }
+.Whale .content-wrapper .live-recent .live-recent-list { margin: 0; padding: 0.6rem 0; list-style: none; }
+.Whale .content-wrapper .live-recent.live-recent-fixed-height .live-recent-list { min-height: calc(var(--whale-live-recent-limit, 10) * 1.75rem); }
 .Whale .content-wrapper .live-recent .live-recent-list.live-recent-list-no-data { display: flex; align-items: center; justify-content: center; }
-.Whale .content-wrapper .live-recent .live-recent-list li { min-height: 2.15rem; border-bottom: 1px solid var(--whale-border-color); }
+.Whale .content-wrapper .live-recent .live-recent-list li { min-height: 1.75rem; border-bottom: 0; }
 .Whale .content-wrapper .live-recent .recent-item {
 	display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.4rem;
-	min-height: 2.15rem; padding: 0.3rem 0.6rem; color: var(--whale-text-color); font-size: 0.8rem;
-	line-height: 1.35; text-decoration: none;
+	min-height: 1.75rem; padding: 0.15rem 1rem; color: var(--whale-text-color); font-size: 0.9375rem;
+	line-height: 1.5; text-decoration: none;
 }
 .Whale .content-wrapper .live-recent .recent-item:hover,
 .Whale .content-wrapper .live-recent .recent-item:focus { background-color: var(--whale-hover-color); text-decoration: none; }
-.Whale .content-wrapper .live-recent .recent-item-title { overflow: hidden; color: inherit; text-overflow: ellipsis; white-space: nowrap; }
-.Whale .content-wrapper .live-recent .recent-item-time { color: var(--whale-content-muted-color); font-size: 0.72rem; white-space: nowrap; }
+.Whale .content-wrapper .live-recent .recent-item-title { overflow: hidden; color: var(--whale-link-color); text-overflow: ellipsis; white-space: nowrap; }
+.Whale .content-wrapper .live-recent .recent-item-time { color: var(--whale-content-muted-color); font-size: 0.75rem; white-space: nowrap; }
 .Whale .content-wrapper .live-recent .recent-item-placeholder { pointer-events: none; }
 .Whale .content-wrapper .live-recent .recent-item-placeholder-title,
 .Whale .content-wrapper .live-recent .recent-item-placeholder-time {
