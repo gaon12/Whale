@@ -197,7 +197,7 @@ class WhaleArticleDecorator {
 			return '';
 		}
 
-		return strpos( $number, '.' ) === false ? $number . '.' : $number;
+		return $number . '.';
 	}
 
 	private static function decorateSectionHeadings(
