@@ -15,6 +15,7 @@
 			"@test:folding",
 			"@test:short-url",
 			"@test:sections",
+			"@test:mainpage",
 			"@test:avatar",
 			"@test:navbar",
 			"@test:renderers",
@@ -28,6 +29,9 @@
 		],
 		"test:sections": [
 			"php scripts/check-section-decoration.php"
+		],
+		"test:mainpage": [
+			"php scripts/check-mainpage.php"
 		],
 		"test:avatar": [
 			"php scripts/check-avatar.php"

@@ -102,7 +102,8 @@ class WhaleArticleDecorator {
 		string $sectionMode,
 		string $foldingMode,
 		bool $headingAnchorsEnabled = true,
-		bool $themeMainPage = false
+		bool $themeMainPage = false,
+		string $mainPageWelcome = ''
 	): string {
 		if (
 			$html === '' ||
@@ -120,10 +121,11 @@ class WhaleArticleDecorator {
 			$sectionMode,
 			$foldingMode,
 			$headingAnchorsEnabled,
-			$themeMainPage
+			$themeMainPage,
+			$mainPageWelcome
 		) {
 			if ( $themeMainPage ) {
-				self::decorateMainPageSurfaces( $root );
+				WhaleMainPage::decorate( $root, $mainPageWelcome );
 			}
 			if ( $sectionMode !== self::SECTION_COLLAPSE_OFF ) {
 				self::decorateSectionHeadings( $dom, $root, $sectionMode );
@@ -135,20 +137,6 @@ class WhaleArticleDecorator {
 			}
 			self::decorateFoldingBlocks( $dom, $root, $foldingMode );
 		} );
-	}
-
-	/** Mark neutral legacy panels without depending on their nesting depth. */
-	private static function decorateMainPageSurfaces( DOMElement $root ): void {
-		foreach ( $root->getElementsByTagName( '*' ) as $element ) {
-			$style = $element->getAttribute( 'style' );
-			if ( preg_match( '/(?:^|;)\s*background(?:-color)?\s*:\s*(?:white|#fff(?:fff)?|#f8f9fa)\s*(?:;|$)/i', $style ) ) {
-				self::addClass( $element, 'whale-themed-surface' );
-			}
-			if ( preg_match( '/(?:^|;)\s*color\s*:\s*#(2c3e50|7f8c8d)\b/i', $style, $matches ) ) {
-				self::addClass( $element, strtolower( $matches[1] ) === '2c3e50'
-					? 'whale-themed-title' : 'whale-themed-muted' );
-			}
-		}
 	}
 
 	private static function decorateHeadingAnchors( DOMDocument $dom, DOMElement $root ): void {
@@ -429,8 +417,16 @@ class WhaleArticleDecorator {
 		}
 
 		foreach ( $headingsResult as $heading ) {
+			$isPortalHeading = false;
+			for ( $parent = $heading->parentNode; $parent instanceof DOMElement; $parent = $parent->parentNode ) {
+				if ( self::hasClass( $parent, 'whale-home' ) ) {
+					$isPortalHeading = true;
+					break;
+				}
+			}
 			if (
 				$heading instanceof DOMElement &&
+				!$isPortalHeading &&
 				!self::isNavigationHeading( $heading ) &&
 				self::getHeadingLevel( $heading ) !== null
 			) {

@@ -536,7 +536,7 @@ class SkinWhale extends SkinMustache {
 
 	private function shouldRenderSectionTools(): bool {
 		$title = $this->getTitle();
-		if ( !$title || $title->getNamespace() === NS_SPECIAL ) {
+		if ( !$title || $title->getNamespace() === NS_SPECIAL || $title->isMainPage() ) {
 			return false;
 		}
 

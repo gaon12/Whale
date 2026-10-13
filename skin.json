@@ -228,6 +228,7 @@
 		"WhaleNavbarParser": "WhaleNavbarParser.php",
 		"WhaleContributionGraph": "WhaleContributionGraph.php",
 		"WhaleArticleDecorator": "WhaleArticleDecorator.php",
+		"WhaleMainPage": "WhaleMainPage.php",
 		"WhaleFoldingParser": "WhaleFoldingParser.php",
 		"WhaleAvatar": "WhaleAvatar.php",
 		"WhaleHooks": "WhaleHooks.php",

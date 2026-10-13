@@ -324,6 +324,10 @@
 			return;
 		}
 
+		if (document.querySelector('.mw-parser-output.whale-home')) {
+			removeFloatingToc();
+			return;
+		}
 		const links = getFloatingTocItems();
 		syncHeadingNumbers(links);
 
