@@ -3,51 +3,53 @@
 .Whale .content-wrapper .whale-sidebar { position: sticky; top: ~"calc(var(--whale-nav-clearance, var(--whale-nav-height)) + 1rem)"; width: 100%; }
 .Whale .content-wrapper .live-recent-wrapper { z-index: 1; }
 .Whale .content-wrapper .mobile-live-recent-wrapper { display: none; margin-top: 0.75rem; }
-.Whale .content-wrapper .live-recent { width: 100%; }
-.Whale .content-wrapper .live-recent-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.Whale .content-wrapper .live-recent-tab {
-	appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
-	min-width: 0; min-height: 2.75rem; padding: 0.6rem 0.4rem; border: 1px solid var(--whale-border-color);
-	border-bottom: 0; border-radius: var(--whale-radius) 0 0 0; background-color: var(--whale-surface-muted-color);
-	color: var(--whale-content-muted-color); font-weight: 500;
+/* Sidebar card: one rounded white box whose header row names
+   the feed (18px, weight 500) above a plain 15px list. With two feeds the
+   header names become tabs; the inactive one is simply muted. */
+.Whale .content-wrapper .live-recent {
+	width: 100%; overflow: hidden; border: 1px solid var(--whale-border-color); border-radius: var(--whale-radius);
+	background-color: var(--whale-surface-color);
 }
-.Whale .content-wrapper .live-recent-tab + .live-recent-tab { border-left: 0; border-radius: 0 var(--whale-radius) 0 0; }
-.Whale .content-wrapper .live-recent-tab:only-child { grid-column-start: 1; grid-column-end: -1; border-radius: var(--whale-radius) var(--whale-radius) 0 0; }
+.Whale .content-wrapper .live-recent-tabs { display: flex; flex-wrap: wrap; gap: 0 1rem; padding: 0.4rem 1.25rem 0; }
+.Whale .content-wrapper .live-recent-tab {
+	appearance: none; display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; min-height: 2.75rem;
+	padding: 0; border: 0; border-radius: 0; background-color: transparent; box-shadow: none; color: var(--whale-content-muted-color);
+	font-size: 1.125rem; font-weight: 500; line-height: 1.4;
+}
 .Whale .content-wrapper .live-recent-tab:hover,
 .Whale .content-wrapper .live-recent-tab:focus,
-.Whale .content-wrapper .live-recent-tab.is-active { background-color: var(--whale-surface-color); color: var(--whale-text-color); }
-.Whale .content-wrapper .live-recent-tab.is-active { box-shadow: inset 0 2px 0 var(--whale-main-color); }
-.Whale .content-wrapper .live-recent-tab .whale-icon { width: 1rem; height: 1rem; }
-.Whale .content-wrapper .live-recent-feed { position: relative; border: 1px solid var(--whale-border-color); background-color: var(--whale-surface-color); }
+.Whale .content-wrapper .live-recent-tab.is-active { background-color: transparent; color: var(--whale-text-color); }
+.Whale .content-wrapper .live-recent-tab:only-child { cursor: default; }
+.Whale .content-wrapper .live-recent-tab .whale-icon { width: 1.125rem; height: 1.125rem; color: var(--whale-content-muted-color); }
+.Whale .content-wrapper .live-recent-feed { position: relative; border: 0; background-color: transparent; }
 .Whale .content-wrapper .live-recent-feed[hidden] { display: none; }
 /* Single-feed header used by the mobile panel below the article (the desktop
    sidebar labels its feeds with tabs instead): icon, title, then "더 보기". */
 .Whale .content-wrapper .live-recent .live-recent-header {
-	display: flex; align-items: center; gap: 0.4rem; min-height: 2.75rem; padding: 0.4rem 0.5rem 0.4rem 1rem;
-	border-bottom: 1px solid var(--whale-border-color); background-color: var(--whale-surface-muted-color);
-	color: var(--whale-text-color);
+	display: flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.9rem 0.75rem 0.35rem 1.25rem;
+	border-bottom: 0; background-color: transparent; color: var(--whale-text-color);
 }
-.Whale .content-wrapper .live-recent .live-recent-header > .whale-icon { flex: 0 0 auto; width: 1rem; height: 1rem; color: var(--whale-content-muted-color); }
+.Whale .content-wrapper .live-recent .live-recent-header > .whale-icon { flex: 0 0 auto; width: 1.125rem; height: 1.125rem; color: var(--whale-content-muted-color); }
 .Whale .content-wrapper .live-recent .live-recent-title {
 	flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; color: inherit;
-	font-size: 1rem; font-weight: 700; line-height: 1.4; letter-spacing: 0;
+	font-size: 1.125rem; font-weight: 500; line-height: 1.4; letter-spacing: 0;
 }
 .Whale .content-wrapper .live-recent .live-recent-header > .live-recent-more { flex: 0 0 auto; }
 .Whale .content-wrapper .live-recent .live-recent-progress { position: absolute; top: 0; right: 0; left: 0; height: 2px; overflow: hidden; }
 .Whale .content-wrapper .live-recent .live-recent-progress-bar {
-	display: block; width: 100%; height: 100%; background-color: var(--whale-main-color);
+	display: block; width: 100%; height: 100%; background-color: var(--whale-border-color);
 	transform: scaleX(1); transform-origin: left center;
 }
 .Whale .content-wrapper .live-recent .live-recent-progress-bar.is-running {
 	animation: whale-live-recent-progress var(--whale-live-recent-refresh, 60s) linear forwards;
 }
-.Whale .content-wrapper .live-recent .live-recent-list { margin: 0; padding: 0.6rem 0; list-style: none; }
+.Whale .content-wrapper .live-recent .live-recent-list { margin: 0; padding: 0.35rem 0 0.75rem; list-style: none; }
 .Whale .content-wrapper .live-recent.live-recent-fixed-height .live-recent-list { min-height: calc(var(--whale-live-recent-limit, 10) * 1.75rem); }
 .Whale .content-wrapper .live-recent .live-recent-list.live-recent-list-no-data { display: flex; align-items: center; justify-content: center; }
 .Whale .content-wrapper .live-recent .live-recent-list li { min-height: 1.75rem; border-bottom: 0; }
 .Whale .content-wrapper .live-recent .recent-item {
 	display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.4rem;
-	min-height: 1.75rem; padding: 0.15rem 1rem; color: var(--whale-text-color); font-size: 0.9375rem;
+	min-height: 1.75rem; padding: 0.1rem 1.25rem; color: var(--whale-text-color); font-size: 0.9375rem;
 	line-height: 1.5; text-decoration: none;
 }
 .Whale .content-wrapper .live-recent .recent-item:hover,
@@ -94,8 +96,7 @@
 	border-top: 0.35rem solid var(--whale-main-color); border-left: 0.35rem solid transparent; content: "";
 }
 .Whale .content-wrapper .live-recent .live-recent-footer {
-	padding: 0.35rem 0.5rem; border-top: 1px solid var(--whale-border-color); border-radius: 0 0 var(--whale-radius) var(--whale-radius);
-	background-color: var(--whale-surface-muted-color); text-align: right;
+	padding: 0 0.75rem 0.6rem; border-top: 0; background-color: transparent; text-align: right;
 }
 .Whale .content-wrapper .live-recent .live-recent-more {
 	display: inline-flex; align-items: center; justify-content: center; gap: 0.2rem; min-height: 1.8rem;

@@ -342,8 +342,8 @@ assertIncludes(
 );
 assertIncludes(
 	liveRecentHeaderBlock,
-	'border-bottom: 0',
-	'Attached live recent tabs',
+	'border: 0',
+	'Borderless live recent tabs inside the sidebar card',
 );
 assertIncludes(liveRecentStyles, '[hidden]', 'Inactive live recent tab panel');
 assertIncludes(
