@@ -1035,7 +1035,7 @@ assertIncludes(
 	'Readable article leading',
 );
 assertIncludes(styles, '--whale-link-color: #0275d8', 'Light link color token');
-assertIncludes(styles, '--whale-link-color: #69b1ff', 'Dark link color token');
+assertIncludes(styles, '--whale-link-color: #ec9f19', 'Dark link color token');
 assertIncludes(
 	styles,
 	'max-width: var(--whale-layout-width)',

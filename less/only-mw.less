@@ -174,7 +174,7 @@
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading1,
 .Whale .content-wrapper .whale-content .whale-content-main .mw-heading2 {
 	padding-bottom: 0.4rem;
-	border-bottom: 1px solid var(--whale-border-color);
+	border-bottom: 1px solid var(--whale-heading-border-color, var(--whale-border-color));
 }
 
 /* Heading scale relative to the article text, so the reader's
@@ -246,7 +246,7 @@
 	margin-top: 1.2em;
 	margin-bottom: 0.8em;
 	padding-bottom: 5px;
-	border-bottom: 1px solid var(--whale-border-color);
+	border-bottom: 1px solid var(--whale-heading-border-color, var(--whale-border-color));
 	box-shadow: none;
 	overflow: visible;
 }
