@@ -441,26 +441,6 @@ if (
 	throw new Error('Nested heading should receive a dotted section number.');
 }
 
-desktopToc.dispatch('pointerover', { target: desktopToc });
-if (!desktopRun.document.body.classList.contains('whale-floating-toc-hover')) {
-	throw new Error('Desktop TOC hover should reveal floating TOC labels.');
-}
-
-desktopRun.toolbar.dispatch('pointerenter', { target: desktopRun.toolbar });
-if (
-	desktopRun.document.body.classList.contains(
-		'whale-floating-toc-toolbar-hover',
-	)
-) {
-	throw new Error(
-		'Toolbar hover should not reintroduce legacy TOC hover state.',
-	);
-}
-
-if (!desktopRun.document.body.classList.contains('whale-floating-toc-hover')) {
-	throw new Error('Toolbar hover should not hide already revealed TOC labels.');
-}
-
 const mobileRun = runFloatingToc({ desktop: false });
 const mobileToc = mobileRun.document.querySelector('.whale-floating-toc');
 const backdrop = mobileRun.document.querySelector(

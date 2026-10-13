@@ -3,7 +3,7 @@ import { runtime, skinStyles } from './helpers.mjs';
 
 export const setupToc = async (
 	page,
-	{ mobile = false, native = false, count = 317 } = {},
+	{ mobile = false, native = false, count = 317, sidebar = true } = {},
 ) => {
 	await page.setViewportSize({
 		width: mobile ? 390 : 1440,
@@ -18,7 +18,8 @@ export const setupToc = async (
 		? `<div id="toc"><ol>${Array.from({ length: count }, (_, i) => `<li><a href="#section_${i + 1}"><span class="tocnumber">${i + 1}</span><span class="toctext">절 ${i + 1}</span></a></li>`).join('')}</ol></div>`
 		: '';
 	await page.setContent(`<body class="Whale whale-floating-toc-enabled whale-mobile-floating-toc-enabled">
-		<button id="whale-scrolltoc">목차</button><main class="whale-content-main" id="mw-content-text">${toc}${sections}</main>
+		<button id="whale-scrolltoc">목차</button><div class="content-wrapper"><div class="whale-content"><main class="whale-content-main" id="mw-content-text">${toc}${sections}</main></div>
+		${sidebar ? '<aside class="whale-sidebar-column"><div class="whale-sidebar"></div></aside>' : ''}</div>
 	</body>`);
 	await page.addStyleTag({ content: await skinStyles() });
 	await runtime(page);
@@ -53,3 +54,58 @@ for (const native of [false, true]) {
 		});
 	}
 }
+
+test('desktop labels remain visible and scroll inside the sidebar', async ({
+	page,
+}) => {
+	await setupToc(page);
+	await expect(
+		page.locator('.whale-sidebar .whale-floating-toc'),
+	).toBeVisible();
+	await expect(page.locator('.whale-floating-toc a').first()).toBeVisible();
+	const layout = await page
+		.locator('.whale-floating-toc ol')
+		.evaluate((list) => ({
+			scrollable: list.scrollHeight > list.clientHeight,
+			labelOpacity: getComputedStyle(list.querySelector('a')).opacity,
+			whiteSpace: getComputedStyle(list.querySelector('a')).whiteSpace,
+		}));
+	expect(layout).toEqual({
+		scrollable: true,
+		labelOpacity: '1',
+		whiteSpace: 'normal',
+	});
+	await page.locator('.whale-floating-toc a').last().click();
+	await expect(page.locator('#section_317')).toBeInViewport();
+});
+
+test('mobile drawer keeps keyboard focus inside and returns it on Escape', async ({
+	page,
+}) => {
+	await setupToc(page, { mobile: true, count: 24 });
+	await page.evaluate(() =>
+		document.dispatchEvent(new CustomEvent('whale:toggleFloatingToc')),
+	);
+	const close = page.locator('.whale-floating-toc-close');
+	await expect(close).toBeFocused();
+	await page.keyboard.press('Shift+Tab');
+	await expect(page.locator('.whale-floating-toc a').last()).toBeFocused();
+	await page.keyboard.press('Tab');
+	await expect(close).toBeFocused();
+	await page.keyboard.press('Escape');
+	await expect(page.locator('#whale-scrolltoc')).toBeFocused();
+	await expect(page.locator('#whale-scrolltoc')).toHaveAttribute(
+		'aria-expanded',
+		'false',
+	);
+});
+
+test('pages without a sidebar retain an inline navigation list', async ({
+	page,
+}) => {
+	await setupToc(page, { sidebar: false, count: 24 });
+	await expect(
+		page.locator('#mw-content-text > .whale-floating-toc.is-inline'),
+	).toBeVisible();
+	await expect(page.locator('.whale-floating-toc a')).toHaveCount(24);
+});

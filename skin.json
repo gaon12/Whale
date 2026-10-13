@@ -143,7 +143,7 @@
 				"js/index-button.js",
 				"js/layout.js"
 			],
-			"messages": ["whale-floating-toc", "whale-reading-progress"],
+			"messages": ["whale-floating-toc", "whale-reading-progress", "close"],
 			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
 		},
 		"skins.whale.articlejs": {

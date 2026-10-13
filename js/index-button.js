@@ -1,11 +1,12 @@
 (() => {
-	const DESKTOP_QUERY = '(min-width: 1280px)';
+	const DESKTOP_QUERY = '(min-width: 1024px)';
 	const MOBILE_EDGE_SWIPE_PX = 64;
 	const MOBILE_SWIPE_DISTANCE_PX = 48;
 	const MOBILE_SWIPE_MAX_VERTICAL_PX = 42;
 	const SECTION_NUMBER_SELECTOR = '.whale-heading-number';
 	const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 	let activeScrollUpdate = null;
+	let contentObserver = null;
 	let mobileGestureStart = null;
 	let mobileGesturesBound = false;
 
@@ -57,16 +58,6 @@
 		return Math.min(getMaxScrollY(), Math.max(0, rawScrollY));
 	};
 
-	const getTargetPositionRatio = (target) => {
-		const targetTop = target.getBoundingClientRect().top + window.scrollY;
-		const documentHeight = Math.max(
-			1,
-			document.documentElement.scrollHeight - whale.getNavHeight(),
-		);
-
-		return Math.min(1, Math.max(0, targetTop / documentHeight));
-	};
-
 	const isDesktop = () => window.matchMedia(DESKTOP_QUERY).matches;
 
 	const isMobileFloatingTocEnabled = () =>
@@ -86,6 +77,8 @@
 		}
 
 		document.body.classList.toggle('whale-floating-toc-open', open);
+		const trigger = document.getElementById('whale-scrolltoc');
+		trigger?.setAttribute('aria-expanded', String(open));
 		if (toc) {
 			toc.inert = !open;
 			toc.setAttribute('aria-hidden', String(!open));
@@ -93,6 +86,9 @@
 		const backdrop = document.querySelector('.whale-floating-toc-backdrop');
 		if (backdrop) {
 			backdrop.hidden = !open;
+		}
+		if (open) {
+			toc?.querySelector('button, a')?.focus({ preventScroll: true });
 		}
 	};
 
@@ -169,6 +165,8 @@
 	};
 
 	const removeFloatingToc = () => {
+		contentObserver?.disconnect();
+		contentObserver = null;
 		document.querySelector('.whale-floating-toc')?.remove();
 		document.querySelector('.whale-floating-toc-backdrop')?.remove();
 		document.body.classList.remove('whale-floating-toc-hover');
@@ -281,6 +279,23 @@
 		});
 
 		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Tab' && !isDesktop() && isMobileTocOpen()) {
+				const controls = [
+					...document
+						.querySelector('.whale-floating-toc')
+						.querySelectorAll('button, a'),
+				];
+				const edge = event.shiftKey
+					? controls[0]
+					: controls[controls.length - 1];
+				if (document.activeElement === edge) {
+					event.preventDefault();
+					(event.shiftKey
+						? controls[controls.length - 1]
+						: controls[0]
+					)?.focus();
+				}
+			}
 			if (
 				event.key === 'Escape' &&
 				!isDesktop() &&
@@ -321,32 +336,16 @@
 
 		const toc = document.createElement('nav');
 		const list = document.createElement('ol');
+		const heading = document.createElement('div');
+		heading.className = 'whale-floating-toc-header';
+		heading.textContent = mw.message('whale-floating-toc').text();
+		toc.id = 'whale-navigation-toc';
 		toc.className = shouldRenderMobile
 			? 'whale-floating-toc is-mobile'
 			: 'whale-floating-toc';
 		toc.setAttribute('aria-label', mw.message('whale-floating-toc').text());
 		toc.inert = shouldRenderMobile;
 		toc.setAttribute('aria-hidden', String(shouldRenderMobile));
-		toc.addEventListener('pointerover', (event) => {
-			if (shouldRenderDesktop && toc.contains(event.target)) {
-				document.body.classList.add('whale-floating-toc-hover');
-			}
-		});
-		toc.addEventListener('pointerout', (event) => {
-			if (!event.relatedTarget || !toc.contains(event.relatedTarget)) {
-				document.body.classList.remove('whale-floating-toc-hover');
-			}
-		});
-		toc.addEventListener('focusin', () => {
-			if (shouldRenderDesktop) {
-				document.body.classList.add('whale-floating-toc-hover');
-			}
-		});
-		toc.addEventListener('focusout', (event) => {
-			if (!event.relatedTarget || !toc.contains(event.relatedTarget)) {
-				document.body.classList.remove('whale-floating-toc-hover');
-			}
-		});
 
 		links.forEach(({ link, target, text, level, href }) => {
 			const item = document.createElement('li');
@@ -363,8 +362,14 @@
 			list.append(item);
 		});
 
-		toc.append(list);
+		toc.append(heading, list);
 		if (shouldRenderMobile) {
+			const close = document.createElement('button');
+			close.type = 'button';
+			close.className = 'whale-floating-toc-close';
+			close.textContent = mw.message('close').text();
+			close.addEventListener('click', () => setMobileTocOpen(false));
+			heading.append(close);
 			const backdrop = document.createElement('button');
 			backdrop.type = 'button';
 			backdrop.className = 'whale-floating-toc-backdrop';
@@ -375,47 +380,32 @@
 			backdrop.hidden = true;
 			backdrop.addEventListener('click', () => setMobileTocOpen(false));
 			document.body.append(backdrop);
+			document.body.append(toc);
+		} else {
+			const sidebar = document.querySelector('.whale-sidebar');
+			const content = document.querySelector('.whale-content-main');
+			if (sidebar) {
+				sidebar.append(toc);
+			} else if (content) {
+				toc.classList.add('is-inline');
+				content.insertBefore(toc, content.firstChild);
+			}
 		}
-		document.body.append(toc);
+		document
+			.getElementById('whale-scrolltoc')
+			?.setAttribute('aria-controls', toc.id);
 
 		const anchors = [...toc.querySelectorAll('a')];
 		const items = [...toc.querySelectorAll('li')];
 
 		const updatePositions = () => {
-			if (shouldRenderMobile) {
-				links.forEach((item) => {
-					item.scrollY = getTargetScrollY(item.target);
-				});
-				return;
-			}
-
-			const maxScrollY = getMaxScrollY();
-			const minGap = Math.min(0.12, 1 / Math.max(1, links.length - 1));
-			let previousRatio = -minGap;
-
-			links.forEach((item, index) => {
+			links.forEach((item) => {
 				item.scrollY = getTargetScrollY(item.target);
-
-				const ratio =
-					maxScrollY === 0 || links.length === 1
-						? index / Math.max(1, links.length - 1)
-						: getTargetPositionRatio(item.target);
-				const remainingItems = links.length - index - 1;
-				const maxRatio = 1 - remainingItems * minGap;
-				const safeRatio = Math.min(
-					maxRatio,
-					Math.max(previousRatio + minGap, ratio),
-				);
-
-				previousRatio = safeRatio;
-				items[index].style.top =
-					`${Math.min(1, Math.max(0, safeRatio)) * 100}%`;
 			});
 		};
 
+		let previousActive = -1;
 		const updateActive = whale.rafThrottle(() => {
-			updatePositions();
-
 			const scrollY = Math.min(getMaxScrollY(), window.scrollY);
 			let activeIndex = 0;
 
@@ -425,15 +415,34 @@
 				}
 			});
 
-			anchors.forEach((anchor, index) => {
-				anchor.classList.toggle('is-active', index === activeIndex);
-			});
-			items.forEach((item, index) => {
-				item.classList.toggle('is-active', index === activeIndex);
-			});
+			if (previousActive === activeIndex) {
+				return;
+			}
+			if (previousActive >= 0) {
+				anchors[previousActive].classList.remove('is-active');
+				anchors[previousActive].removeAttribute?.('aria-current');
+				items[previousActive].classList.remove('is-active');
+			}
+			anchors[activeIndex].classList.add('is-active');
+			anchors[activeIndex].setAttribute('aria-current', 'location');
+			items[activeIndex].classList.add('is-active');
+			previousActive = activeIndex;
 		});
 
+		updatePositions();
 		updateActive();
+		if (typeof ResizeObserver === 'function') {
+			contentObserver = new ResizeObserver(
+				whale.rafThrottle(() => {
+					updatePositions();
+					updateActive();
+				}),
+			);
+			const content = document.querySelector('.whale-content-main');
+			if (content) {
+				contentObserver.observe(content);
+			}
+		}
 		activeScrollUpdate = updateActive;
 		window.addEventListener('scroll', activeScrollUpdate, { passive: true });
 	};
