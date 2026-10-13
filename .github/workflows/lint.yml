@@ -84,3 +84,52 @@ jobs:
 
       - name: Run PHPStan level max
         run: composer analyse
+
+  mediawiki:
+    name: MediaWiki ${{ matrix.mediawiki }} integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        mediawiki: ['1.39', '1.43']
+    env:
+      WHALE_MEDIAWIKI_FIXTURE: ${{ runner.temp }}/whale-mediawiki
+      WHALE_MEDIAWIKI_BASE_URL: http://127.0.0.1:8080
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, mbstring, sqlite3, pdo_sqlite, fileinfo
+          tools: composer:v2
+          coverage: none
+      - name: Install skin dependencies
+        run: |
+          composer install --no-interaction --prefer-dist
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Install an isolated real MediaWiki wiki
+        run: bash scripts/install-mediawiki-fixture.sh '${{ matrix.mediawiki }}'
+      - name: Exercise rendering, ResourceLoader, parsing and authenticated settings
+        run: |
+          php -S 127.0.0.1:8080 -t "$WHALE_MEDIAWIKI_FIXTURE" > "$RUNNER_TEMP/mediawiki-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in {1..20}; do
+            if curl --silent --fail "$WHALE_MEDIAWIKI_BASE_URL/api.php?action=query&format=json" > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:mediawiki
+      - name: Save failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mediawiki-${{ matrix.mediawiki }}-diagnostics
+          path: |
+            ${{ runner.temp }}/mediawiki-server.log
+            ${{ runner.temp }}/whale-browser-tests

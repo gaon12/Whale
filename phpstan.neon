@@ -9,6 +9,7 @@ parameters:
 		- WhaleAvatar.php
 		- WhaleArticleDecorator.php
 		- WhaleMainPage.php
+		- WhaleCompatibility.php
 		- WhaleFoldingParser.php
 		- WhaleContributionGraph.php
 		- WhaleHooks.php

@@ -19,6 +19,7 @@
 	"license-name": "GPL-3.0-or-later",
 	"type": "skin",
 	"version": "1.13.13",
+	"callback": "WhaleCompatibility::onRegistration",
 	"requires": {
 		"MediaWiki": ">= 1.39.0"
 	},
@@ -229,6 +230,7 @@
 		"WhaleContributionGraph": "WhaleContributionGraph.php",
 		"WhaleArticleDecorator": "WhaleArticleDecorator.php",
 		"WhaleMainPage": "WhaleMainPage.php",
+		"WhaleCompatibility": "WhaleCompatibility.php",
 		"WhaleFoldingParser": "WhaleFoldingParser.php",
 		"WhaleAvatar": "WhaleAvatar.php",
 		"WhaleHooks": "WhaleHooks.php",

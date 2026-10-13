@@ -934,3 +934,17 @@ screen styles from `skin.json` and renders the actual Mustache templates.
 Use `WHALE_BROWSER_CHANNEL=msedge` to select an installed Edge browser locally;
 CI installs Chromium. The suite covers reduced motion, refresh failures,
 startup races, long contents, dynamic images and document/homepage layout.
+
+
+### Real MediaWiki integration
+
+CI also installs isolated SQLite wikis for MediaWiki 1.39 and 1.43 and runs
+`npm run test:mediawiki` against the actual skin registration, ResourceLoader,
+parser hooks, footer data and authenticated user-options API. The standalone
+browser suite skips these cases unless `WHALE_MEDIAWIKI_BASE_URL` is set.
+`scripts/install-mediawiki-fixture.sh` creates the same fixture on Linux;
+set `WHALE_MEDIAWIKI_FIXTURE` to a fresh directory and pass the core version.
+The fixture contains a disposable `FixtureAdmin` account and must not be
+pointed at an existing wiki. The EOL 1.39 dependency lock requires disabling
+Composer's install advisory block inside that fixture only; the skin's
+normal dependency audit remains enabled.

@@ -813,6 +813,10 @@ JS
 	 * @return array<string,mixed>
 	 */
 	public function getWhaleFooterData(): array {
+		if ( method_exists( $this, 'getFooterLinks' ) ) {
+			$links = call_user_func( [ $this, 'getFooterLinks' ] );
+			return is_array( $links ) ? WhaleCompatibility::normalizeLegacyFooter( $links ) : [];
+		}
 		return $this->getComponent( 'footer' )->getTemplateData();
 	}
 
