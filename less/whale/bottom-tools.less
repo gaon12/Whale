@@ -113,6 +113,58 @@ body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
 	body.whale-floating-toc-enabled #whale-bottombtn {
 		right: 3rem;
 	}
+
+	/* On desktop the controls are separate 40px white keys rather than one
+	   panel: tools, contents, and a joined up/down pair. */
+	#whale-bottombtn {
+		gap: 0.5rem;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	body.whale-scroll-buttons-horizontal #whale-bottombtn {
+		background: transparent;
+	}
+
+	#whale-bottombtn .scroll-button,
+	body.whale-scroll-buttons-horizontal #whale-bottombtn .scroll-button {
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 1px solid var(--whale-border-color);
+		border-radius: var(--whale-radius);
+		background-color: var(--whale-surface-color);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+		color: var(--whale-text-color);
+	}
+
+	#whale-bottombtn .scroll-button:hover {
+		background-color: var(--whale-surface-muted-color);
+		color: var(--whale-text-color);
+	}
+
+	body.whale-scroll-buttons-vertical #whale-bottombtn #whale-scrollup {
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+	body.whale-scroll-buttons-vertical #whale-bottombtn #whale-scrolldown {
+		margin-top: ~"calc(-0.5rem - 1px)";
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+
+	body.whale-scroll-buttons-horizontal #whale-bottombtn #whale-scrollup {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	body.whale-scroll-buttons-horizontal #whale-bottombtn #whale-scrolldown {
+		margin-left: ~"calc(-0.5rem - 1px)";
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
 }
 
 body.page-Main_Page #whale-scrolltoc {
