@@ -109,6 +109,24 @@ test('desktop markers follow exact document positions beside the scrollbar', asy
 		marker.y + marker.height / 2,
 	);
 	await expect(page.locator('#section_101')).toBeInViewport();
+
+	// Section names are links: clicking one scrolls to its section, and the
+	// labels stay usable for the next click (they must not become inert).
+	for (const index of [40, 200]) {
+		const dot = await page
+			.locator('.whale-floating-toc-marker')
+			.nth(index)
+			.boundingBox();
+		await page.mouse.move(dot.x + dot.width / 2, dot.y + dot.height / 2);
+		const label = page.locator('.whale-floating-toc-labels li').nth(index);
+		await expect(label).toHaveClass(/is-hovered/);
+		await label.locator('a').click();
+		await expect(page.locator(`#section_${index + 1}`)).toBeInViewport();
+		await expect(page.locator('.whale-floating-toc')).not.toHaveAttribute(
+			'inert',
+			'',
+		);
+	}
 });
 
 test('mobile drawer keeps keyboard focus inside and returns it on Escape', async ({

@@ -78,6 +78,11 @@
 
 	const setMobileTocOpen = (open) => {
 		const toc = document.querySelector('.whale-floating-toc');
+		// Only the mobile drawer opens and closes; the desktop scrollbar labels
+		// must never be made inert by a drawer close.
+		if (toc && !toc.classList.contains('is-mobile')) {
+			return;
+		}
 		if (!open && toc?.contains(document.activeElement)) {
 			const trigger = document.getElementById('whale-scrolltoc');
 			if (trigger) {
@@ -376,6 +381,11 @@
 				event.preventDefault();
 				setMobileTocOpen(false);
 				whale.scrollToTarget(target);
+				if (shouldRenderDesktop && event.detail > 0) {
+					// A pointer click on a scrollbar label should not leave focus behind,
+					// or the labels would stay shown after the pointer moves away.
+					anchor.blur();
+				}
 			});
 			item.addEventListener('click', (event) => {
 				if (event.target === item && shouldRenderDesktop) {
