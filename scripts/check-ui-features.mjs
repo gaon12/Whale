@@ -162,11 +162,7 @@ if (indexButton.includes('whale-floating-toc-toolbar-hover')) {
 		'Floating TOC script should not keep legacy toolbar hover state.',
 	);
 }
-assertIncludes(
-	indexButton,
-	"item.classList.toggle('is-active'",
-	'Floating TOC active dot state',
-);
+// Active location and readable labels are covered by the browser TOC tests.
 
 const layout = read('js/layout.js');
 const delayScrolling = read('js/delay-scrolling.js');
@@ -506,26 +502,7 @@ assertIncludes(
 	'right: 1.5rem',
 	'Fixed desktop scroll toolbar position',
 );
-assertIncludes(
-	styles,
-	'body.whale-floating-toc-hover .whale-floating-toc a',
-	'Desktop floating TOC hover labels',
-);
-assertIncludes(
-	styles,
-	'body.whale-floating-toc-hover .whale-floating-toc a.is-active',
-	'Desktop floating TOC active label should wait for hover',
-);
-assertIncludes(
-	styles,
-	'pointer-events: none',
-	'Desktop floating TOC dot-only default',
-);
-assertIncludes(
-	styles,
-	'.whale-floating-toc li.is-active::after',
-	'Desktop floating TOC active dot',
-);
+// Readability and navigation behavior are verified against rendered CSS in Playwright.
 assertIncludes(
 	styles,
 	'border-right: 1.5px solid currentColor',
@@ -657,7 +634,7 @@ if (multiPositionGradientStop) {
 		'LESS gradients should avoid multi-position color stops for MediaWiki less.php compatibility.',
 	);
 }
-assertIncludes(styles, '~"min(82vw, 22rem)"', 'Mobile TOC CSS min escape');
+assertIncludes(styles, '~"min(88vw, 24rem)"', 'Mobile TOC CSS min escape');
 assertIncludes(styles, 'gap: 0', 'Attached short URL input group');
 assertIncludes(
 	styles,
