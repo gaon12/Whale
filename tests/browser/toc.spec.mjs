@@ -65,7 +65,7 @@ test('desktop markers follow exact document positions beside the scrollbar', asy
 	);
 	const positions = await page.evaluate(() => {
 		const documentHeight = document.documentElement.scrollHeight;
-		return [...document.querySelectorAll('.whale-floating-toc li')].map(
+		return [...document.querySelectorAll('.whale-floating-toc-marker')].map(
 			(item, index) => {
 				const heading = document.getElementById(`section_${index + 1}`);
 				return {
@@ -80,16 +80,20 @@ test('desktop markers follow exact document positions beside the scrollbar', asy
 	for (const item of positions)
 		expect(item.actual).toBeCloseTo(item.expected, 3);
 	const marker = await page
-		.locator('.whale-floating-toc li')
+		.locator('.whale-floating-toc-marker')
 		.nth(100)
 		.boundingBox();
 	await page.mouse.move(
 		marker.x + marker.width / 2,
 		marker.y + marker.height / 2,
 	);
-	await expect(
-		page.locator('.whale-floating-toc li').nth(100).locator('a'),
-	).toHaveCSS('opacity', '1');
+	// Approaching the rail opens the full list, not just the nearest label.
+	await expect(page.locator('.whale-floating-toc')).toHaveClass(/is-expanded/);
+	const panel = page.locator('.whale-floating-toc-panel');
+	await expect(panel).toBeVisible();
+	await expect(panel.locator('a')).toHaveCount(317);
+	await expect(panel.locator('li').nth(100)).toHaveClass(/is-hovered/);
+	await expect(panel.locator('a.is-active')).toHaveCount(1);
 	await page.mouse.click(
 		marker.x + marker.width / 2,
 		marker.y + marker.height / 2,

@@ -4,6 +4,9 @@
 	const MOBILE_SWIPE_DISTANCE_PX = 48;
 	const MOBILE_SWIPE_MAX_VERTICAL_PX = 42;
 	const SECTION_NUMBER_SELECTOR = '.whale-heading-number';
+	// Keep the expanded desktop panel open briefly after the pointer leaves so
+	// moving between the dot rail and the panel never flickers it closed.
+	const DESKTOP_PANEL_CLOSE_DELAY_MS = 220;
 	const HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 	let activeScrollUpdate = null;
 	let contentObserver = null;
@@ -371,7 +374,25 @@
 			list.append(item);
 		});
 
-		toc.append(heading, list);
+		// Desktop: decorative dots at each section's real document position. The
+		// ordered list above is the accessible navigation and becomes the panel
+		// that lists every section when the pointer approaches the rail.
+		const markers = [];
+		if (shouldRenderDesktop) {
+			const rail = document.createElement('div');
+			rail.className = 'whale-floating-toc-rail';
+			rail.setAttribute('aria-hidden', 'true');
+			links.forEach(({ level }) => {
+				const marker = document.createElement('span');
+				marker.className = `whale-floating-toc-marker whale-floating-toc-level-${level}`;
+				rail.append(marker);
+				markers.push(marker);
+			});
+			list.className = 'whale-floating-toc-panel';
+			toc.append(heading, rail, list);
+		} else {
+			toc.append(heading, list);
+		}
 		if (shouldRenderMobile) {
 			const close = document.createElement('button');
 			close.type = 'button';
@@ -400,11 +421,56 @@
 		const anchors = [...toc.querySelectorAll('a')];
 		const items = [...toc.querySelectorAll('li')];
 		let hoveredIndex = -1;
+		let previousActive = -1;
+		let closeTimer = null;
+
+		// Scroll the panel (not the page) so an entry sits inside its viewport.
+		const revealInPanel = (index, centre) => {
+			const item = items[index];
+			const panelHeight = list.clientHeight;
+			if (!item || !panelHeight || typeof item.offsetTop !== 'number') {
+				return;
+			}
+			const top = item.offsetTop;
+			const bottom = top + item.offsetHeight;
+			if (centre) {
+				list.scrollTop = Math.max(
+					0,
+					top - (panelHeight - item.offsetHeight) / 2,
+				);
+			} else if (top < list.scrollTop) {
+				list.scrollTop = top;
+			} else if (bottom > list.scrollTop + panelHeight) {
+				list.scrollTop = bottom - panelHeight;
+			}
+		};
 		const clearHovered = () => {
 			if (hoveredIndex >= 0) {
 				items[hoveredIndex].classList.remove('is-hovered');
+				markers[hoveredIndex]?.classList.remove('is-hovered');
 			}
 			hoveredIndex = -1;
+		};
+		const setExpanded = (expanded) => {
+			window.clearTimeout(closeTimer);
+			closeTimer = null;
+			if (toc.classList.contains('is-expanded') === expanded) {
+				return;
+			}
+			toc.classList.toggle('is-expanded', expanded);
+			if (expanded) {
+				revealInPanel(previousActive, true);
+			} else {
+				clearHovered();
+			}
+		};
+		const scheduleCollapse = () => {
+			window.clearTimeout(closeTimer);
+			closeTimer = window.setTimeout(() => {
+				if (!toc.contains(document.activeElement)) {
+					setExpanded(false);
+				}
+			}, DESKTOP_PANEL_CLOSE_DELAY_MS);
 		};
 		const selectNearestMarker = (event) => {
 			const frame = toc.getBoundingClientRect();
@@ -421,20 +487,26 @@
 			if (nearest !== hoveredIndex) {
 				clearHovered();
 				items[nearest].classList.add('is-hovered');
+				markers[nearest]?.classList.add('is-hovered');
 				hoveredIndex = nearest;
+				revealInPanel(nearest, false);
 			}
 			return nearest;
 		};
+		const isInPanel = (event) => Boolean(event.target.closest?.('ol'));
 		if (shouldRenderDesktop) {
+			toc.addEventListener('pointerenter', () => setExpanded(true));
 			toc.addEventListener('pointermove', (event) => {
-				if (!event.target.closest?.('a')) {
+				setExpanded(true);
+				if (!isInPanel(event)) {
 					selectNearestMarker(event);
 				}
 			});
-			toc.addEventListener('pointerleave', clearHovered);
-			toc.addEventListener('focusin', clearHovered);
+			toc.addEventListener('pointerleave', scheduleCollapse);
+			toc.addEventListener('focusin', () => setExpanded(true));
+			toc.addEventListener('focusout', scheduleCollapse);
 			toc.addEventListener('click', (event) => {
-				if (!event.target.closest?.('a')) {
+				if (!isInPanel(event)) {
 					whale.scrollToTarget(links[selectNearestMarker(event)].target);
 				}
 			});
@@ -448,12 +520,11 @@
 					const top = item.target.getBoundingClientRect().top + window.scrollY;
 					// Use actual document coordinates: never spread or truncate markers.
 					item.positionRatio = Math.max(0, Math.min(1, top / documentHeight));
-					items[index].style.top = `${item.positionRatio * 100}%`;
+					markers[index].style.top = `${item.positionRatio * 100}%`;
 				}
 			});
 		};
 
-		let previousActive = -1;
 		const updateActive = whale.rafThrottle(() => {
 			const scrollY = Math.min(getMaxScrollY(), window.scrollY);
 			let activeIndex = 0;
@@ -471,11 +542,16 @@
 				anchors[previousActive].classList.remove('is-active');
 				anchors[previousActive].removeAttribute?.('aria-current');
 				items[previousActive].classList.remove('is-active');
+				markers[previousActive]?.classList.remove('is-active');
 			}
 			anchors[activeIndex].classList.add('is-active');
 			anchors[activeIndex].setAttribute('aria-current', 'location');
 			items[activeIndex].classList.add('is-active');
+			markers[activeIndex]?.classList.add('is-active');
 			previousActive = activeIndex;
+			if (toc.classList.contains('is-expanded') && hoveredIndex < 0) {
+				revealInPanel(activeIndex, false);
+			}
 		});
 
 		updatePositions();
