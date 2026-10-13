@@ -555,12 +555,14 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 	align-items: center;
 	gap: 0.45rem;
 	width: 100%;
-	margin-top: 1.35rem;
-	margin-bottom: 0.8rem;
-	padding-bottom: 0.55rem;
+	margin-top: 1.2em;
+	margin-bottom: 0.8em;
+	padding-bottom: 5px;
 	border-bottom: 1px solid var(--whale-border-color);
 	box-shadow: none;
 	color: var(--whale-text-color);
+	font-weight: 700;
+	line-height: 1.5;
 	cursor: default;
 	scroll-margin-top: 4.5rem;
 	transition: background-color 0.16s ease, color 0.16s ease;
@@ -589,12 +591,14 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection {
 	order: 1;
 	flex: 0 0 auto;
+	/* Pin "[편집]" to the top-right corner of the heading. */
+	align-self: flex-start;
 	max-width: 45%;
 	margin-left: auto;
 	overflow: hidden;
-	color: var(--whale-content-muted-color);
-	font-size: 0.8125rem;
-	font-weight: 400;
+	color: var(--whale-text-color);
+	font-size: 0.8rem;
+	font-weight: 700;
 	letter-spacing: 0;
 	line-height: 1.4;
 	text-overflow: ellipsis;
@@ -605,7 +609,7 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection-bracket,
 .Whale .content-wrapper .whale-content .whale-content-main .whale-section-heading .mw-editsection-divider {
 	margin: 0;
-	color: var(--whale-content-muted-color);
+	color: var(--whale-text-color);
 	font-size: inherit;
 }
 
