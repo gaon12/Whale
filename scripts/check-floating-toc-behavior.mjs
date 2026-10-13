@@ -425,7 +425,7 @@ if (!desktopToc) {
 const desktopLabels = desktopToc
 	.querySelectorAll('a')
 	.map((anchor) => anchor.textContent);
-if (desktopLabels.join('|') !== '1. Alpha section|1.1 Beta child') {
+if (desktopLabels.join('|') !== '1. Alpha section|1.1. Beta child') {
 	throw new Error(`Unexpected desktop TOC labels: ${desktopLabels.join('|')}`);
 }
 
@@ -436,7 +436,8 @@ if (
 }
 
 if (
-	desktopRun.beta.querySelector('.whale-heading-number')?.textContent !== '1.1 '
+	desktopRun.beta.querySelector('.whale-heading-number')?.textContent !==
+	'1.1. '
 ) {
 	throw new Error('Nested heading should receive a dotted section number.');
 }
@@ -574,7 +575,7 @@ const h3FirstLabels = h3FirstRun.document
 	.map((anchor) => anchor.textContent);
 if (
 	h3FirstLabels?.join('|') !==
-	'1. First nested-looking section|1.1 Nested child'
+	'1. First nested-looking section|1.1. Nested child'
 ) {
 	throw new Error(
 		`Fallback numbering should normalize skipped heading levels: ${h3FirstLabels?.join('|')}`,
@@ -599,7 +600,7 @@ const tocBackedLabels = tocBackedRun.document
 	.querySelector('.whale-floating-toc')
 	?.querySelectorAll('a')
 	.map((anchor) => anchor.textContent);
-if (tocBackedLabels?.join('|') !== '2. Toc parent|2.1 Toc child') {
+if (tocBackedLabels?.join('|') !== '2. Toc parent|2.1. Toc child') {
 	throw new Error(
 		`TOC-backed labels should prefer real heading text: ${tocBackedLabels?.join('|')}`,
 	);

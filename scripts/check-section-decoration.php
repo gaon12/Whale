@@ -88,7 +88,7 @@ if (
 	!$parentNumber instanceof DOMElement ||
 	trim( $parentNumber->textContent ) !== '1.' ||
 	!$childNumber instanceof DOMElement ||
-	trim( $childNumber->textContent ) !== '1.1'
+	trim( $childNumber->textContent ) !== '1.1.'
 ) {
 	fwrite( STDERR, "Section numbers should be rendered server-side.\n" );
 	exit( 1 );

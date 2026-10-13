@@ -148,11 +148,11 @@ if (getTocLevel(tocLink) !== 3) {
 	throw new Error('TOC level should come from the closest toclevel class.');
 }
 
-if (getTocNumber(tocLink) !== '2.1') {
+if (getTocNumber(tocLink) !== '2.1.') {
 	throw new Error('Nested TOC numbers should keep dotted numbering.');
 }
 
-if (getLinkText(tocLink, heading) !== '2.1 Correct section') {
+if (getLinkText(tocLink, heading) !== '2.1. Correct section') {
 	throw new Error(
 		'Floating TOC label should include the cleaned section number.',
 	);

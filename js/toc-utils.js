@@ -12,7 +12,7 @@
 			return '';
 		}
 
-		return cleanNumber.includes('.') ? cleanNumber : `${cleanNumber}.`;
+		return `${cleanNumber}.`;
 	};
 
 	const getTocNumber = (link) =>
