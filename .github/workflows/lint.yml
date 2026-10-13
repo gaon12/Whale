@@ -48,8 +48,11 @@ jobs:
         run: npm test
 
   php:
-    name: PHPCS and PHPStan
+    name: PHPCS and PHPStan (PHP ${{ matrix.php }})
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.2', '8.3']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,7 +60,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: ${{ matrix.php }}
           tools: composer:v2
           coverage: none
 
