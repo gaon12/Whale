@@ -904,3 +904,33 @@ This repository intentionally maintains these message files:
 | `i18n/zh-hant.json` | Traditional Chinese |
 
 Other languages can fall back through MediaWiki's normal language fallback chain.
+
+### Document layout and homepage templates
+
+Whale uses a document-first layout: the page title and core revision metadata
+share a header with article actions, followed by 16px reading text with 1.7
+line spacing. Desktop section navigation is a visible, scrollable hierarchy
+in the sidebar; mobile navigation includes all sections in a keyboard-accessible
+drawer. The recent-change timer is independent of CSS animations and retains
+its last successful result when refreshing fails.
+
+New homepage templates should use the explicit component classes in
+[`examples/main-page.wiki`](examples/main-page.wiki): `whale-home`,
+`whale-home-intro`, `whale-home-title`, `whale-home-description`,
+`whale-home-sections`, and `whale-home-section`. These use the skin's theme
+tokens without inspecting authored RGB or hex colors. The welcome title is
+localized using the configured site name; section IDs, links and authored
+warning colors are preserved. Homepage portal headings do not receive article
+section numbers or collapse controls.
+
+The original homepage layout remains supported through a narrow migration
+contract: one introduction paragraph with two spans, followed by two columns
+containing two heading-led panels each. Its presentation becomes flat semantic
+sections; unrelated homepage layouts are left untouched. Authors can migrate
+to the explicit classes instead of depending on this legacy structure.
+
+Run `npm run test:browser` for the rendered regression suite. It compiles all
+screen styles from `skin.json` and renders the actual Mustache templates.
+Use `WHALE_BROWSER_CHANNEL=msedge` to select an installed Edge browser locally;
+CI installs Chromium. The suite covers reduced motion, refresh failures,
+startup races, long contents, dynamic images and document/homepage layout.

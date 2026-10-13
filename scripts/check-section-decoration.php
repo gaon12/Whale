@@ -25,6 +25,7 @@ if ( !function_exists( 'wfMessage' ) ) {
 }
 
 require_once __DIR__ . '/../WhaleArticleDecorator.php';
+require_once __DIR__ . '/../WhaleMainPage.php';
 
 $method = new ReflectionMethod( WhaleArticleDecorator::class, 'decorateArticleHtml' );
 $method->setAccessible( true );
@@ -160,14 +161,8 @@ if ( $normalizeMethod->invoke( null, 'broken' ) !== 'all' ) {
 	exit( 1 );
 }
 
-$panels = '<div style="background: #ffffff;"><div><span style="color: #2c3e50;">Title</span>' .
-	'<span style="color: #7f8c8d;">Subtitle</span></div></div><div style="background: #ff0000;">Warning</div>';
+$panels = '<div style="background: #abcdef;">Arbitrary authored panel</div>';
 $themed = WhaleArticleDecorator::decorateArticleHtml( $panels, 'off', 'default', false, true );
-foreach ( [ 'whale-themed-surface', 'whale-themed-title', 'whale-themed-muted' ] as $class ) {
-	if ( !str_contains( $themed, $class ) ) {
-		throw new RuntimeException( "Legacy main-page panels must receive $class regardless of nesting." );
-	}
-}
-if ( substr_count( $themed, 'whale-themed-surface' ) !== 1 ) {
-	throw new RuntimeException( 'Theming must preserve semantic colored panels.' );
+if ( str_contains( $themed, 'whale-home' ) || !str_contains( $themed, '#abcdef' ) ) {
+	throw new RuntimeException( 'Unrecognized main-page layouts must retain their authored presentation.' );
 }

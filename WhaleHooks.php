@@ -557,12 +557,17 @@ class WhaleHooks {
 		$headingAnchorsEnabled = ( $wgWhaleEnableHeadingAnchors ?? true ) !== false &&
 			$userOptionsLookup->getOption( $user, 'whale-heading-anchors' ) !== false;
 
+		$isMainPage = $skin->getTitle()?->isMainPage() ?? false;
+		$siteName = $skin->getConfig()->get( 'Sitename' );
+		$welcome = $isMainPage && is_string( $siteName )
+			? $skin->msg( 'whale-mainpage-welcome', $siteName )->text() : '';
 		$text = WhaleArticleDecorator::decorateArticleHtml(
 			$text,
 			WhaleArticleDecorator::normalizeSectionMode( $sectionMode ),
 			is_string( $foldingMode ) ? $foldingMode : WhaleArticleDecorator::FOLDING_MODE_DEFAULT,
 			$headingAnchorsEnabled,
-			$skin->getTitle()?->isMainPage() ?? false
+			$isMainPage,
+			$welcome
 		);
 
 		return true;

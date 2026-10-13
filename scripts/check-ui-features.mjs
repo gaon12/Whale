@@ -949,67 +949,7 @@ assertIncludes(
 	'.whale-content-main blockquote',
 	'Article quotation treatment',
 );
-assertIncludes(
-	mediaWikiStyles,
-	'[style*="border-left"]',
-	'Main-page inline band neutralization',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'> div[style*="text-align"] > p > span[style*="color"]',
-	'Main-page inline text color neutralization',
-);
-assertNotIncludes(
-	mediaWikiStyles,
-	'[style*="text-align: center"]',
-	'Minifier-safe main-page selector',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'color: var(--whale-content-muted-color) !important',
-	'Main-page secondary text contrast',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'> div[style*="text-align"] > p > span[style*="font-weight"]',
-	'Main-page emphasized text targeting',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'color: var(--whale-text-color) !important',
-	'Main-page emphasized text contrast',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'body.page-Main_Page.Whale',
-	'MediaWiki main-page body scope',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'> div:last-child > div > div',
-	'Main-page information panel targeting',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'border-radius: var(--whale-radius-sm) !important',
-	'Main-page information panel corners',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'background-color: var(--whale-surface-elevated-color) !important',
-	'Main-page information panel surface',
-);
-assertIncludes(
-	mediaWikiStyles,
-	'box-shadow: none !important',
-	'Main-page nested surface elevation restraint',
-);
-assertIncludes(mediaWikiStyles, '.whale-section-body', 'Main-page card body');
-assertIncludes(
-	mediaWikiStyles,
-	'background-color: var(--whale-surface-muted-color) !important',
-	'Main-page card header surface',
-);
+// Homepage layout is verified through semantic DOM output and compiled CSS in Playwright.
 assertIncludes(
 	mediaWikiStyles,
 	'background-color: var(--whale-code-background)',
