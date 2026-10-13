@@ -1,8 +1,5 @@
 (() => {
-	const RECOVERY_CHECKS = [
-		{ delay: 3000, force: false },
-		{ delay: 6500, force: true },
-	];
+	const RECOVERY_CHECKS = [3000, 6500];
 	const recoveryState = document.documentElement.dataset;
 	const requiredModules = (
 		document.currentScript?.dataset.whaleModules || 'skins.whale.layoutjs'
@@ -10,16 +7,18 @@
 		.split(',')
 		.filter(Boolean);
 	recoveryState.whaleResourceLoaderRecoveryScript = 'loaded';
-	const hasHealthyRuntime = () =>
-		Boolean(
-			window.mw?.loader &&
-				requiredModules.every(
-					(moduleName) => window.mw.loader.getState(moduleName) === 'ready',
-				),
-		);
+	// A loading or partially initialized runtime still owns its module registry.
+	const hasRuntime = () => Boolean(window.mw || window.mediaWiki);
 
 	const isResourceLoaderScript = (script) => {
 		if (script.dataset.whaleRecovery === 'true') {
+			return false;
+		}
+		const type = script.getAttribute('type') || '';
+		if (
+			/^(?:|module|text\/javascript|application\/javascript)$/i.test(type) ||
+			!/(?:javascript|rocketscript)/i.test(type)
+		) {
 			return false;
 		}
 
@@ -42,7 +41,7 @@
 		replacement.remove();
 	};
 
-	const replayScript = async (script) => {
+	const readScript = async (script) => {
 		const source = script.src
 			? await fetch(script.src, { credentials: 'same-origin' }).then(
 					(response) => {
@@ -53,15 +52,11 @@
 					},
 				)
 			: script.text || script.textContent || '';
-		evaluateSource(source);
+		return source;
 	};
 
-	const recoverResourceLoader = async (force) => {
-		if (
-			hasHealthyRuntime() ||
-			recoveryState.whaleResourceLoaderRecovery ||
-			(!force && window.mw?.loader)
-		) {
+	const recoverResourceLoader = async () => {
+		if (hasRuntime() || recoveryState.whaleResourceLoaderRecovery) {
 			return;
 		}
 
@@ -85,19 +80,21 @@
 		scripts.forEach((script) => {
 			script.remove();
 		});
-		// Discard the partial loader and its callback queue before evaluating a
-		// fresh startup. Keeping either registry reimplements core modules.
-		delete window.mw;
-		delete window.mediaWiki;
-		window.RLQ = [];
-
+		let ownedRuntime = null;
 		for (const snapshot of snapshots) {
-			await replayScript({
-				dataset: {},
+			const source = await readScript({
 				src: snapshot.src,
 				text: snapshot.source,
-				textContent: snapshot.source,
 			});
+			// Another startup may finish while a recovery fetch is pending.
+			if (hasRuntime() && window.mw !== ownedRuntime) {
+				recoveryState.whaleResourceLoaderRecovery = 'runtime-started';
+				return;
+			}
+			evaluateSource(source);
+			if (window.mw) {
+				ownedRuntime = window.mw;
+			}
 		}
 		if (!window.mw?.loader) {
 			throw new Error('ResourceLoader startup did not initialize.');
@@ -114,9 +111,9 @@
 		console.error('Whale ResourceLoader recovery failed.', error);
 	};
 
-	RECOVERY_CHECKS.forEach(({ delay, force }) => {
+	RECOVERY_CHECKS.forEach((delay) => {
 		window.setTimeout(() => {
-			recoverResourceLoader(force).catch(recordRecoveryError);
+			recoverResourceLoader().catch(recordRecoveryError);
 		}, delay);
 	});
 })();
