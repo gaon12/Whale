@@ -759,21 +759,17 @@ assertIncludes(
 	"'input, textarea, select, [contenteditable]'",
 	'Search shortcut',
 );
-const searchSubmitBlock = getRuleBlock(
+const searchActionBlock = getRuleBlock(
 	styles,
-	'.Whale .whale-nav-wrapper .whale-navbar .whale-search-form #mw-searchButton',
-	'Primary search action',
+	'.Whale .whale-nav-wrapper .whale-navbar .whale-search-form .whale-btn',
+	'In-field search actions',
 );
 assertIncludes(
-	searchSubmitBlock,
-	'background-color: var(--whale-main-color)',
-	'Primary search action',
+	searchActionBlock,
+	'background-color: transparent',
+	'In-field search actions',
 );
-assertIncludes(
-	searchSubmitBlock,
-	'color: var(--whale-main-contrast-color)',
-	'Primary search action contrast',
-);
+assertIncludes(searchActionBlock, 'border: 0', 'Borderless search actions');
 assertIncludes(
 	buttonStyles,
 	'color: var(--whale-main-contrast-color)',
