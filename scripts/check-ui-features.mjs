@@ -1016,11 +1016,7 @@ assertIncludes(
 	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
 	'Auto dark table cell override',
 );
-assertIncludes(
-	styles,
-	'--whale-radius: 6px',
-	'Document surface corner radius',
-);
+assertIncludes(styles, '--whale-radius: 6px', 'Document surface corner radius');
 assertIncludes(
 	styles,
 	'--whale-radius-sm: 4px',
