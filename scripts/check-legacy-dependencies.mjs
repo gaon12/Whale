@@ -45,7 +45,11 @@ for (const path of sourceFiles) {
 	const source = readFileSync(path, 'utf8');
 	const displayPath = relative(root, path);
 
-	if (/\bjQuery\b|(?:^|[^\w$])\$\s*\(/m.test(source)) {
+	// The table adapter calls MediaWiki's bundled sorter; it does not vendor a
+	// separate library. Keep that integration boundary isolated to one file.
+	const isCoreTableAdapter =
+		displayPath.replaceAll('\\', '/') === 'js/table.js';
+	if (!isCoreTableAdapter && /\bjQuery\b|(?:^|[^\w$])\$\s*\(/m.test(source)) {
 		failures.push(`${displayPath}: jQuery API usage`);
 	}
 
