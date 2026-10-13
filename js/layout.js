@@ -59,6 +59,25 @@
 		return selector?.startsWith('#') ? document.querySelector(selector) : null;
 	};
 
+	const initNavClearance = () => {
+		const nav = document.querySelector('.whale-nav-wrapper.whale-navbar-fixed');
+		if (!nav) {
+			return;
+		}
+		const update = () => {
+			document.body.style.setProperty(
+				'--whale-nav-clearance',
+				`${nav.getBoundingClientRect().height}px`,
+			);
+		};
+		update();
+		if (window.ResizeObserver) {
+			new ResizeObserver(update).observe(nav);
+		} else {
+			window.addEventListener('resize', whale.rafThrottle(update));
+		}
+	};
+
 	const initReadingProgress = () => {
 		const skinRoot = document.querySelector('.Whale');
 
@@ -490,6 +509,7 @@
 	};
 
 	whale.ready(() => {
+		initNavClearance();
 		initBrandLogo();
 		initContentSkeleton();
 		initReadingProgress();
@@ -519,7 +539,7 @@
 					document.body.classList.contains(
 						'whale-mobile-floating-toc-enabled',
 					) &&
-					!window.matchMedia?.('(min-width: 1280px)').matches
+					!window.matchMedia?.('(min-width: 1024px)').matches
 				) {
 					document.dispatchEvent(new CustomEvent('whale:toggleFloatingToc'));
 					return;

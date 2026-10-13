@@ -480,11 +480,7 @@ assertIncludes(
 	'padding-right: var(--whale-modal-scrollbar-offset, 0)',
 	'Modal scrollbar compensation',
 );
-assertIncludes(
-	styles,
-	'body.whale-scroll-buttons-vertical.whale-floating-toc-enabled #whale-bottombtn',
-	'Fixed desktop scroll toolbar position',
-);
+// Toolbar clearance is measured in chrome.spec.mjs.
 assertIncludes(
 	bottomToolsStyles,
 	'#whale-bottombtn .whale-bottom-tools',
@@ -497,11 +493,6 @@ if (
 ) {
 	throw new Error('Bottom utility menu should remain available on desktop.');
 }
-assertIncludes(
-	styles,
-	'right: 1.5rem',
-	'Fixed desktop scroll toolbar position',
-);
 // Readability and navigation behavior are verified against rendered CSS in Playwright.
 assertIncludes(
 	styles,
@@ -1031,17 +1022,7 @@ assertIncludes(
 	'--whale-radius-sm: 3px',
 	'Shared control corner radius',
 );
-assertIncludes(
-	styles,
-	'--whale-layout-width: 1320px',
-	'Liberty desktop layout width',
-);
-assertIncludes(
-	styles,
-	'--whale-sidebar-width: 260px',
-	'Liberty sidebar width token',
-);
-assertIncludes(styles, '--whale-layout-gap: 24px', 'Desktop layout gap');
+// Desktop proportions are measured in chrome.spec.mjs.
 assertIncludes(
 	styles,
 	'--whale-nav-height: 3.5rem',
@@ -1065,11 +1046,6 @@ assertIncludes(
 	styles,
 	'background-color: var(--whale-canvas-color)',
 	'Document canvas color',
-);
-assertIncludes(
-	styles,
-	'--whale-border-color: #e1e8ed',
-	'Liberty interface border',
 );
 assertIncludes(
 	styles,

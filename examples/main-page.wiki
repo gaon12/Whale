@@ -1,3 +1,4 @@
+__NOTOC__
 <div class="whale-home">
 <div class="whale-home-intro">
 <span class="whale-home-title">{{int:whale-mainpage-welcome|{{SITENAME}}}}</span><br>

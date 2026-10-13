@@ -265,11 +265,11 @@ strike {
 
 /* Background Color */
 .Whale {
-	--whale-layout-width: 1320px;
-	--whale-sidebar-width: 260px;
-	--whale-layout-gap: 24px;
+	--whale-layout-width: 1440px;
+	--whale-sidebar-width: 320px;
+	--whale-layout-gap: 16px;
 	--whale-nav-height: 3.5rem;
-	--whale-mobile-nav-height: 5.89rem;
+	--whale-mobile-nav-height: calc(var(--whale-nav-height) + var(--whale-control-height) + 1rem + 1px);
 	--whale-control-height: 2rem;
 	--whale-control-height-sm: 2rem;
 	--whale-reading-size: 1rem;
@@ -297,7 +297,7 @@ strike {
 	--whale-table-background: #f7fafb;
 	--whale-table-header-background: #eaf1f4;
 	--whale-table-border-color: #cbd7de;
-	--whale-border-color: #e1e8ed;
+	--whale-border-color: #d5d5d5;
 	--whale-border-strong-color: #c8d1d8;
 	--whale-hover-color: #edf4fe;
 	--whale-focus-ring: 0 0 0 3px rgba(65, 136, 241, 0.25);
@@ -338,6 +338,7 @@ html[dir="rtl"] .Whale .whale-reading-progress,
 .Whale .whale-nav-wrapper .whale-navbar,
 .Whale .content-wrapper {
 	max-width: var(--whale-layout-width);
+	width: calc(100% - 4rem);
 	margin: 0 auto;
 }
 /* Content width, alian center End */
