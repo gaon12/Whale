@@ -1,5 +1,11 @@
 (() => {
 	const PASS_STATUS = 'PASS';
+	const FULL_LOGIN_STATUSES = new Set([
+		'UI',
+		'CONTINUE',
+		'REDIRECT',
+		'RESTART',
+	]);
 	let loginInFlight = null;
 
 	const setPending = (form, pending) => {
@@ -84,6 +90,13 @@
 					}),
 				);
 				const response = result?.clientlogin;
+				if (FULL_LOGIN_STATUSES.has(response?.status)) {
+					// AuthManager owns CAPTCHA, 2FA and external-provider continuation.
+					// Hand these flows to its full login UI without forwarding passwords.
+					form.elements.wpPassword.value = '';
+					location.assign(form.dataset.fullLoginUrl || form.action);
+					return false;
+				}
 
 				if (response?.status !== PASS_STATUS) {
 					showLoginError(form, response?.message);

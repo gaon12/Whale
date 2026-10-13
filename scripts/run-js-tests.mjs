@@ -17,6 +17,7 @@ const tests = [
 	'check-table-behavior.mjs',
 	'check-runtime-contracts.mjs',
 	'check-login-security.mjs',
+	'check-login-behavior.mjs',
 	'check-recovery.mjs',
 	'check-legacy-dependencies.mjs',
 	'check-ui-features.mjs',

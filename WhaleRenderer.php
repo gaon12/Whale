@@ -745,6 +745,9 @@ class WhaleRenderer {
 			'show-password-label' => $skin->msg( 'whale-login-show-password' )->text(),
 			'hide-password-label' => $skin->msg( 'whale-login-hide-password' )->text(),
 			'form-action' => SpecialPage::getTitleFor( 'Userlogin' )->getLocalURL(),
+			'full-login-url' => SpecialPage::getTitleFor( 'Userlogin' )->getLocalURL( [
+				'returnto' => $skin->getTitle()?->getPrefixedDBkey() ?? '',
+			] ),
 			'html-user-icon' => $this->renderIcon( 'user' ),
 			'html-lock-icon' => $this->renderIcon( 'lock' ),
 			'html-eye-icon' => $this->renderIcon( 'eye' ),
