@@ -821,8 +821,8 @@ assertIncludes(
 );
 assertIncludes(
 	navbarWrapperBlock,
-	'border-bottom: 1px solid var(--whale-second-color)',
-	'Liberty navbar divider',
+	'border-bottom: 0',
+	'Navbar meets the canvas without a divider',
 );
 const navbarLogoBlock = getRuleBlock(
 	styles,
