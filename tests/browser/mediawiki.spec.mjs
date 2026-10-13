@@ -24,6 +24,12 @@ test.describe('MediaWiki integration', () => {
 		await expect(page.locator('#firstHeading')).toBeVisible();
 		await expect(page.locator('#mw-content-text')).toBeVisible();
 		await expect(page.locator('.whale-document-metadata')).toBeVisible();
+		await expect(page.locator('.whale-document-metadata')).toContainText(
+			'최근 수정 시각:',
+		);
+		await expect(
+			page.locator('#whale-login-modal .whale-modal-close'),
+		).toHaveAttribute('aria-label', '닫기');
 		await expect
 			.poll(
 				() =>
@@ -104,7 +110,7 @@ test.describe('MediaWiki integration', () => {
 			form: {
 				action: 'options',
 				token: (await csrf.json()).query.tokens.csrftoken,
-				optionname: 'whale-theme-mode',
+				optionname: 'whale-dark',
 				optionvalue: 'light',
 				format: 'json',
 			},
@@ -122,6 +128,7 @@ test.describe('MediaWiki integration', () => {
 		);
 		await page.locator('.whale-tools-toggle').click();
 		await page.locator('[data-whale-theme-toggle]').click();
+		await expect(page.locator('body')).toHaveClass(/\bwhale-dark\b/);
 		await expect(page.locator('body')).toHaveAttribute(
 			'data-whale-theme-mode',
 			'dark',
@@ -136,9 +143,7 @@ test.describe('MediaWiki integration', () => {
 						format: 'json',
 					},
 				});
-				return (await response.json()).query.userinfo.options[
-					'whale-theme-mode'
-				];
+				return (await response.json()).query.userinfo.options['whale-dark'];
 			})
 			.toBe('dark');
 		await page.reload({ waitUntil: 'domcontentloaded' });

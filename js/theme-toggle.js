@@ -75,6 +75,7 @@
 
 	const applyMode = (mode, explicit = true) => {
 		const isDark = mode === 'dark';
+		document.body.dataset.whaleThemeMode = explicit ? mode : 'auto';
 		document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 		document.body.classList.toggle('whale-dark', isDark);
 		document.body.classList.toggle('whale-auto-dark', !explicit);
