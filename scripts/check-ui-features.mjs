@@ -1016,10 +1016,14 @@ assertIncludes(
 	'body.whale-auto-dark .Whale .content-wrapper .whale-content .whale-content-main table.wikitable tr > td',
 	'Auto dark table cell override',
 );
-assertIncludes(styles, '--whale-radius: 3px', 'Liberty surface corner radius');
 assertIncludes(
 	styles,
-	'--whale-radius-sm: 3px',
+	'--whale-radius: 6px',
+	'Document surface corner radius',
+);
+assertIncludes(
+	styles,
+	'--whale-radius-sm: 4px',
 	'Shared control corner radius',
 );
 // Desktop proportions are measured in chrome.spec.mjs.
@@ -1028,10 +1032,14 @@ assertIncludes(
 	'--whale-nav-height: 3.5rem',
 	'Liberty navigation height',
 );
-assertIncludes(styles, '--whale-reading-size: 1rem', 'Readable article size');
 assertIncludes(
 	styles,
-	'--whale-reading-leading: 1.7',
+	'--whale-reading-size: 0.9375rem',
+	'Readable article size',
+);
+assertIncludes(
+	styles,
+	'--whale-reading-leading: 1.6',
 	'Readable article leading',
 );
 assertIncludes(styles, '--whale-link-color: #0275d8', 'Light link color token');
