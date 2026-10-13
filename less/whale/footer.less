@@ -7,12 +7,14 @@
 	gap: 1rem 1.5rem;
 	border: 0;
 	border-top: 1px solid var(--whale-border-color);
+	/* The footer closes the document sheet on the same white surface, set
+	   apart only by the rule above it. */
 	border-radius: 0 0 var(--whale-radius) var(--whale-radius);
-	background-color: var(--whale-surface-muted-color);
+	background-color: transparent;
 	color: var(--whale-content-muted-color);
 	font-size: 0.875rem;
 	line-height: 1.6;
-	padding: 1.25rem 1.5rem;
+	padding: 1.25rem 1.5rem 1.5rem;
 	text-align: left;
 }
 
@@ -70,6 +72,21 @@
 	float: none;
 	margin: 0;
 	vertical-align: middle;
+}
+
+/* Keep each badge in its 88x31 slot so a slow or missing image never
+   spills its alt text across the footer. */
+.Whale .content-wrapper .whale-footer .footer-icons a,
+.Whale .content-wrapper .whale-footer .footer-icons img {
+	max-width: 88px;
+	max-height: 31px;
+	overflow: hidden;
+}
+
+.Whale .content-wrapper .whale-footer .footer-icons img {
+	display: block;
+	font-size: 0.6875rem;
+	line-height: 1.2;
 }
 
 .Whale .content-wrapper .whale-footer .whale-footer-brand-img {
