@@ -2,6 +2,13 @@
 
 This skin contains copyrighted software under OFL and some other Licenses.
 
+# Pretendard
+- Copyright (c) 2021 Kil Hyung-jin, with Reserved Font Name Pretendard.
+- https://github.com/orioncactus/pretendard
+- Bundled as `fonts/pretendard/*.woff2` (Pretendard Variable 1.3.9,
+  unicode-range subsets) and declared in `less/fonts.less`.
+- Licensed under SIL OPEN FONT LICENSE Version 1.1 (full text below).
+
 # Dokdo
 - Copyright (c) FONTRIX (https://www.fontrix.co.kr),
 - Licensed under SIL OPEN FONT LICENSE
