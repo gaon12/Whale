@@ -1357,6 +1357,25 @@ body.whale-auto-dark.Whale .whale-nav-wrapper {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24);
 }
 
+/* The dark primaries are tuned as accents on dark surfaces, so as a full
+   navbar fill they glare and leave the white labels below WCAG AA (#4096FF
+   is about 3:1). Deepen the fill toward the canvas while keeping the theme's
+   hue; the default theme lands near #285891 (about 7:1 with white). The
+   plain fill above stays as the fallback where color-mix() is unsupported. */
+body.whale-dark .Whale .whale-nav-wrapper,
+body.whale-dark.Whale .whale-nav-wrapper {
+	background-color: ~"color-mix(in srgb, var(--whale-main-color) 50%, var(--whale-canvas-color))";
+	border-color: ~"color-mix(in srgb, var(--whale-main-color) 35%, var(--whale-canvas-color))";
+}
+
+@media (prefers-color-scheme: dark) {
+	body.whale-auto-dark .Whale .whale-nav-wrapper,
+	body.whale-auto-dark.Whale .whale-nav-wrapper {
+		background-color: ~"color-mix(in srgb, var(--whale-main-color) 50%, var(--whale-canvas-color))";
+		border-color: ~"color-mix(in srgb, var(--whale-main-color) 35%, var(--whale-canvas-color))";
+	}
+}
+
 body.whale-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-link,
 body.whale-dark.Whale .whale-nav-wrapper .whale-navbar .whale-navbar-link,
 body.whale-auto-dark .Whale .whale-nav-wrapper .whale-navbar .whale-navbar-link,
