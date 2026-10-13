@@ -268,11 +268,18 @@
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main ul {
-	margin: 0.55rem 0 0.85rem 1.6rem;
+	margin: 0.4rem 0 0.75rem 1.6rem;
+}
+
+/* Nested lists continue the parent list instead of opening a new block. */
+.Whale .content-wrapper .whale-content .whale-content-main li > ul,
+.Whale .content-wrapper .whale-content .whale-content-main li > ol {
+	margin-top: 0.1rem;
+	margin-bottom: 0.1rem;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main li {
-	margin: 0.16rem 0;
+	margin: 0.1rem 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main li::marker {
