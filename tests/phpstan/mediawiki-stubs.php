@@ -601,6 +601,9 @@ namespace MediaWiki\Linker {
 
 namespace MediaWiki\Title {
 	class Title {
+		public function isMainPage(): bool {
+			return false;
+		}
 		public static function newMainPage(): self {
 			return new self();
 		}

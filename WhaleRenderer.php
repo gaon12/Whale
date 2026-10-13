@@ -454,7 +454,7 @@ class WhaleRenderer {
 			'show-share' => $action === 'view',
 			'share-label' => $skin->msg( 'whale-share' )->text(),
 			'html-share-icon' => $this->renderIcon( 'share-square' ),
-			'more-label' => $skin->msg( 'more' )->text(),
+			'more-label' => $skin->msg( 'whale-more-tools' )->text(),
 			'dropdown-items' => $dropdownItems,
 		];
 	}
@@ -476,7 +476,7 @@ class WhaleRenderer {
 
 		$skin = $this->skin;
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-		$fixedHeight = ( $wgWhaleLiveRecentFixedHeight ?? true ) !== false &&
+		$fixedHeight = ( $wgWhaleLiveRecentFixedHeight ?? false ) === true &&
 			$userOptionsLookup->getOption( $skin->getUser(), 'whale-live-recent-fixed-height' ) !== false;
 		$refreshRaw = $wgWhaleLiveRCRefreshInterval ?? 60;
 		$refreshInterval = max( 10, is_numeric( $refreshRaw ) ? (int)$refreshRaw : 60 );

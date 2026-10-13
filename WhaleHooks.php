@@ -57,6 +57,9 @@ class WhaleHooks {
 			$bodyAttrs['data-whale-theme-mode'] = in_array( $darkMode, [ 'dark', 'light' ], true )
 				? $darkMode : 'auto';
 			$bodyAttrs['data-whale-theme-storage'] = $sk->getUser()->isAnon() ? 'browser' : 'user';
+			if ( $userOptionsLookup->getOption( $sk->getUser(), 'whale-layout-controlbar' ) ) {
+				$bodyAttrs['class'] .= ' whale-bottom-tools-hidden';
+			}
 
 			if ( $userOptionsLookup->getOption( $sk->getUser(), 'whale-content-reduce-motion' ) ) {
 				$bodyAttrs['class'] .= ' whale-reduce-motion';
@@ -558,7 +561,8 @@ class WhaleHooks {
 			$text,
 			WhaleArticleDecorator::normalizeSectionMode( $sectionMode ),
 			is_string( $foldingMode ) ? $foldingMode : WhaleArticleDecorator::FOLDING_MODE_DEFAULT,
-			$headingAnchorsEnabled
+			$headingAnchorsEnabled,
+			$skin->getTitle()?->isMainPage() ?? false
 		);
 
 		return true;
