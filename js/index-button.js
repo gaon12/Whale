@@ -1,6 +1,5 @@
 (() => {
 	const DESKTOP_QUERY = '(min-width: 1280px)';
-	const MAX_ITEMS = 18;
 	const MOBILE_EDGE_SWIPE_PX = 64;
 	const MOBILE_SWIPE_DISTANCE_PX = 48;
 	const MOBILE_SWIPE_MAX_VERTICAL_PX = 42;
@@ -116,8 +115,7 @@
 					text: whale.tocUtils.getLinkText(link, target),
 				};
 			})
-			.filter((item) => item.target && item.text)
-			.slice(0, MAX_ITEMS);
+			.filter((item) => item.target && item.text);
 	};
 
 	const getFloatingTocItemsFromHeadings = () => {
@@ -143,8 +141,7 @@
 					text: [number, label].filter(Boolean).join(' '),
 				};
 			})
-			.filter((item) => item.target && item.text)
-			.slice(0, MAX_ITEMS);
+			.filter((item) => item.target && item.text);
 	};
 
 	const getFloatingTocItems = () => {
