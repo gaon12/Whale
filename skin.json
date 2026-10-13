@@ -106,6 +106,9 @@
 				"i18n-headings": true
 			},
 			"styles": {
+				"less/fonts.less": {
+					"media": "all"
+				},
 				"less/default.less": {
 					"media": "all"
 				},
