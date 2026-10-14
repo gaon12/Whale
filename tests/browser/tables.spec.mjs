@@ -5,7 +5,7 @@ const fixture = async (page, width, dark = false) => {
 	await page.setViewportSize({ width, height: 844 });
 	const markup = await renderSkin({
 		'html-title': '표 예시',
-		'html-body-content': `<div id="mw-content-text">
+		'html-body-content': `<div id="mw-content-text"><div class="mw-parser-output">
 		<table id="license" class="wikitable"><tr><td class="whale-empty-cell" style="background:green">\n</td></tr>
 		<tr><td><big><b>이 파일은 퍼블릭 도메인으로 제공됩니다.</b></big><ul><li>이 저작물이 CC0가 아니라면 이 틀을 달지 마세요!</li></ul></td></tr></table>
 		<table id="plain" style="border:1px solid #888;border-collapse:collapse"><tr><td style="background:green">&nbsp;</td></tr><tr><td>일반 표</td></tr></table>
@@ -13,11 +13,16 @@ const fixture = async (page, width, dark = false) => {
 		<table id="navigation" class="wikitable mw-collapsible"><tr><th colspan="3" style="background:#a3f4f9"><span class="mw-collapsible-toggle mw-collapsible-toggle-default" role="button" tabindex="0" aria-expanded="true">접기</span><b id="nav-title">A20엔터테인먼트</b></th></tr><tr><td>A20 MAY</td><td>A20 LITE</td><td>A20 SOUL</td></tr></table>
 		<table id="caption" class="wikitable mw-collapsible mw-collapsed"><caption>캡션 제목<span class="mw-collapsible-toggle mw-collapsible-toggle-default" role="button" tabindex="0" aria-expanded="false">펼치기</span></caption><tr style="display:none"><td>본문</td></tr></table>
 		<div class="whale-folding is-collapsed"><div class="whale-folding-header">상세 정보</div><button type="button" class="whale-folding-toggle" aria-expanded="false" aria-controls="fold-body" data-expand-label="펼치기" data-collapse-label="접기">펼치기 · 접기</button><div id="fold-body" class="whale-folding-body" hidden>접힌 본문</div></div>
-		</div>`,
+		</div></div>`,
 	});
 	await page.setContent(
 		`<body class="Whale ${dark ? 'whale-dark' : ''}">${markup}</body>`,
 	);
+	// Mirror core content-tables' mobile display rule; skin tests also cover it natively.
+	await page.addStyleTag({
+		content:
+			'@media (max-width:639px) { .mw-parser-output table { display:block; } }',
+	});
 	await page.addStyleTag({ content: await skinStyles() });
 	await runtime(page);
 	await page.addScriptTag({ path: 'js/common.js' });
