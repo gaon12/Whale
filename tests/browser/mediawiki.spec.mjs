@@ -116,10 +116,32 @@ test.describe('MediaWiki integration', () => {
 			`${base}/index.php?title=${encodeURIComponent('넘겨주기 예시')}&useskin=whale`,
 			{ waitUntil: 'domcontentloaded' },
 		);
-		await expect(page.locator('#firstHeading')).toHaveText('대문');
+		await expect(page.locator('#firstHeading')).toHaveText(
+			'상위 문서/넘겨주기 도착',
+		);
 		const notice = page.locator('.mw-redirectedfrom');
 		await expect(notice).toBeVisible();
 		await expect(notice).toHaveCSS('border-top-style', 'solid');
+		await expect(page.locator('.contentSub .mw-redirectedfrom')).toHaveCount(0);
+		await expect(page.locator('.contentSub .subpages')).toContainText(
+			'상위 문서',
+		);
+		expect(
+			await page.evaluate(() => {
+				const heading = document
+					.querySelector('.whale-content-heading')
+					.getBoundingClientRect();
+				const notice = document
+					.querySelector('.whale-redirect-notice')
+					.getBoundingClientRect();
+				const categories = document
+					.querySelector('#catlinks')
+					.getBoundingClientRect();
+				return (
+					notice.top >= heading.bottom + 12 && notice.bottom <= categories.top
+				);
+			}),
+		).toBe(true);
 		const origin = notice.getByRole('link', {
 			name: '넘겨주기 예시',
 			exact: true,
@@ -134,10 +156,16 @@ test.describe('MediaWiki integration', () => {
 		await expect(page.locator('.mw-redirectedfrom')).toHaveCount(0);
 		await page
 			.locator('#mw-content-text')
-			.getByRole('link', { name: '대문', exact: true })
+			.getByRole('link', { name: '상위 문서/넘겨주기 도착', exact: true })
 			.click();
-		await expect(page.locator('#firstHeading')).toHaveText('대문');
+		await expect(page.locator('#firstHeading')).toHaveText(
+			'상위 문서/넘겨주기 도착',
+		);
 		await expect(page.locator('.mw-redirectedfrom')).toHaveCount(0);
+		await expect(page.locator('.whale-redirect-notice')).toHaveCount(0);
+		await expect(page.locator('.contentSub .subpages')).toContainText(
+			'상위 문서',
+		);
 	});
 
 	test('normal API parsing invokes folding hooks while preserving literal examples', async ({
