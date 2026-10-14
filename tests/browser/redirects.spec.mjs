@@ -45,6 +45,24 @@ for (const width of [320, 390, 768, 1440]) {
 				originalHref,
 			);
 			await expect(notices.last()).toHaveText('(3.1절에서 넘어옴)');
+			// Link colors transition when the fixture stylesheet is attached.
+			await expect
+				.poll(async () => {
+					const colors = await notices.evaluateAll((elements) =>
+						elements.map((element) => ({
+							background: getComputedStyle(element).backgroundColor,
+							foreground: [element, ...element.querySelectorAll('a')].map(
+								(node) => getComputedStyle(node).color,
+							),
+						})),
+					);
+					return Math.min(
+						...colors.flatMap(({ foreground, background }) =>
+							foreground.map((color) => contrastRatio(color, background)),
+						),
+					);
+				})
+				.toBeGreaterThanOrEqual(4.5);
 			const geometry = await notices.evaluateAll((elements) =>
 				elements.map((element) => {
 					const style = getComputedStyle(element);
@@ -55,10 +73,6 @@ for (const width of [320, 390, 768, 1440]) {
 						right: bounds.right,
 						height: bounds.height,
 						background: style.backgroundColor,
-						textColor: style.color,
-						linkColors: [...element.querySelectorAll('a')].map(
-							(link) => getComputedStyle(link).color,
-						),
 						borders: ['Top', 'Right', 'Bottom', 'Left'].map(
 							(side) => style[`border${side}Width`],
 						),
@@ -69,11 +83,6 @@ for (const width of [320, 390, 768, 1440]) {
 			);
 			for (const notice of geometry) {
 				expect(notice.background).not.toBe('rgba(0, 0, 0, 0)');
-				for (const color of [notice.textColor, ...notice.linkColors]) {
-					expect(
-						contrastRatio(color, notice.background),
-					).toBeGreaterThanOrEqual(4.5);
-				}
 				expect(new Set(notice.borders).size).toBe(1);
 				expect(notice.sourceWeight).toBe('600');
 				expect(notice.iconContent).toBe('""');
