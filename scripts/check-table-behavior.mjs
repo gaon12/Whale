@@ -25,7 +25,10 @@ const table = {
 	classList: classes(),
 	querySelectorAll: () => [header],
 };
-const content = { querySelectorAll: () => [table] };
+const content = {
+	querySelectorAll: (selector) =>
+		selector === 'table.sortable' ? [table] : [],
+};
 const loaderCalls = [];
 let coreInitializations = 0;
 let sortEnd;
@@ -56,9 +59,9 @@ runInNewContext(
 					loaderCalls.push(name);
 				},
 			},
-			hook: () => ({
+			hook: (name) => ({
 				add: (callback) => {
-					onContent = callback;
+					if (name === 'wikipage.content') onContent = callback;
 				},
 			}),
 		},

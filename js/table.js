@@ -1,4 +1,31 @@
 (() => {
+	const positionCollapsibleToggle = (table) => {
+		if (!table.matches('table.mw-collapsible')) return;
+		for (const toggle of table.querySelectorAll(
+			'.mw-collapsible-toggle-default',
+		)) {
+			if (
+				toggle.closest('table') !== table ||
+				toggle.closest('.whale-table-toggle-bar')
+			)
+				continue;
+			const heading = toggle.parentElement;
+			if (!heading?.matches('th, td, caption')) continue;
+			// Keep the original node and its core handlers in the title row.
+			// Inserting another row would change rowspan and sorter mappings.
+			const title = document.createElement('div');
+			title.className = 'whale-table-folding-title';
+			for (const child of [...heading.childNodes]) {
+				if (child !== toggle) title.append(child);
+			}
+			const bar = document.createElement('div');
+			bar.className = 'whale-table-toggle-bar';
+			bar.append(toggle);
+			heading.classList.add('whale-table-folding-heading');
+			heading.append(title, bar);
+		}
+	};
+
 	const syncSortState = (table) => {
 		for (const header of table.querySelectorAll('th.headerSort')) {
 			header.classList.add('whale-sortable-header');
@@ -58,6 +85,9 @@
 	whale.ready(() => {
 		const initialize = (content) => {
 			if (!content) return;
+			for (const table of content.querySelectorAll('table.mw-collapsible')) {
+				positionCollapsibleToggle(table);
+			}
 			void initSortableTables(content).catch((error) => {
 				console.error('Whale table initialization failed.', error);
 			});
@@ -65,6 +95,9 @@
 		};
 		const content = document.getElementById('mw-content-text');
 		initialize(content);
+		mw.hook('wikipage.collapsibleContent').add((tables) => {
+			for (const table of tables) positionCollapsibleToggle(table);
+		});
 		window.addEventListener(
 			'resize',
 			whale.rafThrottle(() => syncTableWrappers(content)),

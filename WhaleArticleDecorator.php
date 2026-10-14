@@ -307,8 +307,8 @@ class WhaleArticleDecorator {
 				continue;
 			}
 
-			$toggle = self::firstElementByClass( $folding, 'whale-folding-toggle' );
-			$body = self::firstElementByClass( $folding, 'whale-folding-body' );
+			$toggle = self::firstOwnedFoldingElement( $folding, 'whale-folding-toggle' );
+			$body = self::firstOwnedFoldingElement( $folding, 'whale-folding-body' );
 			if ( !$body ) {
 				continue;
 			}
@@ -341,6 +341,7 @@ class WhaleArticleDecorator {
 			}
 
 			$toggle->setAttribute( 'type', 'button' );
+			$body->parentNode?->insertBefore( $toggle, $body );
 			$toggle->setAttribute( 'aria-controls', $bodyId );
 			$toggle->setAttribute( 'data-expand-label', wfMessage( 'whale-folding-expand' )->text() );
 			$toggle->setAttribute( 'data-collapse-label', wfMessage( 'whale-folding-collapse' )->text() );
@@ -360,6 +361,22 @@ class WhaleArticleDecorator {
 				$toggle->setAttribute( 'disabled', 'disabled' );
 			}
 		}
+	}
+
+	private static function firstOwnedFoldingElement( DOMElement $folding, string $class ): ?DOMElement {
+		foreach ( $folding->getElementsByTagName( '*' ) as $node ) {
+			if ( !self::hasClass( $node, $class ) ) {
+				continue;
+			}
+			$owner = $node->parentNode;
+			while ( $owner instanceof DOMElement && $owner !== $folding && !self::hasClass( $owner, 'whale-folding' ) ) {
+				$owner = $owner->parentNode;
+			}
+			if ( $owner === $folding ) {
+				return $node;
+			}
+		}
+		return null;
 	}
 
 	private static function wrapSectionBody(
