@@ -33,8 +33,17 @@ $wgSitename = '가온 위키';
 $wgWhaleEnableLiveRC = true;
 $wgWhaleEnableSectionCollapse = true;
 $wgShowExceptionDetails = true;
+$wgNamespacesWithSubpages[NS_MAIN] = true;
 PHP
 php maintenance/edit.php --user FixtureAdmin '대문' < "$skin_root/examples/main-page.wiki"
+php maintenance/edit.php --user FixtureAdmin '상위 문서' <<'WIKITEXT'
+상위 문서 예시입니다.
+WIKITEXT
+php maintenance/edit.php --user FixtureAdmin '상위 문서/넘겨주기 도착' <<'WIKITEXT'
+== 개요 ==
+넘겨주기 안내와 상위 문서 경로의 배치 예시입니다.
+[[분류:예시]]
+WIKITEXT
 php maintenance/edit.php --user FixtureAdmin '넘겨주기 예시' <<'WIKITEXT'
-#REDIRECT [[대문]]
+#REDIRECT [[상위 문서/넘겨주기 도착]]
 WIKITEXT
