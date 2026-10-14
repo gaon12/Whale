@@ -29,9 +29,19 @@ for (const width of [320, 390, 768, 1440]) {
 			const markup = await renderSkin({
 				'html-title': '도착 문서',
 				'html-whale-last-modified': '최근 수정 시각: 2026년 10월 14일',
-				'html-subtitle': `<div id="mw-content-subtitle"><div class="subpages">&lt; <a href="#parent">상위 문서</a></div>
+				'html-subtitle':
+					'<div id="mw-content-subtitle"><div class="subpages">&lt; <a href="#parent">상위 문서</a></div></div>',
+				'html-whale-redirect-notice': `
 				<span class="mw-redirectedfrom"><a href="#help">넘겨주기</a>&nbsp;: <a href="${originalHref}" class="mw-redirect">${origin}</a></span>
-				<span class="mw-redirectedfrom">(<a href="/w/index.php?title=3.1절&amp;redirect=no" class="mw-redirect">3.1절</a>에서 넘어옴)</span></div>`,
+				<span class="mw-redirectedfrom">(<a href="/w/index.php?title=3.1절&amp;redirect=no" class="mw-redirect">3.1절</a>에서 넘어옴)</span>`,
+				'html-categories':
+					'<div class="catlinks" id="catlinks"><a href="#categories">분류</a>: 예시</div>',
+				'data-whale-content-tools': {
+					'has-content-tools': true,
+					buttons: [
+						{ html: '<a class="whale-btn tools-btn" href="#edit">편집</a>' },
+					],
+				},
 				'html-body-content': '<div id="mw-content-text"><p>본문</p></div>',
 			});
 			await page.setContent(
@@ -40,6 +50,28 @@ for (const width of [320, 390, 768, 1440]) {
 			await page.addStyleTag({ content: await skinStyles() });
 			const notices = page.locator('.mw-redirectedfrom');
 			await expect(notices).toHaveCount(2);
+			await expect(page.locator('.contentSub .mw-redirectedfrom')).toHaveCount(
+				0,
+			);
+			const placement = await page.evaluate(() => {
+				const heading = document
+					.querySelector('.whale-content-heading')
+					.getBoundingClientRect();
+				const notice = document
+					.querySelector('.whale-redirect-notice')
+					.getBoundingClientRect();
+				const categories = document
+					.querySelector('#catlinks')
+					.getBoundingClientRect();
+				return {
+					gap: notice.top - heading.bottom,
+					widthDifference: Math.abs(notice.width - heading.width),
+					beforeCategories: notice.bottom <= categories.top,
+				};
+			});
+			expect(placement.gap).toBeGreaterThanOrEqual(12);
+			expect(placement.widthDifference).toBeLessThan(1);
+			expect(placement.beforeCategories).toBe(true);
 			await expect(notices.first().locator('a.mw-redirect')).toHaveAttribute(
 				'href',
 				originalHref,

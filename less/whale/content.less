@@ -258,10 +258,14 @@
 	display: none;
 }
 
-.Whale .contentSub .mw-redirectedfrom {
-	display: inline-block;
+.Whale .whale-redirect-notice {
+	margin-top: 0.875rem;
+}
+
+.Whale .whale-redirect-notice .mw-redirectedfrom {
+	display: block;
 	max-width: 100%;
-	padding: 0.4rem 0.7rem;
+	padding: 0.65rem 0.875rem;
 	border: 1px solid var(--whale-border-color);
 	border-radius: var(--whale-radius-sm);
 	background-color: var(--whale-accent-soft-color);
@@ -271,7 +275,11 @@
 	overflow-wrap: anywhere;
 }
 
-.Whale .contentSub .mw-redirectedfrom::before {
+.Whale .whale-redirect-notice .mw-redirectedfrom + .mw-redirectedfrom {
+	margin-top: 0.5rem;
+}
+
+.Whale .whale-redirect-notice .mw-redirectedfrom::before {
 	content: "";
 	display: inline-block;
 	width: 1.125rem;
@@ -285,17 +293,17 @@
 	mask-size: contain;
 }
 
-.Whale .contentSub .mw-redirectedfrom a {
+.Whale .whale-redirect-notice .mw-redirectedfrom a {
 	color: var(--whale-link-hover-color);
 }
 
-.Whale .contentSub .mw-redirectedfrom a.mw-redirect {
+.Whale .whale-redirect-notice .mw-redirectedfrom a.mw-redirect {
 	font-weight: 600;
 	text-decoration: underline;
 	text-underline-offset: 0.15em;
 }
 
-.Whale .contentSub .mw-redirectedfrom a:focus-visible {
+.Whale .whale-redirect-notice .mw-redirectedfrom a:focus-visible {
 	outline: 2px solid var(--whale-link-color);
 	outline-offset: 2px;
 }

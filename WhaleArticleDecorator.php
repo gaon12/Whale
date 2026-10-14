@@ -22,6 +22,42 @@ class WhaleArticleDecorator {
 	}
 
 	/**
+	 * Separate core redirect notices from breadcrumbs and other subtitles.
+	 *
+	 * @return array{subtitle: string, redirect: string}
+	 */
+	public static function splitSubtitleHtml( string $html ): array {
+		$redirectHtml = '';
+		if ( !str_contains( $html, 'mw-redirectedfrom' ) ) {
+			return [ 'subtitle' => $html, 'redirect' => '' ];
+		}
+
+		$subtitleHtml = self::withHtmlFragment( $html, static function ( DOMDocument $dom, DOMElement $root ) use ( &$redirectHtml ): void {
+			$notice = self::firstElementByClass( $root, 'mw-redirectedfrom' );
+			while ( $notice !== null ) {
+				$noticeHtml = $dom->saveHTML( $notice );
+				if ( $noticeHtml === false ) {
+					return;
+				}
+				$redirectHtml .= $noticeHtml;
+				$notice->parentNode?->removeChild( $notice );
+				$notice = self::firstElementByClass( $root, 'mw-redirectedfrom' );
+			}
+
+			$subtitle = $dom->getElementById( 'mw-content-subtitle' );
+			if ( $subtitle instanceof DOMElement && trim( $subtitle->textContent ) === '' &&
+				$subtitle->getElementsByTagName( '*' )->length === 0
+			) {
+				$subtitle->parentNode?->removeChild( $subtitle );
+			}
+		} );
+
+		return $redirectHtml === ''
+			? [ 'subtitle' => $html, 'redirect' => '' ]
+			: [ 'subtitle' => trim( $subtitleHtml ), 'redirect' => $redirectHtml ];
+	}
+
+	/**
 	 * Decorate category links generated outside html-body-content.
 	 *
 	 * @param string $html Category HTML
