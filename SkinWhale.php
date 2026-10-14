@@ -359,10 +359,12 @@ class SkinWhale extends SkinMustache {
 			: $this->getVisibleSiteNoticeHtml( $data['html-site-notice'] ?? '' );
 		$categoryBlur = $userOptionsLookup->getOption( $this->getUser(), 'whale-content-category-blur' );
 		$subtitleHtml = $data['html-subtitle'] ?? '';
+		$data['has-whale-redirect-notice'] = false;
 		if ( is_string( $subtitleHtml ) || $subtitleHtml instanceof Stringable ) {
 			$subtitle = WhaleArticleDecorator::splitSubtitleHtml( (string)$subtitleHtml );
 			$data['html-subtitle'] = $subtitle['subtitle'];
 			$data['html-whale-redirect-notice'] = $subtitle['redirect'];
+			$data['has-whale-redirect-notice'] = $subtitle['redirect'] !== '';
 		}
 
 		$categoriesHtml = $data['html-categories'] ?? '';
