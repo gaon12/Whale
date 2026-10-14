@@ -38,6 +38,7 @@ $wgShowExceptionDetails = true;
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 PHP
 php maintenance/edit.php --user FixtureAdmin '대문' < "$skin_root/examples/main-page.wiki"
+php maintenance/edit.php --user FixtureAdmin '표 예시' < "$skin_root/examples/table-behavior.wiki"
 php maintenance/edit.php --user FixtureAdmin '상위 문서' <<'WIKITEXT'
 상위 문서 예시입니다.
 WIKITEXT

@@ -1,0 +1,35 @@
+{| class="wikitable" id="license-example"
+|-
+| style="background:green" |
+|-
+| <big>'''이 파일은 퍼블릭 도메인으로 제공됩니다.'''</big><br />
+* 만약 이 저작물이 CC0가 아니라면, 이 틀을 '''절대로''' 달지 마세요!
+|}
+
+{| class="wikitable mw-collapsible mw-collapsed" id="navigation-example"
+|-
+! colspan="3" style="background:#a3f4f9" | A20엔터테인먼트
+|-
+| A20 MAY || A20 LITE || A20 SOUL
+|}
+
+{| class="wikitable mw-collapsible mw-collapsed" id="caption-example"
+|+ 캡션 제목
+|-
+! 이름 !! 내용
+|-
+| 예시 || 본문
+|}
+
+{| class="wikitable sortable mw-collapsible" id="sorting-example"
+|-
+! 이름 !! 순서
+|-
+| Z || 2
+|-
+| A || 1
+|}
+
+{{{#!folding 상세 정보
+접힌 본문입니다.
+}}}

@@ -228,6 +228,65 @@ test.describe('MediaWiki integration', () => {
 		});
 	}
 
+	for (const width of [390, 1440]) {
+		test(`native tables keep their title and centered controls while folding at ${width}px`, async ({
+			page,
+		}) => {
+			const errors = [];
+			page.on('pageerror', (error) => errors.push(error.message));
+			await page.setViewportSize({ width, height: 844 });
+			await page.goto(`${base}/index.php?title=표_예시&useskin=whale`);
+			await page.waitForFunction(
+				() => window.mw?.loader.getState('skins.whale.tables') === 'ready',
+			);
+			const empty = page.locator('#license-example tr').first().locator('td');
+			await expect(empty).toHaveClass(/whale-empty-cell/);
+			expect((await empty.boundingBox()).height).toBeLessThanOrEqual(6);
+			await expect(empty).toHaveCSS('background-color', 'rgb(0, 128, 0)');
+			for (const id of ['navigation-example', 'caption-example']) {
+				const table = page.locator(`#${id}`);
+				const toggle = table.locator(
+					'.whale-table-toggle-bar .mw-collapsible-toggle',
+				);
+				await expect(toggle).toBeVisible();
+				await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+				const title = table.locator('.whale-table-folding-title');
+				const titleBox = await title.boundingBox();
+				const bar = await toggle.boundingBox();
+				expect(bar.y).toBeGreaterThanOrEqual(titleBox.y + titleBox.height);
+				expect(bar.width).toBeGreaterThanOrEqual(
+					(await table.boundingBox()).width - 2,
+				);
+				await toggle.press('Enter');
+				await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+				await expect(table.locator('tbody tr').last()).toBeVisible();
+				await toggle.click();
+				await expect(table.locator('tbody tr').last()).toBeHidden();
+				await expect(title).toBeVisible();
+			}
+			await expect(page.locator('#navigation-example th')).toHaveAttribute(
+				'colspan',
+				'3',
+			);
+			await expect(page.locator('#navigation-example tr')).toHaveCount(2);
+			await page.waitForFunction(
+				() =>
+					document.getElementById('sorting-example')?.dataset.whaleSortable ===
+					'ready',
+			);
+			await page.locator('#sorting-example th').first().click();
+			await expect(
+				page.locator('#sorting-example tbody tr').last(),
+			).toContainText('Z');
+			const foldToggle = page.locator('.whale-folding-toggle');
+			await foldToggle.click();
+			await expect(page.locator('.whale-folding-body')).toBeVisible();
+			await foldToggle.click();
+			await expect(page.locator('.whale-folding-body')).toBeHidden();
+			expect(errors).toEqual([]);
+		});
+	}
+
 	test('normal API parsing invokes folding hooks while preserving literal examples', async ({
 		request,
 	}) => {
