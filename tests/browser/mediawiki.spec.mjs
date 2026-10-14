@@ -171,6 +171,63 @@ test.describe('MediaWiki integration', () => {
 		);
 	});
 
+	for (const width of [1440, 390]) {
+		test(`native Cite notes show distinct content in the ${width < 1024 ? 'mobile modal' : 'desktop popup'}`, async ({
+			page,
+		}) => {
+			await page.setViewportSize({ width, height: 900 });
+			await page.goto(
+				`${base}/index.php?title=${encodeURIComponent('각주 예시')}&useskin=whale`,
+				{ waitUntil: 'domcontentloaded' },
+			);
+			await page.waitForFunction(
+				() => window.mw?.loader.getState('skins.whale.articlejs') === 'ready',
+			);
+			const markers = page.locator(
+				'#mw-content-text .reference, #mw-content-text .mw-ref',
+			);
+			const preview = page.locator(
+				width < 1024 ? '#whale-reference-modal' : '#whale-reference-popover',
+			);
+			await markers
+				.getByRole('link', { name: '[1]', exact: true })
+				.first()
+				.click();
+			await expect(preview).toBeVisible();
+			await expect(preview.locator('.whale-reference-content')).toContainText(
+				'[1] 첫 번째 각주 내용입니다.',
+			);
+			await expect(
+				preview.getByRole('link', { name: '출처', exact: true }),
+			).toHaveAttribute(
+				'href',
+				'https://www.mediawiki.org/wiki/Extension:Cite',
+			);
+			expect(new URL(page.url()).hash).toBe('');
+			await page.keyboard.press('Escape');
+			await expect(preview).toBeHidden();
+			await markers.getByRole('link', { name: '[2]', exact: true }).click();
+			await expect(preview.locator('.whale-reference-content')).toHaveText(
+				'[2] 두 번째 각주는 다른 내용을 보여줍니다.',
+			);
+			if (width < 1024) {
+				await preview
+					.getByRole('button', { name: '닫기', exact: true })
+					.click();
+			} else {
+				await page.keyboard.press('Escape');
+			}
+			await expect(preview).toBeHidden();
+			await markers
+				.getByRole('link', { name: '[1]', exact: true })
+				.last()
+				.click();
+			await expect(preview.locator('.whale-reference-content')).toContainText(
+				'[1] 첫 번째 각주 내용입니다.',
+			);
+		});
+	}
+
 	test('normal API parsing invokes folding hooks while preserving literal examples', async ({
 		request,
 	}) => {
