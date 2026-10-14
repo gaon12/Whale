@@ -52,6 +52,17 @@ test.describe('MediaWiki integration', () => {
 				'skins.whale.headingAnchors': 'ready',
 			});
 		await expect(page.locator('.whale-home-section')).toHaveCount(4);
+		await expect(page.locator('.whale-home-column')).toHaveCount(2);
+		const columns = await page
+			.locator('.whale-home-column')
+			.evaluateAll((elements) =>
+				elements.map((element) => {
+					const rect = element.getBoundingClientRect();
+					return { top: rect.top, right: rect.right, left: rect.left };
+				}),
+			);
+		expect(columns[0].top).toBeCloseTo(columns[1].top);
+		expect(columns[0].right).toBeLessThan(columns[1].left);
 		await expect(page.locator('.whale-home .whale-heading-anchor')).toHaveCount(
 			0,
 		);
