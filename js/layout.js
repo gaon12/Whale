@@ -78,6 +78,76 @@
 		}
 	};
 
+	let focusMobileSearch = null;
+	const initMobileNavigation = () => {
+		const nav = document.querySelector('.whale-navbar');
+		const navigation = nav?.querySelector('.whale-navbar-navigation');
+		const menuToggle = nav?.querySelector('.whale-mobile-nav-toggle');
+		const searchToggle = nav?.querySelector('.whale-mobile-search-toggle');
+		const search = nav?.querySelector('#searchInput');
+		if (!navigation || !menuToggle || !searchToggle || !search) {
+			return;
+		}
+		const mobile = window.matchMedia('(max-width: 1023px)');
+		const setMenu = (open, restoreFocus = false) => {
+			navigation.classList.toggle('is-open', open);
+			menuToggle.setAttribute('aria-expanded', String(open));
+			if (restoreFocus) {
+				menuToggle.focus();
+			}
+		};
+		const setSearch = (open, restoreFocus = false) => {
+			nav.classList.toggle('is-search-open', open);
+			searchToggle.setAttribute('aria-expanded', String(open));
+			if (open) {
+				setMenu(false);
+				closeAllDropdowns();
+				search.focus();
+			} else if (restoreFocus) {
+				searchToggle.focus();
+			}
+		};
+		document.addEventListener('click', (event) => {
+			if (!mobile.matches) {
+				return;
+			}
+			if (whale.closest(event.target, '.whale-mobile-nav-toggle')) {
+				event.preventDefault();
+				setMenu(!navigation.classList.contains('is-open'));
+			} else if (whale.closest(event.target, '.whale-mobile-search-toggle')) {
+				event.preventDefault();
+				setSearch(true);
+			} else if (whale.closest(event.target, '.whale-mobile-search-close')) {
+				event.preventDefault();
+				setSearch(false, true);
+			} else if (!navigation.contains(event.target)) {
+				setMenu(false);
+			}
+		});
+		document.addEventListener('keydown', (event) => {
+			if (mobile.matches && event.key === 'Escape') {
+				if (nav.classList.contains('is-search-open')) {
+					event.preventDefault();
+					setSearch(false, true);
+				} else if (navigation.classList.contains('is-open')) {
+					event.preventDefault();
+					setMenu(false, true);
+				}
+			}
+		});
+		focusMobileSearch = () => {
+			if (mobile.matches) {
+				setSearch(true);
+			}
+		};
+		whale.onMediaChange(mobile, () => {
+			if (!mobile.matches) {
+				setSearch(false);
+				setMenu(false);
+			}
+		});
+	};
+
 	const initReadingProgress = () => {
 		const skinRoot = document.querySelector('.Whale');
 
@@ -503,6 +573,7 @@
 		}
 
 		event.preventDefault();
+		focusMobileSearch?.();
 		search.focus();
 		search.select?.();
 		return true;
@@ -510,6 +581,7 @@
 
 	whale.ready(() => {
 		initNavClearance();
+		initMobileNavigation();
 		initBrandLogo();
 		initContentSkeleton();
 		initReadingProgress();

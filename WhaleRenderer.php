@@ -36,6 +36,8 @@ class WhaleRenderer {
 			'brand-href' => Title::newMainPage()->getLocalURL(),
 			'brand-logo' => $this->getNavBarLogoUrl(),
 			'brand-alt' => is_string( $wgSitename ?? null ) ? $wgSitename : 'Whale',
+			'navigation-label' => $this->skin->msg( 'whale-navigation-menu' )->text(),
+			'html-navigation-icon' => $this->renderIcon( 'list' ),
 			'items' => array_merge( $this->getDefaultNavItems(), $this->getPortalItems( $this->parseNavbar() ) ),
 			'theme-toggle' => $this->getThemeToggleData(),
 			'data-login' => $this->getLoginData(),
