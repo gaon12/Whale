@@ -106,7 +106,7 @@ jobs:
           php-version: '8.2'
           # Keep the disposable core fixture independent of runner-default extensions.
           extensions: >-
-            none, ctype, curl, dom, fileinfo, iconv, intl, mbstring,
+            none, calendar, ctype, curl, dom, fileinfo, iconv, intl, mbstring,
             pdo_sqlite, simplexml, sqlite3, tokenizer, xml, xmlreader, xmlwriter
           tools: composer:v2
           coverage: none
