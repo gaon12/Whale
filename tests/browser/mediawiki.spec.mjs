@@ -138,7 +138,10 @@ test.describe('MediaWiki integration', () => {
 					.querySelector('#catlinks')
 					.getBoundingClientRect();
 				return (
-					notice.top >= heading.bottom + 12 && notice.bottom <= categories.top
+					notice.top >= heading.bottom + 12 &&
+					notice.bottom <= categories.top &&
+					Math.abs(notice.left - categories.left) < 1 &&
+					Math.abs(notice.width - categories.width) < 1
 				);
 			}),
 		).toBe(true);

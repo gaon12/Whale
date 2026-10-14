@@ -31,6 +31,7 @@ for (const width of [320, 390, 768, 1440]) {
 				'html-whale-last-modified': '최근 수정 시각: 2026년 10월 14일',
 				'html-subtitle':
 					'<div id="mw-content-subtitle"><div class="subpages">&lt; <a href="#parent">상위 문서</a></div></div>',
+				'has-whale-redirect-notice': true,
 				'html-whale-redirect-notice': `
 				<span class="mw-redirectedfrom"><a href="#help">넘겨주기</a>&nbsp;: <a href="${originalHref}" class="mw-redirect">${origin}</a></span>
 				<span class="mw-redirectedfrom">(<a href="/w/index.php?title=3.1절&amp;redirect=no" class="mw-redirect">3.1절</a>에서 넘어옴)</span>`,
@@ -65,12 +66,14 @@ for (const width of [320, 390, 768, 1440]) {
 					.getBoundingClientRect();
 				return {
 					gap: notice.top - heading.bottom,
-					widthDifference: Math.abs(notice.width - heading.width),
+					widthDifference: Math.abs(notice.width - categories.width),
+					leftDifference: Math.abs(notice.left - categories.left),
 					beforeCategories: notice.bottom <= categories.top,
 				};
 			});
 			expect(placement.gap).toBeGreaterThanOrEqual(12);
 			expect(placement.widthDifference).toBeLessThan(1);
+			expect(placement.leftDifference).toBeLessThan(1);
 			expect(placement.beforeCategories).toBe(true);
 			await expect(notices.first().locator('a.mw-redirect')).toHaveAttribute(
 				'href',
