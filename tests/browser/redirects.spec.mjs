@@ -1,6 +1,23 @@
 import { expect, test } from '@playwright/test';
 import { renderSkin, skinStyles } from './helpers.mjs';
 
+function contrastRatio(foreground, background) {
+	const luminance = (color) => {
+		const channels = color.match(/\d+/g).slice(0, 3).map(Number);
+		const linear = channels.map((channel) => {
+			const value = channel / 255;
+			return value <= 0.04045
+				? value / 12.92
+				: ((value + 0.055) / 1.055) ** 2.4;
+		});
+		return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
+	};
+	const values = [luminance(foreground), luminance(background)].sort(
+		(a, b) => b - a,
+	);
+	return (values[0] + 0.05) / (values[1] + 0.05);
+}
+
 for (const width of [320, 390, 768, 1440]) {
 	for (const dark of [false, true]) {
 		test(`redirect origins stay distinct and readable at ${width}px in ${dark ? 'dark' : 'light'} mode`, async ({
@@ -38,6 +55,10 @@ for (const width of [320, 390, 768, 1440]) {
 						right: bounds.right,
 						height: bounds.height,
 						background: style.backgroundColor,
+						textColor: style.color,
+						linkColors: [...element.querySelectorAll('a')].map(
+							(link) => getComputedStyle(link).color,
+						),
 						borders: ['Top', 'Right', 'Bottom', 'Left'].map(
 							(side) => style[`border${side}Width`],
 						),
@@ -48,6 +69,11 @@ for (const width of [320, 390, 768, 1440]) {
 			);
 			for (const notice of geometry) {
 				expect(notice.background).not.toBe('rgba(0, 0, 0, 0)');
+				for (const color of [notice.textColor, ...notice.linkColors]) {
+					expect(
+						contrastRatio(color, notice.background),
+					).toBeGreaterThanOrEqual(4.5);
+				}
 				expect(new Set(notice.borders).size).toBe(1);
 				expect(notice.sourceWeight).toBe('600');
 				expect(notice.iconContent).toBe('""');
