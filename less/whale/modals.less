@@ -165,15 +165,8 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	padding: 0.65rem 3.35rem 0.65rem 1rem;
 }
 
-.Whale .whale-reference-modal .whale-modal-header {
-	min-height: 3.35rem;
-	padding: 0.65rem 3.35rem 0.65rem 1rem;
-	background-color: var(--whale-surface-elevated-color);
-}
-
 .Whale .whale-short-url-modal .whale-modal-title,
-.Whale .whale-external-link-modal .whale-modal-title,
-.Whale .whale-reference-modal .whale-modal-title {
+.Whale .whale-external-link-modal .whale-modal-title {
 	flex: 1;
 	margin: 0;
 	color: var(--whale-text-color, #252a30);
@@ -182,19 +175,53 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	text-align: left;
 }
 
+.Whale .whale-reference-popover {
+	position: fixed;
+	z-index: 1060;
+	width: max-content;
+	max-width: ~"min(40rem, calc(100vw - 1rem))";
+	border: 1px solid var(--whale-border-strong-color);
+	border-radius: 3px;
+	background: var(--whale-surface-elevated-color);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+.Whale .whale-reference-popover::after {
+	content: "";
+	position: absolute;
+	left: var(--whale-reference-arrow-left);
+	bottom: -5px;
+	width: 8px;
+	height: 8px;
+	border-right: 1px solid var(--whale-border-strong-color);
+	border-bottom: 1px solid var(--whale-border-strong-color);
+	background: var(--whale-surface-elevated-color);
+	transform: translateX(-50%) rotate(45deg);
+}
+
+.Whale .whale-reference-popover[data-placement="below"]::after {
+	top: -5px;
+	bottom: auto;
+	transform: translateX(-50%) rotate(225deg);
+}
+
+.Whale .whale-reference-modal.is-open {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
 .Whale .whale-reference-modal-dialog {
-	width: ~"min(34rem, calc(100% - 2rem))";
-	margin: ~"min(14vh, 6rem)" auto 1.5rem;
+	width: ~"min(28rem, calc(100% - 1.25rem))";
+	margin: auto;
 }
 
 .Whale .whale-reference-modal-content {
-	max-height: ~"calc(100dvh - 4rem)";
+	max-height: ~"calc(100dvh - 2rem)";
 	overflow: hidden;
-	border-radius: var(--whale-radius-sm);
-}
-
-.Whale .whale-reference-modal [data-whale-modal-autofocus]:focus {
-	outline: 0;
+	border-radius: 3px;
+	box-shadow: none;
 }
 
 .Whale .whale-reference-body {
@@ -205,15 +232,19 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 
 .Whale .whale-reference-content {
 	min-height: 0;
-	max-height: ~"min(60vh, 28rem)";
+	max-height: ~"min(60dvh, 28rem)";
 	overflow: auto;
 	overscroll-behavior: contain;
-	padding: 1rem 1.1rem 1.1rem;
-	background-color: var(--whale-surface-elevated-color);
-	color: var(--whale-text-color, #252a30);
-	font-size: 0.95rem;
-	line-height: 1.65;
+	padding: 1.25rem;
+	color: var(--whale-text-color);
+	font-size: 1rem;
+	line-height: 1.7;
 	overflow-wrap: anywhere;
+}
+
+.Whale .whale-reference-popover .whale-reference-content {
+	max-height: ~"min(50dvh, 24rem)";
+	padding: 0.85rem 1.25rem;
 }
 
 .Whale .whale-reference-content > :last-child {
@@ -236,6 +267,15 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 	text-underline-offset: 0.12em;
 }
 
+.Whale .whale-reference-content a.external {
+	color: var(--whale-external-link-color, #0a6f2a);
+}
+
+.Whale .whale-reference-content a.external:hover,
+.Whale .whale-reference-content a.external:focus-visible {
+	color: var(--whale-external-link-hover-color, #084f20);
+}
+
 .Whale .whale-reference-content pre,
 .Whale .whale-reference-content table {
 	max-width: 100%;
@@ -243,44 +283,33 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 }
 
 .Whale .whale-reference-actions {
-	display: flex;
-	justify-content: flex-end;
 	flex: 0 0 auto;
-	padding: 0.6rem 1rem;
-	border-top: 1px solid var(--whale-border-color, #d9dee3);
-	background-color: var(--whale-surface-elevated-color);
+	padding: 0;
+	border-top: 1px solid var(--whale-border-color);
+	background: var(--whale-surface-muted-color);
 }
 
-.Whale .whale-reference-jump {
-	display: inline-flex;
-	align-items: center;
-	min-height: 2.25rem;
-	padding: 0.35rem 0.75rem;
-	border: 1px solid var(--whale-border-strong-color);
-	border-radius: var(--whale-radius-sm);
-	background-color: var(--whale-surface-elevated-color);
-	box-shadow: 0 1px 1px rgba(25, 43, 54, 0.06);
+.Whale .whale-reference-close {
+	display: block;
+	width: 100%;
+	min-height: 3rem;
+	padding: 0.65rem 1rem;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 	color: var(--whale-text-color);
-	font-size: 0.92rem;
-	font-weight: 500;
-	text-decoration: none;
+	font: inherit;
+	font-size: 1rem;
+	text-align: center;
 }
 
-.Whale .whale-reference-jump:hover,
-.Whale .whale-reference-jump:focus-visible {
-	background-color: var(--whale-hover-color);
-	border-color: var(--whale-main-color);
-	color: var(--whale-main-color);
-	outline: 0;
-	text-decoration: none;
+.Whale .whale-reference-close:hover {
+	background: var(--whale-hover-color);
 }
 
-.Whale .whale-reference-jump:focus-visible {
-	box-shadow: var(--whale-focus-ring);
-}
-
-.Whale .whale-reference-jump:active {
-	box-shadow: inset 0 2px 3px rgba(25, 43, 54, 0.16);
+.Whale .whale-reference-close:focus-visible {
+	outline: 2px solid var(--whale-link-color);
+	outline-offset: -4px;
 }
 
 .Whale .whale-short-url-description,
@@ -761,39 +790,6 @@ body.whale-modal-open .Whale .whale-nav-wrapper.whale-navbar-fixed {
 		border-radius: 0.75rem 0.75rem 0 0;
 	}
 
-	.Whale .whale-reference-modal {
-		display: none;
-		align-items: flex-end;
-	}
 
-	.Whale .whale-reference-modal.is-open {
-		display: flex !important;
-		overflow: hidden;
-	}
-
-	.Whale .whale-reference-modal-dialog {
-		width: 100%;
-		margin: auto 0 0;
-	}
-
-	.Whale .whale-reference-modal-content {
-		max-height: ~"calc(100dvh - 3rem)";
-		padding-bottom: env(safe-area-inset-bottom);
-		border-right: 0;
-		border-bottom: 0;
-		border-left: 0;
-		border-radius: var(--whale-radius-sm) var(--whale-radius-sm) 0 0;
-	}
-
-	.Whale .whale-reference-content {
-		max-height: ~"calc(100dvh - 10.5rem)";
-		padding: 1.1rem 1rem 1.2rem;
-	}
-
-	.Whale .whale-reference-jump {
-		justify-content: center;
-		width: 100%;
-		min-height: 2.75rem;
-	}
 }
 /* Login modal End */

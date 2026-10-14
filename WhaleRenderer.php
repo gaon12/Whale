@@ -573,9 +573,7 @@ class WhaleRenderer {
 
 		return [
 			'title' => $skin->msg( 'whale-reference-title' )->text(),
-			'jump-label' => $skin->msg( 'whale-reference-jump' )->text(),
 			'close-label' => $skin->msg( 'whale-close' )->text(),
-			'html-icon' => $this->renderIcon( 'file' ),
 		];
 	}
 

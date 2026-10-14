@@ -1352,77 +1352,7 @@ assertIncludes(
 	'tabindex="0" role="document"',
 	'Keyboard-scrollable reference content',
 );
-assertIncludes(styles, '~"min(60vh, 28rem)"', 'Reference modal scroll limit');
-assertIncludes(
-	styles,
-	'~"min(34rem, calc(100% - 2rem))"',
-	'Compact reference modal width',
-);
-assertIncludes(
-	referenceTemplate,
-	'whale-modal-heading-icon',
-	'Reference modal heading icon',
-);
-assertIncludes(
-	styles,
-	'overscroll-behavior: contain',
-	'Reference modal scroll containment',
-);
-const referenceHeaderBlock = getRuleBlock(
-	styles,
-	'.Whale .whale-reference-modal .whale-modal-header',
-	'Reference modal header',
-);
-assertIncludes(
-	referenceHeaderBlock,
-	'background-color: var(--whale-surface-elevated-color)',
-	'Reference modal header surface',
-);
-const referenceActionsBlock = getRuleBlock(
-	styles,
-	'.Whale .whale-reference-actions',
-	'Reference modal actions',
-);
-assertIncludes(
-	referenceActionsBlock,
-	'justify-content: flex-end',
-	'Reference modal action alignment',
-);
-assertIncludes(
-	referenceActionsBlock,
-	'background-color: var(--whale-surface-elevated-color)',
-	'Reference modal action surface',
-);
-const referenceJumpBlock = getRuleBlock(
-	styles,
-	'.Whale .whale-reference-jump',
-	'Reference modal jump action',
-);
-assertIncludes(
-	referenceJumpBlock,
-	'border: 1px solid var(--whale-border-strong-color)',
-	'Reference modal button affordance',
-);
-assertIncludes(
-	styles,
-	'[data-whale-modal-autofocus]:focus',
-	'Reference modal programmatic focus treatment',
-);
-assertIncludes(
-	styles,
-	'env(safe-area-inset-bottom)',
-	'Reference modal mobile safe area',
-);
-assertIncludes(
-	styles,
-	'.whale-reference-modal.is-open',
-	'Reference modal mobile open state',
-);
-assertIncludes(
-	styles,
-	'overflow: hidden',
-	'Reference modal viewport containment',
-);
+// Reference preview appearance and interaction are tested in browser/references.spec.mjs.
 const modalCloseBlock = getRuleBlock(
 	styles,
 	'.whale-modal-close',

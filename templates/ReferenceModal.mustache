@@ -1,19 +1,16 @@
 {{#data-whale-reference-modal}}
+<div class="whale-reference-popover" id="whale-reference-popover" role="dialog" aria-modal="false" aria-label="{{title}}" tabindex="-1" hidden>
+	<div class="whale-reference-content" data-whale-reference-popover-content></div>
+</div>
 <div class="whale-modal whale-modal-fade whale-reference-modal" id="whale-reference-modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="whale-reference-modal-label" aria-hidden="true">
 	<div class="whale-modal-dialog whale-reference-modal-dialog">
 		<div class="whale-modal-content whale-reference-modal-content">
-			<div class="whale-modal-header">
-				<div class="whale-modal-heading">
-					<span class="whale-modal-heading-icon">{{{ html-icon }}}</span>
-					<h2 class="whale-modal-title" id="whale-reference-modal-label" tabindex="-1" data-whale-modal-autofocus data-whale-reference-title>{{title}}</h2>
-				</div>
-				<button type="button" class="whale-modal-close" data-whale-dismiss="modal" aria-label="{{close-label}}"><span aria-hidden="true">&times;</span></button>
-			</div>
+			<h2 class="whale-sr-only" id="whale-reference-modal-label" data-whale-reference-title>{{title}}</h2>
 			<div class="whale-modal-body whale-reference-body">
-				<div class="whale-reference-content" data-whale-reference-content tabindex="0" role="document"></div>
+				<div class="whale-reference-content" data-whale-reference-content data-whale-modal-autofocus tabindex="0" role="document"></div>
 			</div>
 			<div class="whale-reference-actions">
-				<a class="whale-reference-jump" href="#" data-whale-reference-jump>{{jump-label}}</a>
+				<button type="button" class="whale-reference-close" data-whale-dismiss="modal">{{close-label}}</button>
 			</div>
 		</div>
 	</div>
