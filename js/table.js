@@ -1,4 +1,14 @@
 (() => {
+	const prepareEmptyCells = (content) => {
+		// Special-page previews and dynamically parsed content skip PHP decoration.
+		for (const cell of content.querySelectorAll('table td, table th')) {
+			cell.classList.toggle(
+				'whale-empty-cell',
+				cell.childElementCount === 0 && cell.textContent.trim() === '',
+			);
+		}
+	};
+
 	const positionCollapsibleToggle = (table) => {
 		if (!table.matches('table.mw-collapsible')) return;
 		for (const toggle of table.querySelectorAll(
@@ -22,6 +32,7 @@
 			bar.className = 'whale-table-toggle-bar';
 			bar.append(toggle);
 			heading.classList.add('whale-table-folding-heading');
+			heading.classList.remove('whale-empty-cell');
 			heading.append(title, bar);
 		}
 	};
@@ -85,6 +96,7 @@
 	whale.ready(() => {
 		const initialize = (content) => {
 			if (!content) return;
+			prepareEmptyCells(content);
 			for (const table of content.querySelectorAll('table.mw-collapsible')) {
 				positionCollapsibleToggle(table);
 			}
