@@ -307,6 +307,11 @@
 	margin-bottom: 0;
 }
 
+/* Table-based quotation templates paint their own box, not the full-width wrapper. */
+.Whale .content-wrapper .whale-content .whale-content-main blockquote:has( > table ) {
+	background-color: transparent;
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main code,
 .Whale .content-wrapper .whale-content .whale-content-main samp {
 	padding: 0.12em 0.32em;
