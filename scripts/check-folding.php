@@ -104,6 +104,27 @@ if ( str_contains( $readable, 'hidden=' ) || str_contains( $readable, '<button' 
 	throw new RuntimeException( 'Other skins must be able to read older cached folding content.' );
 }
 
+$nested = '<div class="whale-folding"><div class="whale-folding-header">Outer</div>' .
+	'<div class="whale-folding-body"><div class="whale-folding">' .
+	'<div class="whale-folding-header">Inner<button class="whale-folding-toggle">Toggle</button></div>' .
+	'<div class="whale-folding-body">Inner body</div></div></div></div>';
+$decorated = WhaleArticleDecorator::decorateArticleHtml( $nested, 'off', 'default', false );
+$dom = new DOMDocument();
+$dom->loadHTML( $decorated );
+$xpath = new DOMXPath( $dom );
+$toggles = $xpath->query( '//button[@class="whale-folding-toggle"]' );
+if ( $toggles === false || $toggles->length !== 2 ) {
+	throw new RuntimeException( 'Nested folding blocks must retain independent controls.' );
+}
+foreach ( $toggles as $toggle ) {
+	if ( !$toggle instanceof DOMElement ||
+		!$toggle->nextSibling instanceof DOMElement ||
+		$toggle->nextSibling->getAttribute( 'id' ) !== $toggle->getAttribute( 'aria-controls' )
+	) {
+		throw new RuntimeException( 'Each folding control must sit below its title and directly before its own body.' );
+	}
+}
+
 if ( str_contains( $escapedOutput, '<script>' ) ) {
 	fwrite( STDERR, "Folding title was not escaped.\n" );
 	exit( 1 );

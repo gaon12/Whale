@@ -787,39 +787,33 @@ body.whale-font-scale-x-large .Whale .content-wrapper .whale-content .whale-cont
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle {
 	appearance: none;
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: auto;
-	min-height: 0;
-	margin: 0.55rem 0.85rem;
-	padding: 0;
+	width: 100%;
+	min-height: 2.5rem;
+	margin: 0;
+	padding: 0.45rem 0.85rem;
 	border: 0;
+	border-top: 1px solid var(--whale-folding-border);
 	border-radius: 0;
 	background-color: transparent;
 	color: var(--whale-folding-toggle-color);
 	cursor: pointer;
 	font-weight: 700;
 	line-height: 1.35;
-	text-align: left;
+	text-align: center;
 	transition: color 0.16s ease;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle::before {
-	box-sizing: border-box;
-	width: 0.45rem;
-	height: 0.45rem;
-	margin-right: 0.45rem;
-	border-right: 1.5px solid currentColor;
-	border-bottom: 1.5px solid currentColor;
-	color: #4f5f6d;
-	content: "";
-	transform: translateY(-0.08rem) rotate(45deg);
-	transition: transform 0.16s ease;
+	content: "[ ";
+	white-space: pre;
 }
 
-.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle[aria-expanded="false"]::before {
-	transform: translateX(-0.08rem) rotate(-45deg);
+.Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle::after {
+	content: " ]";
+	white-space: pre;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .whale-folding-toggle:hover,
