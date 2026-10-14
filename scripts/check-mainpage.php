@@ -19,7 +19,7 @@ foreach ( [ 'whale-home', 'whale-home-intro', 'whale-home-title', 'whale-home-se
 		throw new RuntimeException( "Missing semantic homepage content: $expected" );
 	}
 }
-foreach ( [ '베타에', 'whale-section-toggle', 'whale-heading-number', '📢', 'style="flex:1"' ] as $unexpected ) {
+foreach ( [ '베타에', 'whale-section-toggle', 'whale-heading-number', '📢' ] as $unexpected ) {
 	if ( str_contains( $html, $unexpected ) ) {
 		throw new RuntimeException( "Legacy presentation remains: $unexpected" );
 	}
@@ -31,6 +31,29 @@ foreach ( [ '공지사항', '주요_분류', '소개', '시작하기' ] as $id )
 }
 if ( substr_count( $html, 'class="whale-home-section"' ) !== 4 || substr_count( $html, '<a ' ) !== substr_count( $fixture, '<a ' ) ) {
 	throw new RuntimeException( 'All portal sections and links must survive migration.' );
+}
+$document = new DOMDocument();
+$document->loadHTML( '<?xml encoding="UTF-8">' . $html );
+$xpath = new DOMXPath( $document );
+$columns = $xpath->query( '//*[contains(concat(" ", normalize-space(@class), " "), " whale-home-column ")]' );
+if ( $columns === false || $columns->length !== 2 ) {
+	throw new RuntimeException( 'Migrating the homepage must retain both authored columns.' );
+}
+foreach ( $columns as $index => $column ) {
+	$ids = $xpath->query( './/span[@id]', $column );
+	$expectedIds = $index === 0 ? [ '공지사항', '주요_분류' ] : [ '소개', '시작하기' ];
+	if ( !$column instanceof DOMElement || $column->getAttribute( 'style' ) !== 'flex:1' || $ids === false ) {
+		throw new RuntimeException( 'Authored column layout styles must survive decoration.' );
+	}
+	$actualIds = [];
+	foreach ( $ids as $label ) {
+		if ( $label instanceof DOMElement ) {
+			$actualIds[] = $label->getAttribute( 'id' );
+		}
+	}
+	if ( $actualIds !== $expectedIds ) {
+		throw new RuntimeException( 'Sections must stay in their original left or right column.' );
+	}
 }
 $again = WhaleArticleDecorator::decorateArticleHtml( $html, 'all', 'default', true, true, $welcome );
 if ( $html !== $again ) {

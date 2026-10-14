@@ -63,7 +63,10 @@ class WhaleMainPage {
 		self::mark( $introChildren[0], 'whale-home-intro-copy' );
 		self::mark( $spans[0], 'whale-home-title' );
 		self::mark( $spans[1], 'whale-home-description' );
-		self::mark( $grid, 'whale-home-sections' );
+		self::mark( $grid, 'whale-home-sections', false );
+		foreach ( $columns as $column ) {
+			self::mark( $column, 'whale-home-column', false );
+		}
 		foreach ( $panels as $panel ) {
 			self::mark( $panel, 'whale-home-section' );
 			$heading = self::heading( $panel );
@@ -86,10 +89,6 @@ class WhaleMainPage {
 					break;
 				}
 			}
-			$grid->appendChild( $panel );
-		}
-		foreach ( $columns as $column ) {
-			$grid->removeChild( $column );
 		}
 		foreach ( self::children( $parser ) as $child ) {
 			if ( $child->tagName === 'p' && trim( $child->textContent ) === '' ) {

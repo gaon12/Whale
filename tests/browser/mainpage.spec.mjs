@@ -6,7 +6,7 @@ const html = execFileSync('php', ['scripts/check-mainpage.php', '--render'], {
 	encoding: 'utf8',
 });
 
-for (const width of [320, 390, 1440]) {
+for (const width of [320, 390, 640, 641, 768, 1440]) {
 	for (const dark of [false, true]) {
 		test(`main page uses flat semantic sections at ${width}px in ${dark ? 'dark' : 'light'}`, async ({
 			page,
@@ -25,6 +25,13 @@ for (const width of [320, 390, 1440]) {
 				'가온 위키에 오신 것을 환영합니다',
 			);
 			await expect(page.locator('.whale-home-section')).toHaveCount(4);
+			await expect(page.locator('.whale-home-column')).toHaveCount(2);
+			await expect(
+				page.locator('.whale-home-column').first().locator('h2'),
+			).toHaveText(['공지사항', '주요 분류']);
+			await expect(
+				page.locator('.whale-home-column').last().locator('h2'),
+			).toHaveText(['이 사이트는...', '위키 시작하기']);
 			await expect(page.locator('.whale-home-section h2').first()).toHaveText(
 				'공지사항',
 			);
@@ -39,6 +46,17 @@ for (const width of [320, 390, 1440]) {
 						background: getComputedStyle(e).backgroundColor,
 					}),
 				),
+				columns: [...document.querySelectorAll('.whale-home-column')].map(
+					(element) => {
+						const rect = element.getBoundingClientRect();
+						return {
+							x: rect.x,
+							top: rect.top,
+							right: rect.right,
+							bottom: rect.bottom,
+						};
+					},
+				),
 				overflow:
 					document.body.scrollWidth > document.documentElement.clientWidth,
 			}));
@@ -49,6 +67,14 @@ for (const width of [320, 390, 1440]) {
 				),
 			).toBe(true);
 			expect(layout.overflow).toBe(false);
+			const [left, right] = layout.columns;
+			if (width > 640) {
+				expect(left.right).toBeLessThan(right.x);
+				expect(left.top).toBeCloseTo(right.top);
+			} else {
+				expect(left.x).toBeCloseTo(right.x);
+				expect(left.bottom).toBeLessThan(right.top);
+			}
 		});
 	}
 }
