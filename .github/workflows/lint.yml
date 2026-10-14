@@ -104,7 +104,10 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: intl, mbstring, sqlite3, pdo_sqlite, fileinfo
+          # Keep the disposable core fixture independent of runner-default extensions.
+          extensions: >-
+            none, ctype, curl, dom, fileinfo, iconv, intl, mbstring,
+            pdo_sqlite, simplexml, sqlite3, tokenizer, xml, xmlreader, xmlwriter
           tools: composer:v2
           coverage: none
       - name: Install skin dependencies
