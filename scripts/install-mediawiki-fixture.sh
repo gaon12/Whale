@@ -35,3 +35,6 @@ $wgWhaleEnableSectionCollapse = true;
 $wgShowExceptionDetails = true;
 PHP
 php maintenance/edit.php --user FixtureAdmin '대문' < "$skin_root/examples/main-page.wiki"
+php maintenance/edit.php --user FixtureAdmin '넘겨주기 예시' <<'WIKITEXT'
+#REDIRECT [[대문]]
+WIKITEXT
