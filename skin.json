@@ -167,7 +167,11 @@
 				"whale-code-copied",
 				"whale-code-copy-failed"
 			],
-			"dependencies": ["mediawiki.cookie", "skins.whale.common"]
+			"dependencies": [
+				"mediawiki.cookie",
+				"skins.whale.common",
+				"skins.whale.layoutjs"
+			]
 		},
 		"skins.whale.headingAnchors": {
 			"scripts": "js/heading-anchors.js",
