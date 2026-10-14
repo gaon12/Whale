@@ -109,6 +109,37 @@ test.describe('MediaWiki integration', () => {
 		).toBe(false);
 	});
 
+	test('a real redirect notice preserves access to the original redirect page', async ({
+		page,
+	}) => {
+		await page.goto(
+			`${base}/index.php?title=${encodeURIComponent('넘겨주기 예시')}&useskin=whale`,
+			{ waitUntil: 'domcontentloaded' },
+		);
+		await expect(page.locator('#firstHeading')).toHaveText('대문');
+		const notice = page.locator('.mw-redirectedfrom');
+		await expect(notice).toBeVisible();
+		await expect(notice).toHaveCSS('border-top-style', 'solid');
+		const origin = notice.getByRole('link', {
+			name: '넘겨주기 예시',
+			exact: true,
+		});
+		expect(
+			new URL(await origin.getAttribute('href'), base).searchParams.get(
+				'redirect',
+			),
+		).toBe('no');
+		await origin.click();
+		await expect(page.locator('#firstHeading')).toHaveText('넘겨주기 예시');
+		await expect(page.locator('.mw-redirectedfrom')).toHaveCount(0);
+		await page
+			.locator('#mw-content-text')
+			.getByRole('link', { name: '대문', exact: true })
+			.click();
+		await expect(page.locator('#firstHeading')).toHaveText('대문');
+		await expect(page.locator('.mw-redirectedfrom')).toHaveCount(0);
+	});
+
 	test('normal API parsing invokes folding hooks while preserving literal examples', async ({
 		request,
 	}) => {
