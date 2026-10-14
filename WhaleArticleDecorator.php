@@ -147,6 +147,7 @@ class WhaleArticleDecorator {
 				!$themeMainPage &&
 				$sectionMode === self::SECTION_COLLAPSE_OFF &&
 				strpos( $html, 'whale-folding' ) === false &&
+				stripos( $html, '<table' ) === false &&
 				!preg_match( '/<h[1-6]\b/i', $html )
 			)
 		) {
@@ -172,7 +173,22 @@ class WhaleArticleDecorator {
 				self::decorateHeadingAnchors( $dom, $root );
 			}
 			self::decorateFoldingBlocks( $dom, $root, $foldingMode );
+			self::decorateEmptyTableCells( $root );
 		} );
+	}
+
+	/** Whitespace-only cells are separators, not an extra line of text. */
+	private static function decorateEmptyTableCells( DOMElement $root ): void {
+		foreach ( [ 'td', 'th' ] as $tag ) {
+			foreach ( $root->getElementsByTagName( $tag ) as $cell ) {
+				if ( $cell->getElementsByTagName( '*' )->length > 0 ||
+					trim( str_replace( "\xc2\xa0", ' ', $cell->textContent ) ) !== ''
+				) {
+					continue;
+				}
+				self::addClass( $cell, 'whale-empty-cell' );
+			}
+		}
 	}
 
 	private static function decorateHeadingAnchors( DOMDocument $dom, DOMElement $root ): void {
