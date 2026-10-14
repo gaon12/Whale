@@ -13,6 +13,7 @@
 		"test": [
 			"php vendor/squizlabs/php_codesniffer/bin/phpcs -p -s",
 			"@test:folding",
+			"@test:tables",
 			"@test:short-url",
 			"@test:sections",
 			"@test:mainpage",
@@ -24,6 +25,9 @@
 		],
 		"test:folding": [
 			"php scripts/check-folding.php"
+		],
+		"test:tables": [
+			"php scripts/check-table-decoration.php"
 		],
 		"test:short-url": [
 			"php scripts/check-short-url.php"

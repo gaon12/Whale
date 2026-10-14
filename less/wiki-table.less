@@ -14,12 +14,18 @@
 	margin: 0.3rem 0 0.3rem 0.2rem;
 }
 
+.Whale .content-wrapper .whale-content .whale-content-main table {
+	border-radius: 4px 4px 0 0;
+	/* Clip painted cells too, including templates using collapsed borders. */
+	clip-path: inset(0 round 4px 4px 0 0);
+}
+
 .Whale .content-wrapper .whale-content .whale-content-main table.wikitable,
 .Whale .content-wrapper .whale-content .whale-content-main table.infobox {
 	width: auto;
 	background: var(--whale-table-background);
 	border: 1px solid var(--whale-table-border-color);
-	border-radius: 0;
+	border-radius: 4px 4px 0 0;
 	border-collapse: separate;
 	border-spacing: 0;
 	float: none;
@@ -280,6 +286,14 @@
 	html .Whale .content-wrapper .whale-content .whale-content-main table.infobox {
 		width: 100% !important;
 	}
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main table tr > td.whale-empty-cell,
+.Whale .content-wrapper .whale-content .whale-content-main table tr > th.whale-empty-cell {
+	padding-top: 0.15rem;
+	padding-bottom: 0.15rem;
+	font-size: 0;
+	line-height: 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table tr > td.whale-table-folding-heading,
