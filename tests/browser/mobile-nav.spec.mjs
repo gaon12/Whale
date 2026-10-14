@@ -133,6 +133,71 @@ for (const width of [320, 390, 768, 1023]) {
 	}
 }
 
+for (const dark of [false, true]) {
+	test(`mobile menu hover and keyboard focus stay readable in ${dark ? 'dark' : 'light'} mode`, async ({
+		page,
+	}) => {
+		await fixture(page, 390);
+		if (dark) {
+			await page.evaluate(() => document.body.classList.add('whale-dark'));
+		}
+		await page.getByRole('button', { name: '탐색 메뉴' }).click();
+		const link = page.getByRole('link', { name: '최근 바뀜', exact: true });
+		const foreground = await link.evaluate(
+			(element) => getComputedStyle(element).color,
+		);
+		await page.getByRole('button', { name: '커뮤니티', exact: true }).click();
+		for (const control of [
+			link,
+			page.getByRole('button', { name: '커뮤니티', exact: true }),
+			page.getByRole('link', { name: '위키방', exact: true }),
+		]) {
+			for (const state of ['hover', 'focus']) {
+				await page.mouse.move(0, 0);
+				await page.getByRole('button', { name: '탐색 메뉴' }).focus();
+				if (state === 'hover') {
+					await control.hover();
+				} else {
+					await control.focus();
+				}
+				await expect(control).toHaveCSS('color', foreground);
+				const colors = await control.evaluate((element) => ({
+					foreground: getComputedStyle(element).color,
+					background: getComputedStyle(element).backgroundColor,
+					surface: getComputedStyle(
+						element.closest('.whale-dropdown-menu, .whale-navbar-menu'),
+					).backgroundColor,
+				}));
+				const rgb = (color) => color.match(/[\d.]+/g).map(Number);
+				const luminance = (color) => {
+					const channels = color.slice(0, 3).map((value) => {
+						const normalized = value / 255;
+						return normalized <= 0.04045
+							? normalized / 12.92
+							: ((normalized + 0.055) / 1.055) ** 2.4;
+					});
+					return (
+						channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722
+					);
+				};
+				const background = rgb(colors.background);
+				const surface = rgb(colors.surface);
+				const alpha = background[3] ?? 1;
+				const paintedBackground = background
+					.slice(0, 3)
+					.map((value, index) => value * alpha + surface[index] * (1 - alpha));
+				const values = [
+					luminance(rgb(colors.foreground)),
+					luminance(paintedBackground),
+				];
+				expect(
+					(Math.max(...values) + 0.05) / (Math.min(...values) + 0.05),
+				).toBeGreaterThanOrEqual(4.5);
+			}
+		}
+	});
+}
+
 for (const button of ['#searchGoButton', '#mw-searchButton']) {
 	test(`mobile search keeps the native form submission through ${button}`, async ({
 		page,
