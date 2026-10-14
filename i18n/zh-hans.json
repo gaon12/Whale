@@ -7,6 +7,7 @@
 	"skinname-whale": "Whale",
 	"whale-desc": "面向 Whale 的响应式 MediaWiki 皮肤",
 	"whale-close": "关闭",
+	"whale-navigation-menu": "导航菜单",
 	"whale-last-modified": "最后修改时间：$1",
 	"whale-dark-default": "跟随系统设置",
 	"whale-dark-dark": "始终使用深色模式",

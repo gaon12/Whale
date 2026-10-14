@@ -3,31 +3,37 @@
 	<a class="whale-navbar-brand" href="{{brand-href}}">
 		<img class="whale-navbar-brand-logo" src="{{brand-logo}}" alt="{{brand-alt}}" decoding="async" fetchpriority="high">
 	</a>
-	<ul class="whale-navbar-menu">
-		{{#items}}
-			<li class="{{classes}}">
-				{{{ html-link }}}
-				{{#has-children}}
-					<div class="whale-dropdown-menu" role="menu">
-						{{#children}}
-							<div class="{{classes}}">
-								{{{ html-link }}}
-								{{#has-children}}
-									<div class="whale-dropdown-menu whale-dropdown-submenu" role="menu">
-										{{#children}}
-											<div class="{{classes}}">
-												{{{ html-link }}}
-											</div>
-										{{/children}}
-									</div>
-								{{/has-children}}
-							</div>
-						{{/children}}
-					</div>
-				{{/has-children}}
-			</li>
-		{{/items}}
-	</ul>
+	<div class="whale-navbar-navigation">
+		<button type="button" class="whale-mobile-nav-toggle" aria-label="{{navigation-label}}" title="{{navigation-label}}" aria-controls="whale-navigation-menu" aria-expanded="false">{{{ html-navigation-icon }}}</button>
+		<ul class="whale-navbar-menu" id="whale-navigation-menu">
+			{{#items}}
+				<li class="{{classes}}">
+					{{{ html-link }}}
+					{{#has-children}}
+						<div class="whale-dropdown-menu" role="menu">
+							{{#children}}
+								<div class="{{classes}}">
+									{{{ html-link }}}
+									{{#has-children}}
+										<div class="whale-dropdown-menu whale-dropdown-submenu" role="menu">
+											{{#children}}
+												<div class="{{classes}}">
+													{{{ html-link }}}
+												</div>
+											{{/children}}
+										</div>
+									{{/has-children}}
+								</div>
+							{{/children}}
+						</div>
+					{{/has-children}}
+				</li>
+			{{/items}}
+		</ul>
+	</div>
+	{{#data-search}}
+		<button type="button" class="whale-mobile-search-toggle" aria-label="{{search-label}}" title="{{search-label}}" aria-controls="searchform" aria-expanded="false" accesskey="{{accesskey}}" aria-keyshortcuts="/">{{{ html-search-icon }}}</button>
+	{{/data-search}}
 	{{>SearchBox}}
 	{{#has-notifications}}
 		<ul class="whale-navbar-notifications">

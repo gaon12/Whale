@@ -75,6 +75,40 @@ test.describe('MediaWiki integration', () => {
 		expect(errors).toEqual([]);
 	});
 
+	test('the native mobile bar stays compact while its menu and search remain usable', async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width: 390, height: 844 });
+		await page.goto(`${base}/index.php?title=대문&useskin=whale`, {
+			waitUntil: 'domcontentloaded',
+		});
+		await expect(page.locator('.whale-mobile-nav-toggle')).toHaveAttribute(
+			'aria-label',
+			'탐색 메뉴',
+		);
+		await page.waitForFunction(
+			() => window.mw?.loader.getState('skins.whale.layoutjs') === 'ready',
+		);
+		expect(
+			(await page.locator('.whale-nav-wrapper').boundingBox()).height,
+		).toBeLessThanOrEqual(56);
+		await page.locator('.whale-mobile-nav-toggle').click();
+		await expect(page.locator('.whale-navbar-menu')).toBeVisible();
+		await page.keyboard.press('Escape');
+		await page.locator('.whale-mobile-search-toggle').click();
+		await expect(page.locator('#searchInput')).toBeFocused();
+		expect(
+			(await page.locator('.whale-nav-wrapper').boundingBox()).height,
+		).toBeLessThanOrEqual(56);
+		await page.locator('.whale-mobile-search-close').click();
+		await expect(page.locator('.whale-mobile-search-toggle')).toBeFocused();
+		expect(
+			await page.evaluate(
+				() => document.body.scrollWidth > document.documentElement.clientWidth,
+			),
+		).toBe(false);
+	});
+
 	test('normal API parsing invokes folding hooks while preserving literal examples', async ({
 		request,
 	}) => {

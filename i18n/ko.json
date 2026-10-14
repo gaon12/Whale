@@ -7,6 +7,7 @@
 	"skinname-whale": "Whale",
 	"whale-desc": "Whale을 위한 반응형 MediaWiki 스킨",
 	"whale-close": "닫기",
+	"whale-navigation-menu": "탐색 메뉴",
 	"whale-last-modified": "최근 수정 시각: $1",
 	"whale-dark-default": "시스템 설정 따르기",
 	"whale-dark-dark": "항상 어두운 모드 사용",
