@@ -287,6 +287,62 @@ test.describe('MediaWiki integration', () => {
 		});
 	}
 
+	for (const width of [390, 768]) {
+		test(`native wide tables can scroll to their final column at ${width}px`, async ({
+			page,
+		}) => {
+			const errors = [];
+			page.on('pageerror', (error) => errors.push(error.message));
+			await page.setViewportSize({ width, height: 844 });
+			await page.goto(`${base}/index.php?title=표_예시&useskin=whale`);
+			await page.waitForFunction(
+				() => window.mw?.loader.getState('skins.whale.tables') === 'ready',
+			);
+			const folded = page.locator('#fold-overflow-example');
+			const toggle = folded.locator('.mw-collapsible-toggle');
+			await expect(toggle).toBeVisible();
+			await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+			await toggle.click();
+			await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+			for (const id of ['wide-overflow-example', 'fold-overflow-example']) {
+				const table = page.locator(`#${id}`);
+				const frame = table.locator('..');
+				await expect(frame).toHaveClass('whale-table-wrapper');
+				await expect(table).toHaveCSS('display', 'table');
+				await expect(table).toHaveCSS('clip-path', 'none');
+				expect(
+					await frame.evaluate((el) => el.scrollWidth - el.clientWidth),
+				).toBeGreaterThan(100);
+				await frame.hover();
+				await page.mouse.wheel(10000, 0);
+				await expect
+					.poll(() => frame.evaluate((el) => el.scrollLeft))
+					.toBeGreaterThan(100);
+				await expect
+					.poll(() =>
+						table
+							.locator('tr')
+							.last()
+							.locator('td')
+							.last()
+							.evaluate((el) => el.getBoundingClientRect().right),
+					)
+					.toBeLessThanOrEqual(
+						(await frame.boundingBox()).x +
+							(await frame.boundingBox()).width +
+							1,
+					);
+			}
+			expect(
+				await page.evaluate(
+					() =>
+						document.body.scrollWidth > document.documentElement.clientWidth,
+				),
+			).toBe(false);
+			expect(errors).toEqual([]);
+		});
+	}
+
 	test('normal API parsing invokes folding hooks while preserving literal examples', async ({
 		request,
 	}) => {
