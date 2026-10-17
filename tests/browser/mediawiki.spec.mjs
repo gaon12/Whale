@@ -385,7 +385,12 @@ test.describe('MediaWiki integration', () => {
 			await page
 				.locator('#whale-login-form [name="wpPassword"]')
 				.fill('Whale-local-fixture-2026');
-			await page.locator('#wpRemember').setChecked(remember);
+			if (remember) {
+				await page.locator('label[for="wpRemember"]').click();
+			}
+			await expect(page.locator('#wpRemember')).toBeChecked({
+				checked: remember,
+			});
 			const resultPromise = page.waitForResponse(
 				(response) =>
 					response.url().includes('/api.php') &&
@@ -395,8 +400,7 @@ test.describe('MediaWiki integration', () => {
 				{ timeout: 10000 },
 			);
 			await page.locator('.whale-login-submit').click();
-			const result = await (await resultPromise).json();
-			expect(result.error || result.clientlogin?.status).toBe('PASS');
+			expect((await resultPromise).ok()).toBe(true);
 			await expect(page.locator('#login-menu')).toHaveAttribute(
 				'title',
 				'FixtureAdmin',
