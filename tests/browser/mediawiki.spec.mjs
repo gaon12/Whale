@@ -364,6 +364,48 @@ test.describe('MediaWiki integration', () => {
 		expect(html).not.toContain('<button');
 	});
 
+	for (const remember of [false, true]) {
+		test(`the native login modal authenticates with remember-me ${remember ? 'checked' : 'unchecked'}`, async ({
+			page,
+		}) => {
+			const errors = [];
+			page.on('pageerror', (error) => errors.push(error.message));
+			await page.setViewportSize({ width: remember ? 390 : 1440, height: 844 });
+			await page.goto(`${base}/index.php?title=대문&useskin=whale`);
+			await page.waitForFunction(
+				() =>
+					window.mw?.loader.getState('skins.whale.loginjs') === 'ready' &&
+					window.mw?.loader.getState('skins.whale.layoutjs') === 'ready',
+			);
+			await page.locator('[data-whale-target="#whale-login-modal"]').click();
+			await expect(page.locator('#whale-login-modal')).toBeVisible();
+			await page
+				.locator('#whale-login-form [name="wpName"]')
+				.fill('FixtureAdmin');
+			await page
+				.locator('#whale-login-form [name="wpPassword"]')
+				.fill('Whale-local-fixture-2026');
+			await page.locator('#wpRemember').setChecked(remember);
+			const resultPromise = page.waitForResponse(
+				(response) =>
+					response.url().includes('/api.php') &&
+					new URLSearchParams(response.request().postData() || '').get(
+						'action',
+					) === 'clientlogin',
+				{ timeout: 10000 },
+			);
+			await page.locator('.whale-login-submit').click();
+			const result = await (await resultPromise).json();
+			expect(result.error || result.clientlogin?.status).toBe('PASS');
+			await expect(page.locator('#login-menu')).toHaveAttribute(
+				'title',
+				'FixtureAdmin',
+			);
+			await expect(page.locator('#whale-login-modal')).toHaveCount(0);
+			expect(errors).toEqual([]);
+		});
+	}
+
 	test('registered theme changes persist through the actual authenticated options API', async ({
 		page,
 	}) => {
