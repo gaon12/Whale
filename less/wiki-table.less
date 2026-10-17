@@ -2,7 +2,9 @@
 	overflow-x: auto;
 	overflow-y: hidden;
 	max-width: 100%;
+	min-width: 0;
 	display: block;
+	border-radius: 4px 4px 0 0;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main .table-right {
@@ -287,6 +289,14 @@
 	html .Whale .content-wrapper .whale-content .whale-content-main table.infobox {
 		width: 100% !important;
 	}
+}
+
+.Whale .content-wrapper .whale-content .whale-content-main .whale-table-wrapper > table {
+	/* Let the scroll container clip the viewport, not the table's columns. */
+	display: table;
+	float: none;
+	overflow: visible;
+	clip-path: none;
 }
 
 .Whale .content-wrapper .whale-content .whale-content-main table tr > td.whale-empty-cell,
